@@ -18,9 +18,16 @@ forge build
 - [ ] Goals and expected outcomes
 - [ ] Project setup
 
+### ETH to Arbitrum
+
+- [ ] Transactions
+
 ### Protocol
 
 - [ ] What is GMX?
+  - GMX is a decentralized spot and perpetual exchange
+  - Spot exchange
+  - Perpetual exchange
 - [ ] Key features
 - [ ] How the protocol works
   - users (LP, traders, GMX and GM / GLV holders)
@@ -109,3 +116,18 @@ Explain utilities, acquistion methods, differences and staking processes.
 ### Application
 
 - TODO: application
+
+## Resources
+
+##### Arbitrum
+
+- [Arbitrum](https://arbitrum.io/)
+- [Arbitrum bridge](https://bridge.arbitrum.io/)
+- [Bridge DAI from ETH to Arbitrum One tx](https://etherscan.io/tx/0xb15ea04494164f2d1dd6a12222010c65f496190e69f6acd909d0b6c80fbf37cb)
+- [Deposit ETH into Arbitrum One tx](https://etherscan.io/tx/0x1752e3449694e4c3d516093294f39a2a3576198db7d3af3975704b0a339bf4b1)
+
+##### GMX
+
+- [GMX](https://gmx.io/)
+- [Swap DAI to ETH (part 1)](https://arbiscan.io/tx/0x747665f80ccd64918af4f4cd2d3c7e7c077d061d61bc47fc99f644d1eb4d18f4)
+- [Swap DAI to ETH (part 2 - receive ETH)](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
