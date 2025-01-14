@@ -102,6 +102,7 @@ Explain utilities, acquistion methods, differences and staking processes.
   - buy back mechanism
   - stake
 - [ ] esGMX
+  - vest to convert esGMX to GMX
 - [ ] GM
   - what
   - how to obtain
@@ -131,3 +132,12 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [GMX](https://gmx.io/)
 - [Swap DAI to ETH (part 1)](https://arbiscan.io/tx/0x747665f80ccd64918af4f4cd2d3c7e7c077d061d61bc47fc99f644d1eb4d18f4)
 - [Swap DAI to ETH (part 2 - receive ETH)](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
+- [Short ETH](https://arbiscan.io/tx/0x910aceeabc176d44788500403b2db3f7973bd8118fb79f57c490c8ab0505b295)
+- [Short ETH (part 2? receive ETH)](https://arbiscan.io/tx/0x5212c55508b8f888f666220a17b584adc73623d044548c0822400ba52a6af8c8)
+- [Swap DAI to GMX (part 1)](https://arbiscan.io/tx/0x35572d81e52d1a2f254bcdeb30232e4fae9c4fc178f8b92240f9169951f70c36)
+- [Swap DAI to GMX (part 2 - receive GMX)](https://arbiscan.io/tx/0xb44af9795a4f728a3813aed7cafc7a66a5e4b6c12a2e1cfc3999be1ff960e9cd)
+- [Stake GMX](https://arbiscan.io/tx/0x0ed2a66323713c2e78dd53750612f3e9bcc97f2f8c02633a433a413889142067)
+- [Buy GLV (part 1)](https://arbiscan.io/tx/0x8d7d6e6b99fbeb095aeee4e495c528e4187bbabd0a3f728ef874f6b31bf73405)
+- [Buy GLV (part 2)](https://arbiscan.io/tx/0x3cfcd9e1bdcc57a727dd66d6ed38afe78bbf3430015072078876240d183129f3)
+- [Buy GM ETH/USD (part 1)](https://arbiscan.io/tx/0x6021800ad3d31003082fa6dc7fb5b6b8ff83208cadfcca98ffaa0774d6f652b8)
+- [Buy GM ETH/USD (part 2)](https://arbiscan.io/tx/0x719b63dbef8d38006918c0e787b98a8373606b6147b77ae84a91fe2338132f4a)
