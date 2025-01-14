@@ -1,1 +1,1 @@
-# defi-gmx
+# GMX
