@@ -41,6 +41,8 @@ forge build
   - [ ] Short
   - [ ] Leverage
   - [ ] Margin
+  - [ ] Initial margin
+  - [ ] Maintanence margin
   - [ ] Liquidity pools and markets
   - [ ] Liquidation price
   - [ ] Index
@@ -99,6 +101,9 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [ ] GMX
   - utilities
   - governance
+  - benefits
+    - voting power
+  - how to buy
   - buy back mechanism
   - stake
 - [ ] esGMX
@@ -130,6 +135,7 @@ Explain utilities, acquistion methods, differences and staking processes.
 ##### GMX
 
 - [GMX](https://gmx.io/)
+- [GMX GitHub](https://github.com/gmx-io/gmx-contracts)
 - [Swap DAI to ETH (part 1)](https://arbiscan.io/tx/0x747665f80ccd64918af4f4cd2d3c7e7c077d061d61bc47fc99f644d1eb4d18f4)
 - [Swap DAI to ETH (part 2 - receive ETH)](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
 - [Short ETH](https://arbiscan.io/tx/0x910aceeabc176d44788500403b2db3f7973bd8118fb79f57c490c8ab0505b295)
@@ -141,3 +147,12 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [Buy GLV (part 2)](https://arbiscan.io/tx/0x3cfcd9e1bdcc57a727dd66d6ed38afe78bbf3430015072078876240d183129f3)
 - [Buy GM ETH/USD (part 1)](https://arbiscan.io/tx/0x6021800ad3d31003082fa6dc7fb5b6b8ff83208cadfcca98ffaa0774d6f652b8)
 - [Buy GM ETH/USD (part 2)](https://arbiscan.io/tx/0x719b63dbef8d38006918c0e787b98a8373606b6147b77ae84a91fe2338132f4a)
+
+##### Perpetual
+
+- [What is a Perpetual Contract in Crypto?](https://www.youtube.com/watch?v=NAlXsnbcxIY)
+- [What Are Perpetual Contracts and How Funding Rates Work | dYdX Academy](https://www.youtube.com/watch?v=MMjR_LRhfK0)
+- [What Are Crypto Derivatives? (Perpetual, Futures Contract Explained)](https://www.youtube.com/watch?v=5vW7hX6k5ho)
+- [Bitcoin Derivatives: Perpetual Swaps 101](https://www.youtube.com/watch?v=wfx78LWd3PM)
+- [Short VS Long Squeeze: Trading Traps EXPLAINED](https://www.youtube.com/watch?v=2ZblGdw1y-s)
+- [dYdX - Perpetual Futures Example](https://www.youtube.com/watch?v=V3sKCP-4FJ4)
