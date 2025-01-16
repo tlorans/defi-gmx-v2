@@ -11,6 +11,13 @@ forge build
 
 ## Course
 
+### questions
+
+- where does profit / loss come from?
+  -> peer to pool trades (<- liquidity provider)
+- what is the price of perpetual contract?
+- how is leverage possible?
+
 ### Introduction
 
 - [ ] Into
@@ -26,6 +33,7 @@ forge build
 
 - [ ] What is GMX?
   - GMX is a decentralized spot and perpetual exchange
+  - speculate on the price of an underlying asset (such as Bitcoin, Ethereum, or stocks) without owning the asset itself
   - Spot exchange
   - Perpetual exchange
 - [ ] Key features
@@ -35,8 +43,12 @@ forge build
 - [ ] Terminologies and examples
   - [ ] Spot trading
   - [ ] Perpetuals
+    - use cases
+      - price speculation
+      - hedging
+      - arbitrage
   - [ ] Futures
-  - [ ] Funding rate and open interest
+  - [ ] Funding rate mechanism and open interest
   - [ ] Long
   - [ ] Short
   - [ ] Leverage
@@ -46,11 +58,14 @@ forge build
   - [ ] Liquidity pools and markets
   - [ ] Liquidation price
   - [ ] Index
+  - [ ] Derivative
   - [ ] Synthetic asset
 
 ### Contract architecture
 
 - [ ] Contract architecture
+  - oracle
+  - tokens
 - [ ] Liquidity (contract calls)
   - GM (GMX market) pools
   - GLV (GMX liquidity vault) pools
@@ -62,6 +77,7 @@ forge build
   - Trading (contract call)
   - Foundry exercises
 - [ ] Managing position (TODO: split position and liquidity?)
+  - [ ] Funding rate -> dynamic borrow fee
   - [ ] Examples
     - Long ETH, ETH collateral
     - Long ETH, USDC collateral
@@ -168,3 +184,4 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [Bitcoin Derivatives: Perpetual Swaps 101](https://www.youtube.com/watch?v=wfx78LWd3PM)
 - [Short VS Long Squeeze: Trading Traps EXPLAINED](https://www.youtube.com/watch?v=2ZblGdw1y-s)
 - [dYdX - Perpetual Futures Example](https://www.youtube.com/watch?v=V3sKCP-4FJ4)
+- [Forwards and Futures Contracts](https://www.youtube.com/playlist?list=PLSXINdSn1dzXcrlZkoFHVfJzWEjInzoQe)
