@@ -13,10 +13,22 @@ forge build
 
 ### questions
 
+- perpetual contract -> who is the counter party -> GMX
 - where does profit / loss come from?
   -> peer to pool trades (<- liquidity provider)
+- funding rate mechanism
+  - is it price at every 8 hours or accumulated every second?
+  - how often should payment be made?
+  - how is payment settled?
 - what is the price of perpetual contract?
 - how is leverage possible?
+- where are the tokens stored?
+- who can create orders?
+- who can execute orders?
+- why short receives USDC?
+
+- OrderHandler.executeOrder
+- MarketUtil
 
 ### Introduction
 
@@ -39,6 +51,7 @@ forge build
 - [ ] Key features
 - [ ] How the protocol works
   - users (LP, traders, GMX and GM / GLV holders)
+  - funding mechanism
   - fee distribution
 - [ ] Terminologies and examples
   - [ ] Spot trading
@@ -48,7 +61,8 @@ forge build
       - hedging
       - arbitrage
   - [ ] Futures
-  - [ ] Funding rate mechanism and open interest
+  - [ ] Funding rate mechanism
+  - [ ] Open interest
   - [ ] Long
   - [ ] Short
   - [ ] Leverage
@@ -64,6 +78,7 @@ forge build
 ### Contract architecture
 
 - [ ] Contract architecture
+  - router
   - oracle
   - tokens
 - [ ] Liquidity (contract calls)
@@ -78,6 +93,7 @@ forge build
   - Foundry exercises
 - [ ] Managing position (TODO: split position and liquidity?)
   - [ ] Funding rate -> dynamic borrow fee
+    - adaptive funding rate
   - [ ] Examples
     - Long ETH, ETH collateral
     - Long ETH, USDC collateral
@@ -157,6 +173,10 @@ Explain utilities, acquistion methods, differences and staking processes.
 
 - [GMX](https://gmx.io/)
 - [GMX GitHub](https://github.com/gmx-io/gmx-contracts)
+- [GMX Synthetics GitHub](https://github.com/gmx-io/gmx-synthetics)
+
+##### Transactions
+
 - [Swap DAI to ETH (part 1)](https://arbiscan.io/tx/0x747665f80ccd64918af4f4cd2d3c7e7c077d061d61bc47fc99f644d1eb4d18f4)
 - [Swap DAI to ETH (part 2 - receive ETH)](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
 - [Short ETH](https://arbiscan.io/tx/0x910aceeabc176d44788500403b2db3f7973bd8118fb79f57c490c8ab0505b295)
