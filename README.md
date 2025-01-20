@@ -26,6 +26,7 @@ forge build
 - who can create orders?
 - who can execute orders?
 - why short receives USDC?
+- why longs pay shorts when long interest exceeds short interest
 
 - OrderHandler.executeOrder
 - MarketUtil
@@ -82,7 +83,7 @@ forge build
   - oracle
   - tokens
 - [ ] Liquidity (contract calls)
-  - GM (GMX market) pools
+  - GM (GMX market) pools -> isolated pool?
   - GLV (GMX liquidity vault) pools
 - [ ] Foundry exercises (liquidity management)
 - [ ] Trading
@@ -205,3 +206,4 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [Short VS Long Squeeze: Trading Traps EXPLAINED](https://www.youtube.com/watch?v=2ZblGdw1y-s)
 - [dYdX - Perpetual Futures Example](https://www.youtube.com/watch?v=V3sKCP-4FJ4)
 - [Forwards and Futures Contracts](https://www.youtube.com/playlist?list=PLSXINdSn1dzXcrlZkoFHVfJzWEjInzoQe)
+- [GMX V2: A Guide for Traders and Liquidity Providers](https://www.youtube.com/watch?v=6PEn6iEuFGA)
