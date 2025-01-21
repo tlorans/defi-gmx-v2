@@ -13,12 +13,11 @@ forge build
 
 ### questions
 
-- perpetual contract -> who is the counter party -> GMX
-- where does profit / loss come from?
-  -> peer to pool trades (<- liquidity provider)
+- [x] perpetual contract -> who is the counter party -> GMX
+- [x] where does profit / loss come from?
+      -> peer to pool trades (<- liquidity provider)
 - funding rate mechanism
   - is it price at every 8 hours or accumulated every second?
-  - how often should payment be made?
   - how is payment settled?
 - what is the price of perpetual contract?
 - how is leverage possible?
@@ -26,12 +25,10 @@ forge build
 - who can create orders?
 - who can execute orders?
 - why short receives USDC?
-- why longs pay shorts when long interest exceeds short interest
-
-Check code
-
-- OrderHandler.executeOrder
-- MarketUtil
+- [x] why longs pay shorts when long interest exceeds short interest
+  - price up -> demand to open long -> pay premium to shors
+- why loss on short when leverage is high and index < open price?
+- difference between ETH/USD and ETH market / pool
 
 ### Introduction
 
@@ -42,7 +39,7 @@ Check code
 
 ### ETH to Arbitrum
 
-- [ ] Transactions
+- [ ] Quick guide to bridge ETH
 
 ### Protocol
 
@@ -52,9 +49,14 @@ Check code
   - Spot exchange
   - Perpetual exchange
 - [ ] Key features
+  - 2 step transactions
+  - 0 price impact?
+  - dynamic funding rate?
+  - isolated pools
 - [ ] How the protocol works
   - users (LP, traders, GMX and GM / GLV holders)
   - funding mechanism
+    - open interest
   - fee distribution
 - [ ] Terminologies and examples
   - [ ] Spot trading
@@ -88,13 +90,20 @@ Check code
   - GM (GMX market) pools -> isolated pool?
   - GLV (GMX liquidity vault) pools
 - [ ] Foundry exercises (liquidity management)
+  - Buy -> single and pair liquidity
+  - Sell -> pair tokens
+  - GM - Buy, sell, shift
+  - GLV - Buy, sell
 - [ ] Trading
   - Trading system
-  - Market types
+  - Market (ETH / USD, WBTC / USD, etc...)
+  - Leverage
+  - Open cost
+  - Limit, TP / SL
   - 2 step transaciton process
-  - Trading (contract call)
+  - contract call
   - Foundry exercises
-- [ ] Managing position (TODO: split position and liquidity?)
+- [ ] Managing position
   - [ ] Funding rate -> dynamic borrow fee
     - adaptive funding rate
   - [ ] Examples
@@ -203,6 +212,12 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [Close short 0.01 ETH, ETH collateral (part 2)](https://arbiscan.io/tx/0x8ade23d7ad7ee6fb589a0d04724ee8c64f20e92e32688739e0c049b510c690f0)
 - [Delegate](https://arbiscan.io/tx/0x245404338a81a8faccddf6ad8e944928bac6b687db8d7e217e47fdde94abd84f)
 - [Claim rewards](https://arbiscan.io/tx/0x23f1f338dc2456cf476692f34ea00838a1e621f8fd2aff330927edf256de8b1d)
+- [Short ETH 10 USDC 100x (part 1)](https://arbiscan.io/tx/0x0a7b404d5f3c8c5f2cedd2c452d81840bef1b89f583e4e1a80f4cc2930ddad42)
+- [Short ETH 10 USDC 100x (part 2)](https://arbiscan.io/tx/0x7fa1c583e2363ed1013035a33305f79571c760f713bed8065fe24b24e5b739d2)
+- [Close ETH 10 USDC 100x (part 1)](https://arbiscan.io/tx/0xc3357725621993a02203d945a52120fdf7172075c372687d917d2b1593a3e3d4)
+- [Close ETH 10 USDC 100x (part 2)](https://arbiscan.io/tx/0x8af4c27645b313be8a71cd38a10957e12d7fcd7653dd0de32353b67a0a0fef32)
+- [Long ETH 0.005 ETH 10x SL + TP (part 1)](https://arbiscan.io/tx/0xffa7b6142f69d42565acaf36a8dd101cc8fc5b9d1c251d93eea5501b9d4b88d3)
+- [Long ETH 0.005 ETH 10x SL + TP (part 2)](https://arbiscan.io/tx/0xbc053961d45b116f305fed005bd1ec7d4ebb6215946ba7d4db27e2eb75b10828)
 
 ##### Contracts
 
