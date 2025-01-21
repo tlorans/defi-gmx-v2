@@ -11,162 +11,162 @@ forge build
 
 ## Course
 
-### questions
-
-- [x] perpetual contract -> who is the counter party -> GMX
-- [x] where does profit / loss come from?
-      -> peer to pool trades (<- liquidity provider)
-- funding rate mechanism
-  - is it price at every 8 hours or accumulated every second?
-  - how is payment settled?
-- what is the price of perpetual contract?
-- how is leverage possible?
-- where are the tokens stored?
-- who can create orders?
-- who can execute orders?
-- why short receives USDC?
-- [x] why longs pay shorts when long interest exceeds short interest
-  - price up -> demand to open long -> pay premium to shors
-- why loss on short when leverage is high and index < open price?
-- difference between ETH/USD and ETH market / pool
-
 ### Introduction
 
-- [ ] Into
-- [ ] Prerequisites
-- [ ] Goals and expected outcomes
-- [ ] Project setup
+- Into
+- Prerequisites
+- Goals and expected outcomes
+- Project setup
 
 ### ETH to Arbitrum
 
-- [ ] Quick guide to bridge ETH
+- Quick guide on how to bridge ETH
 
 ### Protocol
 
-- [ ] What is GMX?
-  - GMX is a decentralized spot and perpetual exchange
-  - speculate on the price of an underlying asset (such as Bitcoin, Ethereum, or stocks) without owning the asset itself
-  - Spot exchange
-  - Perpetual exchange
-- [ ] Key features
+- What is GMX?
+  - Decentralized spot and perpetual exchange
+  - Speculate on the price of an underlying asset without owning the asset itself
+- Key features
   - 2 step transactions
   - 0 price impact?
-  - dynamic funding rate?
-  - isolated pools
-- [ ] How the protocol works
-  - users (LP, traders, GMX and GM / GLV holders)
-  - funding mechanism
-    - open interest
-  - fee distribution
-- [ ] Terminologies and examples
-  - [ ] Spot trading
-  - [ ] Perpetuals
-    - use cases
-      - price speculation
-      - hedging
-      - arbitrage
-  - [ ] Futures
-  - [ ] Funding rate mechanism
-  - [ ] Open interest
-  - [ ] Long
-  - [ ] Short
-  - [ ] Leverage
-  - [ ] Margin
-  - [ ] Initial margin
-  - [ ] Maintanence margin
-  - [ ] Liquidity pools and markets
-  - [ ] Liquidation price
-  - [ ] Index
-  - [ ] Derivative
-  - [ ] Synthetic asset
+  - Dynamic funding rate?
+  - Isolated pools
+- How the protocol works
+  - Users (LP, traders, GMX and GM / GLV holders)
+  - Funding mechanism
+    - Open interest
+  - Where does profit / loss come from?
+  - Fee distribution
+- Terminologies and examples
+  - Spot trading
+  - Perpetuals
+    - Use cases
+      - Price speculation
+      - Hedging
+      - Arbitrage
+  - Futures
+  - Funding rate mechanism
+  - Open interest
+  - Long
+  - Short
+  - Leverage
+  - Margin
+  - Initial margin
+  - Maintanence margin
+  - Liquidity pools and markets
+  - Liquidation price
+  - Index
+  - Derivative
+  - Synthetic asset
 
 ### Contract architecture
 
-- [ ] Contract architecture
-  - router
-  - oracle
-  - tokens
-- [ ] Liquidity (contract calls)
-  - GM (GMX market) pools -> isolated pool?
-  - GLV (GMX liquidity vault) pools
-- [ ] Foundry exercises (liquidity management)
-  - Buy -> single and pair liquidity
-  - Sell -> pair tokens
-  - GM - Buy, sell, shift
-  - GLV - Buy, sell
-- [ ] Trading
-  - Trading system
-  - Market (ETH / USD, WBTC / USD, etc...)
-  - Leverage
-  - Open cost
-  - Limit, TP / SL
-  - 2 step transaciton process
-  - contract call
+- Contract architecture
+- Liquidity
+  - UI
+    - GM (GMX market) pools -> isolated pool?
+    - GLV (GMX liquidity vault) pools
+    - Buy -> single and pair liquidity
+    - Sell -> pair tokens
+    - Difference between GLV and GM
+    - Transactions
+  - Contract calls (using Tenderly?)
   - Foundry exercises
-- [ ] Managing position
-  - [ ] Funding rate -> dynamic borrow fee
-    - adaptive funding rate
-  - [ ] Examples
-    - Long ETH, ETH collateral
-    - Long ETH, USDC collateral
-    - Short ETH, ETH collateral -> delta neutral
-    - Short ETH, USDC collateral
-  - [ ] Open (contract call)
-  - [ ] Close (contract call)
-  - [ ] Long (contract call)
-  - [ ] Short (contract call)
-  - [ ] Deposit collateral (contractl call)
-  - [ ] Withdraw collateral (contract call)
-  - [ ] Foundry exercises
-- [ ] Liquidation
-  - [ ] Triggers
-    - Limit order take profit, stop loss, auto cancel
-    - ADL
-  - [ ] Market types
-    - Fully backed
-    - Synthetic
-  - [ ] Fees
+    - GM - Buy, sell, shift
+    - GLV - Buy, sell
+- Trading
+  - UI
+    - Market (ETH / USD, WBTC / USD, etc...)
+      - Fully backed
+      - Synthetic
+    - Long / Short / Swap
+      - Long -> profit in long asset
+      - Short -> profit in stablecoin
+      - Profit can be swapped
+    - Leverage
+    - Open cost
+    - Limit, TP / SL
+    - Liquidation price
+      - Long
+      - Short
+    - 2 steps transaciton process
+    - Managing positions
+      - Close, deposit, withdraw collateral
+      - Claims (funding fees)
+    - Transactions
+  - Fees
     - Open / close
     - Swap
     - Price impact and rebates
     - Funding fees
     - Borrowing fee
     - Newtork fess
-  - [ ] Risk management mechanism
-    - liquidation and ADL
-      - when called
-      - implementation details
-  - [ ] Foundry exercises?
-  - [ ] Staking
-    - what tokens can be staked
-    - what rewards can be claimed
-    - implementation details
-    - Foundry exercises
+  - Example strategies
+    - Long ETH, ETH collateral
+    - Long ETH, USDC collateral
+    - Short ETH, ETH collateral -> delta neutral?
+    - Short ETH, USDC collateral
+  - Math - Funding rate -> dynamic borrow fee?
+    - adaptive funding rate
+  - Math - liquidation price?
+  - Math - profit / loss?
+  - How is profit fully backed?
+  - Contract calls
+    - Open
+    - Close
+    - Long
+    - Short
+    - Deposit collateral
+    - Withdraw collateral
+  - Foundry exercises
+    - Swap
+    - Long - open, close, deposit, withdraw
+    - Short - open, close, deposit, withdraw
+  - UI - limit order, TP, SL
+    - Transactions
+  - Limit order
+  - TP
+  - SL
+  - Auto cancel
+  - ADL
+  - Contract calls?
+  - Foundry exercises
+    - Long, short, Limit, TP, SL
+- Liquidation
+  - UI
+    - Transactions
+  - When executed?
+  - Fees
+  - Contract calls
+  - Foundry exercises?
 
 ### Tokenomics
 
 Explain utilities, acquistion methods, differences and staking processes.
 
-- [ ] GMX
-  - utilities
-  - governance
-  - benefits
-    - voting power
-  - how to buy
-  - buy back mechanism
-  - stake
-- [ ] esGMX
-  - vest to convert esGMX to GMX
-- [ ] GM
-  - what
-  - how to obtain
-- [ ] GLV
-  - what is GLV vault
-  - how to obtain
-  - utility
-- [ ] GLP (V1)
-  - quick explanation
-- [ ] Foundry exercises
+- GMX
+  - Utilities
+  - Emissions
+  - Governance
+  - Benefits
+    - Protocol revenue
+    - Rewards
+    - Voting power
+  - Buy back mechanism
+  - UI
+    - Buy, stake GMX
+    - Claim rewards
+    - Where are the yield and rewards coming from?
+    - Transactions
+  - Foundry exercises
+    - Buy, stake, delegate, unstake, claim rewards
+- esGMX
+  - UI?
+  - Vest to convert esGMX to GMX
+  - Foundry exercises?
+- GLP (V1)
+  - Quick explanation
 
 ### Application
 
@@ -218,6 +218,8 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [Close ETH 10 USDC 100x (part 2)](https://arbiscan.io/tx/0x8af4c27645b313be8a71cd38a10957e12d7fcd7653dd0de32353b67a0a0fef32)
 - [Long ETH 0.005 ETH 10x SL + TP (part 1)](https://arbiscan.io/tx/0xffa7b6142f69d42565acaf36a8dd101cc8fc5b9d1c251d93eea5501b9d4b88d3)
 - [Long ETH 0.005 ETH 10x SL + TP (part 2)](https://arbiscan.io/tx/0xbc053961d45b116f305fed005bd1ec7d4ebb6215946ba7d4db27e2eb75b10828)
+- [Long ETH 0.005 ETH 10x SL + TP (part 3)](https://arbiscan.io/tx/0xa8c6f918e2478e3b1e0e9ff43b088f4f371505b39fce7b38fe49cb30ab0e565a)
+- [Long ETH 0.005 ETH 10x SL + TP (part 4)](https://arbiscan.io/tx/0xa8c6f918e2478e3b1e0e9ff43b088f4f371505b39fce7b38fe49cb30ab0e565a)
 
 ##### Contracts
 
@@ -236,3 +238,24 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [dYdX - Perpetual Futures Example](https://www.youtube.com/watch?v=V3sKCP-4FJ4)
 - [Forwards and Futures Contracts](https://www.youtube.com/playlist?list=PLSXINdSn1dzXcrlZkoFHVfJzWEjInzoQe)
 - [GMX V2: A Guide for Traders and Liquidity Providers](https://www.youtube.com/watch?v=6PEn6iEuFGA)
+
+### questions to answer
+
+- [x] perpetual contract -> who is the counter party -> GMX
+- [x] where does profit / loss come from?
+      -> peer to pool trades (<- liquidity provider)
+- funding rate mechanism
+  - is it price at every 8 hours or accumulated every second?
+  - how is payment settled?
+- what is the price of perpetual contract?
+- how is leverage possible?
+- where are the tokens stored?
+- who can create orders?
+- who can execute orders?
+- why short receives USDC?
+- [x] why longs pay shorts when long interest exceeds short interest
+  - price up -> demand to open long -> pay premium to shors
+- why loss on short when leverage is high and index < open price?
+- difference between ETH/USD and ETH market / pool
+- how is profit fully backed?
+  > For example, if there is 1000 ETH and 1 million USDC in the pool and the max long open interest is limited to 900 ETH and the max short open interest is limited to be 900k USDC, then all profits can always be fully backed regardless of the price of ETH.
