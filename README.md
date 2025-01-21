@@ -13,25 +13,23 @@ forge build
 
 ### Introduction
 
-- Into
-- Prerequisites
-- Goals and expected outcomes
+- Course intro
+  - Prerequisites
+  - Goals and expected outcomes
 - Project setup
-
-### ETH to Arbitrum
-
-- Quick guide on how to bridge ETH
+- UI - Quick guide on how to bridge ETH
+  - Transactions
 
 ### Protocol
 
 - What is GMX?
   - Decentralized spot and perpetual exchange
   - Speculate on the price of an underlying asset without owning the asset itself
-- Key features
-  - 2 step transactions
-  - 0 price impact?
-  - Dynamic funding rate?
-  - Isolated pools
+  - Key features
+    - 2 step transactions
+    - 0 price impact?
+    - Dynamic funding rate?
+    - Isolated pools
 - How the protocol works
   - Users (LP, traders, GMX and GM / GLV holders)
   - Funding mechanism
@@ -113,12 +111,8 @@ forge build
   - Math - profit / loss?
   - How is profit fully backed?
   - Contract calls
-    - Open
-    - Close
-    - Long
-    - Short
-    - Deposit collateral
-    - Withdraw collateral
+    - Long (open / close / deposit / withdraw)
+    - Short (open / close / deposit / withdraw)
   - Foundry exercises
     - Swap
     - Long - open, close, deposit, withdraw
