@@ -28,6 +28,11 @@ forge build
 - why short receives USDC?
 - why longs pay shorts when long interest exceeds short interest
 
+Check code
+
+- role module
+- data store
+- event emitter
 - OrderHandler.executeOrder
 - MarketUtil
 
@@ -197,6 +202,12 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [Sell GM ETH/USD (part 2)](https://arbiscan.io/tx/0xbdc46442f47149089f4976190a97c81bf476eb43b0478689e0ac918a9a502641)
 - [Short 0.01 ETH, ETH collateral (part 1)](https://arbiscan.io/tx/0x15f4bb54997d8efbf0816313e64120fe5bf89ab31fe78f4a647f47b61b629eea)
 - [Short 0.01 ETH, ETH collateral (part 2](https://arbiscan.io/tx/0x7039c81c3f14f54fbfb45c337fb13e4513b8e795a2d9237b66b2b191e717121e)
+- [Close short 0.01 ETH, ETH collateral (part 1)](https://arbiscan.io/tx/0x3825aab5d7bbfac2b68f75c77c1ff55e684496844a8dd605dc43a1348efceb22)
+- [Close short 0.01 ETH, ETH collateral (part 2)](https://arbiscan.io/tx/0x8ade23d7ad7ee6fb589a0d04724ee8c64f20e92e32688739e0c049b510c690f0)
+
+##### Contracts
+
+- [MarketToken (WBTC / USDC)](https://arbiscan.io/address/0x467c4a46287f6c4918ddf780d4fd7b46419c2291)
 
 ##### Perpetual
 
