@@ -22,7 +22,7 @@ forge build
 
 ### Protocol
 
-- What is GMX?
+- [ ] What is GMX?
   - Decentralized spot and perpetual exchange
   - Speculate on the price of an underlying asset without owning the asset itself
   - Key features
@@ -30,51 +30,51 @@ forge build
     - 0 price impact?
     - Dynamic funding rate?
     - Isolated pools
-- How the protocol works
+- [ ] How the protocol works
   - Users (LP, traders, GMX and GM / GLV holders)
   - Funding mechanism
     - Open interest
   - Where does profit / loss come from?
   - Fee distribution
-- Terminologies and examples
-  - Spot trading
-  - Perpetuals
+- [ ] Terminologies and examples
+  - [ ] Spot trading
+  - [ ] Perpetuals
     - Use cases
       - Price speculation
       - Hedging
       - Arbitrage
-  - Futures
-  - Funding rate mechanism
-  - Open interest
-  - Long
-  - Short
-  - Leverage
-  - Margin
-  - Initial margin
-  - Maintanence margin
-  - Liquidity pools and markets
-  - Liquidation price
-  - Index
-  - Derivative
-  - Synthetic asset
+  - [ ] Futures
+  - [ ] Funding rate mechanism
+  - [ ] Open interest
+  - [ ] Long
+  - [ ] Short
+  - [ ] Leverage
+  - [ ] Margin
+  - [ ] Initial margin
+  - [ ] Maintanence margin
+  - [ ] Liquidity pools and markets
+  - [ ] Liquidation price
+  - [ ] Index
+  - [ ] Derivative
+  - [ ] Synthetic asset
 
 ### Contract architecture
 
-- Contract architecture
+- [ ] Contract architecture
 - Liquidity
-  - UI
+  - [ ] UI
     - GM (GMX market) pools -> isolated pool?
     - GLV (GMX liquidity vault) pools
     - Buy -> single and pair liquidity
     - Sell -> pair tokens
     - Difference between GLV and GM
-    - Transactions
-  - Contract calls (using Tenderly?)
-  - Foundry exercises
+    - [ ] Transactions
+  - [ ] Contract calls (using Tenderly?)
+  - [ ] Foundry exercises
     - GM - Buy, sell, shift
     - GLV - Buy, sell
 - Trading
-  - UI
+  - [ ] UI
     - Market (ETH / USD, WBTC / USD, etc...)
       - Fully backed
       - Synthetic
@@ -92,54 +92,54 @@ forge build
     - Managing positions
       - Close, deposit, withdraw collateral
       - Claims (funding fees)
-    - Transactions
-  - Fees
+    - [ ] Transactions
+  - [ ] ;Fees
     - Open / close
     - Swap
     - Price impact and rebates
     - Funding fees
     - Borrowing fee
     - Newtork fess
-  - Example strategies
+  - [ ] Example strategies
     - Long ETH, ETH collateral
     - Long ETH, USDC collateral
     - Short ETH, ETH collateral -> delta neutral?
     - Short ETH, USDC collateral
-  - Math - Funding rate -> dynamic borrow fee?
+  - [ ] Math - Funding rate -> dynamic borrow fee?
     - adaptive funding rate
-  - Math - liquidation price?
-  - Math - profit / loss?
-  - How is profit fully backed?
-  - Contract calls
+  - [ ] Math - liquidation price?
+  - [ ] Math - profit / loss?
+  - [ ] How is profit fully backed?
+  - [ ] Contract calls
     - Long (open / close / deposit / withdraw)
     - Short (open / close / deposit / withdraw)
-  - Foundry exercises
+  - [ ] Foundry exercises
     - Swap
     - Long - open, close, deposit, withdraw
     - Short - open, close, deposit, withdraw
-  - UI - limit order, TP, SL
+  - [ ] UI - limit order, TP, SL
     - Transactions
-  - Limit order
-  - TP
-  - SL
-  - Auto cancel
-  - ADL
-  - Contract calls?
-  - Foundry exercises
+  - [ ] Limit order
+  - [ ] TP
+  - [ ] SL
+  - [ ] Auto cancel
+  - [ ] ADL
+  - [ ] Contract calls?
+  - [ ] Foundry exercises
     - Long, short, Limit, TP, SL
 - Liquidation
-  - UI
+  - [ ]UI
     - Transactions
-  - When executed?
-  - Fees
-  - Contract calls
-  - Foundry exercises?
+  - [ ] When executed?
+  - [ ] Fees
+  - [ ] Contract calls
+  - [ ] Foundry exercises?
 
 ### Tokenomics
 
 Explain utilities, acquistion methods, differences and staking processes.
 
-- GMX
+- [ ] GMX
   - Utilities
   - Emissions
   - Governance
@@ -148,18 +148,18 @@ Explain utilities, acquistion methods, differences and staking processes.
     - Rewards
     - Voting power
   - Buy back mechanism
-  - UI
+  - [ ] UI
     - Buy, stake GMX
     - Claim rewards
     - Where are the yield and rewards coming from?
-    - Transactions
-  - Foundry exercises
+    - [ ] Transactions
+  - [ ] Foundry exercises
     - Buy, stake, delegate, unstake, claim rewards
-- esGMX
-  - UI?
-  - Vest to convert esGMX to GMX
-  - Foundry exercises?
-- GLP (V1)
+- [ ] esGMX
+  - [ ] UI?
+    - Vest to convert esGMX to GMX
+  - [ ] Foundry exercises?
+- [ ] GLP (V1)
   - Quick explanation
 
 ### Application
