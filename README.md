@@ -186,15 +186,12 @@ Explain utilities, acquistion methods, differences and staking processes.
 
 ##### Transactions
 
-- [Swap DAI to ETH (part 1)](https://arbiscan.io/tx/0x747665f80ccd64918af4f4cd2d3c7e7c077d061d61bc47fc99f644d1eb4d18f4)
-- [Swap DAI to ETH (part 2 - receive ETH)](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
-- [Short ETH](https://arbiscan.io/tx/0x910aceeabc176d44788500403b2db3f7973bd8118fb79f57c490c8ab0505b295)
-- [Short ETH (part 2? receive ETH)](https://arbiscan.io/tx/0x5212c55508b8f888f666220a17b584adc73623d044548c0822400ba52a6af8c8)
-- [Short ETH close position (part 1)](https://arbiscan.io/tx/0x35725018aaa145d36a6969ad31f6a20380e428e6a906de97cdcf07e5ca1a0ffa)
-- [Short ETH close position - receive USDC (part 2)](https://arbiscan.io/tx/0x0cb45095f9d18d328cd37f3f075e98920e7dbfce4369881c5d62208f903675b9)
-- [Swap DAI to GMX (part 1)](https://arbiscan.io/tx/0x35572d81e52d1a2f254bcdeb30232e4fae9c4fc178f8b92240f9169951f70c36)
-- [Swap DAI to GMX (part 2 - receive GMX)](https://arbiscan.io/tx/0xb44af9795a4f728a3813aed7cafc7a66a5e4b6c12a2e1cfc3999be1ff960e9cd)
 - [Stake GMX](https://arbiscan.io/tx/0x0ed2a66323713c2e78dd53750612f3e9bcc97f2f8c02633a433a413889142067)
+- [Delegate](https://arbiscan.io/tx/0x245404338a81a8faccddf6ad8e944928bac6b687db8d7e217e47fdde94abd84f)
+- [Claim rewards](https://arbiscan.io/tx/0x23f1f338dc2456cf476692f34ea00838a1e621f8fd2aff330927edf256de8b1d)
+
+**_Liquidity_**
+
 - [Buy GLV (part 1)](https://arbiscan.io/tx/0x8d7d6e6b99fbeb095aeee4e495c528e4187bbabd0a3f728ef874f6b31bf73405)
 - [Buy GLV (part 2)](https://arbiscan.io/tx/0x3cfcd9e1bdcc57a727dd66d6ed38afe78bbf3430015072078876240d183129f3)
 - [Buy GM ETH/USD (part 1)](https://arbiscan.io/tx/0x6021800ad3d31003082fa6dc7fb5b6b8ff83208cadfcca98ffaa0774d6f652b8)
@@ -203,12 +200,25 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [Sell GLV (part 2)](https://arbiscan.io/tx/0x5120cf011c75d9b67bdffa99c4e3c6fffb5e8bb428f0080fc7ccded361bf98e6)
 - [Sell GM ETH/USD (part 1)](https://arbiscan.io/tx/0xda4bc1d39be6ea85f8323875cbc4920aa33d0af38d7af2eb3f3dd03d174ae98e)
 - [Sell GM ETH/USD (part 2)](https://arbiscan.io/tx/0xbdc46442f47149089f4976190a97c81bf476eb43b0478689e0ac918a9a502641)
+- [Buy BTC/USDC GLV (part 1)](https://arbiscan.io/tx/0x87ed238503646ef7d7045ce639efd59845db94384a00d37aedc174d52050eb83)
+- [Buy BTC/USDC GLV (part 2)](https://arbiscan.io/tx/0x3f0c373aa132815204574ed7981c584d4f044eb2c00a160b7dd992822de66763)
+- [Buy BTC/USDC GM (part 1)](https://arbiscan.io/tx/0xef88d101a155ffd16427fc78d50e6028d612c8bc1e8d46a7810d53882f705f91)
+- [Buy BTC/USDC GM (part 2)](https://arbiscan.io/tx/0x54357ec00e44fa8d3d701368af4a3979a28dd2383b9eb5a3f299253e8ce217a1)
+
+**_Trades_**
+
+- [Swap DAI to ETH (part 1)](https://arbiscan.io/tx/0x747665f80ccd64918af4f4cd2d3c7e7c077d061d61bc47fc99f644d1eb4d18f4)
+- [Swap DAI to ETH (part 2 - receive ETH)](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
+- [Short ETH](https://arbiscan.io/tx/0x910aceeabc176d44788500403b2db3f7973bd8118fb79f57c490c8ab0505b295)
+- [Short ETH (part 2? receive ETH)](https://arbiscan.io/tx/0x5212c55508b8f888f666220a17b584adc73623d044548c0822400ba52a6af8c8)
+- [Short ETH close position (part 1)](https://arbiscan.io/tx/0x35725018aaa145d36a6969ad31f6a20380e428e6a906de97cdcf07e5ca1a0ffa)
+- [Short ETH close position - receive USDC (part 2)](https://arbiscan.io/tx/0x0cb45095f9d18d328cd37f3f075e98920e7dbfce4369881c5d62208f903675b9)
+- [Swap DAI to GMX (part 1)](https://arbiscan.io/tx/0x35572d81e52d1a2f254bcdeb30232e4fae9c4fc178f8b92240f9169951f70c36)
+- [Swap DAI to GMX (part 2 - receive GMX)](https://arbiscan.io/tx/0xb44af9795a4f728a3813aed7cafc7a66a5e4b6c12a2e1cfc3999be1ff960e9cd)
 - [Short 0.01 ETH, ETH collateral (part 1)](https://arbiscan.io/tx/0x15f4bb54997d8efbf0816313e64120fe5bf89ab31fe78f4a647f47b61b629eea)
 - [Short 0.01 ETH, ETH collateral (part 2](https://arbiscan.io/tx/0x7039c81c3f14f54fbfb45c337fb13e4513b8e795a2d9237b66b2b191e717121e)
 - [Close short 0.01 ETH, ETH collateral (part 1)](https://arbiscan.io/tx/0x3825aab5d7bbfac2b68f75c77c1ff55e684496844a8dd605dc43a1348efceb22)
 - [Close short 0.01 ETH, ETH collateral (part 2)](https://arbiscan.io/tx/0x8ade23d7ad7ee6fb589a0d04724ee8c64f20e92e32688739e0c049b510c690f0)
-- [Delegate](https://arbiscan.io/tx/0x245404338a81a8faccddf6ad8e944928bac6b687db8d7e217e47fdde94abd84f)
-- [Claim rewards](https://arbiscan.io/tx/0x23f1f338dc2456cf476692f34ea00838a1e621f8fd2aff330927edf256de8b1d)
 - [Short ETH 10 USDC 100x (part 1)](https://arbiscan.io/tx/0x0a7b404d5f3c8c5f2cedd2c452d81840bef1b89f583e4e1a80f4cc2930ddad42)
 - [Short ETH 10 USDC 100x (part 2)](https://arbiscan.io/tx/0x7fa1c583e2363ed1013035a33305f79571c760f713bed8065fe24b24e5b739d2)
 - [Close ETH 10 USDC 100x (part 1)](https://arbiscan.io/tx/0xc3357725621993a02203d945a52120fdf7172075c372687d917d2b1593a3e3d4)
@@ -217,10 +227,6 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [Long ETH 0.005 ETH 10x SL + TP (part 2)](https://arbiscan.io/tx/0xbc053961d45b116f305fed005bd1ec7d4ebb6215946ba7d4db27e2eb75b10828)
 - [Long ETH 0.005 ETH 10x SL + TP (part 3)](https://arbiscan.io/tx/0xa8c6f918e2478e3b1e0e9ff43b088f4f371505b39fce7b38fe49cb30ab0e565a)
 - [Long ETH 0.005 ETH 10x SL + TP (part 4)](https://arbiscan.io/tx/0xa8c6f918e2478e3b1e0e9ff43b088f4f371505b39fce7b38fe49cb30ab0e565a)
-- [Buy BTC/USDC GLV (part 1)](https://arbiscan.io/tx/0x87ed238503646ef7d7045ce639efd59845db94384a00d37aedc174d52050eb83)
-- [Buy BTC/USDC GLV (part 2)](https://arbiscan.io/tx/0x3f0c373aa132815204574ed7981c584d4f044eb2c00a160b7dd992822de66763)
-- [Buy BTC/USDC GM (part 1)](https://arbiscan.io/tx/0xef88d101a155ffd16427fc78d50e6028d612c8bc1e8d46a7810d53882f705f91)
-- [Buy BTC/USDC GM (part 2)](https://arbiscan.io/tx/0x54357ec00e44fa8d3d701368af4a3979a28dd2383b9eb5a3f299253e8ce217a1)
 
 ##### Contracts
 
