@@ -13,12 +13,13 @@ forge build
 
 ### Introduction
 
-- Course intro
+- [ ] Course intro
   - Prerequisites
+    - Advanced Foundry (multicall)
   - Goals and expected outcomes
-- Project setup
-- UI - Quick guide on how to bridge ETH
-  - Transactions
+- [ ] Project setup
+- [ ] UI - Quick guide on how to bridge ETH
+  - [ ] Transactions
 
 ### Protocol
 
@@ -69,6 +70,7 @@ forge build
     - Sell -> pair tokens
     - Difference between GLV and GM
     - [ ] Transactions
+  - [ ] Token pricing
   - [ ] Contract calls (using Tenderly?)
   - [ ] Foundry exercises
     - GM - Buy, sell, shift
@@ -93,7 +95,7 @@ forge build
       - Close, deposit, withdraw collateral
       - Claims (funding fees)
     - [ ] Transactions
-  - [ ] ;Fees
+  - [ ] Fees
     - Open / close
     - Swap
     - Price impact and rebates
@@ -111,6 +113,7 @@ forge build
   - [ ] Math - profit / loss?
   - [ ] How is profit fully backed?
   - [ ] Contract calls
+    - Swap
     - Long (open / close / deposit / withdraw)
     - Short (open / close / deposit / withdraw)
   - [ ] Foundry exercises
@@ -214,6 +217,10 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [Long ETH 0.005 ETH 10x SL + TP (part 2)](https://arbiscan.io/tx/0xbc053961d45b116f305fed005bd1ec7d4ebb6215946ba7d4db27e2eb75b10828)
 - [Long ETH 0.005 ETH 10x SL + TP (part 3)](https://arbiscan.io/tx/0xa8c6f918e2478e3b1e0e9ff43b088f4f371505b39fce7b38fe49cb30ab0e565a)
 - [Long ETH 0.005 ETH 10x SL + TP (part 4)](https://arbiscan.io/tx/0xa8c6f918e2478e3b1e0e9ff43b088f4f371505b39fce7b38fe49cb30ab0e565a)
+- [Buy BTC/USDC GLV (part 1)](https://arbiscan.io/tx/0x87ed238503646ef7d7045ce639efd59845db94384a00d37aedc174d52050eb83)
+- [Buy BTC/USDC GLV (part 2)](https://arbiscan.io/tx/0x3f0c373aa132815204574ed7981c584d4f044eb2c00a160b7dd992822de66763)
+- [Buy BTC/USDC GM (part 1)](https://arbiscan.io/tx/0xef88d101a155ffd16427fc78d50e6028d612c8bc1e8d46a7810d53882f705f91)
+- [Buy BTC/USDC GM (part 2)](https://arbiscan.io/tx/0x54357ec00e44fa8d3d701368af4a3979a28dd2383b9eb5a3f299253e8ce217a1)
 
 ##### Contracts
 
@@ -251,5 +258,6 @@ Explain utilities, acquistion methods, differences and staking processes.
   - price up -> demand to open long -> pay premium to shors
 - why loss on short when leverage is high and index < open price?
 - difference between ETH/USD and ETH market / pool
+- difference between BTC/USDC and BTC GM pool
 - how is profit fully backed?
   > For example, if there is 1000 ETH and 1 million USDC in the pool and the max long open interest is limited to 900 ETH and the max short open interest is limited to be 900k USDC, then all profits can always be fully backed regardless of the price of ETH.
