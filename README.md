@@ -47,6 +47,7 @@ forge build
   - [ ] Futures
   - [ ] Funding rate mechanism
   - [ ] Open interest
+    - The total number of open contracts that have not been settled or closed out
   - [ ] Long
   - [ ] Short
   - [ ] Leverage
@@ -64,6 +65,7 @@ forge build
 - [ ] Contract architecture
   - wnt = wrapped native token
 - Liquidity
+  - [notes](./notes/pools.md)
   - [ ] UI
     - Difference between GLV and GM
     - GM (GMX market) pools -> isolated pool?
@@ -71,6 +73,8 @@ forge build
     - Buy
       - Single and pair liquidity
       - [ ] Token price
+        - `MarketUtils.getMarketTokenPrice`
+          - pool value usd / total market token supply
       - [ ] Buy fee
       - [ ] Network fee
     - Sell
@@ -233,9 +237,12 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [Long ETH 0.005 ETH 10x SL + TP (part 2)](https://arbiscan.io/tx/0xbc053961d45b116f305fed005bd1ec7d4ebb6215946ba7d4db27e2eb75b10828)
 - [Long ETH 0.005 ETH 10x SL + TP (part 3)](https://arbiscan.io/tx/0xa8c6f918e2478e3b1e0e9ff43b088f4f371505b39fce7b38fe49cb30ab0e565a)
 - [Long ETH 0.005 ETH 10x SL + TP (part 4)](https://arbiscan.io/tx/0xa8c6f918e2478e3b1e0e9ff43b088f4f371505b39fce7b38fe49cb30ab0e565a)
+- [Claim funding fees](https://arbiscan.io/tx/0x4415830b1a12882409df17e80be26da8c20e4cc929f1764046ca3aae3ca8339e)
 
 ##### Contracts
 
+- [GLV WETH-USDC](https://arbiscan.io/address/0x528a5bac7e746c9a509a1f4f6df58a03d44279f9)
+- [GLV WBTC-USDC](https://arbiscan.io/address/0xdf03eed325b82bc1d4db8b49c30ecc9e05104b96)
 - [MarketToken - GM market (WBTC / USDC)](https://arbiscan.io/address/0x47c031236e19d024b42f8ae6780e44a573170703)
 - [MarketToken (WBTC / USDC)](https://arbiscan.io/address/0x467c4a46287f6c4918ddf780d4fd7b46419c2291)
 - [MarketToken (WBTC / USDC)](https://arbiscan.io/address/0x70d95587d40a2caf56bd97485ab3eec10bee6336)
@@ -275,3 +282,10 @@ Explain utilities, acquistion methods, differences and staking processes.
 - difference between BTC/USDC and BTC GM pool
 - how is profit fully backed?
   > For example, if there is 1000 ETH and 1 million USDC in the pool and the max long open interest is limited to 900 ETH and the max short open interest is limited to be 900k USDC, then all profits can always be fully backed regardless of the price of ETH.
+- why borrowing fee = open interest \* cumulative borrowing
+- how LP token price is calculated
+- swap calculation for long -> market and short -> market
+
+##### TODO
+
+- remove / clean notes
