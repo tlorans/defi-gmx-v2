@@ -16,7 +16,7 @@ divisor = if long == short -> 2
 pending borrowing fees = open interest * cumulative borrowing factor - total borrowing
 
 next cumulative borrowing factor = cumulative borrowing factor + borrowing factor per sec * dt
-borrowing factor per sec = linear + kink or exponential
+borrowing factor per sec = reserve usd -> linear + kink or exponential borrowing rate
 
 open interest = sum of all position sizes for long/short side
 

@@ -59,6 +59,7 @@ forge build
   - [ ] Index
   - [ ] Derivative
   - [ ] Synthetic asset
+  - [ ] Well fundedness
 
 ### Contract architecture
 
@@ -259,6 +260,9 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [dYdX - Perpetual Futures Example](https://www.youtube.com/watch?v=V3sKCP-4FJ4)
 - [Forwards and Futures Contracts](https://www.youtube.com/playlist?list=PLSXINdSn1dzXcrlZkoFHVfJzWEjInzoQe)
 - [GMX V2: A Guide for Traders and Liquidity Providers](https://www.youtube.com/watch?v=6PEn6iEuFGA)
+- [Perps Hackathon Workshop 2a - Mathematical Modeling for Perpetual Swap Exchanges](https://www.youtube.com/watch?v=YIGsc8X_LH8)
+- [Perps Hackathon Workshop 3a - risk management](https://www.youtube.com/watch?v=sKL8sgF3_co&list=PLFEm8se77ryMielAM_RuyMSQVrum9CN5S)
+- [The Cartoon Guide to Perps](https://www.paradigm.xyz/2021/03/the-cartoon-guide-to-perps)
 
 ### questions to answer
 
@@ -285,6 +289,8 @@ Explain utilities, acquistion methods, differences and staking processes.
 - why borrowing fee = open interest \* cumulative borrowing
 - how LP token price is calculated
 - swap calculation for long -> market and short -> market
+- how is funding fee calculated?
+- what is impact pool?
 
 ##### TODO
 
