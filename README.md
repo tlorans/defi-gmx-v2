@@ -28,6 +28,7 @@ forge build
   - Speculate on the price of an underlying asset without owning the asset itself
   - Key features
     - 2 step transactions
+      - key
     - 0 price impact?
     - Dynamic funding rate?
     - Isolated pools
@@ -76,6 +77,10 @@ forge build
       - [ ] Token price
         - `MarketUtils.getMarketTokenPrice`
           - pool value usd / total market token supply
+          - TODO: what is impact pool
+            - Store funds collected from traders who pay positive price impact fees
+            - Pay out traders who receive negative price impact rebates
+            - position impact distribution rate
       - [ ] Buy fee
       - [ ] Network fee
     - Sell
@@ -209,6 +214,7 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [GMX](https://gmx.io/)
 - [GMX GitHub](https://github.com/gmx-io/gmx-contracts)
 - [GMX Synthetics GitHub](https://github.com/gmx-io/gmx-synthetics)
+- [Unveiling GMX v2: A Game-Changer for DeFi Derivatives?](https://blog.rudy.capital/unveiling-gmx-v2-a-game-changer-for-defi-derivatives-5ff20f2ab731)
 
 ##### Transactions
 
@@ -290,7 +296,18 @@ Explain utilities, acquistion methods, differences and staking processes.
 - how LP token price is calculated
 - swap calculation for long -> market and short -> market
 - how is funding fee calculated?
-- what is impact pool?
+- what is price impact pool?
+- what is position size?
+- what market is long token = short token?
+- what is reserve factor?
+  -> reserveUSD represents the total value of tokens reserved in USD terms for open positions.
+- what is virtual inventory
+- difference between GlvRouter and ExchangeRouter
+  -> GLV for LP, ExchangeRouter for traders?
+- crossover
+  -> a crossover in balance is for example if the long open interest is larger
+  than the short open interest, and a short position is opened such that the
+  short open interest becomes larger than the long open interest
 
 ##### TODO
 

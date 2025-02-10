@@ -23,6 +23,11 @@ open interest = sum of all position sizes for long/short side
 total borrowing = sum of (position.size * position.borrowingFactor)
 
 pending borrowing fee = (open interest * next cumulative borrowing factor) - total borrowing
+
+openInterest = sum (open position size * entry price)
+openInterestValue = openInterestInTokens * price
+pnl = isLong ? openInterestValue - openInterest : openInterest - openInterestValue;
+
 ```
 
 long / short amount storage
