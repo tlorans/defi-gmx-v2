@@ -11,7 +11,7 @@ price impact =
 - (next imbalance) ^ (price impact exponent) * (price impact factor / 2)
 ```
 
-https://www.desmos.com/calculator/87blmsjhyg
+https://www.desmos.com/calculator/zx48kftgxw
 
 ```
 is same side = (token A USD <= token B USD) == (next token A USD <= next token B USD)
