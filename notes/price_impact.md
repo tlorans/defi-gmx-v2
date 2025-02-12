@@ -13,6 +13,8 @@ price impact =
 
 https://www.desmos.com/calculator/zx48kftgxw
 
+https://www.desmos.com/calculator/fywgtpxsci
+
 ```
 is same side = (token A USD <= token B USD) == (next token A USD <= next token B USD)
              =    long 0 <= short 0 and long 1 <= short 1
