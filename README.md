@@ -308,6 +308,7 @@ Explain utilities, acquistion methods, differences and staking processes.
   -> a crossover in balance is for example if the long open interest is larger
   than the short open interest, and a short position is opened such that the
   short open interest becomes larger than the long open interest
+- graph execution price
 
 ##### TODO
 
