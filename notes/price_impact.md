@@ -1,7 +1,16 @@
+# Price impact
+
 If a trade:
 
 - Reduce Skew = Positive Impact
 - Increase Skew = Negative Impact
+
+same side (long < short and next long < next short or long >= short and next long >= next short)
+-> positive impact (++)
+-> negative impact (-)
+cross over (otherwise)
+-> positive impact (+)
+-> negative impact (-)
 
 ```
 imbalance = long USD - short USD
@@ -22,7 +31,7 @@ is same side = (token A USD <= token B USD) == (next token A USD <= next token B
 
 ```
 
-Why positive impact factor <= negative impact factor
+Why positive impact factor must be <= negative impact factor
 
 ```
 if the positive impact factor is more than the negative impact factor, positions could be opened
@@ -30,12 +39,12 @@ and closed immediately for a profit if the difference is sufficient to cover the
 
 example from graph
 
-f_p > f_n
+f_p = 0.3 > f_n = 0.1
 x0 = 2, x1 = 1, -> p = 0.9
 x0 = 1, x1 = 2  -> p = -0.3
 0.9 - 0.3 = 0.6
 
-f_p < f_n
+f_p = 0.3 < f_n = 2
 x0 = 2, x1 = 1, -> p = 0.9
 x0 = 1, x1 = 2  -> p = -6
 0.9 - 6 = -5.1
