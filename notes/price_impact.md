@@ -1,5 +1,9 @@
 # Price impact
 
+https://www.desmos.com/calculator/sykma4sbbb
+
+https://www.desmos.com/calculator/fywgtpxsci
+
 If a trade:
 
 - Reduce Skew = Positive Impact
@@ -20,9 +24,9 @@ price impact =
 - (next imbalance) ^ (price impact exponent) * (price impact factor / 2)
 ```
 
-https://www.desmos.com/calculator/sykma4sbbb
+> Why exponents?
 
-https://www.desmos.com/calculator/fywgtpxsci
+Make price manipulation rapidly expensive
 
 ```
 is same side = (token A USD <= token B USD) == (next token A USD <= next token B USD)
@@ -31,7 +35,7 @@ is same side = (token A USD <= token B USD) == (next token A USD <= next token B
 
 ```
 
-Why positive impact factor must be <= negative impact factor
+> Why positive impact factor must be <= negative impact factor
 
 ```
 if the positive impact factor is more than the negative impact factor, positions could be opened
