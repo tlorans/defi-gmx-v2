@@ -36,6 +36,8 @@ forge build
   - Users (LP, traders, GMX and GM / GLV holders)
   - Funding mechanism
     - Open interest
+    - Price impact?
+    - Borrowing fees?
   - Where does profit / loss come from?
   - Fee distribution
 - [ ] Terminologies and examples
@@ -162,7 +164,7 @@ forge build
   - [ ] Foundry exercises
     - Long, short, Limit, TP, SL
 - Liquidation
-  - [ ]UI
+  - [ ] UI
     - Transactions
   - [ ] When executed?
   - [ ] Fees

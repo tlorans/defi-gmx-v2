@@ -126,3 +126,5 @@ params: {
 ```
 key: 0x44b5190b0b9dd6a3d0aa40c1b4ff79ffece9f7c19e676438209d67d5c77fd49c
 ```
+
+`MarketUtils.getPoolValueInfo`
