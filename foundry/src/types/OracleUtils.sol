@@ -16,4 +16,12 @@ library OracleUtils {
         uint256 minTimestamp;
         uint256 maxTimestamp;
     }
+
+    struct ValidatedPrice {
+        address token;
+        uint256 min;
+        uint256 max;
+        uint256 timestamp;
+        address provider;
+    }
 }
