@@ -7,14 +7,17 @@ import {IERC20} from "../src/interfaces/IERC20.sol";
 import {IExchangeRouter} from "../src/interfaces/IExchangeRouter.sol";
 import {IOrderHandler} from "../src/interfaces/IOrderHandler.sol";
 import {Order} from "../src/types/Order.sol";
+import {OracleUtils} from "../src/types/OracleUtils.sol";
 import {IBaseOrderUtils} from "../src/types/IBaseOrderUtils.sol";
 import {
     WETH,
     DAI,
+    USDC,
     ROUTER,
     EXCHANGE_ROUTER,
     ORDER_HANDLER,
     ORDER_VAULT,
+    CHAINLINK_DATA_STREAM_PROVIDER,
     GM_TOKEN_USDC_DAI,
     GM_TOKEN_WETH_USDC
 } from "../src/Constants.sol";
@@ -41,11 +44,18 @@ contract SwapTest is Test {
         uint256 wntAmount = 1e18;
 
         // Send gas fee
-        exchangeRouter.sendWnt{value: wntAmount}({receiver: ORDER_VAULT, amount: gasAmount});
+        exchangeRouter.sendWnt{value: wntAmount}({
+            receiver: ORDER_VAULT,
+            amount: gasAmount
+        });
 
         // Send token
         weth.approve(ROUTER, wntAmount);
-        exchangeRouter.sendTokens({token: WETH, receiver: ORDER_VAULT, amount: wntAmount});
+        exchangeRouter.sendTokens({
+            token: WETH,
+            receiver: ORDER_VAULT,
+            amount: wntAmount
+        });
 
         // Create order
         address[] memory swapPath = new address[](2);
@@ -85,6 +95,27 @@ contract SwapTest is Test {
                 shouldUnwrapNativeToken: true,
                 autoCancel: false,
                 referralCode: bytes32(uint256(0))
+            })
+        );
+
+        address[] memory tokens = new address[](3);
+        tokens[0] = DAI;
+        tokens[1] = WETH;
+        tokens[2] = USDC;
+
+        address[] memory providers = new address[](3);
+        providers[0] = CHAINLINK_DATA_STREAM_PROVIDER;
+        providers[1] = CHAINLINK_DATA_STREAM_PROVIDER;
+        providers[2] = CHAINLINK_DATA_STREAM_PROVIDER;
+
+        bytes[] memory data = new bytes[](3);
+
+        orderHandler.executeOrder(
+            key,
+            OracleUtils.SetPricesParams({
+                tokens: tokens,
+                providers: providers,
+                data: data
             })
         );
     }

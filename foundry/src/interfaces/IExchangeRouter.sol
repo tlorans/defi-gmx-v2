@@ -10,14 +10,16 @@ import {IMulticall} from "./IMulticall.sol";
 import {IBaseRouter} from "./IBaseRouter.sol";
 
 interface IExchangeRouter is IMulticall, IBaseRouter {
-    function createDeposit(DepositUtils.CreateDepositParams calldata params) external payable returns (bytes32);
-
-    function cancelDeposit(bytes32 key) external payable;
-
-    function createWithdrawal(WithdrawalUtils.CreateWithdrawalParams calldata params)
+    function createDeposit(DepositUtils.CreateDepositParams calldata params)
         external
         payable
         returns (bytes32);
+
+    function cancelDeposit(bytes32 key) external payable;
+
+    function createWithdrawal(
+        WithdrawalUtils.CreateWithdrawalParams calldata params
+    ) external payable returns (bytes32);
 
     function cancelWithdrawal(bytes32 key) external payable;
 
@@ -26,11 +28,17 @@ interface IExchangeRouter is IMulticall, IBaseRouter {
         OracleUtils.SetPricesParams calldata oracleParams
     ) external payable;
 
-    function createShift(ShiftUtils.CreateShiftParams calldata params) external payable returns (bytes32);
+    function createShift(ShiftUtils.CreateShiftParams calldata params)
+        external
+        payable
+        returns (bytes32);
 
     function cancelShift(bytes32 key) external payable;
 
-    function createOrder(IBaseOrderUtils.CreateOrderParams calldata params) external payable returns (bytes32);
+    function createOrder(IBaseOrderUtils.CreateOrderParams calldata params)
+        external
+        payable
+        returns (bytes32);
 
     function updateOrder(
         bytes32 key,

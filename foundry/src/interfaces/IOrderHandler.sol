@@ -6,11 +6,15 @@ import {OracleUtils} from "../types/OracleUtils.sol";
 import {Order} from "../types/Order.sol";
 
 interface IOrderHandler {
-    function createOrder(address account, IBaseOrderUtils.CreateOrderParams calldata params)
-        external
-        returns (bytes32);
+    function createOrder(
+        address account,
+        IBaseOrderUtils.CreateOrderParams calldata params
+    ) external returns (bytes32);
 
-    function simulateExecuteOrder(bytes32 key, OracleUtils.SimulatePricesParams memory params) external;
+    function simulateExecuteOrder(
+        bytes32 key,
+        OracleUtils.SimulatePricesParams memory params
+    ) external;
 
     function updateOrder(
         bytes32 key,
@@ -25,5 +29,8 @@ interface IOrderHandler {
 
     function cancelOrder(bytes32 key) external;
 
-    function executeOrder(bytes32 key, OracleUtils.SetPricesParams calldata oracleParams) external;
+    function executeOrder(
+        bytes32 key,
+        OracleUtils.SetPricesParams calldata oracleParams
+    ) external;
 }
