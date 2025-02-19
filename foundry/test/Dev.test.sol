@@ -33,6 +33,7 @@ contract Dev is Test {
             abi.encode(
                 OracleUtils.ValidatedPrice({
                     token: token,
+                    // 1e12 = 1 USD
                     min: 1,
                     max: 100,
                     timestamp: 99,

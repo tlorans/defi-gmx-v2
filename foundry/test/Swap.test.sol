@@ -6,6 +6,11 @@ import {Test, console} from "forge-std/Test.sol";
 import {IERC20} from "../src/interfaces/IERC20.sol";
 import {IExchangeRouter} from "../src/interfaces/IExchangeRouter.sol";
 import {IOrderHandler} from "../src/interfaces/IOrderHandler.sol";
+import {IRoleStore} from "../src/interfaces/IRoleStore.sol";
+import {IOracle} from "../src/interfaces/IOracle.sol";
+import {IChainlinkDataStreamProvider} from
+    "../src/interfaces/IChainlinkDataStreamProvider.sol";
+import {IPriceFeed} from "../src/interfaces/IPriceFeed.sol";
 import {Order} from "../src/types/Order.sol";
 import {OracleUtils} from "../src/types/OracleUtils.sol";
 import {IBaseOrderUtils} from "../src/types/IBaseOrderUtils.sol";
@@ -13,6 +18,11 @@ import {
     WETH,
     DAI,
     USDC,
+    CHAINLINK_ETH_USD,
+    CHAINLINK_DAI_USD,
+    CHAINLINK_USDC_USD,
+    ROLE_STORE,
+    ORACLE,
     ROUTER,
     EXCHANGE_ROUTER,
     ORDER_HANDLER,
@@ -21,14 +31,20 @@ import {
     GM_TOKEN_USDC_DAI,
     GM_TOKEN_WETH_USDC
 } from "../src/Constants.sol";
+import {Role} from "../src/lib/Role.sol";
+import "../src/lib/Errors.sol";
 
 contract Swap {}
 
 contract SwapTest is Test {
     IERC20 weth = IERC20(WETH);
     IERC20 dai = IERC20(DAI);
+    IRoleStore roleStore = IRoleStore(ROLE_STORE);
     IExchangeRouter exchangeRouter = IExchangeRouter(EXCHANGE_ROUTER);
     IOrderHandler orderHandler = IOrderHandler(ORDER_HANDLER);
+    IOracle oracle = IOracle(ORACLE);
+    IChainlinkDataStreamProvider provider =
+        IChainlinkDataStreamProvider(CHAINLINK_DATA_STREAM_PROVIDER);
 
     Swap swap;
 
@@ -98,6 +114,23 @@ contract SwapTest is Test {
             })
         );
 
+        /*
+        {
+            (, int256 a,,,) = IPriceFeed(CHAINLINK_ETH_USD).latestRoundData();
+            console.log("ETH %e", a);
+        }
+        {
+            (, int256 a,,,) = IPriceFeed(CHAINLINK_DAI_USD).latestRoundData();
+            console.log("DAI %e", a);
+        }
+        {
+            (, int256 a,,,) = IPriceFeed(CHAINLINK_USDC_USD).latestRoundData();
+            console.log("USDC %e", a);
+        }
+
+        return;
+        */
+
         address[] memory tokens = new address[](3);
         tokens[0] = DAI;
         tokens[1] = WETH;
@@ -108,8 +141,37 @@ contract SwapTest is Test {
         providers[1] = CHAINLINK_DATA_STREAM_PROVIDER;
         providers[2] = CHAINLINK_DATA_STREAM_PROVIDER;
 
+        // NOTE: data kept empty for mock calls
         bytes[] memory data = new bytes[](3);
 
+        uint256[] memory prices = new uint256[](3);
+        prices[0] = 1e30;
+        prices[1] = 2700 * 1e30;
+        prices[2] = 1e30;
+
+        for (uint256 i = 0; i < tokens.length; i++) {
+            vm.mockCall(
+                address(provider),
+                abi.encodeCall(
+                    IChainlinkDataStreamProvider.getOraclePrice,
+                    (tokens[i], data[i])
+                ),
+                abi.encode(
+                    OracleUtils.ValidatedPrice({
+                        token: tokens[i],
+                        // 1e12 = 1 USD
+                        min: prices[i] * 9999 / 10000,
+                        max: prices[i] * 10001 / 10000,
+                        timestamp: block.timestamp,
+                        provider: providers[i]
+                    })
+                )
+            );
+        }
+
+        address[] memory addrs =
+            roleStore.getRoleMembers(Role.ORDER_KEEPER, 0, 1);
+        vm.prank(addrs[0]);
         orderHandler.executeOrder(
             key,
             OracleUtils.SetPricesParams({
