@@ -59,6 +59,8 @@ contract SwapTest is Test {
         uint256 gasAmount = 0.1 * 1e18;
         uint256 wntAmount = 1e18;
 
+        console.log("ETH: %e", address(this).balance);
+
         // Send gas fee
         exchangeRouter.sendWnt{value: wntAmount}({
             receiver: ORDER_VAULT,
@@ -101,7 +103,7 @@ contract SwapTest is Test {
                     callbackGasLimit: 0,
                     // TODO: output amount
                     minOutputAmount: 1,
-                    // TODO: wat dis?
+                    // TODO: wat dis? - must be 0 for market swap
                     validFromTime: 0
                 }),
                 orderType: Order.OrderType.MarketSwap,
@@ -145,9 +147,12 @@ contract SwapTest is Test {
         bytes[] memory data = new bytes[](3);
 
         uint256[] memory prices = new uint256[](3);
-        prices[0] = 1e30;
-        prices[1] = 2700 * 1e30;
-        prices[2] = 1e30;
+        prices[0] = 1e12;
+        prices[1] = 2719 * 1e12;
+        // TODO: why 1e24?
+        prices[2] = 1e24;
+
+        uint256 b0 = block.timestamp;
 
         for (uint256 i = 0; i < tokens.length; i++) {
             vm.mockCall(
@@ -160,17 +165,24 @@ contract SwapTest is Test {
                     OracleUtils.ValidatedPrice({
                         token: tokens[i],
                         // 1e12 = 1 USD
-                        min: prices[i] * 9999 / 10000,
-                        max: prices[i] * 10001 / 10000,
-                        timestamp: block.timestamp,
+                        min: prices[i] * 99999 / 100000,
+                        max: prices[i] * 100001 / 100000,
+                        // TODO: why b0 + 1?
+                        timestamp: b0 + 1,
                         provider: providers[i]
                     })
                 )
             );
         }
 
+        console.log("b0", b0);
+        console.log("block", block.timestamp);
+
         address[] memory addrs =
             roleStore.getRoleMembers(Role.ORDER_KEEPER, 0, 1);
+
+        console.log("ETH keeper: %e", address(addrs[0]).balance);
+
         vm.prank(addrs[0]);
         orderHandler.executeOrder(
             key,
@@ -180,5 +192,8 @@ contract SwapTest is Test {
                 data: data
             })
         );
+
+        console.log("ETH keeper: %e", address(addrs[0]).balance);
+        console.log("ETH: %e", address(this).balance);
     }
 }

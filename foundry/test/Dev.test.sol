@@ -7,12 +7,15 @@ import {IERC20} from "../src/interfaces/IERC20.sol";
 import {IChainlinkDataStreamProvider} from
     "../src/interfaces/IChainlinkDataStreamProvider.sol";
 import {OracleUtils} from "../src/types/OracleUtils.sol";
+import {IDataStore} from "../src/interfaces/IDataStore.sol";
 import {
     WETH,
     DAI,
     USDC,
+    DATA_STORE,
     CHAINLINK_DATA_STREAM_PROVIDER
 } from "../src/Constants.sol";
+import "../src/lib/Keys.sol";
 
 contract Dev is Test {
     IChainlinkDataStreamProvider provider;
@@ -21,7 +24,29 @@ contract Dev is Test {
         provider = IChainlinkDataStreamProvider(CHAINLINK_DATA_STREAM_PROVIDER);
     }
 
+    function get(address token) internal view returns (uint256) {
+        address addr =
+            IDataStore(DATA_STORE).getAddress(Keys.priceFeedKey(token));
+        console.log("addr: ", addr);
+        return
+            IDataStore(DATA_STORE).getUint(Keys.priceFeedMultiplierKey(token));
+    }
+
     function test() public {
+        {
+            uint256 m = get(DAI);
+            console.log("DAI %e", m);
+        }
+        {
+            uint256 m = get(USDC);
+            console.log("USDC %e", m);
+        }
+        {
+            uint256 m = get(WETH);
+            console.log("WETH %e", m);
+        }
+
+        return;
         address token = address(1);
         bytes memory data = "";
 
