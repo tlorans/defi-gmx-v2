@@ -1,0 +1,60 @@
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.26;
+
+import {Test} from "forge-std/Test.sol";
+import {IRoleStore} from "../src/interfaces/IRoleStore.sol";
+import {IChainlinkDataStreamProvider} from
+    "../src/interfaces/IChainlinkDataStreamProvider.sol";
+import {IPriceFeed} from "../src/interfaces/IPriceFeed.sol";
+import {OracleUtils} from "../src/types/OracleUtils.sol";
+import {
+    ROLE_STORE, CHAINLINK_DATA_STREAM_PROVIDER
+} from "../src/Constants.sol";
+import "../src/lib/Errors.sol";
+
+contract TestHelper is Test {
+    IRoleStore constant roleStore = IRoleStore(ROLE_STORE);
+    IChainlinkDataStreamProvider constant provider =
+        IChainlinkDataStreamProvider(CHAINLINK_DATA_STREAM_PROVIDER);
+
+    function getRoleMember(bytes32 key) public view returns (address) {
+        address[] memory addrs = roleStore.getRoleMembers(key, 0, 1);
+        return addrs[0];
+    }
+
+    function mockOraclePrices(
+        address[] memory tokens,
+        address[] memory providers,
+        bytes[] memory data,
+        address[] memory chainlinks,
+        uint256[] memory multipliers
+    ) public returns (uint256[] memory prices) {
+        uint256 n = tokens.length;
+
+        prices = new uint256[](n);
+        for (uint256 i = 0; i < n; i++) {
+            (, int256 answer,,,) = IPriceFeed(chainlinks[i]).latestRoundData();
+            prices[i] = uint256(answer) * multipliers[i];
+        }
+
+        for (uint256 i = 0; i < n; i++) {
+            vm.mockCall(
+                address(provider),
+                abi.encodeCall(
+                    IChainlinkDataStreamProvider.getOraclePrice,
+                    (tokens[i], data[i])
+                ),
+                abi.encode(
+                    OracleUtils.ValidatedPrice({
+                        token: tokens[i],
+                        min: prices[i] * 999 / 1000,
+                        max: prices[i] * 1001 / 1000,
+                        // NOTE: oracle timestamp must be >= order updated timestamp
+                        timestamp: block.timestamp,
+                        provider: providers[i]
+                    })
+                )
+            );
+        }
+    }
+}
