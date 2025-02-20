@@ -19,9 +19,7 @@ library OracleUtils {
 
     struct ValidatedPrice {
         address token;
-        // 1e12 = 1 USD
         uint256 min;
-        // 1e12 = 1 USD
         uint256 max;
         uint256 timestamp;
         address provider;

@@ -15,6 +15,7 @@ forge build
 
 - [ ] Course intro
   - Prerequisites
+    - DAI, WETH, AMM, etc..
     - Advanced Foundry (multicall)
   - Goals and expected outcomes
 - [ ] Project setup
@@ -310,6 +311,7 @@ Explain utilities, acquistion methods, differences and staking processes.
   -> a crossover in balance is for example if the long open interest is larger
   than the short open interest, and a short position is opened such that the
   short open interest becomes larger than the long open interest
+- why clear price after order?
 - graph execution price
 
 ##### TODO

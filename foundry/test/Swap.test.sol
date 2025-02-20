@@ -36,19 +36,68 @@ import "../src/lib/Errors.sol";
 
 contract Swap {}
 
+contract GmxTestHelper is Test {
+    IRoleStore constant roleStore = IRoleStore(ROLE_STORE);
+    IChainlinkDataStreamProvider constant provider =
+        IChainlinkDataStreamProvider(CHAINLINK_DATA_STREAM_PROVIDER);
+
+    function getRoleMember(bytes32 key) public view returns (address) {
+        address[] memory addrs = roleStore.getRoleMembers(key, 0, 1);
+        return addrs[0];
+    }
+
+    function mockOraclePrices(
+        address[] memory tokens,
+        address[] memory providers,
+        bytes[] memory data,
+        address[] memory chainlinks,
+        uint256[] memory multipliers
+    ) public returns (uint256[] memory prices) {
+        uint256 n = tokens.length;
+
+        prices = new uint256[](n);
+        for (uint256 i = 0; i < n; i++) {
+            (, int256 answer,,,) = IPriceFeed(chainlinks[i]).latestRoundData();
+            prices[i] = uint256(answer) * multipliers[i];
+        }
+
+        for (uint256 i = 0; i < n; i++) {
+            vm.mockCall(
+                address(provider),
+                abi.encodeCall(
+                    IChainlinkDataStreamProvider.getOraclePrice,
+                    (tokens[i], data[i])
+                ),
+                abi.encode(
+                    OracleUtils.ValidatedPrice({
+                        token: tokens[i],
+                        min: prices[i] * 999 / 1000,
+                        max: prices[i] * 1001 / 1000,
+                        // NOTE: oracle timestamp must be >= order updated timestamp
+                        timestamp: block.timestamp,
+                        provider: providers[i]
+                    })
+                )
+            );
+        }
+    }
+}
+
 contract SwapTest is Test {
-    IERC20 weth = IERC20(WETH);
-    IERC20 dai = IERC20(DAI);
-    IRoleStore roleStore = IRoleStore(ROLE_STORE);
-    IExchangeRouter exchangeRouter = IExchangeRouter(EXCHANGE_ROUTER);
-    IOrderHandler orderHandler = IOrderHandler(ORDER_HANDLER);
-    IOracle oracle = IOracle(ORACLE);
-    IChainlinkDataStreamProvider provider =
+    IERC20 constant weth = IERC20(WETH);
+    IERC20 constant dai = IERC20(DAI);
+    IRoleStore constant roleStore = IRoleStore(ROLE_STORE);
+    IExchangeRouter constant exchangeRouter = IExchangeRouter(EXCHANGE_ROUTER);
+    IOrderHandler constant orderHandler = IOrderHandler(ORDER_HANDLER);
+    IOracle constant oracle = IOracle(ORACLE);
+    IChainlinkDataStreamProvider constant provider =
         IChainlinkDataStreamProvider(CHAINLINK_DATA_STREAM_PROVIDER);
 
     Swap swap;
+    GmxTestHelper helper;
 
     function setUp() public {
+        helper = new GmxTestHelper();
         swap = new Swap();
         deal(DAI, address(this), 1000 * 1e18);
         deal(WETH, address(this), 1000 * 1e18);
@@ -76,9 +125,10 @@ contract SwapTest is Test {
         });
 
         // Create order
+        // TODO: how to specify swap path? -> initialCollateralToken + gm tokens
         address[] memory swapPath = new address[](2);
-        swapPath[0] = GM_TOKEN_USDC_DAI;
-        swapPath[1] = GM_TOKEN_WETH_USDC;
+        swapPath[0] = GM_TOKEN_WETH_USDC;
+        swapPath[1] = GM_TOKEN_USDC_DAI;
 
         bytes32 key = exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({
@@ -116,22 +166,8 @@ contract SwapTest is Test {
             })
         );
 
-        /*
-        {
-            (, int256 a,,,) = IPriceFeed(CHAINLINK_ETH_USD).latestRoundData();
-            console.log("ETH %e", a);
-        }
-        {
-            (, int256 a,,,) = IPriceFeed(CHAINLINK_DAI_USD).latestRoundData();
-            console.log("DAI %e", a);
-        }
-        {
-            (, int256 a,,,) = IPriceFeed(CHAINLINK_USDC_USD).latestRoundData();
-            console.log("USDC %e", a);
-        }
-
-        return;
-        */
+        // Execute order
+        skip(1);
 
         address[] memory tokens = new address[](3);
         tokens[0] = DAI;
@@ -146,44 +182,29 @@ contract SwapTest is Test {
         // NOTE: data kept empty for mock calls
         bytes[] memory data = new bytes[](3);
 
-        uint256[] memory prices = new uint256[](3);
-        prices[0] = 1e12;
-        prices[1] = 2719 * 1e12;
-        // TODO: why 1e24?
-        prices[2] = 1e24;
+        address[] memory chainlinks = new address[](3);
+        chainlinks[0] = CHAINLINK_DAI_USD;
+        chainlinks[1] = CHAINLINK_ETH_USD;
+        chainlinks[2] = CHAINLINK_USDC_USD;
 
-        uint256 b0 = block.timestamp;
+        uint256[] memory multipliers = new uint256[](3);
+        multipliers[0] = 1e4;
+        multipliers[1] = 1e4;
+        multipliers[2] = 1e16;
 
-        for (uint256 i = 0; i < tokens.length; i++) {
-            vm.mockCall(
-                address(provider),
-                abi.encodeCall(
-                    IChainlinkDataStreamProvider.getOraclePrice,
-                    (tokens[i], data[i])
-                ),
-                abi.encode(
-                    OracleUtils.ValidatedPrice({
-                        token: tokens[i],
-                        // 1e12 = 1 USD
-                        min: prices[i] * 99999 / 100000,
-                        max: prices[i] * 100001 / 100000,
-                        // TODO: why b0 + 1?
-                        timestamp: b0 + 1,
-                        provider: providers[i]
-                    })
-                )
-            );
-        }
+        helper.mockOraclePrices({
+            tokens: tokens,
+            providers: providers,
+            data: data,
+            chainlinks: chainlinks,
+            multipliers: multipliers
+        });
 
-        console.log("b0", b0);
-        console.log("block", block.timestamp);
+        address keeper = helper.getRoleMember(Role.ORDER_KEEPER);
 
-        address[] memory addrs =
-            roleStore.getRoleMembers(Role.ORDER_KEEPER, 0, 1);
+        console.log("ETH keeper: %e", keeper.balance);
 
-        console.log("ETH keeper: %e", address(addrs[0]).balance);
-
-        vm.prank(addrs[0]);
+        vm.prank(keeper);
         orderHandler.executeOrder(
             key,
             OracleUtils.SetPricesParams({
@@ -193,7 +214,8 @@ contract SwapTest is Test {
             })
         );
 
-        console.log("ETH keeper: %e", address(addrs[0]).balance);
+        console.log("ETH keeper: %e", keeper.balance);
         console.log("ETH: %e", address(this).balance);
+        console.log("DAI %e", dai.balanceOf(address(this)));
     }
 }
