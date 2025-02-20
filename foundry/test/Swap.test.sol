@@ -4,11 +4,8 @@ pragma solidity 0.8.26;
 import {Test, console} from "forge-std/Test.sol";
 import "./TestHelper.sol";
 import {IERC20} from "../src/interfaces/IERC20.sol";
-import {IExchangeRouter} from "../src/interfaces/IExchangeRouter.sol";
 import {IOrderHandler} from "../src/interfaces/IOrderHandler.sol";
-import {Order} from "../src/types/Order.sol";
 import {OracleUtils} from "../src/types/OracleUtils.sol";
-import {IBaseOrderUtils} from "../src/types/IBaseOrderUtils.sol";
 import {
     WETH,
     DAI,
@@ -16,22 +13,16 @@ import {
     CHAINLINK_ETH_USD,
     CHAINLINK_DAI_USD,
     CHAINLINK_USDC_USD,
-    ROUTER,
-    EXCHANGE_ROUTER,
     ORDER_HANDLER,
-    ORDER_VAULT,
-    CHAINLINK_DATA_STREAM_PROVIDER,
-    GM_TOKEN_USDC_DAI,
-    GM_TOKEN_WETH_USDC
+    CHAINLINK_DATA_STREAM_PROVIDER
 } from "../src/Constants.sol";
 import {Role} from "../src/lib/Role.sol";
-
-contract Swap {}
+// TODO: import from exercises
+import {Swap} from "../src/solutions/Swap.sol";
 
 contract SwapTest is Test {
     IERC20 constant weth = IERC20(WETH);
     IERC20 constant dai = IERC20(DAI);
-    IExchangeRouter constant exchangeRouter = IExchangeRouter(EXCHANGE_ROUTER);
     IOrderHandler constant orderHandler = IOrderHandler(ORDER_HANDLER);
 
     TestHelper helper;
@@ -40,66 +31,15 @@ contract SwapTest is Test {
     function setUp() public {
         helper = new TestHelper();
         swap = new Swap();
-        deal(DAI, address(this), 1000 * 1e18);
         deal(WETH, address(this), 1000 * 1e18);
     }
 
-    receive() external payable {}
-
     function testSwap() public {
-        uint256 executionFee = 0.1 * 1e18;
+        uint256 executionFee = 1e18;
         uint256 wethAmount = 1e18;
+        weth.approve(address(swap), wethAmount);
 
-        // Send gas fee
-        exchangeRouter.sendWnt{value: executionFee}({
-            receiver: ORDER_VAULT,
-            amount: executionFee
-        });
-
-        // Send token
-        weth.approve(ROUTER, wethAmount);
-        exchangeRouter.sendTokens({
-            token: WETH,
-            receiver: ORDER_VAULT,
-            amount: wethAmount
-        });
-
-        // Create order
-        // TODO: how to specify swap path? -> initialCollateralToken + gm tokens
-        address[] memory swapPath = new address[](2);
-        swapPath[0] = GM_TOKEN_WETH_USDC;
-        swapPath[1] = GM_TOKEN_USDC_DAI;
-
-        bytes32 key = exchangeRouter.createOrder(
-            IBaseOrderUtils.CreateOrderParams({
-                addresses: IBaseOrderUtils.CreateOrderParamsAddresses({
-                    receiver: address(this),
-                    cancellationReceiver: address(0),
-                    callbackContract: address(0),
-                    uiFeeReceiver: address(0),
-                    market: address(0),
-                    initialCollateralToken: WETH,
-                    swapPath: swapPath
-                }),
-                numbers: IBaseOrderUtils.CreateOrderParamsNumbers({
-                    sizeDeltaUsd: 0,
-                    initialCollateralDeltaAmount: 0,
-                    triggerPrice: 0,
-                    acceptablePrice: 0,
-                    executionFee: executionFee,
-                    callbackGasLimit: 0,
-                    minOutputAmount: 1,
-                    // NOTE: must be 0 for market swap
-                    validFromTime: 0
-                }),
-                orderType: Order.OrderType.MarketSwap,
-                decreasePositionSwapType: Order.DecreasePositionSwapType.NoSwap,
-                isLong: false,
-                shouldUnwrapNativeToken: true,
-                autoCancel: false,
-                referralCode: bytes32(uint256(0))
-            })
-        );
+        bytes32 key = swap.createOrder{value: executionFee}(wethAmount);
 
         // Execute order
         skip(1);
@@ -137,10 +77,10 @@ contract SwapTest is Test {
 
         address keeper = helper.getRoleMember(Role.ORDER_KEEPER);
 
-        uint256[] memory diffs = new uint256[](3);
-        diffs[0] = keeper.balance;
-        diffs[1] = address(this).balance;
-        diffs[2] = dai.balanceOf(address(this));
+        uint256[] memory b0 = new uint256[](3);
+        b0[0] = keeper.balance;
+        b0[1] = address(swap).balance;
+        b0[2] = dai.balanceOf(address(swap));
 
         vm.prank(keeper);
         orderHandler.executeOrder(
@@ -152,12 +92,17 @@ contract SwapTest is Test {
             })
         );
 
-        diffs[0] = keeper.balance - diffs[0];
-        diffs[1] = address(this).balance - diffs[1];
-        diffs[2] = dai.balanceOf(address(this)) - diffs[2];
+        uint256[] memory b1 = new uint256[](3);
+        b1[0] = keeper.balance;
+        b1[1] = address(swap).balance;
+        b1[2] = dai.balanceOf(address(swap));
 
-        console.log("ETH user: %e", diffs[1]);
-        console.log("ETH keeper: %e", diffs[0]);
-        console.log("DAI %e", diffs[2]);
+        console.log("ETH keeper: %e", b1[0]);
+        console.log("ETH swap: %e", b1[1]);
+        console.log("DAI swap: %e", b1[2]);
+
+        assertGe(b1[0], b0[0], "Keeper execution fee");
+        assertGe(b1[1], b0[1], "Swap execution fee refund");
+        assertGe(b1[2], b0[2], "Swap DAI");
     }
 }
