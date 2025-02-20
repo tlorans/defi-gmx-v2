@@ -8,31 +8,30 @@ import {Order} from "../types/Order.sol";
 import {IBaseOrderUtils} from "../types/IBaseOrderUtils.sol";
 import {
     WETH,
-    DAI,
+    USDC,
     ROUTER,
     EXCHANGE_ROUTER,
     ORDER_VAULT,
-    GM_TOKEN_USDC_DAI,
     GM_TOKEN_WETH_USDC
 } from "../Constants.sol";
 
-contract Swap {
+contract Short {
     IERC20 constant weth = IERC20(WETH);
-    IERC20 constant dai = IERC20(DAI);
+    IERC20 constant usdc = IERC20(USDC);
     IExchangeRouter constant exchangeRouter = IExchangeRouter(EXCHANGE_ROUTER);
 
     // Receive execution fee refund from GMX
     receive() external payable {}
 
-    // Create order to swap WETH to DAI
-    function createOrder(uint256 wethAmount)
+    // Create order to short WETH with USDC collateral
+    function createOrder(uint256 usdcAmount)
         external
         payable
         returns (bytes32 key)
     {
         uint256 executionFee = 0.1 * 1e18;
 
-        weth.transferFrom(msg.sender, address(this), wethAmount);
+        usdc.transferFrom(msg.sender, address(this), usdcAmount);
 
         // Send gas fee
         exchangeRouter.sendWnt{value: executionFee}({
@@ -41,19 +40,14 @@ contract Swap {
         });
 
         // Send token
-        weth.approve(ROUTER, wethAmount);
+        usdc.approve(ROUTER, usdcAmount);
         exchangeRouter.sendTokens({
-            token: WETH,
+            token: USDC,
             receiver: ORDER_VAULT,
-            amount: wethAmount
+            amount: usdcAmount
         });
 
         // Create order
-        // TODO: how to specify swap path? -> initialCollateralToken + gm tokens
-        address[] memory swapPath = new address[](2);
-        swapPath[0] = GM_TOKEN_WETH_USDC;
-        swapPath[1] = GM_TOKEN_USDC_DAI;
-
         key = exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({
                 addresses: IBaseOrderUtils.CreateOrderParamsAddresses({
@@ -61,25 +55,28 @@ contract Swap {
                     cancellationReceiver: address(0),
                     callbackContract: address(0),
                     uiFeeReceiver: address(0),
-                    market: address(0),
-                    initialCollateralToken: WETH,
-                    swapPath: swapPath
+                    market: GM_TOKEN_WETH_USDC,
+                    initialCollateralToken: USDC,
+                    swapPath: new address[](0)
                 }),
                 numbers: IBaseOrderUtils.CreateOrderParamsNumbers({
-                    sizeDeltaUsd: 0,
+                    // TODO: how to calculate
+                    sizeDeltaUsd: 959985411169984104000000000000000,
                     initialCollateralDeltaAmount: 0,
                     triggerPrice: 0,
-                    acceptablePrice: 0,
+                    // TODO: 1e12 = 1 USD?
+                    // TODO: set price?
+                    acceptablePrice: 1,
                     executionFee: executionFee,
                     callbackGasLimit: 0,
-                    minOutputAmount: 1,
+                    minOutputAmount: 0,
                     // NOTE: must be 0 for market swap
                     validFromTime: 0
                 }),
-                orderType: Order.OrderType.MarketSwap,
+                orderType: Order.OrderType.MarketIncrease,
                 decreasePositionSwapType: Order.DecreasePositionSwapType.NoSwap,
                 isLong: false,
-                shouldUnwrapNativeToken: true,
+                shouldUnwrapNativeToken: false,
                 autoCancel: false,
                 referralCode: bytes32(uint256(0))
             })

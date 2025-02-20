@@ -69,6 +69,9 @@ forge build
 
 - [ ] Contract architecture
   - wnt = wrapped native token
+  - multicall
+  - execution fee
+  - bank
 - Liquidity
   - [notes](./notes/pools.md)
   - [ ] UI
@@ -136,6 +139,7 @@ forge build
     - Funding fees
     - Borrowing fee
     - Newtork fess
+    - UI
   - [ ] Example strategies
     - Long ETH, ETH collateral
     - Long ETH, USDC collateral
