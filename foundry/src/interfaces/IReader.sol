@@ -17,7 +17,7 @@ import {SwapPricingUtils} from "../types/SwapPricingUtils.sol";
 import {ReaderPositionUtils} from "../types/ReaderPositionUtils.sol";
 import {ReaderPricingUtils} from "../types/ReaderPricingUtils.sol";
 
-interface Reader {
+interface IReader {
     function getMarket(address dataStore, address key)
         external
         view

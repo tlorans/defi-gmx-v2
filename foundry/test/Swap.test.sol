@@ -5,7 +5,9 @@ import {Test, console} from "forge-std/Test.sol";
 import "./TestHelper.sol";
 import {IERC20} from "../src/interfaces/IERC20.sol";
 import {IOrderHandler} from "../src/interfaces/IOrderHandler.sol";
+import {IReader} from "../src/interfaces/IReader.sol";
 import {OracleUtils} from "../src/types/OracleUtils.sol";
+import {Order} from "../src/types/Order.sol";
 import {
     WETH,
     DAI,
@@ -13,6 +15,8 @@ import {
     CHAINLINK_ETH_USD,
     CHAINLINK_DAI_USD,
     CHAINLINK_USDC_USD,
+    DATA_STORE,
+    READER,
     ORDER_HANDLER,
     CHAINLINK_DATA_STREAM_PROVIDER
 } from "../src/Constants.sol";
@@ -24,6 +28,7 @@ contract SwapTest is Test {
     IERC20 constant weth = IERC20(WETH);
     IERC20 constant dai = IERC20(DAI);
     IOrderHandler constant orderHandler = IOrderHandler(ORDER_HANDLER);
+    IReader constant reader = IReader(READER);
 
     TestHelper helper;
     Swap swap;
@@ -40,6 +45,10 @@ contract SwapTest is Test {
         weth.approve(address(swap), wethAmount);
 
         bytes32 key = swap.createOrder{value: executionFee}(wethAmount);
+
+        Order.Props memory order = reader.getOrder(DATA_STORE, key);
+        assertEq(order.addresses.receiver, address(swap), "order receiver");
+        assertEq(uint256(order.numbers.orderType), uint256(Order.OrderType.MarketSwap), "order type");
 
         // Execute order
         skip(1);
