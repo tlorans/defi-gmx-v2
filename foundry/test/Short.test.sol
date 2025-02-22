@@ -48,7 +48,7 @@ contract ShortTest is Test {
         uint256 usdcAmount = 100 * 1e6;
         usdc.approve(address(short), usdcAmount);
 
-        bytes32 key = short.createOrder{value: executionFee}(usdcAmount);
+        bytes32 key = short.createShortOrder{value: executionFee}(usdcAmount);
 
         Order.Props memory order = reader.getOrder(DATA_STORE, key);
         assertEq(order.addresses.receiver, address(short), "order receiver");

@@ -37,7 +37,7 @@ contract Short {
     receive() external payable {}
 
     // Create order to short WETH with USDC collateral
-    function createOrder(uint256 usdcAmount)
+    function createShortOrder(uint256 usdcAmount)
         external
         payable
         returns (bytes32 key)
@@ -103,7 +103,62 @@ contract Short {
         );
     }
 
-    function getPositionKey() external view returns (bytes32 key) {
+    function createCloseOrder() external external payable returns (bytes32 key) {
+        uint256 executionFee = 0.1 * 1e18;
+
+        Position.Props memory position = getPosition(getPositionKey());
+        require(position.numbers.sizeInUsd > 0, "position size = 0");
+
+        // NOTE:
+        // decrease order:
+        // - long: executionPrice should be larger than acceptablePrice
+        // - short: executionPrice should be smaller than acceptablePrice
+        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD) * 1e4;
+        uint256 acceptablePrice = ethPrice * 101 / 100;
+
+        // Send gas fee
+        exchangeRouter.sendWnt{value: executionFee}({
+            receiver: ORDER_VAULT,
+            amount: executionFee
+        });
+
+        // Create order
+        return exchangeRouter.createOrder(
+            IBaseOrderUtils.CreateOrderParams({
+                addresses: IBaseOrderUtils.CreateOrderParamsAddresses({
+                    receiver: address(this),
+                    cancellationReceiver: address(0),
+                    callbackContract: address(0),
+                    uiFeeReceiver: address(0),
+                    market: GM_TOKEN_WETH_USDC,
+                    initialCollateralToken: USDC,
+                    swapPath: new address[](0)
+                }),
+                numbers: IBaseOrderUtils.CreateOrderParamsNumbers({
+                    sizeDeltaUsd: position.numbers.sizeDeltaUsd,
+                    // TODO: what number?
+                    initialCollateralDeltaAmount: 0,
+                    triggerPrice: 0,
+                    // TODO:
+                    acceptablePrice: acceptablePrice,
+                    executionFee: executionFee,
+                    callbackGasLimit: 0,
+                    minOutputAmount: 0,
+                    validFromTime: 0
+                }),
+                orderType: Order.OrderType.MarketDecrease,
+                // TODO: wat dis?
+                decreasePositionSwapType: Order.DecreasePositionSwapType.NoSwap,
+                isLong: false,
+                // TODO: why true?
+                shouldUnwrapNativeToken: false,
+                autoCancel: false,
+                referralCode: bytes32(uint256(0))
+            })
+        );
+    }
+
+    function getPositionKey() public view returns (bytes32 key) {
         return Position.getPositionKey({
             account: address(this),
             market: GM_TOKEN_WETH_USDC,
@@ -113,7 +168,7 @@ contract Short {
     }
 
     function getPosition(bytes32 key)
-        external
+        public
         view
         returns (Position.Props memory)
     {
