@@ -4,21 +4,34 @@ pragma solidity 0.8.26;
 import {IERC20} from "../interfaces/IERC20.sol";
 import {IExchangeRouter} from "../interfaces/IExchangeRouter.sol";
 import {IOrderHandler} from "../interfaces/IOrderHandler.sol";
+import {IReader} from "../interfaces/IReader.sol";
 import {Order} from "../types/Order.sol";
+import {Position} from "../types/Position.sol";
 import {IBaseOrderUtils} from "../types/IBaseOrderUtils.sol";
+import {Oracle} from "../lib/Oracle.sol";
 import {
     WETH,
     USDC,
+    DATA_STORE,
+    READER,
     ROUTER,
     EXCHANGE_ROUTER,
     ORDER_VAULT,
-    GM_TOKEN_WETH_USDC
+    GM_TOKEN_WETH_USDC,
+    CHAINLINK_ETH_USD,
+    CHAINLINK_USDC_USD
 } from "../Constants.sol";
 
 contract Short {
     IERC20 constant weth = IERC20(WETH);
     IERC20 constant usdc = IERC20(USDC);
     IExchangeRouter constant exchangeRouter = IExchangeRouter(EXCHANGE_ROUTER);
+    IReader constant reader = IReader(READER);
+    Oracle immutable oracle;
+
+    constructor(address _oracle) {
+        oracle = Oracle(_oracle);
+    }
 
     // Receive execution fee refund from GMX
     receive() external payable {}
@@ -32,6 +45,17 @@ contract Short {
         uint256 executionFee = 0.1 * 1e18;
 
         usdc.transferFrom(msg.sender, address(this), usdcAmount);
+
+        uint256 usdcPrice = oracle.getPrice(CHAINLINK_USDC_USD);
+        // TODO: how to calculate sizeDeltaUsd
+        // 1 USD = 1e30
+        uint256 sizeDeltaUsd = 10 * usdcPrice * 1e22;
+        // NOTE:
+        // increase order:
+        // - long: executionPrice should be smaller than acceptablePrice
+        // - short: executionPrice should be larger than acceptablePrice
+        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD) * 1e4;
+        uint256 acceptablePrice = ethPrice * 99 / 100;
 
         // Send gas fee
         exchangeRouter.sendWnt{value: executionFee}({
@@ -48,7 +72,7 @@ contract Short {
         });
 
         // Create order
-        key = exchangeRouter.createOrder(
+        return exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({
                 addresses: IBaseOrderUtils.CreateOrderParamsAddresses({
                     receiver: address(this),
@@ -60,17 +84,13 @@ contract Short {
                     swapPath: new address[](0)
                 }),
                 numbers: IBaseOrderUtils.CreateOrderParamsNumbers({
-                    // TODO: how to calculate
-                    sizeDeltaUsd: 959985411169984104000000000000000,
+                    sizeDeltaUsd: sizeDeltaUsd,
                     initialCollateralDeltaAmount: 0,
                     triggerPrice: 0,
-                    // TODO: 1e12 = 1 USD?
-                    // TODO: set price?
-                    acceptablePrice: 1,
+                    acceptablePrice: acceptablePrice,
                     executionFee: executionFee,
                     callbackGasLimit: 0,
                     minOutputAmount: 0,
-                    // NOTE: must be 0 for market swap
                     validFromTime: 0
                 }),
                 orderType: Order.OrderType.MarketIncrease,
@@ -81,5 +101,22 @@ contract Short {
                 referralCode: bytes32(uint256(0))
             })
         );
+    }
+
+    function getPositionKey() external view returns (bytes32 key) {
+        return Position.getPositionKey({
+            account: address(this),
+            market: GM_TOKEN_WETH_USDC,
+            collateralToken: USDC,
+            isLong: false
+        });
+    }
+
+    function getPosition(bytes32 key)
+        external
+        view
+        returns (Position.Props memory)
+    {
+        return reader.getPosition(DATA_STORE, key);
     }
 }

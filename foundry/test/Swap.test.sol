@@ -48,7 +48,11 @@ contract SwapTest is Test {
 
         Order.Props memory order = reader.getOrder(DATA_STORE, key);
         assertEq(order.addresses.receiver, address(swap), "order receiver");
-        assertEq(uint256(order.numbers.orderType), uint256(Order.OrderType.MarketSwap), "order type");
+        assertEq(
+            uint256(order.numbers.orderType),
+            uint256(Order.OrderType.MarketSwap),
+            "order type"
+        );
 
         // Execute order
         skip(1);

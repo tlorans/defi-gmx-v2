@@ -21,6 +21,8 @@ contract Swap {
     IERC20 constant dai = IERC20(DAI);
     IExchangeRouter constant exchangeRouter = IExchangeRouter(EXCHANGE_ROUTER);
 
+    // TODO: function to get order key?
+
     // Receive execution fee refund from GMX
     receive() external payable {}
 
