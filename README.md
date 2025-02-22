@@ -72,6 +72,7 @@ forge build
   - multicall
   - execution fee
   - bank
+  - reader
 - Liquidity
   - [notes](./notes/pools.md)
   - [ ] UI
@@ -252,6 +253,10 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [Long ETH 0.005 ETH 10x SL + TP (part 3)](https://arbiscan.io/tx/0xa8c6f918e2478e3b1e0e9ff43b088f4f371505b39fce7b38fe49cb30ab0e565a)
 - [Long ETH 0.005 ETH 10x SL + TP (part 4)](https://arbiscan.io/tx/0xa8c6f918e2478e3b1e0e9ff43b088f4f371505b39fce7b38fe49cb30ab0e565a)
 - [Claim funding fees](https://arbiscan.io/tx/0x4415830b1a12882409df17e80be26da8c20e4cc929f1764046ca3aae3ca8339e)
+- [Long ETH 0.001 75x ~ $190 part 1](https://arbiscan.io/tx/0xcac1ce9014aafcd3d8ae89c27cfd4866de36ff010ded5344a65bd4034d358413)
+- [Long ETH 0.001 75x ~ $190 part 2](https://arbiscan.io/tx/0x29d95557ef789fd6d9031c739a29dd5adc112f3ff8aab0524cd6aa9ddfc4e278)
+- [Long ETH 0.001 75x ~ close part 3](https://arbiscan.io/tx/0x13cdef0acc7d4017f82df308f0f628996b707396182fc2a2042e78b0ebc4657d)
+- [Long ETH 0.001 75x ~ close part 4](https://arbiscan.io/tx/0xf5f5d293ef7bdc6893941cda6a6fd57d67a20876a175aa1e424af9442868bb47)
 
 ##### Contracts
 
@@ -316,6 +321,7 @@ Explain utilities, acquistion methods, differences and staking processes.
   than the short open interest, and a short position is opened such that the
   short open interest becomes larger than the long open interest
 - why clear price after order?
+- why reserve must be below threshold?
 - graph execution price
 
 ##### TODO
