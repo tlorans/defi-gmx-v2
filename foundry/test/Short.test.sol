@@ -22,8 +22,8 @@ import {
     CHAINLINK_DATA_STREAM_PROVIDER
 } from "../src/Constants.sol";
 import {Role} from "../src/lib/Role.sol";
-// TODO: import from exercises
 import {Oracle} from "../src/lib/Oracle.sol";
+// TODO: import from exercises
 import {Short} from "../src/solutions/Short.sol";
 
 contract ShortTest is Test {
@@ -130,7 +130,11 @@ contract ShortTest is Test {
             "pos.collateralAmount %e", position.numbers.collateralAmount
         );
 
-        assertGt(position.numbers.sizeInUsd, 0, "position size = 0");
+        assertGt(
+            position.numbers.sizeInUsd,
+            usdcAmount * 1e24,
+            "position size <= collateral amount"
+        );
         assertGt(
             position.numbers.collateralAmount,
             0,

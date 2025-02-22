@@ -49,7 +49,7 @@ contract Short {
         uint256 usdcPrice = oracle.getPrice(CHAINLINK_USDC_USD);
         // TODO: how to calculate sizeDeltaUsd
         // 1 USD = 1e30
-        uint256 sizeDeltaUsd = 10 * usdcPrice * 1e22;
+        uint256 sizeDeltaUsd = 10 * usdcAmount * usdcPrice * 1e16;
         // NOTE:
         // increase order:
         // - long: executionPrice should be smaller than acceptablePrice
