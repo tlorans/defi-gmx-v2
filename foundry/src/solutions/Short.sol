@@ -103,7 +103,7 @@ contract Short {
         );
     }
 
-    function createCloseOrder() external external payable returns (bytes32 key) {
+    function createCloseOrder() external payable returns (bytes32 key) {
         uint256 executionFee = 0.1 * 1e18;
 
         Position.Props memory position = getPosition(getPositionKey());
@@ -135,11 +135,9 @@ contract Short {
                     swapPath: new address[](0)
                 }),
                 numbers: IBaseOrderUtils.CreateOrderParamsNumbers({
-                    sizeDeltaUsd: position.numbers.sizeDeltaUsd,
-                    // TODO: what number?
-                    initialCollateralDeltaAmount: 0,
+                    sizeDeltaUsd: position.numbers.sizeInUsd,
+                    initialCollateralDeltaAmount: position.numbers.collateralAmount,
                     triggerPrice: 0,
-                    // TODO:
                     acceptablePrice: acceptablePrice,
                     executionFee: executionFee,
                     callbackGasLimit: 0,

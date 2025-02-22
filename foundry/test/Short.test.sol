@@ -48,17 +48,21 @@ contract ShortTest is Test {
         uint256 usdcAmount = 100 * 1e6;
         usdc.approve(address(short), usdcAmount);
 
-        bytes32 key = short.createShortOrder{value: executionFee}(usdcAmount);
+        bytes32 shortOrderKey =
+            short.createShortOrder{value: executionFee}(usdcAmount);
 
-        Order.Props memory order = reader.getOrder(DATA_STORE, key);
-        assertEq(order.addresses.receiver, address(short), "order receiver");
+        Order.Props memory shortOrder =
+            reader.getOrder(DATA_STORE, shortOrderKey);
         assertEq(
-            uint256(order.numbers.orderType),
+            shortOrder.addresses.receiver, address(short), "order receiver"
+        );
+        assertEq(
+            uint256(shortOrder.numbers.orderType),
             uint256(Order.OrderType.MarketIncrease),
             "order type"
         );
 
-        // Execute order
+        // Execute short order
         skip(1);
 
         address[] memory tokens = new address[](2);
@@ -91,12 +95,14 @@ contract ShortTest is Test {
         address keeper = helper.getRoleMember(Role.ORDER_KEEPER);
 
         uint256[] memory b0 = new uint256[](2);
+        uint256[] memory b1 = new uint256[](2);
+
         b0[0] = keeper.balance;
         b0[1] = address(short).balance;
 
         vm.prank(keeper);
         orderHandler.executeOrder(
-            key,
+            shortOrderKey,
             OracleUtils.SetPricesParams({
                 tokens: tokens,
                 providers: providers,
@@ -104,7 +110,6 @@ contract ShortTest is Test {
             })
         );
 
-        uint256[] memory b1 = new uint256[](2);
         b1[0] = keeper.balance;
         b1[1] = address(short).balance;
 
@@ -122,8 +127,9 @@ contract ShortTest is Test {
 
         assertEq(short.getPositionKey(), positionKey, "position key");
 
-        Position.Props memory position =
-            reader.getPosition(DATA_STORE, positionKey);
+        Position.Props memory position;
+
+        position = reader.getPosition(DATA_STORE, positionKey);
         console.log("pos.sizeInUsd %e", position.numbers.sizeInUsd);
         console.log("pos.sizeInTokens %e", position.numbers.sizeInTokens);
         console.log(
@@ -140,11 +146,71 @@ contract ShortTest is Test {
             0,
             "position collateral amount = 0"
         );
-
         assertEq(
             position.addresses.account,
             short.getPosition(positionKey).addresses.account,
             "position"
+        );
+
+        // Create close order
+        skip(1);
+        bytes32 closeOrderKey = short.createCloseOrder();
+
+        Order.Props memory closeOrder =
+            reader.getOrder(DATA_STORE, closeOrderKey);
+        assertEq(
+            closeOrder.addresses.receiver, address(short), "order receiver"
+        );
+        assertEq(
+            uint256(closeOrder.numbers.orderType),
+            uint256(Order.OrderType.MarketDecrease),
+            "order type"
+        );
+
+        // Execute close order
+        skip(1);
+
+        helper.mockOraclePrices({
+            tokens: tokens,
+            providers: providers,
+            data: data,
+            chainlinks: chainlinks,
+            multipliers: multipliers
+        });
+
+        b0[0] = keeper.balance;
+        b0[1] = address(short).balance;
+
+        vm.prank(keeper);
+        orderHandler.executeOrder(
+            closeOrderKey,
+            OracleUtils.SetPricesParams({
+                tokens: tokens,
+                providers: providers,
+                data: data
+            })
+        );
+
+        b1[0] = keeper.balance;
+        b1[1] = address(short).balance;
+
+        console.log("ETH keeper: %e", b1[0]);
+        console.log("ETH short: %e", b1[1]);
+        assertGe(b1[0], b0[0], "Keeper execution fee");
+        assertGe(b1[1], b0[1], "Close execution fee refund");
+
+        position = reader.getPosition(DATA_STORE, positionKey);
+        console.log("pos.sizeInUsd %e", position.numbers.sizeInUsd);
+        console.log("pos.sizeInTokens %e", position.numbers.sizeInTokens);
+        console.log(
+            "pos.collateralAmount %e", position.numbers.collateralAmount
+        );
+
+        assertEq(position.numbers.sizeInUsd, 0, "position size != 0");
+        assertEq(
+            position.numbers.collateralAmount,
+            0,
+            "position collateral amount != 0"
         );
     }
 }
