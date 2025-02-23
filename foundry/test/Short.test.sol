@@ -76,20 +76,24 @@ contract ShortTest is Test {
         // NOTE: data kept empty for mock calls
         bytes[] memory data = new bytes[](2);
 
-        address[] memory chainlinks = new address[](2);
-        chainlinks[0] = CHAINLINK_USDC_USD;
-        chainlinks[1] = CHAINLINK_ETH_USD;
-
-        uint256[] memory multipliers = new uint256[](2);
-        multipliers[0] = 1e16;
-        multipliers[1] = 1e4;
+        TestHelper.OracleParams[] memory oracles =
+            new TestHelper.OracleParams[](2);
+        oracles[0] = TestHelper.OracleParams({
+            chainlink: CHAINLINK_USDC_USD,
+            multiplier: 1e16,
+            deltaPrice: 0
+        });
+        oracles[1] = TestHelper.OracleParams({
+            chainlink: CHAINLINK_ETH_USD,
+            multiplier: 1e4,
+            deltaPrice: 0
+        });
 
         helper.mockOraclePrices({
             tokens: tokens,
             providers: providers,
             data: data,
-            chainlinks: chainlinks,
-            multipliers: multipliers
+            oracles: oracles
         });
 
         address keeper = helper.getRoleMember(Role.ORDER_KEEPER);
@@ -170,12 +174,15 @@ contract ShortTest is Test {
         // Execute close order
         skip(1);
 
+        // NOTE: acceptablePrice in Short must be > price + delta price
+        oracles[0].deltaPrice = 0;
+        oracles[1].deltaPrice = -5;
+
         helper.mockOraclePrices({
             tokens: tokens,
             providers: providers,
             data: data,
-            chainlinks: chainlinks,
-            multipliers: multipliers
+            oracles: oracles
         });
 
         b0[0] = keeper.balance;
@@ -193,6 +200,15 @@ contract ShortTest is Test {
 
         b1[0] = keeper.balance;
         b1[1] = address(short).balance;
+
+        uint256 wethBal = weth.balanceOf(address(this));
+        uint256 usdcBal = usdc.balanceOf(address(this));
+
+        console.log("WETH %e", wethBal);
+        console.log("USDC %e", usdcBal);
+
+        assertEq(wethBal, 0, "WETH balance != 0");
+        assertGe(usdcBal, usdcAmount, "USDC balance < initial collateral");
 
         console.log("ETH keeper: %e", b1[0]);
         console.log("ETH short: %e", b1[1]);

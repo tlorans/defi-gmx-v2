@@ -70,22 +70,29 @@ contract SwapTest is Test {
         // NOTE: data kept empty for mock calls
         bytes[] memory data = new bytes[](3);
 
-        address[] memory chainlinks = new address[](3);
-        chainlinks[0] = CHAINLINK_DAI_USD;
-        chainlinks[1] = CHAINLINK_ETH_USD;
-        chainlinks[2] = CHAINLINK_USDC_USD;
-
-        uint256[] memory multipliers = new uint256[](3);
-        multipliers[0] = 1e4;
-        multipliers[1] = 1e4;
-        multipliers[2] = 1e16;
+        TestHelper.OracleParams[] memory oracles =
+            new TestHelper.OracleParams[](3);
+        oracles[0] = TestHelper.OracleParams({
+            chainlink: CHAINLINK_DAI_USD,
+            multiplier: 1e4,
+            deltaPrice: 0
+        });
+        oracles[1] = TestHelper.OracleParams({
+            chainlink: CHAINLINK_ETH_USD,
+            multiplier: 1e4,
+            deltaPrice: 0
+        });
+        oracles[2] = TestHelper.OracleParams({
+            chainlink: CHAINLINK_USDC_USD,
+            multiplier: 1e16,
+            deltaPrice: 0
+        });
 
         helper.mockOraclePrices({
             tokens: tokens,
             providers: providers,
             data: data,
-            chainlinks: chainlinks,
-            multipliers: multipliers
+            oracles: oracles
         });
 
         address keeper = helper.getRoleMember(Role.ORDER_KEEPER);

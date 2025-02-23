@@ -12,6 +12,10 @@ import {
 } from "../src/Constants.sol";
 import "../src/lib/Errors.sol";
 
+function add(uint256 x, int256 y) pure returns (uint256) {
+    return y >= 0 ? x + uint256(y) : x - uint256(-y);
+}
+
 contract TestHelper is Test {
     IRoleStore constant roleStore = IRoleStore(ROLE_STORE);
     IChainlinkDataStreamProvider constant provider =
@@ -22,19 +26,26 @@ contract TestHelper is Test {
         return addrs[0];
     }
 
+    struct OracleParams {
+        address chainlink;
+        uint256 multiplier;
+        int256 deltaPrice;
+    }
+
     function mockOraclePrices(
         address[] memory tokens,
         address[] memory providers,
         bytes[] memory data,
-        address[] memory chainlinks,
-        uint256[] memory multipliers
+        OracleParams[] memory oracles
     ) public returns (uint256[] memory prices) {
         uint256 n = tokens.length;
 
         prices = new uint256[](n);
         for (uint256 i = 0; i < n; i++) {
-            (, int256 answer,,,) = IPriceFeed(chainlinks[i]).latestRoundData();
-            prices[i] = uint256(answer) * multipliers[i];
+            (, int256 answer,,,) =
+                IPriceFeed(oracles[i].chainlink).latestRoundData();
+            prices[i] = uint256(answer) * oracles[i].multiplier
+                * add(100, oracles[i].deltaPrice) / 100;
         }
 
         for (uint256 i = 0; i < n; i++) {

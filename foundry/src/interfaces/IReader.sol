@@ -53,6 +53,7 @@ interface IReader {
         view
         returns (Order.Props memory);
 
+    // @return (positionPnlUsd, uncappedPositionPnlUsd, sizeDeltaInTokens)
     function getPositionPnlUsd(
         address dataStore,
         Market.Props memory market,
