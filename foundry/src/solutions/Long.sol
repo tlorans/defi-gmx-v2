@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
+import {console} from "forge-std/Test.sol";
 import {IERC20} from "../interfaces/IERC20.sol";
 import {IExchangeRouter} from "../interfaces/IExchangeRouter.sol";
 import {IOrderHandler} from "../interfaces/IOrderHandler.sol";
@@ -36,7 +37,7 @@ contract Long {
     // Receive execution fee refund from GMX
     receive() external payable {}
 
-    // Create order to short WETH with USDC collateral
+    // Create order to long WETH with WETH collateral
     function createLongOrder(uint256 wethAmount)
         external
         payable
