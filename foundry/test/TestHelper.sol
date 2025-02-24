@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import {Test} from "forge-std/Test.sol";
+import {Test, console} from "forge-std/Test.sol";
 import {IRoleStore} from "../src/interfaces/IRoleStore.sol";
 import {IChainlinkDataStreamProvider} from
     "../src/interfaces/IChainlinkDataStreamProvider.sol";
@@ -28,6 +28,7 @@ contract TestHelper is Test {
 
     struct OracleParams {
         address chainlink;
+        // Multiplier to make chainlink price x token amount have 30 decimals
         uint256 multiplier;
         int256 deltaPrice;
     }

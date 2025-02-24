@@ -24,9 +24,9 @@ import {
 import {Role} from "../src/lib/Role.sol";
 import {Oracle} from "../src/lib/Oracle.sol";
 // TODO: import from exercises
-import {Short} from "../src/solutions/Short.sol";
+import {Long} from "../src/solutions/Long.sol";
 
-contract ShortTest is Test {
+contract LongTest is Test {
     IERC20 constant weth = IERC20(WETH);
     IERC20 constant usdc = IERC20(USDC);
     IOrderHandler constant orderHandler = IOrderHandler(ORDER_HANDLER);
@@ -34,36 +34,33 @@ contract ShortTest is Test {
 
     TestHelper helper;
     Oracle oracle;
-    Short short;
+    Long long;
 
     function setUp() public {
         helper = new TestHelper();
         oracle = new Oracle();
-        short = new Short(address(oracle));
-        deal(USDC, address(this), 1000 * 1e6);
+        long = new Long(address(oracle));
+        deal(WETH, address(this), 1000 * 1e18);
     }
 
-    function testShort() public {
+    function testLong() public {
         uint256 executionFee = 1e18;
-        uint256 usdcAmount = 100 * 1e6;
-        usdc.approve(address(short), usdcAmount);
+        uint256 wethAmount = 1e18;
+        weth.approve(address(long), wethAmount);
 
-        bytes32 shortOrderKey =
-            short.createShortOrder{value: executionFee}(usdcAmount);
+        bytes32 longOrderKey =
+            long.createLongOrder{value: executionFee}(wethAmount);
 
-        Order.Props memory shortOrder =
-            reader.getOrder(DATA_STORE, shortOrderKey);
+        Order.Props memory longOrder = reader.getOrder(DATA_STORE, longOrderKey);
+        assertEq(longOrder.addresses.receiver, address(long), "order receiver");
         assertEq(
-            shortOrder.addresses.receiver, address(short), "order receiver"
-        );
-        assertEq(
-            uint256(shortOrder.numbers.orderType),
+            uint256(longOrder.numbers.orderType),
             uint256(Order.OrderType.MarketIncrease),
             "order type"
         );
-        assertEq(shortOrder.flags.isLong, false, "not long");
+        assertEq(longOrder.flags.isLong, true, "not long");
 
-        // Execute short order
+        // Execute long order
         skip(1);
 
         address[] memory tokens = new address[](2);
@@ -103,11 +100,11 @@ contract ShortTest is Test {
         uint256[] memory b1 = new uint256[](2);
 
         b0[0] = keeper.balance;
-        b0[1] = address(short).balance;
+        b0[1] = address(long).balance;
 
         vm.prank(keeper);
         orderHandler.executeOrder(
-            shortOrderKey,
+            longOrderKey,
             OracleUtils.SetPricesParams({
                 tokens: tokens,
                 providers: providers,
@@ -116,21 +113,21 @@ contract ShortTest is Test {
         );
 
         b1[0] = keeper.balance;
-        b1[1] = address(short).balance;
+        b1[1] = address(long).balance;
 
         console.log("ETH keeper: %e", b1[0]);
-        console.log("ETH short: %e", b1[1]);
+        console.log("ETH long: %e", b1[1]);
         assertGe(b1[0], b0[0], "Keeper execution fee");
-        assertGe(b1[1], b0[1], "Short execution fee refund");
+        assertGe(b1[1], b0[1], "long execution fee refund");
 
         bytes32 positionKey = Position.getPositionKey({
-            account: address(short),
+            account: address(long),
             market: GM_TOKEN_WETH_USDC,
-            collateralToken: USDC,
-            isLong: false
+            collateralToken: WETH,
+            isLong: true
         });
 
-        assertEq(short.getPositionKey(), positionKey, "position key");
+        assertEq(long.getPositionKey(), positionKey, "position key");
 
         Position.Props memory position;
 
@@ -143,7 +140,7 @@ contract ShortTest is Test {
 
         assertGt(
             position.numbers.sizeInUsd,
-            usdcAmount * 1e24,
+            wethAmount * 1e12,
             "position size <= collateral amount"
         );
         assertGt(
@@ -153,19 +150,17 @@ contract ShortTest is Test {
         );
         assertEq(
             position.addresses.account,
-            short.getPosition(positionKey).addresses.account,
+            long.getPosition(positionKey).addresses.account,
             "position"
         );
 
         // Create close order
         skip(1);
-        bytes32 closeOrderKey = short.createCloseOrder();
+        bytes32 closeOrderKey = long.createCloseOrder();
 
         Order.Props memory closeOrder =
             reader.getOrder(DATA_STORE, closeOrderKey);
-        assertEq(
-            closeOrder.addresses.receiver, address(short), "order receiver"
-        );
+        assertEq(closeOrder.addresses.receiver, address(long), "order receiver");
         assertEq(
             uint256(closeOrder.numbers.orderType),
             uint256(Order.OrderType.MarketDecrease),
@@ -175,9 +170,9 @@ contract ShortTest is Test {
         // Execute close order
         skip(1);
 
-        // NOTE: acceptablePrice in Short must be > oracle price + delta price
+        // NOTE: acceptablePrice in long must be < oracle price + delta price
         oracles[0].deltaPrice = 0;
-        oracles[1].deltaPrice = -5;
+        oracles[1].deltaPrice = 5;
 
         helper.mockOraclePrices({
             tokens: tokens,
@@ -187,7 +182,7 @@ contract ShortTest is Test {
         });
 
         b0[0] = keeper.balance;
-        b0[1] = address(short).balance;
+        b0[1] = address(long).balance;
 
         vm.prank(keeper);
         orderHandler.executeOrder(
@@ -200,19 +195,19 @@ contract ShortTest is Test {
         );
 
         b1[0] = keeper.balance;
-        b1[1] = address(short).balance;
+        b1[1] = address(long).balance;
 
-        uint256 wethBal = weth.balanceOf(address(short));
-        uint256 usdcBal = usdc.balanceOf(address(short));
+        uint256 wethBal = weth.balanceOf(address(long));
+        uint256 usdcBal = usdc.balanceOf(address(long));
 
         console.log("WETH %e", wethBal);
         console.log("USDC %e", usdcBal);
 
-        assertEq(wethBal, 0, "WETH balance != 0");
-        assertGe(usdcBal, usdcAmount, "USDC balance < initial collateral");
+        assertGe(wethBal, wethAmount, "WETH balance < initial collateral");
+        assertEq(usdcBal, 0, "USDC balance != 0");
 
         console.log("ETH keeper: %e", b1[0]);
-        console.log("ETH short: %e", b1[1]);
+        console.log("ETH long: %e", b1[1]);
         assertGe(b1[0], b0[0], "Keeper execution fee");
         assertGe(b1[1], b0[1], "Close execution fee refund");
 

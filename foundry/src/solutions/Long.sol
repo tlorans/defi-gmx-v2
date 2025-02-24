@@ -22,7 +22,7 @@ import {
     CHAINLINK_USDC_USD
 } from "../Constants.sol";
 
-contract Short {
+contract Long {
     IERC20 constant weth = IERC20(WETH);
     IERC20 constant usdc = IERC20(USDC);
     IExchangeRouter constant exchangeRouter = IExchangeRouter(EXCHANGE_ROUTER);
@@ -37,25 +37,24 @@ contract Short {
     receive() external payable {}
 
     // Create order to short WETH with USDC collateral
-    function createShortOrder(uint256 usdcAmount)
+    function createLongOrder(uint256 wethAmount)
         external
         payable
         returns (bytes32 key)
     {
         uint256 executionFee = 0.1 * 1e18;
 
-        usdc.transferFrom(msg.sender, address(this), usdcAmount);
+        weth.transferFrom(msg.sender, address(this), wethAmount);
 
-        uint256 usdcPrice = oracle.getPrice(CHAINLINK_USDC_USD);
+        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
         // TODO: how to calculate sizeDeltaUsd
         // 1 USD = 1e30
-        uint256 sizeDeltaUsd = 10 * usdcAmount * usdcPrice * 1e16;
+        uint256 sizeDeltaUsd = 10 * wethAmount * ethPrice * 1e4;
         // NOTE:
         // increase order:
         // - long: executionPrice should be smaller than acceptablePrice
         // - short: executionPrice should be larger than acceptablePrice
-        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD) * 1e4;
-        uint256 acceptablePrice = ethPrice * 99 / 100;
+        uint256 acceptablePrice = ethPrice * 1e4 * 101 / 100;
 
         // Send gas fee
         exchangeRouter.sendWnt{value: executionFee}({
@@ -64,14 +63,18 @@ contract Short {
         });
 
         // Send token
-        usdc.approve(ROUTER, usdcAmount);
+        weth.approve(ROUTER, wethAmount);
         exchangeRouter.sendTokens({
-            token: USDC,
+            token: WETH,
             receiver: ORDER_VAULT,
-            amount: usdcAmount
+            amount: wethAmount
         });
 
         // Create order
+        // address[] memory swapPath = new address[](1);
+        // swapPath[0] = GM_TOKEN_WETH_USDC;
+        address[] memory swapPath = new address[](0);
+
         return exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({
                 addresses: IBaseOrderUtils.CreateOrderParamsAddresses({
@@ -80,8 +83,9 @@ contract Short {
                     callbackContract: address(0),
                     uiFeeReceiver: address(0),
                     market: GM_TOKEN_WETH_USDC,
-                    initialCollateralToken: USDC,
-                    swapPath: new address[](0)
+                    initialCollateralToken: WETH,
+                    // TODO: why swap? when to swap?
+                    swapPath: swapPath
                 }),
                 numbers: IBaseOrderUtils.CreateOrderParamsNumbers({
                     sizeDeltaUsd: sizeDeltaUsd,
@@ -95,7 +99,7 @@ contract Short {
                 }),
                 orderType: Order.OrderType.MarketIncrease,
                 decreasePositionSwapType: Order.DecreasePositionSwapType.NoSwap,
-                isLong: false,
+                isLong: true,
                 shouldUnwrapNativeToken: false,
                 autoCancel: false,
                 referralCode: bytes32(uint256(0))
@@ -114,7 +118,7 @@ contract Short {
         // - long: executionPrice should be larger than acceptablePrice
         // - short: executionPrice should be smaller than acceptablePrice
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD) * 1e4;
-        uint256 acceptablePrice = ethPrice * 110 / 100;
+        uint256 acceptablePrice = ethPrice * 99 / 100;
 
         // Send gas fee
         exchangeRouter.sendWnt{value: executionFee}({
@@ -131,7 +135,7 @@ contract Short {
                     callbackContract: address(0),
                     uiFeeReceiver: address(0),
                     market: GM_TOKEN_WETH_USDC,
-                    initialCollateralToken: USDC,
+                    initialCollateralToken: WETH,
                     swapPath: new address[](0)
                 }),
                 numbers: IBaseOrderUtils.CreateOrderParamsNumbers({
@@ -147,7 +151,7 @@ contract Short {
                 orderType: Order.OrderType.MarketDecrease,
                 // TODO: wat dis?
                 decreasePositionSwapType: Order.DecreasePositionSwapType.NoSwap,
-                isLong: false,
+                isLong: true,
                 shouldUnwrapNativeToken: false,
                 autoCancel: false,
                 referralCode: bytes32(uint256(0))
@@ -159,11 +163,12 @@ contract Short {
         return Position.getPositionKey({
             account: address(this),
             market: GM_TOKEN_WETH_USDC,
-            collateralToken: USDC,
-            isLong: false
+            collateralToken: WETH,
+            isLong: true
         });
     }
 
+    // TODO: how to get current pnl?
     function getPosition(bytes32 key)
         public
         view
