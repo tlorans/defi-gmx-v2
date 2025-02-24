@@ -133,13 +133,13 @@ forge build
       - Close, deposit, withdraw collateral
       - Claims (funding fees)
     - [ ] Transactions
-  - [ ] Fees
+  - [ ] Fees (PositionPricingUtils.sol)
     - Open / close
     - Swap
     - Price impact and rebates
     - Funding fees
     - Borrowing fee
-    - Newtork fess
+    - Newtork fee
     - UI
   - [ ] Example strategies
     - Long ETH, ETH collateral
