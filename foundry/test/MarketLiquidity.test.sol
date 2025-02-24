@@ -22,16 +22,16 @@ import {
 } from "../src/Constants.sol";
 import {Role} from "../src/lib/Role.sol";
 // TODO: import from exercises
-import {Swap} from "../src/solutions/Swap.sol";
+import {MarketLiquidity} from "../src/solutions/MarketLiquidity.sol";
 
-contract SwapTest is Test {
+contract MarketLiquidityTest is Test {
     IERC20 constant weth = IERC20(WETH);
-    IERC20 constant dai = IERC20(DAI);
+    IERC20 constant usdc = IERC20(USDC);
     IOrderHandler constant orderHandler = IOrderHandler(ORDER_HANDLER);
     IReader constant reader = IReader(READER);
 
     TestHelper helper;
-    Swap swap;
+    MarketLiquidity marketLiquidity;
     address keeper;
 
     // Oracle params
@@ -44,8 +44,8 @@ contract SwapTest is Test {
         helper = new TestHelper();
         keeper = helper.getRoleMember(Role.ORDER_KEEPER);
 
-        swap = new Swap();
-        deal(WETH, address(this), 1000 * 1e18);
+        marketLiquidity = new MarketLiquidity();
+        deal(USDC, address(this), 1000 * 1e6);
 
         tokens = new address[](3);
         tokens[0] = DAI;
@@ -78,21 +78,26 @@ contract SwapTest is Test {
         });
     }
 
-    function testSwap() public {
+    function testMarketLiquidity() public {
         uint256 executionFee = 0.1 * 1e18;
-        uint256 wethAmount = 1e18;
-        weth.approve(address(swap), wethAmount);
+        uint256 usdcAmount = 1000 * 1e6;
+        usdc.approve(address(marketLiquidity), usdcAmount);
 
-        bytes32 key = swap.createOrder{value: executionFee}(wethAmount);
+        bytes32 key =
+            marketLiquidity.createDeposit{value: executionFee}(usdcAmount);
 
+        /*
+            // TODO: check
         Order.Props memory order = reader.getOrder(DATA_STORE, key);
-        assertEq(order.addresses.receiver, address(swap), "order receiver");
+        assertEq(order.addresses.receiver, address(marketLiquidity), "order receiver");
         assertEq(
             uint256(order.numbers.orderType),
             uint256(Order.OrderType.MarketSwap),
             "order type"
         );
+        */
 
+        /*
         // Execute order
         skip(1);
 
@@ -104,8 +109,8 @@ contract SwapTest is Test {
         });
 
         helper.set("ETH keeper before", keeper.balance);
-        helper.set("ETH swap before", address(swap).balance);
-        helper.set("DAI swap before", dai.balanceOf(address(swap)));
+        helper.set("ETH marketLiquidity before", address(marketLiquidity).balance);
+        helper.set("DAI marketLiquidity before", dai.balanceOf(address(marketLiquidity)));
 
         vm.prank(keeper);
         orderHandler.executeOrder(
@@ -118,12 +123,12 @@ contract SwapTest is Test {
         );
 
         helper.set("ETH keeper after", keeper.balance);
-        helper.set("ETH swap after", address(swap).balance);
-        helper.set("DAI swap after", dai.balanceOf(address(swap)));
+        helper.set("ETH marketLiquidity after", address(marketLiquidity).balance);
+        helper.set("DAI marketLiquidity after", dai.balanceOf(address(marketLiquidity)));
 
         console.log("ETH keeper: %e", helper.get("ETH keeper after"));
-        console.log("ETH swap: %e", helper.get("ETH swap after"));
-        console.log("DAI swap: %e", helper.get("DAI swap after"));
+        console.log("ETH marketLiquidity: %e", helper.get("ETH marketLiquidity after"));
+        console.log("DAI marketLiquidity: %e", helper.get("DAI marketLiquidity after"));
 
         assertGe(
             helper.get("ETH keeper after"),
@@ -131,14 +136,15 @@ contract SwapTest is Test {
             "Keeper execution fee"
         );
         assertGe(
-            helper.get("ETH swap after"),
-            helper.get("ETH swap before"),
-            "Swap execution fee refund"
+            helper.get("ETH marketLiquidity after"),
+            helper.get("ETH marketLiquidity before"),
+            "marketLiquidity execution fee refund"
         );
         assertGe(
-            helper.get("DAI swap after"),
-            helper.get("DAI swap before"),
-            "Swap DAI"
+            helper.get("DAI marketLiquidity after"),
+            helper.get("DAI marketLiquidity before"),
+            "marketLiquidity DAI"
         );
+        */
     }
 }
