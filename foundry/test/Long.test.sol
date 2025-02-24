@@ -35,12 +35,43 @@ contract LongTest is Test {
     TestHelper helper;
     Oracle oracle;
     Long long;
+    address keeper;
+
+    // Oracle params
+    address[] tokens;
+    address[] providers;
+    bytes[] data;
+    TestHelper.OracleParams[] oracles;
 
     function setUp() public {
         helper = new TestHelper();
+        keeper = helper.getRoleMember(Role.ORDER_KEEPER);
         oracle = new Oracle();
         long = new Long(address(oracle));
         deal(WETH, address(this), 1000 * 1e18);
+
+        tokens = new address[](2);
+        tokens[0] = USDC;
+        tokens[1] = WETH;
+
+        providers = new address[](2);
+        providers[0] = CHAINLINK_DATA_STREAM_PROVIDER;
+        providers[1] = CHAINLINK_DATA_STREAM_PROVIDER;
+
+        // NOTE: data kept empty for mock calls
+        data = new bytes[](2);
+
+        oracles = new TestHelper.OracleParams[](2);
+        oracles[0] = TestHelper.OracleParams({
+            chainlink: CHAINLINK_USDC_USD,
+            multiplier: 1e16,
+            deltaPrice: 0
+        });
+        oracles[1] = TestHelper.OracleParams({
+            chainlink: CHAINLINK_ETH_USD,
+            multiplier: 1e4,
+            deltaPrice: 0
+        });
     }
 
     function testLong() public {
@@ -63,30 +94,6 @@ contract LongTest is Test {
         // Execute long order
         skip(1);
 
-        address[] memory tokens = new address[](2);
-        tokens[0] = USDC;
-        tokens[1] = WETH;
-
-        address[] memory providers = new address[](2);
-        providers[0] = CHAINLINK_DATA_STREAM_PROVIDER;
-        providers[1] = CHAINLINK_DATA_STREAM_PROVIDER;
-
-        // NOTE: data kept empty for mock calls
-        bytes[] memory data = new bytes[](2);
-
-        TestHelper.OracleParams[] memory oracles =
-            new TestHelper.OracleParams[](2);
-        oracles[0] = TestHelper.OracleParams({
-            chainlink: CHAINLINK_USDC_USD,
-            multiplier: 1e16,
-            deltaPrice: 0
-        });
-        oracles[1] = TestHelper.OracleParams({
-            chainlink: CHAINLINK_ETH_USD,
-            multiplier: 1e4,
-            deltaPrice: 0
-        });
-
         helper.mockOraclePrices({
             tokens: tokens,
             providers: providers,
@@ -94,13 +101,8 @@ contract LongTest is Test {
             oracles: oracles
         });
 
-        address keeper = helper.getRoleMember(Role.ORDER_KEEPER);
-
-        uint256[] memory b0 = new uint256[](2);
-        uint256[] memory b1 = new uint256[](2);
-
-        b0[0] = keeper.balance;
-        b0[1] = address(long).balance;
+        helper.set("ETH keeper before", keeper.balance);
+        helper.set("ETH long before", address(long).balance);
 
         vm.prank(keeper);
         orderHandler.executeOrder(
@@ -112,13 +114,22 @@ contract LongTest is Test {
             })
         );
 
-        b1[0] = keeper.balance;
-        b1[1] = address(long).balance;
+        helper.set("ETH keeper after", keeper.balance);
+        helper.set("ETH long after", address(long).balance);
 
-        console.log("ETH keeper: %e", b1[0]);
-        console.log("ETH long: %e", b1[1]);
-        assertGe(b1[0], b0[0], "Keeper execution fee");
-        assertGe(b1[1], b0[1], "long execution fee refund");
+        console.log("ETH keeper: %e", helper.get("ETH keeper after"));
+        console.log("ETH long: %e", helper.get("ETH long after"));
+
+        assertGe(
+            helper.get("ETH keeper after"),
+            helper.get("ETH keeper before"),
+            "Keeper execution fee"
+        );
+        assertGe(
+            helper.get("ETH long after"),
+            helper.get("ETH long before"),
+            "Long execution fee refund"
+        );
 
         bytes32 positionKey = Position.getPositionKey({
             account: address(long),
@@ -181,8 +192,8 @@ contract LongTest is Test {
             oracles: oracles
         });
 
-        b0[0] = keeper.balance;
-        b0[1] = address(long).balance;
+        helper.set("ETH keeper before", keeper.balance);
+        helper.set("ETH long before", address(long).balance);
 
         vm.prank(keeper);
         orderHandler.executeOrder(
@@ -194,11 +205,13 @@ contract LongTest is Test {
             })
         );
 
-        b1[0] = keeper.balance;
-        b1[1] = address(long).balance;
+        helper.set("ETH keeper after", keeper.balance);
+        helper.set("ETH long after", address(long).balance);
+        helper.set("WETH long", weth.balanceOf(address(long)));
+        helper.set("USDC long", usdc.balanceOf(address(long)));
 
-        uint256 wethBal = weth.balanceOf(address(long));
-        uint256 usdcBal = usdc.balanceOf(address(long));
+        uint256 wethBal = helper.get("WETH long");
+        uint256 usdcBal = helper.get("USDC long");
 
         console.log("WETH %e", wethBal);
         console.log("USDC %e", usdcBal);
@@ -206,10 +219,19 @@ contract LongTest is Test {
         assertGe(wethBal, wethAmount, "WETH balance < initial collateral");
         assertEq(usdcBal, 0, "USDC balance != 0");
 
-        console.log("ETH keeper: %e", b1[0]);
-        console.log("ETH long: %e", b1[1]);
-        assertGe(b1[0], b0[0], "Keeper execution fee");
-        assertGe(b1[1], b0[1], "Close execution fee refund");
+        console.log("ETH keeper: %e", helper.get("ETH keeper after"));
+        console.log("ETH long: %e", helper.get("ETH long after"));
+
+        assertGe(
+            helper.get("ETH keeper after"),
+            helper.get("ETH keeper before"),
+            "Keeper execution fee"
+        );
+        assertGe(
+            helper.get("ETH long after"),
+            helper.get("ETH long before"),
+            "Close execution fee refund"
+        );
 
         position = reader.getPosition(DATA_STORE, positionKey);
         console.log("pos.sizeInUsd %e", position.numbers.sizeInUsd);

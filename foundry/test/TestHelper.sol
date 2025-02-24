@@ -21,6 +21,16 @@ contract TestHelper is Test {
     IChainlinkDataStreamProvider constant provider =
         IChainlinkDataStreamProvider(CHAINLINK_DATA_STREAM_PROVIDER);
 
+    mapping(string => uint256) public vals;
+
+    function set(string memory key, uint256 val) public {
+        vals[key] = val;
+    }
+
+    function get(string memory key) public view returns (uint256) {
+        return vals[key];
+    }
+
     function getRoleMember(bytes32 key) public view returns (address) {
         address[] memory addrs = roleStore.getRoleMembers(key, 0, 1);
         return addrs[0];

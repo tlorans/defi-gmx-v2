@@ -35,12 +35,43 @@ contract ShortTest is Test {
     TestHelper helper;
     Oracle oracle;
     Short short;
+    address keeper;
+
+    // Oracle params
+    address[] tokens;
+    address[] providers;
+    bytes[] data;
+    TestHelper.OracleParams[] oracles;
 
     function setUp() public {
         helper = new TestHelper();
+        keeper = helper.getRoleMember(Role.ORDER_KEEPER);
         oracle = new Oracle();
         short = new Short(address(oracle));
         deal(USDC, address(this), 1000 * 1e6);
+
+        tokens = new address[](2);
+        tokens[0] = USDC;
+        tokens[1] = WETH;
+
+        providers = new address[](2);
+        providers[0] = CHAINLINK_DATA_STREAM_PROVIDER;
+        providers[1] = CHAINLINK_DATA_STREAM_PROVIDER;
+
+        // NOTE: data kept empty for mock calls
+        data = new bytes[](2);
+
+        oracles = new TestHelper.OracleParams[](2);
+        oracles[0] = TestHelper.OracleParams({
+            chainlink: CHAINLINK_USDC_USD,
+            multiplier: 1e16,
+            deltaPrice: 0
+        });
+        oracles[1] = TestHelper.OracleParams({
+            chainlink: CHAINLINK_ETH_USD,
+            multiplier: 1e4,
+            deltaPrice: 0
+        });
     }
 
     function testShort() public {
@@ -61,34 +92,10 @@ contract ShortTest is Test {
             uint256(Order.OrderType.MarketIncrease),
             "order type"
         );
-        assertEq(shortOrder.flags.isLong, false, "not long");
+        assertEq(shortOrder.flags.isLong, false, "not short");
 
         // Execute short order
         skip(1);
-
-        address[] memory tokens = new address[](2);
-        tokens[0] = USDC;
-        tokens[1] = WETH;
-
-        address[] memory providers = new address[](2);
-        providers[0] = CHAINLINK_DATA_STREAM_PROVIDER;
-        providers[1] = CHAINLINK_DATA_STREAM_PROVIDER;
-
-        // NOTE: data kept empty for mock calls
-        bytes[] memory data = new bytes[](2);
-
-        TestHelper.OracleParams[] memory oracles =
-            new TestHelper.OracleParams[](2);
-        oracles[0] = TestHelper.OracleParams({
-            chainlink: CHAINLINK_USDC_USD,
-            multiplier: 1e16,
-            deltaPrice: 0
-        });
-        oracles[1] = TestHelper.OracleParams({
-            chainlink: CHAINLINK_ETH_USD,
-            multiplier: 1e4,
-            deltaPrice: 0
-        });
 
         helper.mockOraclePrices({
             tokens: tokens,
@@ -97,13 +104,8 @@ contract ShortTest is Test {
             oracles: oracles
         });
 
-        address keeper = helper.getRoleMember(Role.ORDER_KEEPER);
-
-        uint256[] memory b0 = new uint256[](2);
-        uint256[] memory b1 = new uint256[](2);
-
-        b0[0] = keeper.balance;
-        b0[1] = address(short).balance;
+        helper.set("ETH keeper before", keeper.balance);
+        helper.set("ETH short before", address(short).balance);
 
         vm.prank(keeper);
         orderHandler.executeOrder(
@@ -115,13 +117,22 @@ contract ShortTest is Test {
             })
         );
 
-        b1[0] = keeper.balance;
-        b1[1] = address(short).balance;
+        helper.set("ETH keeper after", keeper.balance);
+        helper.set("ETH short after", address(short).balance);
 
-        console.log("ETH keeper: %e", b1[0]);
-        console.log("ETH short: %e", b1[1]);
-        assertGe(b1[0], b0[0], "Keeper execution fee");
-        assertGe(b1[1], b0[1], "Short execution fee refund");
+        console.log("ETH keeper: %e", helper.get("ETH keeper after"));
+        console.log("ETH short: %e", helper.get("ETH short after"));
+
+        assertGe(
+            helper.get("ETH keeper after"),
+            helper.get("ETH keeper before"),
+            "Keeper execution fee"
+        );
+        assertGe(
+            helper.get("ETH short after"),
+            helper.get("ETH short before"),
+            "Short execution fee refund"
+        );
 
         bytes32 positionKey = Position.getPositionKey({
             account: address(short),
@@ -186,8 +197,8 @@ contract ShortTest is Test {
             oracles: oracles
         });
 
-        b0[0] = keeper.balance;
-        b0[1] = address(short).balance;
+        helper.set("ETH keeper before", keeper.balance);
+        helper.set("ETH short before", address(short).balance);
 
         vm.prank(keeper);
         orderHandler.executeOrder(
@@ -199,11 +210,14 @@ contract ShortTest is Test {
             })
         );
 
-        b1[0] = keeper.balance;
-        b1[1] = address(short).balance;
+        helper.set("ETH keeper after", keeper.balance);
+        helper.set("ETH short after", address(short).balance);
 
-        uint256 wethBal = weth.balanceOf(address(short));
-        uint256 usdcBal = usdc.balanceOf(address(short));
+        helper.set("WETH short", weth.balanceOf(address(short)));
+        helper.set("USDC short", usdc.balanceOf(address(short)));
+
+        uint256 wethBal = helper.get("WETH short");
+        uint256 usdcBal = helper.get("USDC short");
 
         console.log("WETH %e", wethBal);
         console.log("USDC %e", usdcBal);
@@ -211,10 +225,19 @@ contract ShortTest is Test {
         assertEq(wethBal, 0, "WETH balance != 0");
         assertGe(usdcBal, usdcAmount, "USDC balance < initial collateral");
 
-        console.log("ETH keeper: %e", b1[0]);
-        console.log("ETH short: %e", b1[1]);
-        assertGe(b1[0], b0[0], "Keeper execution fee");
-        assertGe(b1[1], b0[1], "Close execution fee refund");
+        console.log("ETH keeper: %e", helper.get("ETH keeper after"));
+        console.log("ETH short: %e", helper.get("ETH short after"));
+
+        assertGe(
+            helper.get("ETH keeper after"),
+            helper.get("ETH keeper before"),
+            "Keeper execution fee"
+        );
+        assertGe(
+            helper.get("ETH long after"),
+            helper.get("ETH long before"),
+            "Close execution fee refund"
+        );
 
         position = reader.getPosition(DATA_STORE, positionKey);
         console.log("pos.sizeInUsd %e", position.numbers.sizeInUsd);

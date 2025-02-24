@@ -32,11 +32,50 @@ contract SwapTest is Test {
 
     TestHelper helper;
     Swap swap;
+    address keeper;
+
+    // Oracle params
+    address[] tokens;
+    address[] providers;
+    bytes[] data;
+    TestHelper.OracleParams[] oracles;
 
     function setUp() public {
         helper = new TestHelper();
+        keeper = helper.getRoleMember(Role.ORDER_KEEPER);
+
         swap = new Swap();
         deal(WETH, address(this), 1000 * 1e18);
+
+        tokens = new address[](3);
+        tokens[0] = DAI;
+        tokens[1] = WETH;
+        tokens[2] = USDC;
+
+        providers = new address[](3);
+        providers[0] = CHAINLINK_DATA_STREAM_PROVIDER;
+        providers[1] = CHAINLINK_DATA_STREAM_PROVIDER;
+        providers[2] = CHAINLINK_DATA_STREAM_PROVIDER;
+
+        // NOTE: data kept empty for mock calls
+        data = new bytes[](3);
+
+        oracles = new TestHelper.OracleParams[](3);
+        oracles[0] = TestHelper.OracleParams({
+            chainlink: CHAINLINK_DAI_USD,
+            multiplier: 1e4,
+            deltaPrice: 0
+        });
+        oracles[1] = TestHelper.OracleParams({
+            chainlink: CHAINLINK_ETH_USD,
+            multiplier: 1e4,
+            deltaPrice: 0
+        });
+        oracles[2] = TestHelper.OracleParams({
+            chainlink: CHAINLINK_USDC_USD,
+            multiplier: 1e16,
+            deltaPrice: 0
+        });
     }
 
     function testSwap() public {
@@ -57,37 +96,6 @@ contract SwapTest is Test {
         // Execute order
         skip(1);
 
-        address[] memory tokens = new address[](3);
-        tokens[0] = DAI;
-        tokens[1] = WETH;
-        tokens[2] = USDC;
-
-        address[] memory providers = new address[](3);
-        providers[0] = CHAINLINK_DATA_STREAM_PROVIDER;
-        providers[1] = CHAINLINK_DATA_STREAM_PROVIDER;
-        providers[2] = CHAINLINK_DATA_STREAM_PROVIDER;
-
-        // NOTE: data kept empty for mock calls
-        bytes[] memory data = new bytes[](3);
-
-        TestHelper.OracleParams[] memory oracles =
-            new TestHelper.OracleParams[](3);
-        oracles[0] = TestHelper.OracleParams({
-            chainlink: CHAINLINK_DAI_USD,
-            multiplier: 1e4,
-            deltaPrice: 0
-        });
-        oracles[1] = TestHelper.OracleParams({
-            chainlink: CHAINLINK_ETH_USD,
-            multiplier: 1e4,
-            deltaPrice: 0
-        });
-        oracles[2] = TestHelper.OracleParams({
-            chainlink: CHAINLINK_USDC_USD,
-            multiplier: 1e16,
-            deltaPrice: 0
-        });
-
         helper.mockOraclePrices({
             tokens: tokens,
             providers: providers,
@@ -95,12 +103,9 @@ contract SwapTest is Test {
             oracles: oracles
         });
 
-        address keeper = helper.getRoleMember(Role.ORDER_KEEPER);
-
-        uint256[] memory b0 = new uint256[](3);
-        b0[0] = keeper.balance;
-        b0[1] = address(swap).balance;
-        b0[2] = dai.balanceOf(address(swap));
+        helper.set("ETH keeper before", keeper.balance);
+        helper.set("ETH swap before", address(swap).balance);
+        helper.set("DAI swap before", dai.balanceOf(address(swap)));
 
         vm.prank(keeper);
         orderHandler.executeOrder(
@@ -112,17 +117,28 @@ contract SwapTest is Test {
             })
         );
 
-        uint256[] memory b1 = new uint256[](3);
-        b1[0] = keeper.balance;
-        b1[1] = address(swap).balance;
-        b1[2] = dai.balanceOf(address(swap));
+        helper.set("ETH keeper after", keeper.balance);
+        helper.set("ETH swap after", address(swap).balance);
+        helper.set("DAI swap after", dai.balanceOf(address(swap)));
 
-        console.log("ETH keeper: %e", b1[0]);
-        console.log("ETH swap: %e", b1[1]);
-        console.log("DAI swap: %e", b1[2]);
+        console.log("ETH keeper: %e", helper.get("ETH keeper after"));
+        console.log("ETH swap: %e", helper.get("ETH swap after"));
+        console.log("DAI swap: %e", helper.get("DAI swap after"));
 
-        assertGe(b1[0], b0[0], "Keeper execution fee");
-        assertGe(b1[1], b0[1], "Swap execution fee refund");
-        assertGe(b1[2], b0[2], "Swap DAI");
+        assertGe(
+            helper.get("ETH keeper after"),
+            helper.get("ETH keeper before"),
+            "Keeper execution fee"
+        );
+        assertGe(
+            helper.get("ETH swap after"),
+            helper.get("ETH swap before"),
+            "Swap execution fee refund"
+        );
+        assertGe(
+            helper.get("DAI swap after"),
+            helper.get("DAI swap before"),
+            "Swap DAI"
+        );
     }
 }
