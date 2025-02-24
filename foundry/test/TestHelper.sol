@@ -51,6 +51,16 @@ contract TestHelper is Test {
     ) public returns (uint256[] memory prices) {
         uint256 n = tokens.length;
 
+        /*
+        "0":{
+            "token":"0x47904963fc8b2340414262125af798b9655e58cd"
+            "min":"1057875044574083300000000000"
+            "max":"1057875044574083300000000000"
+            "timestamp":"1737511312"
+            "provider":"0xf4122df7be4ccd46d7397daf2387b3a14e53d967"
+        }
+        */
+
         prices = new uint256[](n);
         for (uint256 i = 0; i < n; i++) {
             (, int256 answer,,,) =

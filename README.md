@@ -326,6 +326,7 @@ Explain utilities, acquistion methods, differences and staking processes.
 - why clear price after order?
 - why reserve must be below threshold?
 - graph execution price
+- why market index token set to EOA? 0x47904963fc8b2340414262125aF798B9655E58Cd
 
 ##### TODO
 

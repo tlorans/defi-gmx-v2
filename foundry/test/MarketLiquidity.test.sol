@@ -4,20 +4,18 @@ pragma solidity 0.8.26;
 import {Test, console} from "forge-std/Test.sol";
 import "./TestHelper.sol";
 import {IERC20} from "../src/interfaces/IERC20.sol";
-import {IOrderHandler} from "../src/interfaces/IOrderHandler.sol";
+import {IDepositHandler} from "../src/interfaces/IDepositHandler.sol";
 import {IReader} from "../src/interfaces/IReader.sol";
 import {OracleUtils} from "../src/types/OracleUtils.sol";
 import {Order} from "../src/types/Order.sol";
 import {
-    WETH,
-    DAI,
+    WBTC,
     USDC,
-    CHAINLINK_ETH_USD,
-    CHAINLINK_DAI_USD,
+    CHAINLINK_WBTC_USD,
     CHAINLINK_USDC_USD,
     DATA_STORE,
     READER,
-    ORDER_HANDLER,
+    DEPOSIT_HANDLER,
     CHAINLINK_DATA_STREAM_PROVIDER
 } from "../src/Constants.sol";
 import {Role} from "../src/lib/Role.sol";
@@ -25,9 +23,9 @@ import {Role} from "../src/lib/Role.sol";
 import {MarketLiquidity} from "../src/solutions/MarketLiquidity.sol";
 
 contract MarketLiquidityTest is Test {
-    IERC20 constant weth = IERC20(WETH);
+    IERC20 constant wbtc = IERC20(WBTC);
     IERC20 constant usdc = IERC20(USDC);
-    IOrderHandler constant orderHandler = IOrderHandler(ORDER_HANDLER);
+    IDepositHandler constant depositHandler = IDepositHandler(DEPOSIT_HANDLER);
     IReader constant reader = IReader(READER);
 
     TestHelper helper;
@@ -47,33 +45,26 @@ contract MarketLiquidityTest is Test {
         marketLiquidity = new MarketLiquidity();
         deal(USDC, address(this), 1000 * 1e6);
 
-        tokens = new address[](3);
-        tokens[0] = DAI;
-        tokens[1] = WETH;
-        tokens[2] = USDC;
+        tokens = new address[](2);
+        tokens[0] = USDC;
+        tokens[1] = WBTC;
 
-        providers = new address[](3);
+        providers = new address[](2);
         providers[0] = CHAINLINK_DATA_STREAM_PROVIDER;
         providers[1] = CHAINLINK_DATA_STREAM_PROVIDER;
-        providers[2] = CHAINLINK_DATA_STREAM_PROVIDER;
 
         // NOTE: data kept empty for mock calls
-        data = new bytes[](3);
+        data = new bytes[](2);
 
-        oracles = new TestHelper.OracleParams[](3);
+        oracles = new TestHelper.OracleParams[](2);
         oracles[0] = TestHelper.OracleParams({
-            chainlink: CHAINLINK_DAI_USD,
-            multiplier: 1e4,
+            chainlink: CHAINLINK_USDC_USD,
+            multiplier: 1e16,
             deltaPrice: 0
         });
         oracles[1] = TestHelper.OracleParams({
-            chainlink: CHAINLINK_ETH_USD,
-            multiplier: 1e4,
-            deltaPrice: 0
-        });
-        oracles[2] = TestHelper.OracleParams({
-            chainlink: CHAINLINK_USDC_USD,
-            multiplier: 1e16,
+            chainlink: CHAINLINK_WBTC_USD,
+            multiplier: 1e14,
             deltaPrice: 0
         });
     }
@@ -97,7 +88,6 @@ contract MarketLiquidityTest is Test {
         );
         */
 
-        /*
         // Execute order
         skip(1);
 
@@ -108,12 +98,12 @@ contract MarketLiquidityTest is Test {
             oracles: oracles
         });
 
-        helper.set("ETH keeper before", keeper.balance);
-        helper.set("ETH marketLiquidity before", address(marketLiquidity).balance);
-        helper.set("DAI marketLiquidity before", dai.balanceOf(address(marketLiquidity)));
+        // helper.set("ETH keeper before", keeper.balance);
+        // helper.set("ETH marketLiquidity before", address(marketLiquidity).balance);
+        // helper.set("DAI marketLiquidity before", dai.balanceOf(address(marketLiquidity)));
 
         vm.prank(keeper);
-        orderHandler.executeOrder(
+        depositHandler.executeDeposit(
             key,
             OracleUtils.SetPricesParams({
                 tokens: tokens,
@@ -122,29 +112,28 @@ contract MarketLiquidityTest is Test {
             })
         );
 
-        helper.set("ETH keeper after", keeper.balance);
-        helper.set("ETH marketLiquidity after", address(marketLiquidity).balance);
-        helper.set("DAI marketLiquidity after", dai.balanceOf(address(marketLiquidity)));
+        // helper.set("ETH keeper after", keeper.balance);
+        // helper.set("ETH marketLiquidity after", address(marketLiquidity).balance);
+        // helper.set("DAI marketLiquidity after", dai.balanceOf(address(marketLiquidity)));
 
-        console.log("ETH keeper: %e", helper.get("ETH keeper after"));
-        console.log("ETH marketLiquidity: %e", helper.get("ETH marketLiquidity after"));
-        console.log("DAI marketLiquidity: %e", helper.get("DAI marketLiquidity after"));
+        // console.log("ETH keeper: %e", helper.get("ETH keeper after"));
+        // console.log("ETH marketLiquidity: %e", helper.get("ETH marketLiquidity after"));
+        // console.log("DAI marketLiquidity: %e", helper.get("DAI marketLiquidity after"));
 
-        assertGe(
-            helper.get("ETH keeper after"),
-            helper.get("ETH keeper before"),
-            "Keeper execution fee"
-        );
-        assertGe(
-            helper.get("ETH marketLiquidity after"),
-            helper.get("ETH marketLiquidity before"),
-            "marketLiquidity execution fee refund"
-        );
-        assertGe(
-            helper.get("DAI marketLiquidity after"),
-            helper.get("DAI marketLiquidity before"),
-            "marketLiquidity DAI"
-        );
-        */
+        // assertGe(
+        //     helper.get("ETH keeper after"),
+        //     helper.get("ETH keeper before"),
+        //     "Keeper execution fee"
+        // );
+        // assertGe(
+        //     helper.get("ETH marketLiquidity after"),
+        //     helper.get("ETH marketLiquidity before"),
+        //     "marketLiquidity execution fee refund"
+        // );
+        // assertGe(
+        //     helper.get("DAI marketLiquidity after"),
+        //     helper.get("DAI marketLiquidity before"),
+        //     "marketLiquidity DAI"
+        // );
     }
 }

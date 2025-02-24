@@ -49,6 +49,7 @@ contract MarketLiquidity {
             amount: executionFee
         });
 
+        // TODO: double sided liquidity?
         // Send token
         usdc.approve(ROUTER, usdcAmount);
         exchangeRouter.sendTokens({
