@@ -259,6 +259,8 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [Long ETH 0.001 75x ~ close part 4](https://arbiscan.io/tx/0xf5f5d293ef7bdc6893941cda6a6fd57d67a20876a175aa1e424af9442868bb47)
 - [Limit order swap 2.63 USDC to ETH at $2780 (part 1)](https://arbiscan.io/tx/0x5a55b926aadaa832a42c55a4a60b0008193c773767e7289cdeb7eca0e1433595)
 - [Limit order swap 2.63 USDC to ETH at $2780 (part 2)](https://arbiscan.io/tx/0x2306c6c8300a10a4e59c6dcc04513c84c0d2469172beb5c8f9cf1820eba308d0)
+- [? - Long ETH 0.01 2x ~ $54.48 TP 5% SL 5% part 1](https://arbiscan.io/tx/0xdce9220d6891cb05016cb6a2c8d3ab2d6f090d940023a536ab55354f85b871e7)
+- [? - Long ETH 0.01 2x ~ $54.48 TP 5% SL 5% part 2](https://arbiscan.io/tx/0x9e01e5be79e8eea686c5a183172d063c7dd1f208306cd3af68769ec2accf1751)
 
 ##### Contracts
 
