@@ -13,7 +13,7 @@ import {
     WETH,
     DAI,
     USDC,
-    CHAINLINK_GM_BTC_USD,
+    CHAINLINK_BTC_USD,
     READER,
     DATA_STORE,
     CHAINLINK_DATA_STREAM_PROVIDER,
@@ -31,8 +31,7 @@ contract Dev is Test {
 
     function test() public {
         Oracle oracle = new Oracle();
-        uint256 p = oracle.getPrice(CHAINLINK_GM_BTC_USD);
+        uint256 p = oracle.getPrice(CHAINLINK_BTC_USD);
         console.log("p %e", p);
-
     }
 }

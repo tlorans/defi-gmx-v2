@@ -327,6 +327,9 @@ Explain utilities, acquistion methods, differences and staking processes.
 - why reserve must be below threshold?
 - graph execution price
 - why market index token set to EOA? 0x47904963fc8b2340414262125aF798B9655E58Cd
+- what is an atomic provider?
+
+- [Chainlink providers](https://docs.chain.link/data-feeds/price-feeds/addresses?network=arbitrum&page=1)
 
 ##### TODO
 

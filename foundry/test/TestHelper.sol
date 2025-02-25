@@ -52,6 +52,7 @@ contract TestHelper is Test {
         uint256 n = tokens.length;
 
         /*
+        TODO: remove
         "0":{
             "token":"0x47904963fc8b2340414262125af798b9655e58cd"
             "min":"1057875044574083300000000000"
