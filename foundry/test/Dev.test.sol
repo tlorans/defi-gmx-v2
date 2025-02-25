@@ -48,9 +48,12 @@ contract Dev is Test {
                 longToken: WBTC,
                 shortToken: USDC
             }),
-            indexTokenPrice: Price.Props({min: 1, max: 1}),
-            longTokenPrice: Price.Props({min: 1, max: 1}),
-            shortTokenPrice: Price.Props({min: 1, max: 1}),
+            indexTokenPrice: Price.Props({
+                min: 9.1725761563 * 1e26,
+                max: 9.1725761563 * 1e26
+            }),
+            longTokenPrice: Price.Props({min: 9.1828 * 1e26, max: 9.1828 * 1e26}),
+            shortTokenPrice: Price.Props({min: 9.9994 * 1e23, max: 9.9994 * 1e23}),
             pnlFactorType: PNL_FACTOR_TYPE_DEPOSIT,
             maximize: true
         });
