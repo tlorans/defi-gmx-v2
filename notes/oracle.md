@@ -21,3 +21,9 @@ oracle price = 2700 * 1e12
 ChainlinkPriceFeedUtils.sol
 formula for decimals for price feed multiplier: 60 - (external price feed decimals) - (token decimals)
 ```
+
+why EOA for some tokens?
+
+```
+we're using a "synthetic" address for BTC markets (both single-sided and market backup by two tokens).
+```
