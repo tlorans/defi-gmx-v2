@@ -7,15 +7,7 @@ import {IExchangeRouter} from "../interfaces/IExchangeRouter.sol";
 import {IOrderHandler} from "../interfaces/IOrderHandler.sol";
 import {Order} from "../types/Order.sol";
 import {IBaseOrderUtils} from "../types/IBaseOrderUtils.sol";
-import {
-    WETH,
-    DAI,
-    ROUTER,
-    EXCHANGE_ROUTER,
-    ORDER_VAULT,
-    GM_TOKEN_USDC_DAI,
-    GM_TOKEN_WETH_USDC
-} from "../Constants.sol";
+import "../Constants.sol";
 
 contract Swap {
     IERC20 constant weth = IERC20(WETH);

@@ -10,18 +10,7 @@ import {Order} from "../types/Order.sol";
 import {Position} from "../types/Position.sol";
 import {IBaseOrderUtils} from "../types/IBaseOrderUtils.sol";
 import {Oracle} from "../lib/Oracle.sol";
-import {
-    WETH,
-    USDC,
-    DATA_STORE,
-    READER,
-    ROUTER,
-    EXCHANGE_ROUTER,
-    ORDER_VAULT,
-    GM_TOKEN_WETH_USDC,
-    CHAINLINK_ETH_USD,
-    CHAINLINK_USDC_USD
-} from "../Constants.sol";
+import "../Constants.sol";
 
 contract Long {
     IERC20 constant weth = IERC20(WETH);

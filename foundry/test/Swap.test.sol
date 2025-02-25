@@ -8,18 +8,7 @@ import {IOrderHandler} from "../src/interfaces/IOrderHandler.sol";
 import {IReader} from "../src/interfaces/IReader.sol";
 import {OracleUtils} from "../src/types/OracleUtils.sol";
 import {Order} from "../src/types/Order.sol";
-import {
-    WETH,
-    DAI,
-    USDC,
-    CHAINLINK_ETH_USD,
-    CHAINLINK_DAI_USD,
-    CHAINLINK_USDC_USD,
-    DATA_STORE,
-    READER,
-    ORDER_HANDLER,
-    CHAINLINK_DATA_STREAM_PROVIDER
-} from "../src/Constants.sol";
+import "../src/Constants.sol";
 import {Role} from "../src/lib/Role.sol";
 // TODO: import from exercises
 import {Swap} from "../src/solutions/Swap.sol";

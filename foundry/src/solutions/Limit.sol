@@ -9,16 +9,7 @@ import {IReader} from "../interfaces/IReader.sol";
 import {Order} from "../types/Order.sol";
 import {Position} from "../types/Position.sol";
 import {IBaseOrderUtils} from "../types/IBaseOrderUtils.sol";
-import {
-    WETH,
-    USDC,
-    DATA_STORE,
-    READER,
-    ROUTER,
-    EXCHANGE_ROUTER,
-    ORDER_VAULT,
-    GM_TOKEN_WETH_USDC
-} from "../Constants.sol";
+import "../Constants.sol";
 
 contract Limit {
     IERC20 constant weth = IERC20(WETH);
