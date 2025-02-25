@@ -15,10 +15,7 @@ import {
     ORACLE
 } from "../src/Constants.sol";
 import "../src/lib/Errors.sol";
-
-function add(uint256 x, int256 y) pure returns (uint256) {
-    return y >= 0 ? x + uint256(y) : x - uint256(-y);
-}
+import {Math} from "../src/lib/Math.sol";
 
 contract TestHelper is Test {
     IRoleStore constant roleStore = IRoleStore(ROLE_STORE);
@@ -61,7 +58,7 @@ contract TestHelper is Test {
             (, int256 answer,,,) =
                 IPriceFeed(oracles[i].chainlink).latestRoundData();
             prices[i] = uint256(answer) * oracles[i].multiplier
-                * add(100, oracles[i].deltaPrice) / 100;
+                * Math.add(100, oracles[i].deltaPrice) / 100;
         }
 
         for (uint256 i = 0; i < n; i++) {
