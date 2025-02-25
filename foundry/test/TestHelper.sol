@@ -5,10 +5,14 @@ import {Test, console} from "forge-std/Test.sol";
 import {IRoleStore} from "../src/interfaces/IRoleStore.sol";
 import {IChainlinkDataStreamProvider} from
     "../src/interfaces/IChainlinkDataStreamProvider.sol";
+import {IOracle} from "../src/interfaces/IOracle.sol";
 import {IPriceFeed} from "../src/interfaces/IPriceFeed.sol";
 import {OracleUtils} from "../src/types/OracleUtils.sol";
+import {Price} from "../src/types/Price.sol";
 import {
-    ROLE_STORE, CHAINLINK_DATA_STREAM_PROVIDER
+    ROLE_STORE,
+    CHAINLINK_DATA_STREAM_PROVIDER,
+    ORACLE
 } from "../src/Constants.sol";
 import "../src/lib/Errors.sol";
 
@@ -18,6 +22,7 @@ function add(uint256 x, int256 y) pure returns (uint256) {
 
 contract TestHelper is Test {
     IRoleStore constant roleStore = IRoleStore(ROLE_STORE);
+    IOracle constant oracle = IOracle(ORACLE);
     IChainlinkDataStreamProvider constant provider =
         IChainlinkDataStreamProvider(CHAINLINK_DATA_STREAM_PROVIDER);
 
@@ -50,17 +55,6 @@ contract TestHelper is Test {
         OracleParams[] memory oracles
     ) public returns (uint256[] memory prices) {
         uint256 n = tokens.length;
-
-        /*
-        TODO: remove
-        "0":{
-            "token":"0x47904963fc8b2340414262125af798b9655e58cd"
-            "min":"1057875044574083300000000000"
-            "max":"1057875044574083300000000000"
-            "timestamp":"1737511312"
-            "provider":"0xf4122df7be4ccd46d7397daf2387b3a14e53d967"
-        }
-        */
 
         prices = new uint256[](n);
         for (uint256 i = 0; i < n; i++) {
