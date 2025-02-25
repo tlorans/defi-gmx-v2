@@ -4,8 +4,10 @@ pragma solidity 0.8.26;
 import {GlvDepositUtils} from "../types/GlvDepositUtils.sol";
 import {GlvWithdrawalUtils} from "../types/GlvWithdrawalUtils.sol";
 import {OracleUtils} from "../types/OracleUtils.sol";
+import {IMulticall} from "./IMulticall.sol";
+import {IBaseRouter} from "./IBaseRouter.sol";
 
-interface GlvRouter {
+interface IGlvRouter is IMulticall, IBaseRouter {
     function createGlvDeposit(
         GlvDepositUtils.CreateGlvDepositParams calldata params
     ) external payable returns (bytes32);
