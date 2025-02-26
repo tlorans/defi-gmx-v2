@@ -18,6 +18,63 @@ import {MarketPoolValueInfo} from "../src/types/MarketPoolValueInfo.sol";
 import {Keys} from "../src/lib/Keys.sol";
 import {Oracle} from "../src/lib/Oracle.sol";
 
+contract MarketData {
+    // market, index, short and long token to chainlink
+    mapping(address => address) public oracles;
+
+    constructor() {
+        // Markets
+        oracles[GM_TOKEN_RENDER_WETH_USDC] = address(0);
+        oracles[GM_TOKEN_SUI_WETH_USDC] = address(0);
+        oracles[GM_TOKEN_APT_WETH_USDC] = address(0);
+        oracles[GM_TOKEN_WLD_WETH_USDC] = address(0);
+        oracles[GM_TOKEN_FET_WETH_USDC] = address(0);
+        oracles[GM_TOKEN_TRX_WETH_USDC] = address(0);
+        oracles[GM_TOKEN_TON_WETH_USDC] = address(0);
+        oracles[GM_TOKEN_ONDO_WETH_USDC] = address(0);
+        oracles[GM_TOKEN_EIGEN_WETH_USDC] = address(0);
+        oracles[GM_TOKEN_KBONK_WETH_USDC] = address(0);
+        oracles[GM_TOKEN_FARTCOIN_WBTC_USDC] = address(0);
+        oracles[GM_TOKEN_PENGU_WBTC_USDC] = address(0);
+        oracles[GM_TOKEN_VIRTUAL_WBTC_USDC] = address(0);
+        oracles[GM_TOKEN_BCH_WBTC_USDC] = address(0);
+        oracles[GM_TOKEN_KFLOKI_WBTC_USDC] = address(0);
+        oracles[GM_TOKEN_INJ_WBTC_USDC] = address(0);
+        oracles[GM_TOKEN_FIL_WBTC_USDC] = address(0);
+        oracles[GM_TOKEN_ICP_WBTC_USDC] = address(0);
+        oracles[GM_TOKEN_BOME_WBTC_USDC] = address(0);
+        oracles[GM_TOKEN_XLM_WBTC_USDC] = address(0);
+        oracles[GM_TOKEN_AI16Z_WBTC_USDC] = address(0);
+        oracles[GM_TOKEN_MSATS_WBTC_USDC] = address(0);
+        oracles[GM_TOKEN_MEME_WBTC_USDC] = address(0);
+        oracles[GM_TOKEN_MEW_WBTC_USDC] = address(0);
+        oracles[GM_TOKEN_DYDX_WBTC_USDC] = address(0);
+
+        oracles[GM_TOKEN_BTC_WBTC_USDC] = CHAINLINK_BTC_USD;
+        oracles[GM_TOKEN_ETH_WETH_USDC] = CHAINLINK_ETH_USD;
+        oracles[GM_TOKEN_XRP_WETH_USDC] = CHAINLINK_XRP_USD;
+        oracles[GM_TOKEN_TRUMP_WETH_USDC] = CHAINLINK_TRUMP_USD;
+        oracles[GM_TOKEN_DOGE_WETH_USDC] = CHAINLINK_DOGE_USD;
+        oracles[GM_TOKEN_UNI_UNI_USDC] = CHAINLINK_UNI_USD;
+        oracles[GM_TOKEN_BERA_WETH_USDC] = CHAINLINK_BERA_USD;
+        oracles[GM_TOKEN_LTC_WETH_USDC] = CHAINLINK_LTC_USD;
+        oracles[GM_TOKEN_NEAR_WETH_USDC] = CHAINLINK_NEAR_USD;
+        oracles[GM_TOKEN_ENA_WETH_USDC] = CHAINLINK_ENA_USD;
+        oracles[GM_TOKEN_MELANIA_WETH_USDC] = CHAINLINK_MELANIA_USD;
+        oracles[GM_TOKEN_SEI_WETH_USDC] = CHAINLINK_SEI_USD;
+        oracles[GM_TOKEN_LDO_WETH_USDC] = CHAINLINK_LDO_USD;
+        oracles[GM_TOKEN_TAO_WBTC_USDC] = CHAINLINK_TAO_USD;
+        oracles[GM_TOKEN_ATOM_WETH_USDC] = CHAINLINK_ATOM_USD;
+        oracles[GM_TOKEN_DOT_WBTC_USDC] = CHAINLINK_DOT_USD;
+        oracles[GM_TOKEN_POL_WETH_USDC] = CHAINLINK_POL_USD;
+        oracles[GM_TOKEN_TIA_WETH_USDC] = CHAINLINK_TIA_USD;
+        oracles[GM_TOKEN_STX_WBTC_USDC] = CHAINLINK_STX_USD;
+        oracles[GM_TOKEN_KSHIB_WETH_USDC] = CHAINLINK_SHIB_USD;
+        oracles[GM_TOKEN_ADA_WBTc_USDC] = CHAINLINK_ADA_USD;
+        oracles[GM_TOKEN_ORDI_WBTC_USDC] = CHAINLINK_ORDI_USD;
+    }
+}
+
 contract Dev is Test {
     IReader constant reader = IReader(READER);
     IGlvReader constant glvReader = IGlvReader(GLV_READER);
@@ -33,7 +90,7 @@ contract Dev is Test {
         return dataStore.getAddressValuesAt(Keys.MARKET_LIST, start, end);
     }
 
-    // token to chainlink
+    // index, short and long token to chainlink
     mapping(address => address) private chainlinks;
     address[] public tokens;
 
