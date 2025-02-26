@@ -69,7 +69,7 @@ contract Short {
                     cancellationReceiver: address(0),
                     callbackContract: address(0),
                     uiFeeReceiver: address(0),
-                    market: GM_TOKEN_WETH_USDC,
+                    market: GM_TOKEN_ETH_WETH_USDC,
                     initialCollateralToken: USDC,
                     swapPath: new address[](0)
                 }),
@@ -120,7 +120,7 @@ contract Short {
                     cancellationReceiver: address(0),
                     callbackContract: address(0),
                     uiFeeReceiver: address(0),
-                    market: GM_TOKEN_WETH_USDC,
+                    market: GM_TOKEN_ETH_WETH_USDC,
                     initialCollateralToken: USDC,
                     swapPath: new address[](0)
                 }),
@@ -148,7 +148,7 @@ contract Short {
     function getPositionKey() public view returns (bytes32 key) {
         return Position.getPositionKey({
             account: address(this),
-            market: GM_TOKEN_WETH_USDC,
+            market: GM_TOKEN_ETH_WETH_USDC,
             collateralToken: USDC,
             isLong: false
         });

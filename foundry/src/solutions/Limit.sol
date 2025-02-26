@@ -51,7 +51,7 @@ contract Limit {
         uint256 minOutputAmount = usdcAmount * 1e20 / maxEthPrice;
 
         address[] memory swapPath = new address[](1);
-        swapPath[0] = GM_TOKEN_WETH_USDC;
+        swapPath[0] = GM_TOKEN_ETH_WETH_USDC;
 
         return exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({

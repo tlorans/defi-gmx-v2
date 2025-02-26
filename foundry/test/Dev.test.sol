@@ -98,7 +98,7 @@ contract Dev is Test {
             .getMarketTokenPrice({
             dataStore: DATA_STORE,
             market: Market.Props({
-                marketToken: GM_TOKEN_WBTC_USDC,
+                marketToken: GM_TOKEN_BTC_WBTC_USDC,
                 indexToken: GMX_EOA_1,
                 longToken: WBTC,
                 shortToken: USDC

@@ -125,7 +125,7 @@ contract ShortTest is Test {
 
         bytes32 positionKey = Position.getPositionKey({
             account: address(short),
-            market: GM_TOKEN_WETH_USDC,
+            market: GM_TOKEN_ETH_WETH_USDC,
             collateralToken: USDC,
             isLong: false
         });

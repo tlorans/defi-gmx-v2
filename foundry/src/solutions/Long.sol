@@ -62,7 +62,7 @@ contract Long {
 
         // Create order
         // address[] memory swapPath = new address[](1);
-        // swapPath[0] = GM_TOKEN_WETH_USDC;
+        // swapPath[0] = GM_TOKEN_ETH_WETH_USDC;
         address[] memory swapPath = new address[](0);
 
         return exchangeRouter.createOrder(
@@ -72,7 +72,7 @@ contract Long {
                     cancellationReceiver: address(0),
                     callbackContract: address(0),
                     uiFeeReceiver: address(0),
-                    market: GM_TOKEN_WETH_USDC,
+                    market: GM_TOKEN_ETH_WETH_USDC,
                     initialCollateralToken: WETH,
                     // TODO: why swap? when to swap?
                     swapPath: swapPath
@@ -124,7 +124,7 @@ contract Long {
                     cancellationReceiver: address(0),
                     callbackContract: address(0),
                     uiFeeReceiver: address(0),
-                    market: GM_TOKEN_WETH_USDC,
+                    market: GM_TOKEN_ETH_WETH_USDC,
                     initialCollateralToken: WETH,
                     swapPath: new address[](0)
                 }),
@@ -152,7 +152,7 @@ contract Long {
     function getPositionKey() public view returns (bytes32 key) {
         return Position.getPositionKey({
             account: address(this),
-            market: GM_TOKEN_WETH_USDC,
+            market: GM_TOKEN_ETH_WETH_USDC,
             collateralToken: WETH,
             isLong: true
         });

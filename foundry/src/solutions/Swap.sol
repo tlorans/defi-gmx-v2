@@ -46,8 +46,8 @@ contract Swap {
         // Create order
         // TODO: how to specify swap path? -> initialCollateralToken + gm tokens
         address[] memory swapPath = new address[](2);
-        swapPath[0] = GM_TOKEN_WETH_USDC;
-        swapPath[1] = GM_TOKEN_USDC_DAI;
+        swapPath[0] = GM_TOKEN_ETH_WETH_USDC;
+        swapPath[1] = GM_TOKEN_SWAP_ONLY_USDC_DAI;
 
         key = exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({

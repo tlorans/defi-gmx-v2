@@ -122,7 +122,7 @@ contract LongTest is Test {
 
         bytes32 positionKey = Position.getPositionKey({
             account: address(long),
-            market: GM_TOKEN_WETH_USDC,
+            market: GM_TOKEN_ETH_WETH_USDC,
             collateralToken: WETH,
             isLong: true
         });

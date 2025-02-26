@@ -96,7 +96,9 @@ contract GlvLiquidityTest is Test {
             "GLV deposit receiver"
         );
         assertEq(
-            deposit.addresses.market, GM_TOKEN_WBTC_USDC, "GLV deposit market"
+            deposit.addresses.market,
+            GM_TOKEN_BTC_WBTC_USDC,
+            "GLV deposit market"
         );
         assertGt(
             deposit.numbers.initialShortTokenAmount,
@@ -170,7 +172,7 @@ contract GlvLiquidityTest is Test {
             "withdrawal receiver"
         );
         assertEq(
-            withdrawal.addresses.market, GM_TOKEN_WBTC_USDC, "withdrawal market"
+            withdrawal.addresses.market, GM_TOKEN_BTC_WBTC_USDC, "withdrawal market"
         );
         assertGt(
             withdrawal.numbers.marketTokenAmount,

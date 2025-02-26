@@ -16,7 +16,7 @@ import "../Constants.sol";
 contract MarketLiquidity {
     IERC20 constant weth = IERC20(WETH);
     IERC20 constant usdc = IERC20(USDC);
-    IERC20 constant gmToken = IERC20(GM_TOKEN_WBTC_USDC);
+    IERC20 constant gmToken = IERC20(GM_TOKEN_BTC_WBTC_USDC);
     IExchangeRouter constant exchangeRouter = IExchangeRouter(EXCHANGE_ROUTER);
     IReader constant reader = IReader(READER);
 
@@ -57,7 +57,7 @@ contract MarketLiquidity {
                 receiver: address(this),
                 callbackContract: address(0),
                 uiFeeReceiver: address(0),
-                market: GM_TOKEN_WBTC_USDC,
+                market: GM_TOKEN_BTC_WBTC_USDC,
                 initialLongToken: WBTC,
                 initialShortToken: USDC,
                 longTokenSwapPath: longTokenSwapPath,
@@ -86,7 +86,7 @@ contract MarketLiquidity {
         // Send token
         gmToken.approve(ROUTER, gmTokenAmount);
         exchangeRouter.sendTokens({
-            token: GM_TOKEN_WBTC_USDC,
+            token: GM_TOKEN_BTC_WBTC_USDC,
             receiver: WITHDRAWAL_VAULT,
             amount: gmTokenAmount
         });
@@ -100,7 +100,7 @@ contract MarketLiquidity {
                 receiver: address(this),
                 callbackContract: address(0),
                 uiFeeReceiver: address(0),
-                market: GM_TOKEN_WBTC_USDC,
+                market: GM_TOKEN_BTC_WBTC_USDC,
                 longTokenSwapPath: longTokenSwapPath,
                 shortTokenSwapPath: shortTokenSwapPath,
                 // TODO: how to calculate this

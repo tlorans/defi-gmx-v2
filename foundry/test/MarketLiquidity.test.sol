@@ -18,7 +18,7 @@ import {MarketLiquidity} from "../src/solutions/MarketLiquidity.sol";
 contract MarketLiquidityTest is Test {
     IERC20 constant wbtc = IERC20(WBTC);
     IERC20 constant usdc = IERC20(USDC);
-    IERC20 constant gmToken = IERC20(GM_TOKEN_WBTC_USDC);
+    IERC20 constant gmToken = IERC20(GM_TOKEN_BTC_WBTC_USDC);
     IDepositHandler constant depositHandler = IDepositHandler(DEPOSIT_HANDLER);
     IWithdrawalHandler constant withdrawalHandler =
         IWithdrawalHandler(WITHDRAWAL_HANDLER);
@@ -86,7 +86,9 @@ contract MarketLiquidityTest is Test {
             address(marketLiquidity),
             "deposit receiver"
         );
-        assertEq(deposit.addresses.market, GM_TOKEN_WBTC_USDC, "deposit market");
+        assertEq(
+            deposit.addresses.market, GM_TOKEN_BTC_WBTC_USDC, "deposit market"
+        );
         assertGt(
             deposit.numbers.initialShortTokenAmount,
             0,
@@ -158,7 +160,9 @@ contract MarketLiquidityTest is Test {
             "withdrawal receiver"
         );
         assertEq(
-            withdrawal.addresses.market, GM_TOKEN_WBTC_USDC, "withdrawal market"
+            withdrawal.addresses.market,
+            GM_TOKEN_BTC_WBTC_USDC,
+            "withdrawal market"
         );
         assertGt(
             withdrawal.numbers.marketTokenAmount,
