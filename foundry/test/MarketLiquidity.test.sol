@@ -42,7 +42,7 @@ contract MarketLiquidityTest is Test {
         deal(USDC, address(this), 1000 * 1e6);
 
         tokens = new address[](3);
-        tokens[0] = GMX_EOA_1;
+        tokens[0] = GMX_BTC_WBTC_USDC_INDEX;
         tokens[1] = USDC;
         tokens[2] = WBTC;
 

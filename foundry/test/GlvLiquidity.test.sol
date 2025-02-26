@@ -50,7 +50,7 @@ contract GlvLiquidityTest is Test {
         }
 
         tokens = new address[](3);
-        tokens[0] = GMX_EOA_1;
+        tokens[0] = GMX_BTC_WBTC_USDC_INDEX;
         tokens[1] = USDC;
         tokens[2] = WBTC;
 
