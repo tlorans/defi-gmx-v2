@@ -330,6 +330,7 @@ Explain utilities, acquistion methods, differences and staking processes.
 - what is an atomic provider?
 
 - [Chainlink providers](https://docs.chain.link/data-feeds/price-feeds/addresses?network=arbitrum&page=1)
+- [ABI ninja](https://abi.ninja)
 
 ##### TODO
 

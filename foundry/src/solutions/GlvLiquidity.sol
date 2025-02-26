@@ -16,6 +16,8 @@ contract GlvLiquidity {
     // Receive execution fee refund from GMX
     receive() external payable {}
 
+    // TODO: get deposit and withdrawal order
+
     function createGlvDeposit(uint256 usdcAmount)
         external
         payable
@@ -36,7 +38,7 @@ contract GlvLiquidity {
         usdc.approve(ROUTER, usdcAmount);
         glvRouter.sendTokens({
             token: USDC,
-            receiver: DEPOSIT_VAULT,
+            receiver: GLV_VAULT,
             amount: usdcAmount
         });
 

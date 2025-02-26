@@ -4,25 +4,25 @@ pragma solidity 0.8.26;
 import {Test, console} from "forge-std/Test.sol";
 import "./TestHelper.sol";
 import {IERC20} from "../src/interfaces/IERC20.sol";
-import {IDepositHandler} from "../src/interfaces/IDepositHandler.sol";
+import {IGlvHandler} from "../src/interfaces/IGlvHandler.sol";
 import {IWithdrawalHandler} from "../src/interfaces/IWithdrawalHandler.sol";
-import {IReader} from "../src/interfaces/IReader.sol";
+import {IGlvReader} from "../src/interfaces/IGlvReader.sol";
 import {OracleUtils} from "../src/types/OracleUtils.sol";
-import {Deposit} from "../src/types/Deposit.sol";
-import {Withdrawal} from "../src/types/Withdrawal.sol";
+import {GlvDeposit} from "../src/types/GlvDeposit.sol";
+import {GlvWithdrawal} from "../src/types/GlvWithdrawal.sol";
 import "../src/Constants.sol";
 import {Role} from "../src/lib/Role.sol";
 // TODO: import from exercises
 import {GlvLiquidity} from "../src/solutions/GlvLiquidity.sol";
 
-contract MarketLiquidityTest is Test {
+contract GlvLiquidityTest is Test {
     IERC20 constant wbtc = IERC20(WBTC);
     IERC20 constant usdc = IERC20(USDC);
-    IERC20 constant gmToken = IERC20(GM_TOKEN_WBTC_USDC);
-    IDepositHandler constant depositHandler = IDepositHandler(DEPOSIT_HANDLER);
+    IERC20 constant glvToken = IERC20(GLV_TOKEN);
+    IGlvHandler constant glvHandler = IGlvHandler(GLV_HANDLER);
     IWithdrawalHandler constant withdrawalHandler =
         IWithdrawalHandler(WITHDRAWAL_HANDLER);
-    IReader constant reader = IReader(READER);
+    IGlvReader constant glvReader = IGlvReader(GLV_READER);
 
     TestHelper helper;
     GlvLiquidity glvLiquidity;
@@ -40,6 +40,14 @@ contract MarketLiquidityTest is Test {
 
         glvLiquidity = new GlvLiquidity();
         deal(USDC, address(this), 1000 * 1e6);
+
+        IGlvReader.GlvInfo[] memory glvInfo =
+            glvReader.getGlvInfoList(DATA_STORE, 0, 100);
+        for (uint256 i = 0; i < glvInfo.length; i++) {
+            for (uint256 j = 0; j < glvInfo[i].markets.length; j++) {
+                // address market =
+            }
+        }
 
         tokens = new address[](3);
         tokens[0] = GMX_EOA_1;
@@ -72,7 +80,7 @@ contract MarketLiquidityTest is Test {
         });
     }
 
-    function testMarketLiquidity() public {
+    function testGlvLiquidity() public {
         uint256 executionFee = 0.1 * 1e18;
         uint256 usdcAmount = 1000 * 1e6;
         usdc.approve(address(glvLiquidity), usdcAmount);
@@ -80,22 +88,22 @@ contract MarketLiquidityTest is Test {
         bytes32 depositKey =
             glvLiquidity.createGlvDeposit{value: executionFee}(usdcAmount);
 
-        /*
-        Deposit.Props memory deposit = reader.getGlvDeposit(DATA_STORE, depositKey);
+        GlvDeposit.Props memory deposit =
+            glvReader.getGlvDeposit(DATA_STORE, depositKey);
         assertEq(
             deposit.addresses.receiver,
             address(glvLiquidity),
-            "deposit receiver"
+            "GLV deposit receiver"
         );
-        assertEq(deposit.addresses.market, GM_TOKEN_WBTC_USDC, "deposit market");
+        assertEq(
+            deposit.addresses.market, GM_TOKEN_WBTC_USDC, "GLV deposit market"
+        );
         assertGt(
             deposit.numbers.initialShortTokenAmount,
             0,
-            "deposit initial short token amount"
+            "GLV deposit initial short token amount"
         );
-        */
 
-        /*
         // Execute deposit
         skip(1);
 
@@ -108,11 +116,11 @@ contract MarketLiquidityTest is Test {
 
         helper.set(
             "GM token glvLiquidity before",
-            gmToken.balanceOf(address(glvLiquidity))
+            glvToken.balanceOf(address(glvLiquidity))
         );
 
         vm.prank(keeper);
-        depositHandler.executeDeposit(
+        glvHandler.executeGlvDeposit(
             depositKey,
             OracleUtils.SetPricesParams({
                 tokens: tokens,
@@ -123,7 +131,7 @@ contract MarketLiquidityTest is Test {
 
         helper.set(
             "GM token glvLiquidity after",
-            gmToken.balanceOf(address(glvLiquidity))
+            glvToken.balanceOf(address(glvLiquidity))
         );
 
         console.log(
@@ -137,12 +145,13 @@ contract MarketLiquidityTest is Test {
             "GM token glvLiquidity"
         );
 
+        /*
         // Create withdrawal order
         skip(1);
 
         helper.set(
             "GM token glvLiquidity before",
-            gmToken.balanceOf(address(glvLiquidity))
+            glvToken.balanceOf(address(glvLiquidity))
         );
 
         bytes32 withdrawalKey =
@@ -150,11 +159,11 @@ contract MarketLiquidityTest is Test {
 
         helper.set(
             "GM token glvLiquidity after",
-            gmToken.balanceOf(address(glvLiquidity))
+            glvToken.balanceOf(address(glvLiquidity))
         );
 
         Withdrawal.Props memory withdrawal =
-            reader.getWithdrawal(DATA_STORE, withdrawalKey);
+            glvReader.getWithdrawal(DATA_STORE, withdrawalKey);
         assertEq(
             withdrawal.addresses.receiver,
             address(glvLiquidity),
@@ -188,7 +197,7 @@ contract MarketLiquidityTest is Test {
         );
         helper.set(
             "GM token glvLiquidity before",
-            gmToken.balanceOf(address(glvLiquidity))
+            glvToken.balanceOf(address(glvLiquidity))
         );
 
         helper.mockOraclePrices({
@@ -218,7 +227,7 @@ contract MarketLiquidityTest is Test {
         );
         helper.set(
             "GM token glvLiquidity after",
-            gmToken.balanceOf(address(glvLiquidity))
+            glvToken.balanceOf(address(glvLiquidity))
         );
 
         console.log(

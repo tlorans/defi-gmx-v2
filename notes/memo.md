@@ -1,0 +1,284 @@
+```
+  ------------- 0 0
+  market 0x70d95587d40A2caf56bd97485aB3Eec10Bee6336
+  index WETH
+  long WETH
+  short USDC
+  index = EOA? false
+  ------------- 0 1
+  market 0x6853EA96FF216fAb11D2d930CE3C508556A4bdc4
+  index 0xC4da4c24fd591125c3F47b340b6f4f76111883d8
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 0 2
+  market 0xD9535bB5f58A1a75032416F2dFe7880C30575a41
+  index 0xB46A094Bc4B0adBD801E14b9DB95e05E28962764
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 0 3
+  market 0x0CCB4fAa6f1F1B30911619f1184082aB4E25813c
+  index 0xc14e065b0067dE91534e032868f5Ac6ecf2c6868
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 0 4
+  market 0x248C35760068cE009a13076D573ed3497A47bCD4
+  index 0x7D7F1765aCbaF847b9A1f7137FE8Ed4931FbfEbA
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 0 5
+  market 0x63Dc80EE90F26363B3FCD609007CC9e14c8991BE
+  index 0x1FF7F3EFBb9481Cbd7db4F932cBCD4467144237C
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 0 6
+  market 0xB62369752D8Ad08392572db6d0cc872127888beD
+  index 0x3E57D02f9d196873e55727382974b02EdebE6bfd
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 0 7
+  market 0xD4b737892baB8446Ea1e8Bb901db092fb1EC1791
+  index EIGEN
+  long WETH
+  short USDC
+  index = EOA? false
+  ------------- 0 8
+  market 0xD8471b9Ea126272E6d32B5e4782Ed76DB7E554a4
+  index UNI
+  long WETH
+  short USDC
+  index = EOA? false
+  ------------- 0 9
+  market 0x876Ff160d63809674e03f82DC4D3C3Ae8B0acF28
+  index 0x67ADABbAd211eA9b3B4E2fd0FD165E593De1e983
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 0 10
+  market 0xE61e608Ba010fF48A7dcE8eDd8B906744263d33E
+  index 0x9D678B4Dd38a6E01df8090aEB7974aD71142b05f
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 0 11
+  market 0xD0a1AFDDE31Eb51e8b53bdCE989EB8C2404828a4
+  index 0x9c74772b713a1B032aEB173E28683D937E51921c
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 0 12
+  market 0x6Ecf2133E2C9751cAAdCb6958b9654baE198a797
+  index 0x197aa2DE1313c7AD50184234490E12409B2a1f95
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 0 13
+  market 0xB489711B1cB86afDA48924730084e23310EB4883
+  index 0x55e85A147a1029b985384822c0B2262dF8023452
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 0 14
+  market 0x66A69c8eb98A7efE22A22611d1967dfec786a708
+  index 0x3f8f0dCE4dCE4d0D1d0871941e79CDA82cA50d0B
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 0 15
+  market 0xBeB1f4EBC9af627Ca1E5a75981CE1AE97eFeDA22
+  index 0x38676f62d166f5CE7De8433F51c6B3D6D9d66C19
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 0 16
+  market 0x15c6eBD4175ffF9EE3c2615c556fCf62D2d9499c
+  index 0xB2f7cefaeEb08Aa347705ac829a7b8bE2FB560f3
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 0 17
+  market 0x3680D7bFE9260D3c5DE81AEB2194c119a59A99D1
+  index 0xb06aa7E4af937C130dDade66f6ed7642716fe07A
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 0 18
+  market 0xFaC5fF56c269432706d47DC82Ab082E9AE7D989E
+  index 0x1FD10E767187A92f0AB2ABDEEF4505e319cA06B2
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 0 19
+  market 0x872b5D567a2469Ed92D252eaCB0EB3BB0769e05b
+  index 0x75B9AdD873641b253718810E6c65dB6d72311FD0
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 0 20
+  market 0x4c505e0062459cf8F60FfF13279c92ea15aE6e2D
+  index 0x82BB89fcc64c5d4016C5Ed1AB016bB0D1C20D6C3
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 0 21
+  market 0xFec8f404FBCa3b11aFD3b3f0c57507C2a06dE636
+  index 0x30021aFA4767Ad66aA52A06dF8a5AB3acA9371fD
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 0 22
+  market 0x12fD1A4BdB96219E637180Ff5293409502b2951D
+  index 0xfa4F8E582214eBCe1A08eB2a65e08082053E441F
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 0 23
+  market 0x9F159014CC218e942E9E9481742fE5BFa9ac5A2C
+  index 0xfe1Aac2CD9C5cC77b58EeCfE75981866ed0c8b7a
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 0 24
+  market 0xa8A455Ed94b315460CfF7d96966d91330f6A3bA0
+  index 0xEcFB4718aD19b626A77491895a2f99ea0cedEd08
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 0 25
+  market 0x970e578fF01589Bb470CE38a2f1753152A009366
+  index 0x83D5944E7f5EF1d8432002d3cb062e1012f6F8e6
+  long WETH
+  short USDC
+  index = EOA? true
+  ------------- 1 0
+  market 0x47c031236e19d024b42f8AE6780E44A573170703
+  index 0x47904963fc8b2340414262125aF798B9655E58Cd
+  long WBTC
+  short USDC
+  index = EOA? true
+  ------------- 1 1
+  market 0x93385F7C646A3048051914BDFaC25F4d620aeDF1
+  index 0x1E15d08f3CA46853B692EE28AE9C7a0b88a9c994
+  long WBTC
+  short USDC
+  index = EOA? true
+  ------------- 1 2
+  market 0xD9377d9B9a2327C7778867203deeA73AB8a68b6B
+  index 0xBaf07cF91D413C0aCB2b7444B9Bf13b4e03c9D71
+  long WBTC
+  short USDC
+  index = EOA? true
+  ------------- 1 3
+  market 0x8ea4Fb801493DaD8724F90Fb2e279534fa591366
+  index 0x2cD2eB61D17b78239Fcd19aafF72981B5D5eF319
+  long WBTC
+  short USDC
+  index = EOA? true
+  ------------- 1 4
+  market 0xe55e1A29985488A2c8846a91E925c2B7C6564db1
+  index 0x938aef36CAaFbcB37815251B602168087eC14648
+  long WBTC
+  short USDC
+  index = EOA? true
+  ------------- 1 5
+  market 0x71237F8C3d1484495A136022E16840b70fF84a69
+  index 0x3Eea56A1ccCdbfB70A26aD381C71Ee17E4c8A15F
+  long WBTC
+  short USDC
+  index = EOA? true
+  ------------- 1 6
+  market 0x6CB901Cc64c024C3Fe4404c940FF9a3Acc229D2C
+  index 0xaF770F03518686a365300ab35AD860e99967B2f0
+  long WBTC
+  short USDC
+  index = EOA? true
+  ------------- 1 7
+  market 0xfD46a5702D4d97cE0164375744c65F0c31A3901b
+  index 0x6792c5B8962ffbDD020c6b6FD0Be7b182e0e33a3
+  long WBTC
+  short USDC
+  index = EOA? true
+  ------------- 1 8
+  market 0x71B7fF592a974e2B501D8A7a11f5c42DcD365244
+  index 0x5503CF72f54b6d692d36BBCD391516A7dE068687
+  long WBTC
+  short USDC
+  index = EOA? true
+  ------------- 1 9
+  market 0xcaCb964144f9056A8f99447a303E60b4873Ca9B4
+  index 0x53186c8419BEB83fE4Da74F7875041a1287337ED
+  long WBTC
+  short USDC
+  index = EOA? true
+  ------------- 1 10
+  market 0x62feB8Ec060A7dE5b32BbbF4AC70050f8a043C17
+  index 0xc33D9C096e74aa4f571E9417b69a19C4A1e72ef2
+  long WBTC
+  short USDC
+  index = EOA? true
+  ------------- 1 11
+  market 0x7B2D09fca2395713dcc2F67323e4876F27b9ecB2
+  index 0xE958f107b467d5172573F761d26931D658C1b436
+  long WBTC
+  short USDC
+  index = EOA? true
+  ------------- 1 12
+  market 0xdc4e96A251Ff43Eeac710462CD8A9D18Dc802F18
+  index 0xdaf0A71608938F762e37eC5F72F670Cc44703454
+  long WBTC
+  short USDC
+  index = EOA? true
+  ------------- 1 13
+  market 0xe902D1526c834D5001575b2d0Ef901dfD0aa097A
+  index 0xc5dbD52Ae5a927Cf585B884011d0C7631C9974c6
+  long WBTC
+  short USDC
+  index = EOA? true
+  ------------- 1 14
+  market 0x262B5203f0fe00D9fe86ffecE01D0f54fC116180
+  index 0x3AeBb98f57081DcBEb0B8EA823Cf84900A31e5D8
+  long WBTC
+  short USDC
+  index = EOA? true
+  ------------- 1 15
+  market 0x16466a03449CB9218EB6A980Aa4a44aaCEd27C25
+  index 0xfdE73EddbE6c5712A12B72c470F8FE5c77A7fF17
+  long WBTC
+  short USDC
+  index = EOA? true
+  ------------- 1 16
+  market 0x467C4A46287F6C4918dDF780D4fd7b46419c2291
+  index 0x0739Ad7AeA69aD36EdEb91b0e55cAC140427c632
+  long WBTC
+  short USDC
+  index = EOA? true
+  ------------- 1 17
+  market 0xe2730Ffe2136aA549327EBce93D58160df7821CB
+  index 0xaca341E61aB6177B0b0Df46a612e4311F8a7605f
+  long WBTC
+  short USDC
+  index = EOA? true
+  ------------- 1 18
+  market 0xD60f1BA6a76979eFfE706BF090372Ebc0A5bF169
+  index 0xBb69bd9dc152C2c0F083507641a46193d2B61EBb
+  long WBTC
+  short USDC
+  index = EOA? true
+  ------------- 1 19
+  market 0x75F190E0Be6E8B933A01423EFE398c6C721A5CfF
+  index 0xB6672496214C90134A9223894e709F26A5eED362
+  long WBTC
+  short USDC
+  index = EOA? true
+  ------------- 1 20
+  market 0x0c11Ed89889Fd03394E8d9d685cC5b85be569C99
+  index 0x4C1dac9b6eAf122Fe3DE824c1C2220413F3aC197
+  long WBTC
+  short USDC
+  index = EOA? true
+```
