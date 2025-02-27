@@ -2,7 +2,7 @@
 pragma solidity 0.8.26;
 
 import {Test, console} from "forge-std/Test.sol";
-import "./TestHelper.sol";
+import "./lib/TestHelper.sol";
 import {IERC20} from "../src/interfaces/IERC20.sol";
 import {IGlvHandler} from "../src/interfaces/IGlvHandler.sol";
 import {IWithdrawalHandler} from "../src/interfaces/IWithdrawalHandler.sol";
@@ -65,17 +65,14 @@ contract GlvLiquidityTest is Test {
         oracles = new TestHelper.OracleParams[](3);
         oracles[0] = TestHelper.OracleParams({
             chainlink: CHAINLINK_BTC_USD,
-            multiplier: 1e14,
             deltaPrice: 0
         });
         oracles[1] = TestHelper.OracleParams({
             chainlink: CHAINLINK_USDC_USD,
-            multiplier: 1e16,
             deltaPrice: 0
         });
         oracles[2] = TestHelper.OracleParams({
             chainlink: CHAINLINK_WBTC_USD,
-            multiplier: 1e14,
             deltaPrice: 0
         });
     }

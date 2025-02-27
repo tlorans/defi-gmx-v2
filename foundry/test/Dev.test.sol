@@ -17,8 +17,7 @@ import {Glv} from "../src/types/Glv.sol";
 import {MarketPoolValueInfo} from "../src/types/MarketPoolValueInfo.sol";
 import {Keys} from "../src/lib/Keys.sol";
 import {Oracle} from "../src/lib/Oracle.sol";
-import {MarketData} from "./MarketData.sol";
-
+import {MarketData} from "./lib/MarketData.sol";
 
 contract Dev is Test {
     IReader constant reader = IReader(READER);

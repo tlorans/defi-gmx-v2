@@ -2,7 +2,7 @@
 pragma solidity 0.8.26;
 
 import {Test, console} from "forge-std/Test.sol";
-import "./TestHelper.sol";
+import "./lib/TestHelper.sol";
 import {IERC20} from "../src/interfaces/IERC20.sol";
 import {IReader} from "../src/interfaces/IReader.sol";
 import {IOrderHandler} from "../src/interfaces/IOrderHandler.sol";
@@ -53,12 +53,10 @@ contract ShortTest is Test {
         oracles = new TestHelper.OracleParams[](2);
         oracles[0] = TestHelper.OracleParams({
             chainlink: CHAINLINK_USDC_USD,
-            multiplier: 1e16,
             deltaPrice: 0
         });
         oracles[1] = TestHelper.OracleParams({
             chainlink: CHAINLINK_ETH_USD,
-            multiplier: 1e4,
             deltaPrice: 0
         });
     }

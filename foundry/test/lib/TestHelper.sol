@@ -2,20 +2,21 @@
 pragma solidity 0.8.26;
 
 import {Test, console} from "forge-std/Test.sol";
-import {IRoleStore} from "../src/interfaces/IRoleStore.sol";
+import {IERC20} from "../../src/interfaces/IERC20.sol";
+import {IRoleStore} from "../../src/interfaces/IRoleStore.sol";
 import {IChainlinkDataStreamProvider} from
-    "../src/interfaces/IChainlinkDataStreamProvider.sol";
-import {IOracle} from "../src/interfaces/IOracle.sol";
-import {IPriceFeed} from "../src/interfaces/IPriceFeed.sol";
-import {OracleUtils} from "../src/types/OracleUtils.sol";
-import {Price} from "../src/types/Price.sol";
+    "../../src/interfaces/IChainlinkDataStreamProvider.sol";
+import {IOracle} from "../../src/interfaces/IOracle.sol";
+import {IPriceFeed} from "../../src/interfaces/IPriceFeed.sol";
+import {OracleUtils} from "../../src/types/OracleUtils.sol";
+import {Price} from "../../src/types/Price.sol";
 import {
     ROLE_STORE,
     CHAINLINK_DATA_STREAM_PROVIDER,
     ORACLE
-} from "../src/Constants.sol";
-import "../src/lib/Errors.sol";
-import {Math} from "../src/lib/Math.sol";
+} from "../../src/Constants.sol";
+import "../../src/lib/Errors.sol";
+import {Math} from "../../src/lib/Math.sol";
 
 contract TestHelper is Test {
     IRoleStore constant roleStore = IRoleStore(ROLE_STORE);
@@ -40,8 +41,6 @@ contract TestHelper is Test {
 
     struct OracleParams {
         address chainlink;
-        // Multiplier to make chainlink price x token amount have 30 decimals
-        uint256 multiplier;
         int256 deltaPrice;
     }
 
@@ -57,7 +56,14 @@ contract TestHelper is Test {
         for (uint256 i = 0; i < n; i++) {
             (, int256 answer,,,) =
                 IPriceFeed(oracles[i].chainlink).latestRoundData();
-            prices[i] = uint256(answer) * oracles[i].multiplier
+
+            // Multiplier to make chainlink price x token amount have 30 decimals
+            // TODO: if token is EOA
+            uint256 d = uint256(IERC20(tokens[i]).decimals());
+            uint256 c = uint256(IPriceFeed(oracles[i].chainlink).decimals());
+            uint256 multiplier = 10 ** (30 - c - d);
+
+            prices[i] = uint256(answer) * multiplier
                 * Math.add(100, oracles[i].deltaPrice) / 100;
         }
 

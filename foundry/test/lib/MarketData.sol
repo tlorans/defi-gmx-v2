@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "../src/Constants.sol";
+import "../../src/Constants.sol";
 
 contract MarketData {
     struct Info {
