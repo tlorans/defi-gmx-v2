@@ -53,7 +53,6 @@ contract GlvLiquidityTest is Test {
         tokens[0] = GMX_BTC_WBTC_USDC_INDEX;
         tokens[1] = USDC;
         tokens[2] = WBTC;
-        // WETH
 
         providers = new address[](3);
         providers[0] = CHAINLINK_DATA_STREAM_PROVIDER;
