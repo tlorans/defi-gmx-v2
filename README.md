@@ -196,8 +196,13 @@ Explain utilities, acquistion methods, differences and staking processes.
     - Where are the yield and rewards coming from?
     - [ ] Transactions
   - [ ] Foundry exercises
-    - Buy, stake, delegate, unstake, claim rewards
-- [ ] esGMX
+    - Buy -> DEX, no exercise
+    - stake, delegate, unstake, claim rewards
+    - [Stake GMX](https://arbiscan.io/tx/0x0ed2a66323713c2e78dd53750612f3e9bcc97f2f8c02633a433a413889142067)
+    - [Unstake GMX](https://arbiscan.io/tx/0x2bbfefc59c295349405a86b08f9bd68b020e49836e9775de74e442908732678f)
+    - [Delegate](https://arbiscan.io/tx/0x245404338a81a8faccddf6ad8e944928bac6b687db8d7e217e47fdde94abd84f)
+    - [Claim rewards](https://arbiscan.io/tx/0x23f1f338dc2456cf476692f34ea00838a1e621f8fd2aff330927edf256de8b1d)
+- [ ] esGMX -> has historically been awarded as an incentive for GMX Staking -> TODO: skip?
   - [ ] UI?
     - Vest to convert esGMX to GMX
   - [ ] Foundry exercises?
@@ -225,10 +230,6 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [Unveiling GMX v2: A Game-Changer for DeFi Derivatives?](https://blog.rudy.capital/unveiling-gmx-v2-a-game-changer-for-defi-derivatives-5ff20f2ab731)
 
 ##### Transactions
-
-- [Stake GMX](https://arbiscan.io/tx/0x0ed2a66323713c2e78dd53750612f3e9bcc97f2f8c02633a433a413889142067)
-- [Delegate](https://arbiscan.io/tx/0x245404338a81a8faccddf6ad8e944928bac6b687db8d7e217e47fdde94abd84f)
-- [Claim rewards](https://arbiscan.io/tx/0x23f1f338dc2456cf476692f34ea00838a1e621f8fd2aff330927edf256de8b1d)
 
 **_Trades_**
 
