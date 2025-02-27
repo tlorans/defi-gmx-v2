@@ -53,10 +53,12 @@ contract ShortTest is Test {
         oracles = new TestHelper.OracleParams[](2);
         oracles[0] = TestHelper.OracleParams({
             chainlink: CHAINLINK_USDC_USD,
+            multiplier: 1,
             deltaPrice: 0
         });
         oracles[1] = TestHelper.OracleParams({
             chainlink: CHAINLINK_ETH_USD,
+            multiplier: 1,
             deltaPrice: 0
         });
     }

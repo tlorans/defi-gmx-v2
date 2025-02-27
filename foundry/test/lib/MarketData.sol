@@ -7,169 +7,230 @@ contract MarketData {
     struct Info {
         string name;
         address oracle;
+        // Token decimals
+        uint256 decimals;
     }
     // market, index, short and long token to chainlink
 
     mapping(address => Info) public info;
     address[] public tokens;
 
-    function set(string memory name, address token, address oracle) internal {
+    function set(
+        string memory name,
+        address token,
+        address oracle,
+        uint256 decimals
+    ) internal {
         require(info[token].oracle == address(0), "duplicate");
-        info[token] = Info(name, oracle);
+        info[token] = Info(name, oracle, decimals);
         tokens.push(token);
     }
 
     constructor() {
         // Short and long
-        set("WETH", WETH, CHAINLINK_ETH_USD);
-        set("WBTC", WBTC, CHAINLINK_BTC_USD);
-        set("USDC", USDC, CHAINLINK_USDC_USD);
-        set("DAI", DAI, CHAINLINK_DAI_USD);
-        set("AAVE", AAVE, CHAINLINK_AAVE_USD);
+        set("WETH", WETH, CHAINLINK_ETH_USD, 18);
+        set("WBTC", WBTC, CHAINLINK_BTC_USD, 8);
+        set("USDC", USDC, CHAINLINK_USDC_USD, 6);
+        set("DAI", DAI, CHAINLINK_DAI_USD, 18);
+        set("AAVE", AAVE, CHAINLINK_AAVE_USD, 18);
 
         // Index
         set(
-            "GMX_RENDER_WETH_USDC_INDEX", GMX_RENDER_WETH_USDC_INDEX, address(0)
+            "GMX_RENDER_WETH_USDC_INDEX",
+            GMX_RENDER_WETH_USDC_INDEX,
+            address(0),
+            0
         );
-        set("GMX_SUI_WETH_USDC_INDEX", GMX_SUI_WETH_USDC_INDEX, address(0));
-        set("GMX_APT_WETH_USDC_INDEX", GMX_APT_WETH_USDC_INDEX, address(0));
-        set("GMX_WLD_WETH_USDC_INDEX", GMX_WLD_WETH_USDC_INDEX, address(0));
-        set("GMX_FET_WETH_USDC_INDEX", GMX_FET_WETH_USDC_INDEX, address(0));
-        set("GMX_TRX_WETH_USDC_INDEX", GMX_TRX_WETH_USDC_INDEX, address(0));
-        set("GMX_TON_WETH_USDC_INDEX", GMX_TON_WETH_USDC_INDEX, address(0));
-        set("GMX_ONDO_WETH_USDC_INDEX", GMX_ONDO_WETH_USDC_INDEX, address(0));
-        set("GMX_EIGEN_WETH_USDC_INDEX", GMX_EIGEN_WETH_USDC_INDEX, address(0));
-        set("GMX_KBONK_WETH_USDC_INDEX", GMX_KBONK_WETH_USDC_INDEX, address(0));
+        set("GMX_SUI_WETH_USDC_INDEX", GMX_SUI_WETH_USDC_INDEX, address(0), 0);
+        set("GMX_APT_WETH_USDC_INDEX", GMX_APT_WETH_USDC_INDEX, address(0), 0);
+        set("GMX_WLD_WETH_USDC_INDEX", GMX_WLD_WETH_USDC_INDEX, address(0), 0);
+        set("GMX_FET_WETH_USDC_INDEX", GMX_FET_WETH_USDC_INDEX, address(0), 0);
+        set("GMX_TRX_WETH_USDC_INDEX", GMX_TRX_WETH_USDC_INDEX, address(0), 0);
+        set("GMX_TON_WETH_USDC_INDEX", GMX_TON_WETH_USDC_INDEX, address(0), 0);
+        set("GMX_ONDO_WETH_USDC_INDEX", GMX_ONDO_WETH_USDC_INDEX, address(0), 0);
+        set(
+            "GMX_EIGEN_WETH_USDC_INDEX",
+            GMX_EIGEN_WETH_USDC_INDEX,
+            address(0),
+            0
+        );
+        set(
+            "GMX_KBONK_WETH_USDC_INDEX",
+            GMX_KBONK_WETH_USDC_INDEX,
+            address(0),
+            0
+        );
         set(
             "GMX_FARTCOIN_WBTC_USDC_INDEX",
             GMX_FARTCOIN_WBTC_USDC_INDEX,
-            address(0)
+            address(0),
+            0
         );
-        set("GMX_PENGU_WBTC_USDC_INDEX", GMX_PENGU_WBTC_USDC_INDEX, address(0));
+        set(
+            "GMX_PENGU_WBTC_USDC_INDEX",
+            GMX_PENGU_WBTC_USDC_INDEX,
+            address(0),
+            0
+        );
         set(
             "GMX_VIRTUAL_WBTC_USDC_INDEX",
             GMX_VIRTUAL_WBTC_USDC_INDEX,
-            address(0)
+            address(0),
+            0
         );
-        set("GMX_BCH_WBTC_USDC_INDEX", GMX_BCH_WBTC_USDC_INDEX, address(0));
+        set("GMX_BCH_WBTC_USDC_INDEX", GMX_BCH_WBTC_USDC_INDEX, address(0), 0);
         set(
-            "GMX_KFLOKI_WBTC_USDC_INDEX", GMX_KFLOKI_WBTC_USDC_INDEX, address(0)
+            "GMX_KFLOKI_WBTC_USDC_INDEX",
+            GMX_KFLOKI_WBTC_USDC_INDEX,
+            address(0),
+            0
         );
-        set("GMX_INJ_WBTC_USDC_INDEX", GMX_INJ_WBTC_USDC_INDEX, address(0));
-        set("GMX_FIL_WBTC_USDC_INDEX", GMX_FIL_WBTC_USDC_INDEX, address(0));
-        set("GMX_ICP_WBTC_USDC_INDEX", GMX_ICP_WBTC_USDC_INDEX, address(0));
-        set("GMX_BOME_WBTC_USDC_INDEX", GMX_BOME_WBTC_USDC_INDEX, address(0));
-        set("GMX_XLM_WBTC_USDC_INDEX", GMX_XLM_WBTC_USDC_INDEX, address(0));
-        set("GMX_AI16Z_WBTC_USDC_INDEX", GMX_AI16Z_WBTC_USDC_INDEX, address(0));
-        set("GMX_MSATS_WBTC_USDC_INDEX", GMX_MSATS_WBTC_USDC_INDEX, address(0));
-        set("GMX_MEME_WBTC_USDC_INDEX", GMX_MEME_WBTC_USDC_INDEX, address(0));
-        set("GMX_MEW_WBTC_USDC_INDEX", GMX_MEW_WBTC_USDC_INDEX, address(0));
-        set("GMX_DYDX_WBTC_USDC_INDEX", GMX_DYDX_WBTC_USDC_INDEX, address(0));
+        set("GMX_INJ_WBTC_USDC_INDEX", GMX_INJ_WBTC_USDC_INDEX, address(0), 0);
+        set("GMX_FIL_WBTC_USDC_INDEX", GMX_FIL_WBTC_USDC_INDEX, address(0), 0);
+        set("GMX_ICP_WBTC_USDC_INDEX", GMX_ICP_WBTC_USDC_INDEX, address(0), 0);
+        set("GMX_BOME_WBTC_USDC_INDEX", GMX_BOME_WBTC_USDC_INDEX, address(0), 0);
+        set("GMX_XLM_WBTC_USDC_INDEX", GMX_XLM_WBTC_USDC_INDEX, address(0), 0);
+        set(
+            "GMX_AI16Z_WBTC_USDC_INDEX",
+            GMX_AI16Z_WBTC_USDC_INDEX,
+            address(0),
+            0
+        );
+        set(
+            "GMX_MSATS_WBTC_USDC_INDEX",
+            GMX_MSATS_WBTC_USDC_INDEX,
+            address(0),
+            0
+        );
+        set("GMX_MEME_WBTC_USDC_INDEX", GMX_MEME_WBTC_USDC_INDEX, address(0), 0);
+        set("GMX_MEW_WBTC_USDC_INDEX", GMX_MEW_WBTC_USDC_INDEX, address(0), 0);
+        set("GMX_DYDX_WBTC_USDC_INDEX", GMX_DYDX_WBTC_USDC_INDEX, address(0), 0);
 
         set(
             "GMX_BTC_WBTC_USDC_INDEX",
             GMX_BTC_WBTC_USDC_INDEX,
-            CHAINLINK_BTC_USD
+            CHAINLINK_BTC_USD,
+            8
         );
         set(
             "GMX_ETH_WETH_USDC_INDEX",
             GMX_ETH_WETH_USDC_INDEX,
-            CHAINLINK_ETH_USD
+            CHAINLINK_ETH_USD,
+            18
         );
         set(
             "GMX_XRP_WETH_USDC_INDEX",
             GMX_XRP_WETH_USDC_INDEX,
-            CHAINLINK_XRP_USD
+            CHAINLINK_XRP_USD,
+            18
         );
         set(
             "GMX_TRUMP_WETH_USDC_INDEX",
             GMX_TRUMP_WETH_USDC_INDEX,
-            CHAINLINK_TRUMP_USD
+            CHAINLINK_TRUMP_USD,
+            9
         );
         set(
             "GMX_DOGE_WETH_USDC_INDEX",
             GMX_DOGE_WETH_USDC_INDEX,
-            CHAINLINK_DOGE_USD
+            CHAINLINK_DOGE_USD,
+            18
         );
         set(
             "GMX_BERA_WETH_USDC_INDEX",
             GMX_BERA_WETH_USDC_INDEX,
-            CHAINLINK_BERA_USD
+            CHAINLINK_BERA_USD,
+            0
         );
         set(
             "GMX_LTC_WETH_USDC_INDEX",
             GMX_LTC_WETH_USDC_INDEX,
-            CHAINLINK_LTC_USD
+            CHAINLINK_LTC_USD,
+            18
         );
         set(
             "GMX_NEAR_WETH_USDC_INDEX",
             GMX_NEAR_WETH_USDC_INDEX,
-            CHAINLINK_NEAR_USD
+            CHAINLINK_NEAR_USD,
+            18
         );
         set(
             "GMX_ENA_WETH_USDC_INDEX",
             GMX_ENA_WETH_USDC_INDEX,
-            CHAINLINK_ENA_USD
+            CHAINLINK_ENA_USD,
+            18
         );
         set(
             "GMX_MELANIA_WETH_USDC_INDEX",
             GMX_MELANIA_WETH_USDC_INDEX,
-            CHAINLINK_MELANIA_USD
+            CHAINLINK_MELANIA_USD,
+            0
         );
         set(
             "GMX_SEI_WETH_USDC_INDEX",
             GMX_SEI_WETH_USDC_INDEX,
-            CHAINLINK_SEI_USD
+            CHAINLINK_SEI_USD,
+            0
         );
         set(
             "GMX_LDO_WETH_USDC_INDEX",
             GMX_LDO_WETH_USDC_INDEX,
-            CHAINLINK_LDO_USD
+            CHAINLINK_LDO_USD,
+            18
         );
         set(
             "GMX_TAO_WBTC_USDC_INDEX",
             GMX_TAO_WBTC_USDC_INDEX,
-            CHAINLINK_TAO_USD
+            CHAINLINK_TAO_USD,
+            0
         );
         set(
             "GMX_ATOM_WETH_USDC_INDEX",
             GMX_ATOM_WETH_USDC_INDEX,
-            CHAINLINK_ATOM_USD
+            CHAINLINK_ATOM_USD,
+            0
         );
         set(
             "GMX_DOT_WBTC_USDC_INDEX",
             GMX_DOT_WBTC_USDC_INDEX,
-            CHAINLINK_DOT_USD
+            CHAINLINK_DOT_USD,
+            18
         );
         set(
             "GMX_POL_WETH_USDC_INDEX",
             GMX_POL_WETH_USDC_INDEX,
-            CHAINLINK_POL_USD
+            CHAINLINK_POL_USD,
+            0
         );
         set(
             "GMX_TIA_WETH_USDC_INDEX",
             GMX_TIA_WETH_USDC_INDEX,
-            CHAINLINK_TIA_USD
+            CHAINLINK_TIA_USD,
+            0
         );
         set(
             "GMX_STX_WBTC_USDC_INDEX",
             GMX_STX_WBTC_USDC_INDEX,
-            CHAINLINK_STX_USD
+            CHAINLINK_STX_USD,
+            0
         );
         set(
             "GMX_KSHIB_WETH_USDC_INDEX",
             GMX_KSHIB_WETH_USDC_INDEX,
-            CHAINLINK_SHIB_USD
+            CHAINLINK_SHIB_USD,
+            0
         );
         set(
             "GMX_ADA_WBTC_USDC_INDEX",
             GMX_ADA_WBTC_USDC_INDEX,
-            CHAINLINK_ADA_USD
+            CHAINLINK_ADA_USD,
+            0
         );
         set(
             "GMX_ORDI_WBTC_USDC_INDEX",
             GMX_ORDI_WBTC_USDC_INDEX,
-            CHAINLINK_ORDI_USD
+            CHAINLINK_ORDI_USD,
+            0
         );
     }
 

@@ -65,14 +65,17 @@ contract GlvLiquidityTest is Test {
         oracles = new TestHelper.OracleParams[](3);
         oracles[0] = TestHelper.OracleParams({
             chainlink: CHAINLINK_BTC_USD,
+            multiplier: 1e8,
             deltaPrice: 0
         });
         oracles[1] = TestHelper.OracleParams({
             chainlink: CHAINLINK_USDC_USD,
+            multiplier: 1,
             deltaPrice: 0
         });
         oracles[2] = TestHelper.OracleParams({
             chainlink: CHAINLINK_WBTC_USD,
+            multiplier: 1,
             deltaPrice: 0
         });
     }

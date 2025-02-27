@@ -41,6 +41,8 @@ contract TestHelper is Test {
 
     struct OracleParams {
         address chainlink;
+        // Multiplier to adjust decimals for index tokens which are EOA
+        uint256 multiplier;
         int256 deltaPrice;
     }
 
@@ -58,10 +60,11 @@ contract TestHelper is Test {
                 IPriceFeed(oracles[i].chainlink).latestRoundData();
 
             // Multiplier to make chainlink price x token amount have 30 decimals
-            // TODO: if token is EOA
-            uint256 d = uint256(IERC20(tokens[i]).decimals());
+            uint256 d = tokens[i].code.length > 0
+                ? uint256(IERC20(tokens[i]).decimals())
+                : 0;
             uint256 c = uint256(IPriceFeed(oracles[i].chainlink).decimals());
-            uint256 multiplier = 10 ** (30 - c - d);
+            uint256 multiplier = 10 ** (30 - c - d) * oracles[i].multiplier;
 
             prices[i] = uint256(answer) * multiplier
                 * Math.add(100, oracles[i].deltaPrice) / 100;
