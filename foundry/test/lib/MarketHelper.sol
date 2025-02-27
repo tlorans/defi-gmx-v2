@@ -19,8 +19,8 @@ contract MarketHelper {
         // Token decimals
         uint256 decimals;
     }
-    // market, index, short and long token to chainlink
 
+    // market, index, short and long token to chainlink
     mapping(address => Info) public info;
     address[] public tokens;
 
@@ -45,6 +45,7 @@ contract MarketHelper {
         set("USDC", USDC, 6);
         set("DAI", DAI, 18);
         set("AAVE", AAVE, 18);
+        set("UNI", UNI, 18);
 
         // Index
         set("GMX_RENDER_WETH_USDC_INDEX", GMX_RENDER_WETH_USDC_INDEX, 0);
@@ -81,30 +82,32 @@ contract MarketHelper {
         set("GMX_ORDI_WBTC_USDC_INDEX", GMX_ORDI_WBTC_USDC_INDEX, 0);
         set("GMX_STX_WBTC_USDC_INDEX", GMX_STX_WBTC_USDC_INDEX, 0);
         /*
-        name:
         market: 0xD8471b9Ea126272E6d32B5e4782Ed76DB7E554a4
         index: 0xFa7F8980b0f1E64A2062791cc3b0871572f1F7f0
         long: 0x82aF49447D8a07e3bd95BD0d56f35241523fBab1
         short: 0xaf88d065e77c8cC2239327C5EDb3A432268e5831
         index = EOA? false
-        no oracle
         GMX price feed 0x9C917083fDb403ab5ADbEC26Ee294f6EcAda2720
         */
-        set("GMX_???", 0xFa7F8980b0f1E64A2062791cc3b0871572f1F7f0, 0);
+        set(
+            "GMX_UNI_WETH_USDC_INDEX",
+            0xFa7F8980b0f1E64A2062791cc3b0871572f1F7f0,
+            18
+        );
 
         set("GMX_BTC_WBTC_USDC_INDEX", GMX_BTC_WBTC_USDC_INDEX, 8);
         set("GMX_ETH_WETH_USDC_INDEX", GMX_ETH_WETH_USDC_INDEX, 18);
-        set("GMX_TRUMP_WETH_USDC_INDEX", GMX_TRUMP_WETH_USDC_INDEX, 9);
-        set("GMX_DOGE_WETH_USDC_INDEX", GMX_DOGE_WETH_USDC_INDEX, 18);
-        set("GMX_NEAR_WETH_USDC_INDEX", GMX_NEAR_WETH_USDC_INDEX, 18);
+        set("GMX_TRUMP_WETH_USDC_INDEX", GMX_TRUMP_WETH_USDC_INDEX, 6);
+        set("GMX_DOGE_WETH_USDC_INDEX", GMX_DOGE_WETH_USDC_INDEX, 8);
+        set("GMX_NEAR_WETH_USDC_INDEX", GMX_NEAR_WETH_USDC_INDEX, 24);
         set("GMX_ENA_WETH_USDC_INDEX", GMX_ENA_WETH_USDC_INDEX, 18);
-        set("GMX_MELANIA_WETH_USDC_INDEX", GMX_MELANIA_WETH_USDC_INDEX, 0);
+        set("GMX_MELANIA_WETH_USDC_INDEX", GMX_MELANIA_WETH_USDC_INDEX, 6);
         set("GMX_LDO_WETH_USDC_INDEX", GMX_LDO_WETH_USDC_INDEX, 18);
-        set("GMX_TAO_WBTC_USDC_INDEX", GMX_TAO_WBTC_USDC_INDEX, 0);
-        set("GMX_ATOM_WETH_USDC_INDEX", GMX_ATOM_WETH_USDC_INDEX, 0);
-        set("GMX_DOT_WBTC_USDC_INDEX", GMX_DOT_WBTC_USDC_INDEX, 18);
-        set("GMX_TIA_WETH_USDC_INDEX", GMX_TIA_WETH_USDC_INDEX, 0);
-        set("GMX_ADA_WBTC_USDC_INDEX", GMX_ADA_WBTC_USDC_INDEX, 0);
+        set("GMX_TAO_WBTC_USDC_INDEX", GMX_TAO_WBTC_USDC_INDEX, 9);
+        set("GMX_ATOM_WETH_USDC_INDEX", GMX_ATOM_WETH_USDC_INDEX, 6);
+        set("GMX_DOT_WBTC_USDC_INDEX", GMX_DOT_WBTC_USDC_INDEX, 10);
+        set("GMX_TIA_WETH_USDC_INDEX", GMX_TIA_WETH_USDC_INDEX, 6);
+        set("GMX_ADA_WBTC_USDC_INDEX", GMX_ADA_WBTC_USDC_INDEX, 6);
     }
 
     function get(address token) external returns (Info memory) {

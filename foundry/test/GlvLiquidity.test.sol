@@ -18,9 +18,9 @@ import {Role} from "../src/lib/Role.sol";
 import {GlvLiquidity} from "../src/solutions/GlvLiquidity.sol";
 
 contract GlvLiquidityTest is Test {
-    IERC20 constant wbtc = IERC20(WBTC);
+    IERC20 constant weth = IERC20(WETH);
     IERC20 constant usdc = IERC20(USDC);
-    IERC20 constant glvToken = IERC20(GLV_TOKEN);
+    IERC20 constant glvToken = IERC20(GLV_TOKEN_WETH_USDC);
     IGlvHandler constant glvHandler = IGlvHandler(GLV_HANDLER);
     IWithdrawalHandler constant withdrawalHandler =
         IWithdrawalHandler(WITHDRAWAL_HANDLER);
@@ -40,14 +40,23 @@ contract GlvLiquidityTest is Test {
     function setUp() public {
         testHelper = new TestHelper();
         marketHelper = new MarketHelper();
-        keeper = testHelper.getRoleMember(Role.ORDER_KEEPER);
 
         glvLiquidity = new GlvLiquidity();
         deal(USDC, address(this), 1000 * 1e6);
 
-        tokens = marketHelper.getTokens();
-        uint256 n = tokens.length;
+        keeper = testHelper.getRoleMember(Role.ORDER_KEEPER);
 
+        address[] memory markets = new address[](2);
+        markets[0] = GM_TOKEN_ETH_WETH_USDC;
+        markets[1] = GM_TOKEN_DOGE_WETH_USDC;
+
+        testHelper.mockGlvMarkets(address(glvToken), markets);
+
+        tokens.push(WETH);
+        tokens.push(USDC);
+        tokens.push(GMX_DOGE_WETH_USDC_INDEX);
+
+        uint256 n = tokens.length;
         for (uint256 i = 0; i < n; i++) {
             providers.push(CHAINLINK_DATA_STREAM_PROVIDER);
 
@@ -56,7 +65,9 @@ contract GlvLiquidityTest is Test {
             oracles.push(
                 TestHelper.OracleParams({
                     chainlink: info.oracle,
-                    multiplier: 10 ** info.decimals,
+                    multiplier: tokens[i].code.length > 0
+                        ? 1
+                        : (10 ** info.decimals),
                     deltaPrice: 0
                 })
             );
@@ -76,6 +87,7 @@ contract GlvLiquidityTest is Test {
 
         GlvDeposit.Props memory deposit =
             glvReader.getGlvDeposit(DATA_STORE, depositKey);
+
         assertEq(
             deposit.addresses.receiver,
             address(glvLiquidity),
@@ -83,7 +95,7 @@ contract GlvLiquidityTest is Test {
         );
         assertEq(
             deposit.addresses.market,
-            GM_TOKEN_BTC_WBTC_USDC,
+            GM_TOKEN_ETH_WETH_USDC,
             "GLV deposit market"
         );
         assertGt(
@@ -102,10 +114,7 @@ contract GlvLiquidityTest is Test {
             oracles: oracles
         });
 
-        testHelper.set(
-            "GM token glvLiquidity before",
-            glvToken.balanceOf(address(glvLiquidity))
-        );
+        testHelper.set("GLV before", glvToken.balanceOf(address(glvLiquidity)));
 
         vm.prank(keeper);
         glvHandler.executeGlvDeposit(
@@ -117,20 +126,12 @@ contract GlvLiquidityTest is Test {
             })
         );
 
-        testHelper.set(
-            "GM token glvLiquidity after",
-            glvToken.balanceOf(address(glvLiquidity))
-        );
+        testHelper.set("GLV after", glvToken.balanceOf(address(glvLiquidity)));
 
-        console.log(
-            "GM token glvLiquidity: %e",
-            testHelper.get("GM token glvLiquidity after")
-        );
+        console.log("GLV: %e", testHelper.get("GLV after"));
 
         assertGt(
-            testHelper.get("GM token glvLiquidity after"),
-            testHelper.get("GM token glvLiquidity before"),
-            "GM token glvLiquidity"
+            testHelper.get("GLV after"), testHelper.get("GLV before"), "GLV"
         );
 
         /*
@@ -138,7 +139,7 @@ contract GlvLiquidityTest is Test {
         skip(1);
 
         testHelper.set(
-            "GM token glvLiquidity before",
+            "GLV token glvLiquidity before",
             glvToken.balanceOf(address(glvLiquidity))
         );
 
@@ -146,7 +147,7 @@ contract GlvLiquidityTest is Test {
             glvLiquidity.createWithdrawal{value: executionFee}();
 
         testHelper.set(
-            "GM token glvLiquidity after",
+            "GLV token glvLiquidity after",
             glvToken.balanceOf(address(glvLiquidity))
         );
 
@@ -167,9 +168,9 @@ contract GlvLiquidityTest is Test {
         );
 
         assertEq(
-            testHelper.get("GM token glvLiquidity after"),
+            testHelper.get("GLV token glvLiquidity after"),
             0,
-            "GM token glvLiquidity"
+            "GLV token glvLiquidity"
         );
 
         // Execute withdrawal
@@ -184,7 +185,7 @@ contract GlvLiquidityTest is Test {
             usdc.balanceOf(address(glvLiquidity))
         );
         testHelper.set(
-            "GM token glvLiquidity before",
+            "GLV token glvLiquidity before",
             glvToken.balanceOf(address(glvLiquidity))
         );
 
@@ -214,7 +215,7 @@ contract GlvLiquidityTest is Test {
             usdc.balanceOf(address(glvLiquidity))
         );
         testHelper.set(
-            "GM token glvLiquidity after",
+            "GLV token glvLiquidity after",
             glvToken.balanceOf(address(glvLiquidity))
         );
 
@@ -236,9 +237,9 @@ contract GlvLiquidityTest is Test {
             "USDC glvLiquidity"
         );
         assertGe(
-            testHelper.get("GM token glvLiquidity after"),
+            testHelper.get("GLV token glvLiquidity after"),
             0,
-            "GM token glvLiquidity"
+            "GLV token glvLiquidity"
         );
         */
     }

@@ -19,22 +19,37 @@ import {Keys} from "../src/lib/Keys.sol";
 import {Oracle} from "../src/lib/Oracle.sol";
 import {MarketHelper} from "./lib/MarketHelper.sol";
 
-contract Dev is Test {
-    IReader constant reader = IReader(READER);
-    IGlvReader constant glvReader = IGlvReader(GLV_READER);
-    IDataStore constant dataStore = IDataStore(DATA_STORE);
-    IChainlinkDataStreamProvider constant provider =
-        IChainlinkDataStreamProvider(CHAINLINK_DATA_STREAM_PROVIDER);
+contract Base is Test {
+    IReader internal constant reader = IReader(READER);
+    IGlvReader internal constant glvReader = IGlvReader(GLV_READER);
+    IDataStore internal constant dataStore = IDataStore(DATA_STORE);
+}
 
-    MarketHelper marketHelper = new MarketHelper();
+contract GlvDev is Base {
+    function test() public {
+        address glv = GLV_TOKEN_WETH_USDC;
+        bytes32 key = Keys.glvSupportedMarketListKey(glv);
 
-    function getMarketKeys(uint256 start, uint256 end)
-        internal
-        view
-        returns (address[] memory)
-    {
-        return dataStore.getAddressValuesAt(Keys.MARKET_LIST, start, end);
+        uint256 count = dataStore.getAddressCount(key);
+        address[] memory markets = new address[](2);
+        markets[0] = GM_TOKEN_ETH_WETH_USDC;
+        markets[1] = GM_TOKEN_DOGE_WETH_USDC;
+
+        vm.mockCall(
+            address(dataStore),
+            abi.encodeCall(IDataStore.getAddressValuesAt, (key, 0, count)),
+            abi.encode(markets)
+        );
+
+        address[] memory res = dataStore.getAddressValuesAt(key, 0, count);
+        for (uint256 i = 0; i < res.length; i++) {
+            console.log("addr", i, res[i]);
+        }
     }
+}
+
+contract MarketDev is Base {
+    MarketHelper marketHelper = new MarketHelper();
 
     function logMarket(
         address market,
@@ -54,6 +69,8 @@ contract Dev is Test {
     }
 
     function test_glvTokens() public {
+        vm.skip(true);
+
         IGlvReader.GlvInfo[] memory info =
             glvReader.getGlvInfoList(DATA_STORE, 0, 100);
         for (uint256 i = 0; i < info.length; i++) {
@@ -71,6 +88,14 @@ contract Dev is Test {
         }
     }
 
+    function getMarketKeys(uint256 start, uint256 end)
+        internal
+        view
+        returns (address[] memory)
+    {
+        return dataStore.getAddressValuesAt(Keys.MARKET_LIST, start, end);
+    }
+
     function test_getMarketKeys() public {
         vm.skip(true);
         address[] memory keys = getMarketKeys(0, 100);
@@ -78,6 +103,11 @@ contract Dev is Test {
             console.log("key", i, keys[i]);
         }
     }
+}
+
+contract OracleDev is Base {
+    IChainlinkDataStreamProvider constant provider =
+        IChainlinkDataStreamProvider(CHAINLINK_DATA_STREAM_PROVIDER);
 
     function test_getMarketTokenPrice() public {
         vm.skip(true);

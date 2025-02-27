@@ -10,7 +10,8 @@ import "../Constants.sol";
 contract GlvLiquidity {
     IERC20 constant weth = IERC20(WETH);
     IERC20 constant usdc = IERC20(USDC);
-    IERC20 constant gmToken = IERC20(GM_TOKEN_BTC_WBTC_USDC);
+    IERC20 constant glvToken = IERC20(GLV_TOKEN_WETH_USDC);
+    IERC20 constant gmToken = IERC20(GM_TOKEN_ETH_WETH_USDC);
     IGlvRouter constant glvRouter = IGlvRouter(GLV_ROUTER);
 
     // Receive execution fee refund from GMX
@@ -48,12 +49,12 @@ contract GlvLiquidity {
 
         return glvRouter.createGlvDeposit(
             GlvDepositUtils.CreateGlvDepositParams({
-                glv: GLV_TOKEN,
-                market: GM_TOKEN_BTC_WBTC_USDC,
+                glv: address(glvToken),
+                market: address(gmToken),
                 receiver: address(this),
                 callbackContract: address(0),
                 uiFeeReceiver: address(0),
-                initialLongToken: WBTC,
+                initialLongToken: WETH,
                 initialShortToken: USDC,
                 longTokenSwapPath: longTokenSwapPath,
                 shortTokenSwapPath: shortTokenSwapPath,
