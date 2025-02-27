@@ -159,7 +159,9 @@ contract Dev is Test {
     mapping(address => address) private chainlinks;
     address[] public tokens;
 
-    function set(address market, address index, address long, address short) private {
+    function log(address market, address index, address long, address short)
+        private
+    {
         MarketData.Info memory info = marketData.get(market);
         console.log("name:", info.name);
         console.log("market:", market);
@@ -188,9 +190,12 @@ contract Dev is Test {
                 address addr = info[i].markets[j];
                 Market.Props memory market = reader.getMarket(DATA_STORE, addr);
                 console.log("-------------", i, j);
-
-                set(market.marketToken, market.indexToken, market.longToken, market.shortToken);
-
+                log(
+                    market.marketToken,
+                    market.indexToken,
+                    market.longToken,
+                    market.shortToken
+                );
             }
         }
     }
