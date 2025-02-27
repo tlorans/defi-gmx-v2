@@ -4,6 +4,7 @@ pragma solidity 0.8.26;
 import {Test, console} from "forge-std/Test.sol";
 import "./lib/TestHelper.sol";
 import {MarketHelper} from "./lib/MarketHelper.sol";
+import {MarketHelper} from "./lib/MarketHelper.sol";
 import {IERC20} from "../src/interfaces/IERC20.sol";
 import {IGlvHandler} from "../src/interfaces/IGlvHandler.sol";
 import {IWithdrawalHandler} from "../src/interfaces/IWithdrawalHandler.sol";
@@ -38,40 +39,31 @@ contract GlvLiquidityTest is Test {
 
     function setUp() public {
         testHelper = new TestHelper();
+        marketHelper = new MarketHelper();
         keeper = testHelper.getRoleMember(Role.ORDER_KEEPER);
 
         glvLiquidity = new GlvLiquidity();
         deal(USDC, address(this), 1000 * 1e6);
 
-        tokens = new address[](3);
-        tokens[0] = GMX_BTC_WBTC_USDC_INDEX;
-        tokens[1] = USDC;
-        tokens[2] = WBTC;
+        tokens = marketHelper.getTokens();
+        uint256 n = tokens.length;
 
-        providers = new address[](3);
-        providers[0] = CHAINLINK_DATA_STREAM_PROVIDER;
-        providers[1] = CHAINLINK_DATA_STREAM_PROVIDER;
-        providers[2] = CHAINLINK_DATA_STREAM_PROVIDER;
+        for (uint256 i = 0; i < n; i++) {
+            providers.push(CHAINLINK_DATA_STREAM_PROVIDER);
+
+            MarketHelper.Info memory info = marketHelper.get(tokens[i]);
+
+            oracles.push(
+                TestHelper.OracleParams({
+                    chainlink: info.oracle,
+                    multiplier: 10 ** info.decimals,
+                    deltaPrice: 0
+                })
+            );
+        }
 
         // NOTE: data kept empty for mock calls
-        data = new bytes[](3);
-
-        oracles = new TestHelper.OracleParams[](3);
-        oracles[0] = TestHelper.OracleParams({
-            chainlink: CHAINLINK_BTC_USD,
-            multiplier: 1e8,
-            deltaPrice: 0
-        });
-        oracles[1] = TestHelper.OracleParams({
-            chainlink: CHAINLINK_USDC_USD,
-            multiplier: 1,
-            deltaPrice: 0
-        });
-        oracles[2] = TestHelper.OracleParams({
-            chainlink: CHAINLINK_WBTC_USD,
-            multiplier: 1,
-            deltaPrice: 0
-        });
+        data = new bytes[](n);
     }
 
     function testGlvLiquidity() public {

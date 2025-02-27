@@ -56,8 +56,14 @@ contract TestHelper is Test {
 
         prices = new uint256[](n);
         for (uint256 i = 0; i < n; i++) {
-            (, int256 answer,,,) =
-                IPriceFeed(oracles[i].chainlink).latestRoundData();
+            if (oracles[i].chainlink == address(0)) {
+                prices[i] = 1e30;
+                continue;
+            }
+
+            // (, int256 answer,,,) =
+            //     IPriceFeed(oracles[i].chainlink).latestRoundData();
+            int256 answer = 1e8;
 
             // Multiplier to make chainlink price x token amount have 30 decimals
             uint256 d = tokens[i].code.length > 0

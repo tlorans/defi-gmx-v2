@@ -42,18 +42,15 @@ contract Dev is Test {
         address long,
         address short
     ) private {
-        MarketHelper.Info memory info = marketHelper.get(market);
+        MarketHelper.Info memory info = marketHelper.get(index);
         console.log("name:", info.name);
         console.log("market:", market);
         console.log("index:", index);
         console.log("long:", long);
         console.log("short:", short);
         console.log("index = EOA?", index.code.length == 0);
-        if (info.oracle != address(0)) {
-            console.log("oracle:", info.oracle);
-        } else {
-            console.log("no oracle");
-        }
+        address oracle = dataStore.getAddress(Keys.priceFeedKey(index));
+        console.log("GMX oracle:", oracle);
     }
 
     function test_glvTokens() public {
