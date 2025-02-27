@@ -21,7 +21,7 @@ contract LongTest is Test {
     IOrderHandler constant orderHandler = IOrderHandler(ORDER_HANDLER);
     IReader constant reader = IReader(READER);
 
-    TestHelper helper;
+    TestHelper testHelper;
     Oracle oracle;
     Long long;
     address keeper;
@@ -33,8 +33,8 @@ contract LongTest is Test {
     TestHelper.OracleParams[] oracles;
 
     function setUp() public {
-        helper = new TestHelper();
-        keeper = helper.getRoleMember(Role.ORDER_KEEPER);
+        testHelper = new TestHelper();
+        keeper = testHelper.getRoleMember(Role.ORDER_KEEPER);
         oracle = new Oracle();
         long = new Long(address(oracle));
         deal(WETH, address(this), 1000 * 1e18);
@@ -83,15 +83,15 @@ contract LongTest is Test {
         // Execute long order
         skip(1);
 
-        helper.mockOraclePrices({
+        testHelper.mockOraclePrices({
             tokens: tokens,
             providers: providers,
             data: data,
             oracles: oracles
         });
 
-        helper.set("ETH keeper before", keeper.balance);
-        helper.set("ETH long before", address(long).balance);
+        testHelper.set("ETH keeper before", keeper.balance);
+        testHelper.set("ETH long before", address(long).balance);
 
         vm.prank(keeper);
         orderHandler.executeOrder(
@@ -103,20 +103,20 @@ contract LongTest is Test {
             })
         );
 
-        helper.set("ETH keeper after", keeper.balance);
-        helper.set("ETH long after", address(long).balance);
+        testHelper.set("ETH keeper after", keeper.balance);
+        testHelper.set("ETH long after", address(long).balance);
 
-        console.log("ETH keeper: %e", helper.get("ETH keeper after"));
-        console.log("ETH long: %e", helper.get("ETH long after"));
+        console.log("ETH keeper: %e", testHelper.get("ETH keeper after"));
+        console.log("ETH long: %e", testHelper.get("ETH long after"));
 
         assertGe(
-            helper.get("ETH keeper after"),
-            helper.get("ETH keeper before"),
+            testHelper.get("ETH keeper after"),
+            testHelper.get("ETH keeper before"),
             "Keeper execution fee"
         );
         assertGe(
-            helper.get("ETH long after"),
-            helper.get("ETH long before"),
+            testHelper.get("ETH long after"),
+            testHelper.get("ETH long before"),
             "Long execution fee refund"
         );
 
@@ -174,15 +174,15 @@ contract LongTest is Test {
         oracles[0].deltaPrice = 0;
         oracles[1].deltaPrice = 5;
 
-        helper.mockOraclePrices({
+        testHelper.mockOraclePrices({
             tokens: tokens,
             providers: providers,
             data: data,
             oracles: oracles
         });
 
-        helper.set("ETH keeper before", keeper.balance);
-        helper.set("ETH long before", address(long).balance);
+        testHelper.set("ETH keeper before", keeper.balance);
+        testHelper.set("ETH long before", address(long).balance);
 
         vm.prank(keeper);
         orderHandler.executeOrder(
@@ -194,13 +194,13 @@ contract LongTest is Test {
             })
         );
 
-        helper.set("ETH keeper after", keeper.balance);
-        helper.set("ETH long after", address(long).balance);
-        helper.set("WETH long", weth.balanceOf(address(long)));
-        helper.set("USDC long", usdc.balanceOf(address(long)));
+        testHelper.set("ETH keeper after", keeper.balance);
+        testHelper.set("ETH long after", address(long).balance);
+        testHelper.set("WETH long", weth.balanceOf(address(long)));
+        testHelper.set("USDC long", usdc.balanceOf(address(long)));
 
-        uint256 wethBal = helper.get("WETH long");
-        uint256 usdcBal = helper.get("USDC long");
+        uint256 wethBal = testHelper.get("WETH long");
+        uint256 usdcBal = testHelper.get("USDC long");
 
         console.log("WETH %e", wethBal);
         console.log("USDC %e", usdcBal);
@@ -208,17 +208,17 @@ contract LongTest is Test {
         assertGe(wethBal, wethAmount, "WETH balance < initial collateral");
         assertEq(usdcBal, 0, "USDC balance != 0");
 
-        console.log("ETH keeper: %e", helper.get("ETH keeper after"));
-        console.log("ETH long: %e", helper.get("ETH long after"));
+        console.log("ETH keeper: %e", testHelper.get("ETH keeper after"));
+        console.log("ETH long: %e", testHelper.get("ETH long after"));
 
         assertGe(
-            helper.get("ETH keeper after"),
-            helper.get("ETH keeper before"),
+            testHelper.get("ETH keeper after"),
+            testHelper.get("ETH keeper before"),
             "Keeper execution fee"
         );
         assertGe(
-            helper.get("ETH long after"),
-            helper.get("ETH long before"),
+            testHelper.get("ETH long after"),
+            testHelper.get("ETH long before"),
             "Close execution fee refund"
         );
 

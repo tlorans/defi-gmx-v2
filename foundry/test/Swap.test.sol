@@ -19,7 +19,7 @@ contract SwapTest is Test {
     IOrderHandler constant orderHandler = IOrderHandler(ORDER_HANDLER);
     IReader constant reader = IReader(READER);
 
-    TestHelper helper;
+    TestHelper testHelper;
     Swap swap;
     address keeper;
 
@@ -30,8 +30,8 @@ contract SwapTest is Test {
     TestHelper.OracleParams[] oracles;
 
     function setUp() public {
-        helper = new TestHelper();
-        keeper = helper.getRoleMember(Role.ORDER_KEEPER);
+        testHelper = new TestHelper();
+        keeper = testHelper.getRoleMember(Role.ORDER_KEEPER);
 
         swap = new Swap();
         deal(WETH, address(this), 1000 * 1e18);
@@ -85,16 +85,16 @@ contract SwapTest is Test {
         // Execute order
         skip(1);
 
-        helper.mockOraclePrices({
+        testHelper.mockOraclePrices({
             tokens: tokens,
             providers: providers,
             data: data,
             oracles: oracles
         });
 
-        helper.set("ETH keeper before", keeper.balance);
-        helper.set("ETH swap before", address(swap).balance);
-        helper.set("DAI swap before", dai.balanceOf(address(swap)));
+        testHelper.set("ETH keeper before", keeper.balance);
+        testHelper.set("ETH swap before", address(swap).balance);
+        testHelper.set("DAI swap before", dai.balanceOf(address(swap)));
 
         vm.prank(keeper);
         orderHandler.executeOrder(
@@ -106,27 +106,27 @@ contract SwapTest is Test {
             })
         );
 
-        helper.set("ETH keeper after", keeper.balance);
-        helper.set("ETH swap after", address(swap).balance);
-        helper.set("DAI swap after", dai.balanceOf(address(swap)));
+        testHelper.set("ETH keeper after", keeper.balance);
+        testHelper.set("ETH swap after", address(swap).balance);
+        testHelper.set("DAI swap after", dai.balanceOf(address(swap)));
 
-        console.log("ETH keeper: %e", helper.get("ETH keeper after"));
-        console.log("ETH swap: %e", helper.get("ETH swap after"));
-        console.log("DAI swap: %e", helper.get("DAI swap after"));
+        console.log("ETH keeper: %e", testHelper.get("ETH keeper after"));
+        console.log("ETH swap: %e", testHelper.get("ETH swap after"));
+        console.log("DAI swap: %e", testHelper.get("DAI swap after"));
 
         assertGe(
-            helper.get("ETH keeper after"),
-            helper.get("ETH keeper before"),
+            testHelper.get("ETH keeper after"),
+            testHelper.get("ETH keeper before"),
             "Keeper execution fee"
         );
         assertGe(
-            helper.get("ETH swap after"),
-            helper.get("ETH swap before"),
+            testHelper.get("ETH swap after"),
+            testHelper.get("ETH swap before"),
             "Swap execution fee refund"
         );
         assertGe(
-            helper.get("DAI swap after"),
-            helper.get("DAI swap before"),
+            testHelper.get("DAI swap after"),
+            testHelper.get("DAI swap before"),
             "Swap DAI"
         );
     }

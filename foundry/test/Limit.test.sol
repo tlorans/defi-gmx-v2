@@ -21,7 +21,7 @@ contract LongTest is Test {
     IOrderHandler constant orderHandler = IOrderHandler(ORDER_HANDLER);
     IReader constant reader = IReader(READER);
 
-    TestHelper helper;
+    TestHelper testHelper;
     Oracle oracle;
     Limit limit;
     address keeper;
@@ -33,8 +33,8 @@ contract LongTest is Test {
     TestHelper.OracleParams[] oracles;
 
     function setUp() public {
-        helper = new TestHelper();
-        keeper = helper.getRoleMember(Role.ORDER_KEEPER);
+        testHelper = new TestHelper();
+        keeper = testHelper.getRoleMember(Role.ORDER_KEEPER);
         oracle = new Oracle();
         limit = new Limit();
         deal(USDC, address(this), 1000 * 1e6);
@@ -91,15 +91,15 @@ contract LongTest is Test {
         oracles[0].deltaPrice = 0;
         oracles[1].deltaPrice = -10;
 
-        helper.mockOraclePrices({
+        testHelper.mockOraclePrices({
             tokens: tokens,
             providers: providers,
             data: data,
             oracles: oracles
         });
 
-        helper.set("ETH keeper before", keeper.balance);
-        helper.set("ETH limit before", address(limit).balance);
+        testHelper.set("ETH keeper before", keeper.balance);
+        testHelper.set("ETH limit before", address(limit).balance);
 
         vm.prank(keeper);
         orderHandler.executeOrder(
@@ -111,28 +111,28 @@ contract LongTest is Test {
             })
         );
 
-        helper.set("ETH keeper after", keeper.balance);
-        helper.set("ETH limit after", address(limit).balance);
-        helper.set("WETH limit", weth.balanceOf(address(limit)));
-        helper.set("USDC limit", usdc.balanceOf(address(limit)));
+        testHelper.set("ETH keeper after", keeper.balance);
+        testHelper.set("ETH limit after", address(limit).balance);
+        testHelper.set("WETH limit", weth.balanceOf(address(limit)));
+        testHelper.set("USDC limit", usdc.balanceOf(address(limit)));
 
-        console.log("ETH keeper: %e", helper.get("ETH keeper after"));
-        console.log("ETH limit: %e", helper.get("ETH limit after"));
+        console.log("ETH keeper: %e", testHelper.get("ETH keeper after"));
+        console.log("ETH limit: %e", testHelper.get("ETH limit after"));
 
-        uint256 wethBal = helper.get("WETH limit");
-        uint256 usdcBal = helper.get("USDC limit");
+        uint256 wethBal = testHelper.get("WETH limit");
+        uint256 usdcBal = testHelper.get("USDC limit");
 
         console.log("WETH %e", wethBal);
         console.log("USDC %e", usdcBal);
 
         assertGe(
-            helper.get("ETH keeper after"),
-            helper.get("ETH keeper before"),
+            testHelper.get("ETH keeper after"),
+            testHelper.get("ETH keeper before"),
             "Keeper execution fee"
         );
         assertGe(
-            helper.get("ETH limit after"),
-            helper.get("ETH limit before"),
+            testHelper.get("ETH limit after"),
+            testHelper.get("ETH limit before"),
             "limit execution fee refund"
         );
         assertGt(wethBal, 0, "WETH balance = 0");

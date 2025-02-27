@@ -17,7 +17,7 @@ import {Glv} from "../src/types/Glv.sol";
 import {MarketPoolValueInfo} from "../src/types/MarketPoolValueInfo.sol";
 import {Keys} from "../src/lib/Keys.sol";
 import {Oracle} from "../src/lib/Oracle.sol";
-import {MarketData} from "./lib/MarketData.sol";
+import {MarketHelper} from "./lib/MarketHelper.sol";
 
 contract Dev is Test {
     IReader constant reader = IReader(READER);
@@ -26,7 +26,7 @@ contract Dev is Test {
     IChainlinkDataStreamProvider constant provider =
         IChainlinkDataStreamProvider(CHAINLINK_DATA_STREAM_PROVIDER);
 
-    MarketData marketData = new MarketData();
+    MarketHelper marketHelper = new MarketHelper();
 
     function getMarketKeys(uint256 start, uint256 end)
         internal
@@ -42,7 +42,7 @@ contract Dev is Test {
         address long,
         address short
     ) private {
-        MarketData.Info memory info = marketData.get(market);
+        MarketHelper.Info memory info = marketHelper.get(market);
         console.log("name:", info.name);
         console.log("market:", market);
         console.log("index:", index);

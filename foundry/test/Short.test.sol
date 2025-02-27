@@ -21,7 +21,7 @@ contract ShortTest is Test {
     IOrderHandler constant orderHandler = IOrderHandler(ORDER_HANDLER);
     IReader constant reader = IReader(READER);
 
-    TestHelper helper;
+    TestHelper testHelper;
     Oracle oracle;
     Short short;
     address keeper;
@@ -33,8 +33,8 @@ contract ShortTest is Test {
     TestHelper.OracleParams[] oracles;
 
     function setUp() public {
-        helper = new TestHelper();
-        keeper = helper.getRoleMember(Role.ORDER_KEEPER);
+        testHelper = new TestHelper();
+        keeper = testHelper.getRoleMember(Role.ORDER_KEEPER);
         oracle = new Oracle();
         short = new Short(address(oracle));
         deal(USDC, address(this), 1000 * 1e6);
@@ -86,15 +86,15 @@ contract ShortTest is Test {
         // Execute short order
         skip(1);
 
-        helper.mockOraclePrices({
+        testHelper.mockOraclePrices({
             tokens: tokens,
             providers: providers,
             data: data,
             oracles: oracles
         });
 
-        helper.set("ETH keeper before", keeper.balance);
-        helper.set("ETH short before", address(short).balance);
+        testHelper.set("ETH keeper before", keeper.balance);
+        testHelper.set("ETH short before", address(short).balance);
 
         vm.prank(keeper);
         orderHandler.executeOrder(
@@ -106,20 +106,20 @@ contract ShortTest is Test {
             })
         );
 
-        helper.set("ETH keeper after", keeper.balance);
-        helper.set("ETH short after", address(short).balance);
+        testHelper.set("ETH keeper after", keeper.balance);
+        testHelper.set("ETH short after", address(short).balance);
 
-        console.log("ETH keeper: %e", helper.get("ETH keeper after"));
-        console.log("ETH short: %e", helper.get("ETH short after"));
+        console.log("ETH keeper: %e", testHelper.get("ETH keeper after"));
+        console.log("ETH short: %e", testHelper.get("ETH short after"));
 
         assertGe(
-            helper.get("ETH keeper after"),
-            helper.get("ETH keeper before"),
+            testHelper.get("ETH keeper after"),
+            testHelper.get("ETH keeper before"),
             "Keeper execution fee"
         );
         assertGe(
-            helper.get("ETH short after"),
-            helper.get("ETH short before"),
+            testHelper.get("ETH short after"),
+            testHelper.get("ETH short before"),
             "Short execution fee refund"
         );
 
@@ -179,15 +179,15 @@ contract ShortTest is Test {
         oracles[0].deltaPrice = 0;
         oracles[1].deltaPrice = -5;
 
-        helper.mockOraclePrices({
+        testHelper.mockOraclePrices({
             tokens: tokens,
             providers: providers,
             data: data,
             oracles: oracles
         });
 
-        helper.set("ETH keeper before", keeper.balance);
-        helper.set("ETH short before", address(short).balance);
+        testHelper.set("ETH keeper before", keeper.balance);
+        testHelper.set("ETH short before", address(short).balance);
 
         vm.prank(keeper);
         orderHandler.executeOrder(
@@ -199,14 +199,14 @@ contract ShortTest is Test {
             })
         );
 
-        helper.set("ETH keeper after", keeper.balance);
-        helper.set("ETH short after", address(short).balance);
+        testHelper.set("ETH keeper after", keeper.balance);
+        testHelper.set("ETH short after", address(short).balance);
 
-        helper.set("WETH short", weth.balanceOf(address(short)));
-        helper.set("USDC short", usdc.balanceOf(address(short)));
+        testHelper.set("WETH short", weth.balanceOf(address(short)));
+        testHelper.set("USDC short", usdc.balanceOf(address(short)));
 
-        uint256 wethBal = helper.get("WETH short");
-        uint256 usdcBal = helper.get("USDC short");
+        uint256 wethBal = testHelper.get("WETH short");
+        uint256 usdcBal = testHelper.get("USDC short");
 
         console.log("WETH %e", wethBal);
         console.log("USDC %e", usdcBal);
@@ -214,17 +214,17 @@ contract ShortTest is Test {
         assertEq(wethBal, 0, "WETH balance != 0");
         assertGe(usdcBal, usdcAmount, "USDC balance < initial collateral");
 
-        console.log("ETH keeper: %e", helper.get("ETH keeper after"));
-        console.log("ETH short: %e", helper.get("ETH short after"));
+        console.log("ETH keeper: %e", testHelper.get("ETH keeper after"));
+        console.log("ETH short: %e", testHelper.get("ETH short after"));
 
         assertGe(
-            helper.get("ETH keeper after"),
-            helper.get("ETH keeper before"),
+            testHelper.get("ETH keeper after"),
+            testHelper.get("ETH keeper before"),
             "Keeper execution fee"
         );
         assertGe(
-            helper.get("ETH long after"),
-            helper.get("ETH long before"),
+            testHelper.get("ETH long after"),
+            testHelper.get("ETH long before"),
             "Close execution fee refund"
         );
 

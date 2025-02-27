@@ -3,7 +3,7 @@ pragma solidity 0.8.26;
 
 import "../../src/Constants.sol";
 
-contract MarketData {
+contract MarketHelper {
     struct Info {
         string name;
         address oracle;

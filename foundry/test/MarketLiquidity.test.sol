@@ -24,7 +24,7 @@ contract MarketLiquidityTest is Test {
         IWithdrawalHandler(WITHDRAWAL_HANDLER);
     IReader constant reader = IReader(READER);
 
-    TestHelper helper;
+    TestHelper testHelper;
     MarketLiquidity marketLiquidity;
     address keeper;
 
@@ -35,8 +35,8 @@ contract MarketLiquidityTest is Test {
     TestHelper.OracleParams[] oracles;
 
     function setUp() public {
-        helper = new TestHelper();
-        keeper = helper.getRoleMember(Role.ORDER_KEEPER);
+        testHelper = new TestHelper();
+        keeper = testHelper.getRoleMember(Role.ORDER_KEEPER);
 
         marketLiquidity = new MarketLiquidity();
         deal(USDC, address(this), 1000 * 1e6);
@@ -99,14 +99,14 @@ contract MarketLiquidityTest is Test {
         // Execute deposit
         skip(1);
 
-        helper.mockOraclePrices({
+        testHelper.mockOraclePrices({
             tokens: tokens,
             providers: providers,
             data: data,
             oracles: oracles
         });
 
-        helper.set(
+        testHelper.set(
             "GM token marketLiquidity before",
             gmToken.balanceOf(address(marketLiquidity))
         );
@@ -121,26 +121,26 @@ contract MarketLiquidityTest is Test {
             })
         );
 
-        helper.set(
+        testHelper.set(
             "GM token marketLiquidity after",
             gmToken.balanceOf(address(marketLiquidity))
         );
 
         console.log(
             "GM token marketLiquidity: %e",
-            helper.get("GM token marketLiquidity after")
+            testHelper.get("GM token marketLiquidity after")
         );
 
         assertGt(
-            helper.get("GM token marketLiquidity after"),
-            helper.get("GM token marketLiquidity before"),
+            testHelper.get("GM token marketLiquidity after"),
+            testHelper.get("GM token marketLiquidity before"),
             "GM token marketLiquidity"
         );
 
         // Create withdrawal order
         skip(1);
 
-        helper.set(
+        testHelper.set(
             "GM token marketLiquidity before",
             gmToken.balanceOf(address(marketLiquidity))
         );
@@ -148,7 +148,7 @@ contract MarketLiquidityTest is Test {
         bytes32 withdrawalKey =
             marketLiquidity.createWithdrawal{value: executionFee}();
 
-        helper.set(
+        testHelper.set(
             "GM token marketLiquidity after",
             gmToken.balanceOf(address(marketLiquidity))
         );
@@ -172,7 +172,7 @@ contract MarketLiquidityTest is Test {
         );
 
         assertEq(
-            helper.get("GM token marketLiquidity after"),
+            testHelper.get("GM token marketLiquidity after"),
             0,
             "GM token marketLiquidity"
         );
@@ -180,20 +180,20 @@ contract MarketLiquidityTest is Test {
         // Execute withdrawal
         skip(1);
 
-        helper.set(
+        testHelper.set(
             "WBTC marketLiquidity before",
             wbtc.balanceOf(address(marketLiquidity))
         );
-        helper.set(
+        testHelper.set(
             "USDC marketLiquidity before",
             usdc.balanceOf(address(marketLiquidity))
         );
-        helper.set(
+        testHelper.set(
             "GM token marketLiquidity before",
             gmToken.balanceOf(address(marketLiquidity))
         );
 
-        helper.mockOraclePrices({
+        testHelper.mockOraclePrices({
             tokens: tokens,
             providers: providers,
             data: data,
@@ -210,38 +210,40 @@ contract MarketLiquidityTest is Test {
             })
         );
 
-        helper.set(
+        testHelper.set(
             "WBTC marketLiquidity after",
             wbtc.balanceOf(address(marketLiquidity))
         );
-        helper.set(
+        testHelper.set(
             "USDC marketLiquidity after",
             usdc.balanceOf(address(marketLiquidity))
         );
-        helper.set(
+        testHelper.set(
             "GM token marketLiquidity after",
             gmToken.balanceOf(address(marketLiquidity))
         );
 
         console.log(
-            "WBTC marketLiquidity: %e", helper.get("WBTC marketLiquidity after")
+            "WBTC marketLiquidity: %e",
+            testHelper.get("WBTC marketLiquidity after")
         );
         console.log(
-            "USDC marketLiquidity: %e", helper.get("USDC marketLiquidity after")
+            "USDC marketLiquidity: %e",
+            testHelper.get("USDC marketLiquidity after")
         );
 
         assertGt(
-            helper.get("WBTC marketLiquidity after"),
-            helper.get("WBTC marketLiquidity before"),
+            testHelper.get("WBTC marketLiquidity after"),
+            testHelper.get("WBTC marketLiquidity before"),
             "WBTC marketLiquidity"
         );
         assertGt(
-            helper.get("USDC marketLiquidity after"),
-            helper.get("USDC marketLiquidity before"),
+            testHelper.get("USDC marketLiquidity after"),
+            testHelper.get("USDC marketLiquidity before"),
             "USDC marketLiquidity"
         );
         assertGe(
-            helper.get("GM token marketLiquidity after"),
+            testHelper.get("GM token marketLiquidity after"),
             0,
             "GM token marketLiquidity"
         );
