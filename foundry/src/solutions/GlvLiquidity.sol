@@ -5,13 +5,13 @@ import {console} from "forge-std/Test.sol";
 import {IERC20} from "../interfaces/IERC20.sol";
 import {IGlvRouter} from "../interfaces/IGlvRouter.sol";
 import {GlvDepositUtils} from "../types/GlvDepositUtils.sol";
+import {GlvWithdrawalUtils} from "../types/GlvWithdrawalUtils.sol";
 import "../Constants.sol";
 
 contract GlvLiquidity {
     IERC20 constant weth = IERC20(WETH);
     IERC20 constant usdc = IERC20(USDC);
     IERC20 constant glvToken = IERC20(GLV_TOKEN_WETH_USDC);
-    IERC20 constant gmToken = IERC20(GM_TOKEN_ETH_WETH_USDC);
     IGlvRouter constant glvRouter = IGlvRouter(GLV_ROUTER);
 
     // Receive execution fee refund from GMX
@@ -50,7 +50,7 @@ contract GlvLiquidity {
         return glvRouter.createGlvDeposit(
             GlvDepositUtils.CreateGlvDepositParams({
                 glv: address(glvToken),
-                market: address(gmToken),
+                market: GM_TOKEN_ETH_WETH_USDC,
                 receiver: address(this),
                 callbackContract: address(0),
                 uiFeeReceiver: address(0),
@@ -69,36 +69,35 @@ contract GlvLiquidity {
         );
     }
 
-    function createWithdrawal() external payable returns (bytes32 key) {
-        /*
-        uint256 gmTokenAmount = gmToken.balanceOf(address(this));
-
+    function createGlvWithdrawal() external payable returns (bytes32 key) {
         uint256 executionFee = 0.1 * 1e18;
+        uint256 glvTokenAmount = glvToken.balanceOf(address(this));
 
         // Send gas fee
         glvRouter.sendWnt{value: executionFee}({
-            receiver: WITHDRAWAL_VAULT,
+            receiver: GLV_VAULT,
             amount: executionFee
         });
 
         // Send token
-        gmToken.approve(ROUTER, gmTokenAmount);
+        glvToken.approve(ROUTER, glvTokenAmount);
         glvRouter.sendTokens({
-            token: GM_TOKEN_BTC_WBTC_USDC,
-            receiver: WITHDRAWAL_VAULT,
-            amount: gmTokenAmount
+            token: address(glvToken),
+            receiver: GLV_VAULT,
+            amount: glvTokenAmount
         });
 
         // Create order
         address[] memory longTokenSwapPath = new address[](0);
         address[] memory shortTokenSwapPath = new address[](0);
 
-        return glvRouter.createWithdrawal(
-            WithdrawalUtils.CreateWithdrawalParams({
+        return glvRouter.createGlvWithdrawal(
+            GlvWithdrawalUtils.CreateGlvWithdrawalParams({
                 receiver: address(this),
                 callbackContract: address(0),
                 uiFeeReceiver: address(0),
-                market: GM_TOKEN_BTC_WBTC_USDC,
+                market: GM_TOKEN_ETH_WETH_USDC,
+                glv: address(glvToken),
                 longTokenSwapPath: longTokenSwapPath,
                 shortTokenSwapPath: shortTokenSwapPath,
                 // TODO: how to calculate this
@@ -110,6 +109,5 @@ contract GlvLiquidity {
                 callbackGasLimit: 0
             })
         );
-        */
     }
 }

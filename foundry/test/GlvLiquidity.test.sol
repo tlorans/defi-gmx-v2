@@ -134,60 +134,40 @@ contract GlvLiquidityTest is Test {
             testHelper.get("GLV after"), testHelper.get("GLV before"), "GLV"
         );
 
-        /*
         // Create withdrawal order
         skip(1);
 
-        testHelper.set(
-            "GLV token glvLiquidity before",
-            glvToken.balanceOf(address(glvLiquidity))
-        );
+        testHelper.set("GLV before", glvToken.balanceOf(address(glvLiquidity)));
 
         bytes32 withdrawalKey =
-            glvLiquidity.createWithdrawal{value: executionFee}();
+            glvLiquidity.createGlvWithdrawal{value: executionFee}();
 
-        testHelper.set(
-            "GLV token glvLiquidity after",
-            glvToken.balanceOf(address(glvLiquidity))
-        );
+        testHelper.set("GLV after", glvToken.balanceOf(address(glvLiquidity)));
 
-        Withdrawal.Props memory withdrawal =
-            glvReader.getWithdrawal(DATA_STORE, withdrawalKey);
+        GlvWithdrawal.Props memory withdrawal =
+            glvReader.getGlvWithdrawal(DATA_STORE, withdrawalKey);
         assertEq(
             withdrawal.addresses.receiver,
             address(glvLiquidity),
             "withdrawal receiver"
         );
+        assertEq(withdrawal.addresses.glv, address(glvToken), "withdrawal glv");
         assertEq(
-            withdrawal.addresses.market, GM_TOKEN_BTC_WBTC_USDC, "withdrawal market"
+            withdrawal.addresses.market,
+            GM_TOKEN_ETH_WETH_USDC,
+            "withdrawal market"
         );
         assertGt(
-            withdrawal.numbers.marketTokenAmount,
-            0,
-            "withdrawal market token amount"
+            withdrawal.numbers.glvTokenAmount, 0, "withdrawal glv token amount"
         );
 
-        assertEq(
-            testHelper.get("GLV token glvLiquidity after"),
-            0,
-            "GLV token glvLiquidity"
-        );
+        assertEq(testHelper.get("GLV after"), 0, "GLV glvLiquidity");
 
         // Execute withdrawal
         skip(1);
 
-        testHelper.set(
-            "WBTC glvLiquidity before",
-            wbtc.balanceOf(address(glvLiquidity))
-        );
-        testHelper.set(
-            "USDC glvLiquidity before",
-            usdc.balanceOf(address(glvLiquidity))
-        );
-        testHelper.set(
-            "GLV token glvLiquidity before",
-            glvToken.balanceOf(address(glvLiquidity))
-        );
+        testHelper.set("WETH before", weth.balanceOf(address(glvLiquidity)));
+        testHelper.set("USDC before", usdc.balanceOf(address(glvLiquidity)));
 
         testHelper.mockOraclePrices({
             tokens: tokens,
@@ -197,7 +177,7 @@ contract GlvLiquidityTest is Test {
         });
 
         vm.prank(keeper);
-        withdrawalHandler.executeWithdrawal(
+        glvHandler.executeGlvWithdrawal(
             withdrawalKey,
             OracleUtils.SetPricesParams({
                 tokens: tokens,
@@ -206,41 +186,21 @@ contract GlvLiquidityTest is Test {
             })
         );
 
-        testHelper.set(
-            "WBTC glvLiquidity after",
-            wbtc.balanceOf(address(glvLiquidity))
-        );
-        testHelper.set(
-            "USDC glvLiquidity after",
-            usdc.balanceOf(address(glvLiquidity))
-        );
-        testHelper.set(
-            "GLV token glvLiquidity after",
-            glvToken.balanceOf(address(glvLiquidity))
-        );
+        testHelper.set("WETH after", weth.balanceOf(address(glvLiquidity)));
+        testHelper.set("USDC after", usdc.balanceOf(address(glvLiquidity)));
 
-        console.log(
-            "WBTC glvLiquidity: %e", testHelper.get("WBTC glvLiquidity after")
-        );
-        console.log(
-            "USDC glvLiquidity: %e", testHelper.get("USDC glvLiquidity after")
-        );
+        console.log("WETH: %e", testHelper.get("WETH after"));
+        console.log("USDC: %e", testHelper.get("USDC after"));
 
         assertGt(
-            testHelper.get("WBTC glvLiquidity after"),
-            testHelper.get("WBTC glvLiquidity before"),
-            "WBTC glvLiquidity"
+            testHelper.get("WETH after"),
+            testHelper.get("WETH before"),
+            "WETH glvLiquidity"
         );
         assertGt(
-            testHelper.get("USDC glvLiquidity after"),
-            testHelper.get("USDC glvLiquidity before"),
+            testHelper.get("USDC after"),
+            testHelper.get("USDC before"),
             "USDC glvLiquidity"
         );
-        assertGe(
-            testHelper.get("GLV token glvLiquidity after"),
-            0,
-            "GLV token glvLiquidity"
-        );
-        */
     }
 }
