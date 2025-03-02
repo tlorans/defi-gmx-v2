@@ -7,11 +7,13 @@ import {IERC20} from "../src/interfaces/IERC20.sol";
 import "../src/Constants.sol";
 import {IRewardRouterV2} from "../src/interfaces/IRewardRouterV2.sol";
 import {IRewardTracker} from "../src/interfaces/IRewardTracker.sol";
+import {IGovToken} from "../src/interfaces/IGovToken.sol";
 // TODO: import from exercises
 import {Stake} from "../src/solutions/Stake.sol";
 
 contract StakeTest is Test {
     IERC20 constant gmx = IERC20(GMX);
+    IGovToken constant gmxDao = IGovToken(GMX_DAO);
     IRewardRouterV2 constant rewardRouter = IRewardRouterV2(REWARD_ROUTER_V2);
     IRewardTracker constant rewardTracker = IRewardTracker(REWARD_TRACKER);
 
@@ -39,6 +41,7 @@ contract StakeTest is Test {
             rewardTracker.stakedAmounts(address(stake)),
             "get staked amount"
         );
+        assertEq(gmxDao.balanceOf(address(stake)), 10 * 1e18, "GMX DAO");
 
         // Claim rewards
         testHelper.set(
@@ -57,6 +60,14 @@ contract StakeTest is Test {
             testHelper.get("GMX staked after"),
             testHelper.get("GMX staked before"),
             "claim staked amount"
+        );
+
+        // Delegate
+        stake.delegate(GMX_DAO_EXAMPLE_DELEGATEE);
+        assertEq(
+            gmxDao.delegates(address(stake)),
+            GMX_DAO_EXAMPLE_DELEGATEE,
+            "GMX DAO delegates"
         );
 
         // Unstake
@@ -78,5 +89,6 @@ contract StakeTest is Test {
         assertEq(
             rewardTracker.stakedAmounts(address(stake)), 0, "staked amount"
         );
+        assertEq(gmxDao.balanceOf(address(stake)), 0, "GMX DAO");
     }
 }

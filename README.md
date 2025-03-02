@@ -200,8 +200,8 @@ Explain utilities, acquistion methods, differences and staking processes.
     - stake, delegate, unstake, claim rewards
     - [Stake GMX](https://arbiscan.io/tx/0x0ed2a66323713c2e78dd53750612f3e9bcc97f2f8c02633a433a413889142067)
     - [Unstake GMX](https://arbiscan.io/tx/0x2bbfefc59c295349405a86b08f9bd68b020e49836e9775de74e442908732678f)
-    - [Delegate](https://arbiscan.io/tx/0x245404338a81a8faccddf6ad8e944928bac6b687db8d7e217e47fdde94abd84f)
     - [Claim rewards](https://arbiscan.io/tx/0x23f1f338dc2456cf476692f34ea00838a1e621f8fd2aff330927edf256de8b1d)
+    - [Delegate](https://arbiscan.io/tx/0x245404338a81a8faccddf6ad8e944928bac6b687db8d7e217e47fdde94abd84f)
 - [ ] esGMX -> has historically been awarded as an incentive for GMX Staking -> TODO: skip?
   - [ ] UI?
     - Vest to convert esGMX to GMX
@@ -261,6 +261,8 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [Limit order swap 2.63 USDC to ETH at $2780 (part 1)](https://arbiscan.io/tx/0x5a55b926aadaa832a42c55a4a60b0008193c773767e7289cdeb7eca0e1433595)
 - [Limit order swap 2.63 USDC to ETH at $2780 (part 2)](https://arbiscan.io/tx/0x2306c6c8300a10a4e59c6dcc04513c84c0d2469172beb5c8f9cf1820eba308d0)
 - [Long ETH 0.01 2x ~ $54.57 TP $2760 50% SL $2680 50%](?)
+- [Close short WETH 0.009 (part 1)](https://arbiscan.io/tx/0x53c1b3734b7886f457909f2d785cb62b291be6ba56c79b1bd397371d4d2b44a9)
+- [Close short WETH 0.009 (part 2)](https://arbiscan.io/tx/0x4c2c254c93caaffd6d4cdeba0018aeb98f4fcbfe3862102560c426e5a2b62b05)
 
 ##### Contracts
 
@@ -329,7 +331,9 @@ Explain utilities, acquistion methods, differences and staking processes.
 - graph execution price
 - why market index token set to EOA? 0x47904963fc8b2340414262125aF798B9655E58Cd
 - what is an atomic provider?
+- how to get GMX dao token?
 
+- [GMX delegatees](https://www.tally.xyz/gov/gmx/delegates)
 - [Chainlink providers](https://docs.chain.link/data-feeds/price-feeds/addresses?network=arbitrum&page=1)
 - [ABI ninja](https://abi.ninja)
 
