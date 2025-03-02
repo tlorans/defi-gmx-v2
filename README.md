@@ -263,6 +263,8 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [Long ETH 0.01 2x ~ $54.57 TP $2760 50% SL $2680 50%](?)
 - [Close short WETH 0.009 (part 1)](https://arbiscan.io/tx/0x53c1b3734b7886f457909f2d785cb62b291be6ba56c79b1bd397371d4d2b44a9)
 - [Close short WETH 0.009 (part 2)](https://arbiscan.io/tx/0x4c2c254c93caaffd6d4cdeba0018aeb98f4fcbfe3862102560c426e5a2b62b05)
+- [Short ETH 0.01 ~ TP $2200 SL $2260 part 1](https://arbiscan.io/tx/0xfb4a9ddd2b80a4e7f739c0281a3869d89ee3cb96fe796446511098eb917016a4)]
+- [Short ETH 0.01 ~ TP $2200 SL $2260 part 2](https://arbiscan.io/tx/0x9a32d9750bc14d77756ab9ebae1141c2b4845f44cdf2091fc74b7df174b32887)
 
 ##### Contracts
 
