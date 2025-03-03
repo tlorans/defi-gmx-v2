@@ -3,14 +3,22 @@ pragma solidity 0.8.26;
 
 library Order {
     enum OrderType {
+        // Market swap
         MarketSwap,
+        // Limit order swap
         LimitSwap,
+        // Increase position
         MarketIncrease,
+        // TODO: wat dis?
         LimitIncrease,
+        // Decrease position
         MarketDecrease,
+        // Take profit
         LimitDecrease,
+        // Stop loss
         StopLossDecrease,
         Liquidation,
+        // TODO: wat dis?
         StopIncrease
     }
 
