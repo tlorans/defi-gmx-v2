@@ -36,7 +36,7 @@ contract TakeProfitAndStopLoss {
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
         // TODO: how to calculate sizeDeltaUsd
         // 1 USD = 1e30
-        uint256 sizeDeltaUsd = 10 * usdcAmount * ethPrice * 1e16;
+        uint256 sizeDeltaUsd = 3 * usdcAmount * 1e24;
 
         // Send gas fee
         // NOTE: gas fee must be sent 3 times, each before call to create a order.
@@ -108,8 +108,8 @@ contract TakeProfitAndStopLoss {
                     // sizeDeltaUsd: sizeDeltaUsd,
                     sizeDeltaUsd: type(uint256).max,
                     // TODO: how to calculate?
-                    initialCollateralDeltaAmount: usdcAmount,
-                    // initialCollateralDeltaAmount: type(uint256).max,
+                    // initialCollateralDeltaAmount: usdcAmount,
+                    initialCollateralDeltaAmount: type(uint256).max,
                     triggerPrice: ethPrice * 1e4 * 90 / 100,
                     acceptablePrice: 0,
                     executionFee: executionFee,
