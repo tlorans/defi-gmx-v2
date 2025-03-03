@@ -175,7 +175,7 @@ forge build
   - [ ] When executed?
   - [ ] Fees
   - [ ] Contract calls
-  - [ ] Foundry exercises?
+  - [ ] Foundry exercises? -> Not public function -> no exercise
 
 ### Tokenomics
 
