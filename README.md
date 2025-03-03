@@ -73,7 +73,10 @@ forge build
   - execution fee
   - bank / vault
   - router
+    - ExchangeRouter
+    - GlvRouter
   - utils
+  - market tokens
   - reader
 - Liquidity
   - [notes](./notes/pools.md)
@@ -292,7 +295,7 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [Perps Hackathon Workshop 3a - risk management](https://www.youtube.com/watch?v=sKL8sgF3_co&list=PLFEm8se77ryMielAM_RuyMSQVrum9CN5S)
 - [The Cartoon Guide to Perps](https://www.paradigm.xyz/2021/03/the-cartoon-guide-to-perps)
 
-### questions to answer
+### TODO: questions to answer
 
 - [x] perpetual contract -> who is the counter party -> GMX
 - [x] where does profit / loss come from?
@@ -301,12 +304,8 @@ Explain utilities, acquistion methods, differences and staking processes.
   - is it price at every 8 hours or accumulated every second?
   - how is payment settled?
 - what is the price of perpetual contract?
-- how is leverage possible?
-- where are the tokens stored?
-- who can create orders?
-- who can execute orders?
-- who pays for the gas on orders?
-- why short receives USDC?
+- how is leverage possible? -> position size USD / collateral USD
+- where are the tokens stored? -> market token
 - [x] why longs pay shorts when long interest exceeds short interest
   - price up -> demand to open long -> pay premium to shors
 - why loss on short when leverage is high and index < open price?
@@ -320,22 +319,19 @@ Explain utilities, acquistion methods, differences and staking processes.
 - how is funding fee calculated?
 - what is price impact pool?
 - what is position size?
-- what market is long token = short token?
 - what is reserve factor?
   -> reserveUSD represents the total value of tokens reserved in USD terms for open positions.
 - what is virtual inventory
-- difference between GlvRouter and ExchangeRouter
-  -> GLV for LP, ExchangeRouter for traders?
 - crossover
   -> a crossover in balance is for example if the long open interest is larger
   than the short open interest, and a short position is opened such that the
   short open interest becomes larger than the long open interest
-- why clear price after order?
+- why clear price after order? -> price is set for each execution of order
 - why reserve must be below threshold?
-- graph execution price
-- why market index token set to EOA? 0x47904963fc8b2340414262125aF798B9655E58Cd
+- TODO: graph execution price?
+- why market index token set to EOA? synthetic assets
 - what is an atomic provider?
-- how to get GMX dao token?
+- how to get GMX dao token? -> stake GMX
 
 - [GMX delegatees](https://www.tally.xyz/gov/gmx/delegates)
 - [Chainlink providers](https://docs.chain.link/data-feeds/price-feeds/addresses?network=arbitrum&page=1)
