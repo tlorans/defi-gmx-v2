@@ -3,24 +3,31 @@ pragma solidity 0.8.26;
 
 library Order {
     enum OrderType {
-        // Market swap
+        // @dev MarketSwap: swap token A to token B at the current market price
+        // the order will be cancelled if the minOutputAmount cannot be fulfilled
         MarketSwap,
-        // Limit order swap
+        // @dev LimitSwap: swap token A to token B if the minOutputAmount can be fulfilled
         LimitSwap,
-        // Increase position
+        // @dev MarketIncrease: increase position at the current market price
+        // the order will be cancelled if the position cannot be increased at the acceptablePrice
         MarketIncrease,
-        // TODO: wat dis?
+        // @dev LimitIncrease: increase position if the triggerPrice is reached and the acceptablePrice can be fulfilled
         LimitIncrease,
-        // Decrease position
+        // @dev MarketDecrease: decrease position at the current market price
+        // the order will be cancelled if the position cannot be decreased at the acceptablePrice
         MarketDecrease,
+        // @dev LimitDecrease: decrease position if the triggerPrice is reached and the acceptablePrice can be fulfilled
         // Take profit
         LimitDecrease,
+        // @dev StopLossDecrease: decrease position if the triggerPrice is reached and the acceptablePrice can be fulfilled
         // Stop loss
         StopLossDecrease,
+        // @dev Liquidation: allows liquidation of positions if the criteria for liquidation are met
         Liquidation,
-        // TODO: wat dis?
+        // @dev StopIncrease: increase position if the triggerPrice is reached and the acceptablePrice can be fulfilled
         StopIncrease
     }
+
 
     enum SecondaryOrderType {
         None,

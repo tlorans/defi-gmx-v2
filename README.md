@@ -52,6 +52,8 @@ forge build
   - [ ] Funding rate mechanism
   - [ ] Open interest
     - The total number of open contracts that have not been settled or closed out
+  - [ ] Market order
+  - [ ] Limit order
   - [ ] Long
   - [ ] Short
   - [ ] Leverage
@@ -100,6 +102,22 @@ forge build
       - [ ] Sell fee
       - [ ] Network fee
     - [ ] Shift
+    - [ ] Trade
+      - Swap
+        - market
+        - limit
+      - Long
+        - market
+          - tp / sl
+        - limit -> create long above limit
+        - tp / sl
+        - stop market
+      - Short
+        - market
+          - tp / sl
+        - limit -> create short below limit
+        - tp / sl
+        - stop market
     - [x] Transactions
       - [Buy GLV (part 1)](https://arbiscan.io/tx/0x8d7d6e6b99fbeb095aeee4e495c528e4187bbabd0a3f728ef874f6b31bf73405)
       - [Buy GLV (part 2)](https://arbiscan.io/tx/0x3cfcd9e1bdcc57a727dd66d6ed38afe78bbf3430015072078876240d183129f3)
