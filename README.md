@@ -71,7 +71,9 @@ forge build
   - wnt = wrapped native token
   - multicall
   - execution fee
-  - bank
+  - bank / vault
+  - router
+  - utils
   - reader
 - Liquidity
   - [notes](./notes/pools.md)
