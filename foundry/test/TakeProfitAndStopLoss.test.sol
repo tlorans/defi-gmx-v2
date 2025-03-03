@@ -64,18 +64,18 @@ contract TakeProfitAndStopLossTest is Test {
         });
     }
 
-    function testTakeProfitAndStopLoss() public {
+    function createLongOrder(uint256 usdcAmount)
+        public
+        returns (bytes32[] memory keys)
+    {
         uint256 executionFee = 1e18;
-        uint256 usdcAmount = 1000 * 1e6;
         usdc.approve(address(tpsl), usdcAmount);
 
-        bytes32[] memory keys = tpsl.createTakeProfitAndStopLossOrders{
-            value: executionFee
-        }(usdcAmount);
+        keys = tpsl.createTakeProfitAndStopLossOrders{value: executionFee}(
+            usdcAmount
+        );
 
-        console.logBytes32(keys[0]);
-        console.logBytes32(keys[1]);
-        console.logBytes32(keys[2]);
+        assertEq(keys.length, 3, "keys length");
 
         Order.Props memory order = reader.getOrder(DATA_STORE, keys[0]);
         assertEq(order.addresses.receiver, address(tpsl), "order receiver");
@@ -116,19 +116,28 @@ contract TakeProfitAndStopLossTest is Test {
         Position.Props memory position;
         position = reader.getPosition(DATA_STORE, positionKey);
 
-        console.log("pos account", position.addresses.account);
-        console.log("pos market", position.addresses.market);
-        console.log(
-            "pos collateral amount %e", position.numbers.collateralAmount
+        assertEq(position.addresses.account, address(tpsl), "position account");
+        assertEq(
+            position.addresses.market, GM_TOKEN_ETH_WETH_USDC, "position market"
         );
-        console.log("pos size %e", position.numbers.sizeInUsd);
+        assertGe(
+            position.numbers.collateralAmount,
+            usdcAmount * 99 / 100,
+            "position collateral amount"
+        );
+        assertGt(position.numbers.sizeInUsd, 0, "position size USD");
+    }
+
+    function testStopLoss() public {
+        uint256 executionFee = 1e18;
+        uint256 usdcAmount = 1000 * 1e6;
+        bytes32[] memory keys = createLongOrder(usdcAmount);
 
         // Execute stop loss
-        /*
         skip(1);
 
         oracles[0].deltaPrice = 0;
-        oracles[1].deltaPrice = -10;
+        oracles[1].deltaPrice = -11;
 
         testHelper.mockOraclePrices({
             tokens: tokens,
@@ -137,7 +146,7 @@ contract TakeProfitAndStopLossTest is Test {
             oracles: oracles
         });
 
-        console.log("USDC before %e", usdc.balanceOf(address(tpsl)));
+        testHelper.set("USDC before", usdc.balanceOf(address(tpsl)));
 
         vm.prank(keeper);
         orderHandler.executeOrder(
@@ -149,34 +158,16 @@ contract TakeProfitAndStopLossTest is Test {
             })
         );
 
-        console.log("USDC after %e", usdc.balanceOf(address(tpsl)));
-
-        skip(1);
-
-        oracles[0].deltaPrice = 0;
-        oracles[1].deltaPrice = -10;
-
-        testHelper.mockOraclePrices({
-            tokens: tokens,
-            providers: providers,
-            data: data,
-            oracles: oracles
-        });
-
-        console.log("USDC before %e", usdc.balanceOf(address(tpsl)));
-
-        vm.prank(keeper);
-        orderHandler.executeOrder(
-            keys[1],
-            OracleUtils.SetPricesParams({
-                tokens: tokens,
-                providers: providers,
-                data: data
-            })
+        testHelper.set("USDC after", usdc.balanceOf(address(tpsl)));
+        assertGt(
+            testHelper.get("USDC after"), testHelper.get("USDC before"), "USDC"
         );
+    }
 
-        console.log("USDC after %e", usdc.balanceOf(address(tpsl)));
-        */
+    function testTakeProfit() public {
+        uint256 executionFee = 1e18;
+        uint256 usdcAmount = 1000 * 1e6;
+        bytes32[] memory keys = createLongOrder(usdcAmount);
 
         // Execute take profit
         skip(1);
@@ -191,8 +182,7 @@ contract TakeProfitAndStopLossTest is Test {
             oracles: oracles
         });
 
-        console.log("USDC before %e", usdc.balanceOf(address(tpsl)));
-        console.log("WETH before %e", weth.balanceOf(address(tpsl)));
+        testHelper.set("USDC before", usdc.balanceOf(address(tpsl)));
 
         vm.prank(keeper);
         orderHandler.executeOrder(
@@ -204,7 +194,10 @@ contract TakeProfitAndStopLossTest is Test {
             })
         );
 
-        console.log("USDC after %e", usdc.balanceOf(address(tpsl)));
-        console.log("WETH after %e", weth.balanceOf(address(tpsl)));
+        testHelper.set("USDC after", usdc.balanceOf(address(tpsl)));
+        assertGt(
+            testHelper.get("USDC after"), testHelper.get("USDC before"), "USDC"
+        );
+        assertGt(testHelper.get("USDC after"), usdcAmount, "no profit");
     }
 }

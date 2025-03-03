@@ -158,7 +158,9 @@ contract TakeProfitAndStopLoss {
                     validFromTime: 0
                 }),
                 orderType: Order.OrderType.LimitDecrease,
-                decreasePositionSwapType: Order.DecreasePositionSwapType.NoSwap,
+                decreasePositionSwapType: Order
+                    .DecreasePositionSwapType
+                    .SwapPnlTokenToCollateralToken,
                 isLong: true,
                 shouldUnwrapNativeToken: false,
                 autoCancel: true,
