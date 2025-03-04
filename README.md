@@ -54,6 +54,7 @@ forge build
     - The total number of open contracts that have not been settled or closed out
   - [ ] Market order
   - [ ] Limit order
+  - [ ] Stop market
   - [ ] Long
   - [ ] Short
   - [ ] Leverage
@@ -101,7 +102,7 @@ forge build
       - Pair liquidity
       - [ ] Sell fee
       - [ ] Network fee
-    - [ ] Shift
+    - [ ] Shift -> only possible within the same long / short?
     - [ ] Trade
       - Swap
         - market
@@ -131,6 +132,10 @@ forge build
       - [Buy BTC/USDC GLV (part 2)](https://arbiscan.io/tx/0x3f0c373aa132815204574ed7981c584d4f044eb2c00a160b7dd992822de66763)
       - [Buy BTC/USDC GM (part 1)](https://arbiscan.io/tx/0xef88d101a155ffd16427fc78d50e6028d612c8bc1e8d46a7810d53882f705f91)
       - [Buy BTC/USDC GM (part 2)](https://arbiscan.io/tx/0x54357ec00e44fa8d3d701368af4a3979a28dd2383b9eb5a3f299253e8ce217a1)
+      - [Sell BTC/USDC GM (part 1)](https://arbiscan.io/tx/0xae14c5e75e5f5e5669570fc8e4d288ce7e58aeaa49174f37c4a4588bc3d04aac)
+      - [Sell BTC/USDC GM (part 2)](https://arbiscan.io/tx/0xac64686c30e67f7eae3576be759dbaef774122601ebc0c15c8cf9001fb530627)
+      - [Shift ETH/USDC -> LDO (part 1)](https://arbiscan.io/tx/0xaa88b76cd39de8931bdfb3cce46984f634ecfe6ca88b40965191f9b05b50605d)
+      - [Shift ETH/USDC -> LDO (part 2)](https://arbiscan.io/tx/0x6b6db0a76a506b76c8cf517f59ca8a506b0f7e8e8f36f578a92ce7da0ddd38dc)
   - [ ] Token pricing
   - [ ] Contract calls (using Tenderly?)
   - [ ] Foundry exercises
