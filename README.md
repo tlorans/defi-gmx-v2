@@ -115,6 +115,7 @@ forge build
           - Price impact fee
           - Fees
           - TP / SL
+            - Auto cancel
         - Short
           - 2 step tx
           - profit in stablecoin?
@@ -126,9 +127,10 @@ forge build
           - Price impact fee
           - Fees
           - TP / SL
+            - Auto cancel
       - Limit
-        - Long
-        - Short
+        - Long -> create long position above limit
+        - Short -> create short position below limit
       - TP / SL
         - Long
         - Short
@@ -143,6 +145,11 @@ forge build
       - Close, deposit, withdraw collateral
       - Claims (funding fees)
     - [ ] Transactions
+  - [ ] Example strategies
+    - Long ETH, ETH collateral
+    - Long ETH, USDC collateral
+    - Short ETH, ETH collateral -> delta neutral?
+    - Short ETH, USDC collateral
   - [ ] Fees (PositionPricingUtils.sol)
     - Open / close
     - Swap
@@ -150,44 +157,37 @@ forge build
     - Funding fees
     - Borrowing fee
     - Newtork fee
-    - UI
-  - [ ] Example strategies
-    - Long ETH, ETH collateral
-    - Long ETH, USDC collateral
-    - Short ETH, ETH collateral -> delta neutral?
-    - Short ETH, USDC collateral
+    - UI?
   - [ ] Math - Funding rate -> dynamic borrow fee?
     - adaptive funding rate
   - [ ] Math - liquidation price?
   - [ ] Math - profit / loss?
   - [ ] How is profit fully backed?
-  - [ ] Contract calls
+  - [ ] Contract calls (2 step tx - create order + execute order)
     - Swap
+    - Limit
     - Long (open / close / deposit / withdraw)
     - Short (open / close / deposit / withdraw)
+    - TP
+    - SL
+    - Auto cancel
   - [ ] Foundry exercises
     - Swap
+    - Limit order
     - Long - open, close, deposit, withdraw
     - Short - open, close, deposit, withdraw
-  - [ ] UI - limit order, TP, SL
-    - Transactions
-  - [ ] Limit order
-  - [ ] TP
-  - [ ] SL
-  - [ ] Auto cancel
-  - [ ] ADL
-  - [ ] Contract calls?
-  - [ ] Foundry exercises
-    - Long, short, Limit, TP, SL
+    - TP
+    - SL
 - Liquidation
   - [ ] UI
     - Transactions
+  - [ ] ADL
   - [ ] When executed?
   - [ ] Fees
   - [ ] Contract calls
-  - [ ] Foundry exercises? -> Not public function -> no exercise
+  - [x] Foundry exercises? -> Not public function -> no exercise
+  - [ ] ADL
 - Liquidity
-  - [notes](./notes/pools.md)
   - [ ] UI
     - Difference between GLV and GM
     - GM (GMX market) pools -> isolated pool?
@@ -208,22 +208,6 @@ forge build
       - [ ] Sell fee
       - [ ] Network fee
     - [ ] Shift -> only possible within the same long / short?
-    - [ ] Trade
-      - Swap
-        - market
-        - limit
-      - Long
-        - market
-          - tp / sl
-        - limit -> create long above limit
-        - tp / sl
-        - stop market
-      - Short
-        - market
-          - tp / sl
-        - limit -> create short below limit
-        - tp / sl
-        - stop market
     - [x] Transactions
       - [Buy GLV (part 1)](https://arbiscan.io/tx/0x8d7d6e6b99fbeb095aeee4e495c528e4187bbabd0a3f728ef874f6b31bf73405)
       - [Buy GLV (part 2)](https://arbiscan.io/tx/0x3cfcd9e1bdcc57a727dd66d6ed38afe78bbf3430015072078876240d183129f3)
@@ -241,8 +225,13 @@ forge build
       - [Sell BTC/USDC GM (part 2)](https://arbiscan.io/tx/0xac64686c30e67f7eae3576be759dbaef774122601ebc0c15c8cf9001fb530627)
       - [Shift ETH/USDC -> LDO (part 1)](https://arbiscan.io/tx/0xaa88b76cd39de8931bdfb3cce46984f634ecfe6ca88b40965191f9b05b50605d)
       - [Shift ETH/USDC -> LDO (part 2)](https://arbiscan.io/tx/0x6b6db0a76a506b76c8cf517f59ca8a506b0f7e8e8f36f578a92ce7da0ddd38dc)
-  - [ ] Token pricing
-  - [ ] Contract calls (using Tenderly?)
+  - [ ] GM token pricing
+    - fees
+  - [ ] GLV token pricing
+    - fees
+  - [ ] Contract calls
+    - Mint / burn GM token
+    - Mint / burn GLV token
   - [ ] Foundry exercises
     - GM - Buy, sell, shift
     - GLV - Buy, sell
@@ -339,6 +328,8 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [Close short WETH 0.009 (part 2)](https://arbiscan.io/tx/0x4c2c254c93caaffd6d4cdeba0018aeb98f4fcbfe3862102560c426e5a2b62b05)
 - [Short ETH 0.01 ~ TP $2200 SL $2260 part 1](https://arbiscan.io/tx/0xfb4a9ddd2b80a4e7f739c0281a3869d89ee3cb96fe796446511098eb917016a4)]
 - [Short ETH 0.01 ~ TP $2200 SL $2260 part 2](https://arbiscan.io/tx/0x9a32d9750bc14d77756ab9ebae1141c2b4845f44cdf2091fc74b7df174b32887)
+- [Limit long 100x 0.0000534 WBTC part 1](https://arbiscan.io/tx/0xb6edf782be9db8b493b296c5231d7041961c080fc941dcb6f3ca59f207794023)
+- [Limit long 100x 0.0000534 WBTC part 2](https://arbiscan.io/tx/0xf732ca126ef2582550bf7fcd0ef2a24f3d076d1456c4050b30974c7fc4d54cc3)
 
 ##### Contracts
 
