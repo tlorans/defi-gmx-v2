@@ -34,11 +34,12 @@ forge build
     - Dynamic funding rate?
     - Isolated pools
 - [ ] How the protocol works
-  - Users (LP, traders, GMX and GM / GLV holders)
+  - Users (traders, LP (GM / GLV holders) and GMX holders, keepers)
   - Funding mechanism
     - Open interest
-    - Price impact?
-    - Borrowing fees?
+    - Price impact
+    - Borrowing fees
+    - Funding
   - Where does profit / loss come from?
   - Fee distribution
 - [ ] Terminologies and examples
@@ -48,6 +49,8 @@ forge build
       - Price speculation
       - Hedging
       - Arbitrage
+  - [ ] Derivative
+  - [ ] Synthetic asset
   - [ ] Futures
   - [ ] Funding rate mechanism
   - [ ] Open interest
@@ -55,19 +58,21 @@ forge build
   - [ ] Market order
   - [ ] Limit order
   - [ ] Stop market
-  - [ ] Long
-  - [ ] Short
-  - [ ] Leverage
-  - [ ] Margin
-  - [ ] Initial margin
-  - [ ] Maintanence margin
-  - [ ] Liquidity pools and markets
-  - [ ] Liquidation price
   - [ ] Index
-  - [ ] Derivative
-  - [ ] Synthetic asset
+  - [ ] Long
+    - to long
+    - long token
+  - [ ] Short
+    - to short
+    - short token
+  - [ ] Leverage
+  - [ ] Margin TODO: remove?
+  - [ ] Initial margin TODO: remove?
+  - [ ] Maintanence margin TODO: remove?
+  - [ ] Liquidity pools
+  - [ ] Markets (index, long, short)
+  - [ ] Liquidation price
   - [ ] Well fundedness
-  - [ ] Market (index, long, short)
 
 ### Contract architecture
 
@@ -79,69 +84,10 @@ forge build
   - router
     - ExchangeRouter
     - GlvRouter
+  - handlers
   - utils (library)
   - market tokens
   - reader
-- Liquidity
-  - [notes](./notes/pools.md)
-  - [ ] UI
-    - Difference between GLV and GM
-    - GM (GMX market) pools -> isolated pool?
-    - GLV (GMX liquidity vault) pools
-    - Buy
-      - Single and pair liquidity
-      - [ ] Token price
-        - `MarketUtils.getMarketTokenPrice`
-          - pool value usd / total market token supply
-          - TODO: what is impact pool
-            - Store funds collected from traders who pay positive price impact fees
-            - Pay out traders who receive negative price impact rebates
-            - position impact distribution rate
-      - [ ] Buy fee
-      - [ ] Network fee
-    - Sell
-      - Pair liquidity
-      - [ ] Sell fee
-      - [ ] Network fee
-    - [ ] Shift -> only possible within the same long / short?
-    - [ ] Trade
-      - Swap
-        - market
-        - limit
-      - Long
-        - market
-          - tp / sl
-        - limit -> create long above limit
-        - tp / sl
-        - stop market
-      - Short
-        - market
-          - tp / sl
-        - limit -> create short below limit
-        - tp / sl
-        - stop market
-    - [x] Transactions
-      - [Buy GLV (part 1)](https://arbiscan.io/tx/0x8d7d6e6b99fbeb095aeee4e495c528e4187bbabd0a3f728ef874f6b31bf73405)
-      - [Buy GLV (part 2)](https://arbiscan.io/tx/0x3cfcd9e1bdcc57a727dd66d6ed38afe78bbf3430015072078876240d183129f3)
-      - [Buy GM ETH/USD (part 1)](https://arbiscan.io/tx/0x6021800ad3d31003082fa6dc7fb5b6b8ff83208cadfcca98ffaa0774d6f652b8)
-      - [Buy GM ETH/USD (part 2)](https://arbiscan.io/tx/0x719b63dbef8d38006918c0e787b98a8373606b6147b77ae84a91fe2338132f4a)
-      - [Sell GLV (part 1)](https://arbiscan.io/tx/0xb60ed4fa2252dae32f8252f5702c3caf0cd2f074a9e9b41eaaaae2cea3f760c6)
-      - [Sell GLV (part 2)](https://arbiscan.io/tx/0x5120cf011c75d9b67bdffa99c4e3c6fffb5e8bb428f0080fc7ccded361bf98e6)
-      - [Sell GM ETH/USD (part 1)](https://arbiscan.io/tx/0xda4bc1d39be6ea85f8323875cbc4920aa33d0af38d7af2eb3f3dd03d174ae98e)
-      - [Sell GM ETH/USD (part 2)](https://arbiscan.io/tx/0xbdc46442f47149089f4976190a97c81bf476eb43b0478689e0ac918a9a502641)
-      - [Buy BTC/USDC GLV (part 1)](https://arbiscan.io/tx/0x87ed238503646ef7d7045ce639efd59845db94384a00d37aedc174d52050eb83)
-      - [Buy BTC/USDC GLV (part 2)](https://arbiscan.io/tx/0x3f0c373aa132815204574ed7981c584d4f044eb2c00a160b7dd992822de66763)
-      - [Buy BTC/USDC GM (part 1)](https://arbiscan.io/tx/0xef88d101a155ffd16427fc78d50e6028d612c8bc1e8d46a7810d53882f705f91)
-      - [Buy BTC/USDC GM (part 2)](https://arbiscan.io/tx/0x54357ec00e44fa8d3d701368af4a3979a28dd2383b9eb5a3f299253e8ce217a1)
-      - [Sell BTC/USDC GM (part 1)](https://arbiscan.io/tx/0xae14c5e75e5f5e5669570fc8e4d288ce7e58aeaa49174f37c4a4588bc3d04aac)
-      - [Sell BTC/USDC GM (part 2)](https://arbiscan.io/tx/0xac64686c30e67f7eae3576be759dbaef774122601ebc0c15c8cf9001fb530627)
-      - [Shift ETH/USDC -> LDO (part 1)](https://arbiscan.io/tx/0xaa88b76cd39de8931bdfb3cce46984f634ecfe6ca88b40965191f9b05b50605d)
-      - [Shift ETH/USDC -> LDO (part 2)](https://arbiscan.io/tx/0x6b6db0a76a506b76c8cf517f59ca8a506b0f7e8e8f36f578a92ce7da0ddd38dc)
-  - [ ] Token pricing
-  - [ ] Contract calls (using Tenderly?)
-  - [ ] Foundry exercises
-    - GM - Buy, sell, shift
-    - GLV - Buy, sell
 - Trading
   - [ ] UI
     - Market (ETH / USD, WBTC / USD, etc...)
@@ -205,6 +151,66 @@ forge build
   - [ ] Fees
   - [ ] Contract calls
   - [ ] Foundry exercises? -> Not public function -> no exercise
+- Liquidity
+  - [notes](./notes/pools.md)
+  - [ ] UI
+    - Difference between GLV and GM
+    - GM (GMX market) pools -> isolated pool?
+    - GLV (GMX liquidity vault) pools
+    - Buy
+      - Single and pair liquidity
+      - [ ] Token price
+        - `MarketUtils.getMarketTokenPrice`
+          - pool value usd / total market token supply
+          - TODO: what is impact pool
+            - Store funds collected from traders who pay positive price impact fees
+            - Pay out traders who receive negative price impact rebates
+            - position impact distribution rate
+      - [ ] Buy fee
+      - [ ] Network fee
+    - Sell
+      - Pair liquidity
+      - [ ] Sell fee
+      - [ ] Network fee
+    - [ ] Shift -> only possible within the same long / short?
+    - [ ] Trade
+      - Swap
+        - market
+        - limit
+      - Long
+        - market
+          - tp / sl
+        - limit -> create long above limit
+        - tp / sl
+        - stop market
+      - Short
+        - market
+          - tp / sl
+        - limit -> create short below limit
+        - tp / sl
+        - stop market
+    - [x] Transactions
+      - [Buy GLV (part 1)](https://arbiscan.io/tx/0x8d7d6e6b99fbeb095aeee4e495c528e4187bbabd0a3f728ef874f6b31bf73405)
+      - [Buy GLV (part 2)](https://arbiscan.io/tx/0x3cfcd9e1bdcc57a727dd66d6ed38afe78bbf3430015072078876240d183129f3)
+      - [Buy GM ETH/USD (part 1)](https://arbiscan.io/tx/0x6021800ad3d31003082fa6dc7fb5b6b8ff83208cadfcca98ffaa0774d6f652b8)
+      - [Buy GM ETH/USD (part 2)](https://arbiscan.io/tx/0x719b63dbef8d38006918c0e787b98a8373606b6147b77ae84a91fe2338132f4a)
+      - [Sell GLV (part 1)](https://arbiscan.io/tx/0xb60ed4fa2252dae32f8252f5702c3caf0cd2f074a9e9b41eaaaae2cea3f760c6)
+      - [Sell GLV (part 2)](https://arbiscan.io/tx/0x5120cf011c75d9b67bdffa99c4e3c6fffb5e8bb428f0080fc7ccded361bf98e6)
+      - [Sell GM ETH/USD (part 1)](https://arbiscan.io/tx/0xda4bc1d39be6ea85f8323875cbc4920aa33d0af38d7af2eb3f3dd03d174ae98e)
+      - [Sell GM ETH/USD (part 2)](https://arbiscan.io/tx/0xbdc46442f47149089f4976190a97c81bf476eb43b0478689e0ac918a9a502641)
+      - [Buy BTC/USDC GLV (part 1)](https://arbiscan.io/tx/0x87ed238503646ef7d7045ce639efd59845db94384a00d37aedc174d52050eb83)
+      - [Buy BTC/USDC GLV (part 2)](https://arbiscan.io/tx/0x3f0c373aa132815204574ed7981c584d4f044eb2c00a160b7dd992822de66763)
+      - [Buy BTC/USDC GM (part 1)](https://arbiscan.io/tx/0xef88d101a155ffd16427fc78d50e6028d612c8bc1e8d46a7810d53882f705f91)
+      - [Buy BTC/USDC GM (part 2)](https://arbiscan.io/tx/0x54357ec00e44fa8d3d701368af4a3979a28dd2383b9eb5a3f299253e8ce217a1)
+      - [Sell BTC/USDC GM (part 1)](https://arbiscan.io/tx/0xae14c5e75e5f5e5669570fc8e4d288ce7e58aeaa49174f37c4a4588bc3d04aac)
+      - [Sell BTC/USDC GM (part 2)](https://arbiscan.io/tx/0xac64686c30e67f7eae3576be759dbaef774122601ebc0c15c8cf9001fb530627)
+      - [Shift ETH/USDC -> LDO (part 1)](https://arbiscan.io/tx/0xaa88b76cd39de8931bdfb3cce46984f634ecfe6ca88b40965191f9b05b50605d)
+      - [Shift ETH/USDC -> LDO (part 2)](https://arbiscan.io/tx/0x6b6db0a76a506b76c8cf517f59ca8a506b0f7e8e8f36f578a92ce7da0ddd38dc)
+  - [ ] Token pricing
+  - [ ] Contract calls (using Tenderly?)
+  - [ ] Foundry exercises
+    - GM - Buy, sell, shift
+    - GLV - Buy, sell
 
 ### Tokenomics
 
@@ -237,6 +243,10 @@ Explain utilities, acquistion methods, differences and staking processes.
   - [ ] Foundry exercises?
 - [ ] GLP (V1)
   - Quick explanation
+
+### Footnote
+
+- 63 / 64 gas
 
 ### Application
 
