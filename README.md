@@ -19,6 +19,8 @@ forge build
     - Advanced Foundry (multicall)
   - Goals and expected outcomes
 - [ ] Project setup
+  - transaction links
+  - exercises
 - [ ] UI - Quick guide on how to bridge ETH
   - [ ] Transactions
 
@@ -90,20 +92,53 @@ forge build
   - reader
 - Trading
   - [ ] UI
-    - Market (ETH / USD, WBTC / USD, etc...)
+    - 2 steps transaciton process
+    - Transaction links
+    - Markets (ETH / USD, WBTC / USD, etc...)
+      - Index, long and short tokens
       - Fully backed
       - Synthetic
     - Long / Short / Swap
-      - Long -> profit in long asset
-      - Short -> profit in stablecoin
-      - Profit can be swapped
-    - Leverage
-    - Open cost
-    - Limit, TP / SL
+      - Swap
+        - 2 step tx
+        - Market
+        - Limit
+      - Market
+        - Long
+          - 2 step tx
+          - Leverage
+          - profit in long asset?
+          - Profit and collateral can be swapped
+          - Pool fees
+            - open interest
+          - Liquidation price
+          - Price impact fee
+          - Fees
+          - TP / SL
+        - Short
+          - 2 step tx
+          - profit in stablecoin?
+          - Leverage
+          - Pool fees
+            - open interest
+          - Profit and collateral can be swapped
+          - Liquidation price
+          - Price impact fee
+          - Fees
+          - TP / SL
+      - Limit
+        - Long
+        - Short
+      - TP / SL
+        - Long
+        - Short
+      - Stop market
+        - Long
+        - Short
+    - Open cost TODO: wat dis?
     - Liquidation price
       - Long
       - Short
-    - 2 steps transaciton process
     - Managing positions
       - Close, deposit, withdraw collateral
       - Claims (funding fees)
