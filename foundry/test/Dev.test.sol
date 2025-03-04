@@ -25,6 +25,7 @@ contract Base is Test {
     IDataStore internal constant dataStore = IDataStore(DATA_STORE);
 }
 
+/*
 contract GlvDev is Base {
     function test() public {
         address glv = GLV_TOKEN_WETH_USDC;
@@ -47,10 +48,22 @@ contract GlvDev is Base {
         }
     }
 }
+*/
 
 contract MarketDev is Base {
     MarketHelper marketHelper = new MarketHelper();
 
+    function getMinCollateralFactor(address market) internal view returns (uint256) {
+        return dataStore.getUint(Keys.minCollateralFactorKey(market));
+    }
+
+    function test_getMinCollateralFactor() public {
+        uint256 f = getMinCollateralFactor(GM_TOKEN_ETH_WETH_USDC);
+        console.log("factor %e", f);
+        // 5e27 / 1e30 = 0.005 -> 0.5% of position size
+    }
+
+    /*
     function logMarket(
         address market,
         address index,
@@ -103,8 +116,10 @@ contract MarketDev is Base {
             console.log("key", i, keys[i]);
         }
     }
+    */
 }
 
+/*
 contract OracleDev is Base {
     IChainlinkDataStreamProvider constant provider =
         IChainlinkDataStreamProvider(CHAINLINK_DATA_STREAM_PROVIDER);
@@ -132,3 +147,4 @@ contract OracleDev is Base {
         console.log("p %e", p);
     }
 }
+*/

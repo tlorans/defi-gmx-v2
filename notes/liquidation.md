@@ -1,6 +1,25 @@
 # Liquidation
 
-PositionUtils.sol
+`LiquidationHandler -> LiquidationUtils.createLiquidationOrder, ExecuteOrderUtils.executeOrder`
+
+`PositionUtils.isPositionLiquidatable`
+
+```
+remaining collateral = collateral USD + position PnL + price impact - collateral cost USD
+    position PnL = long -> position size in tokens * price - position size in USD
+                   short -> position size in USD - position size in tokens * price
+    price impact = max(0, price impact if position was fully closed)
+    collateral cost USD = position cost in collateral * collateral price
+        position cost = position fee + borrowing fee + liquidation fee + UI fee - discount + funding fee
+            position fee = position size x position fee factor
+            liquidation fee = position size x liquidation fee factor
+            ui fee = position size x UI fee factor
+            discount = pro tier, referral discounts
+
+not liquidatable if
+remaining collateral >= min collateral USD and min collateral factor x position size in USD
+
+```
 
 ```solidity
 info.remainingCollateralUsd =

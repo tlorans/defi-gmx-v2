@@ -67,6 +67,7 @@ forge build
   - [ ] Derivative
   - [ ] Synthetic asset
   - [ ] Well fundedness
+  - [ ] Market (index, long, short)
 
 ### Contract architecture
 
@@ -78,7 +79,7 @@ forge build
   - router
     - ExchangeRouter
     - GlvRouter
-  - utils
+  - utils (library)
   - market tokens
   - reader
 - Liquidity
@@ -355,6 +356,7 @@ Explain utilities, acquistion methods, differences and staking processes.
 - why market index token set to EOA? synthetic assets
 - what is an atomic provider?
 - how to get GMX dao token? -> stake GMX
+- difference between funding fee and borrowing fee
 
 - [GMX delegatees](https://www.tally.xyz/gov/gmx/delegates)
 - [Chainlink providers](https://docs.chain.link/data-feeds/price-feeds/addresses?network=arbitrum&page=1)
