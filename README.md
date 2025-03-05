@@ -200,7 +200,10 @@ forge build
         - `swapPath`
         - [Trace](./notes/long.md)
       - [Close long ETH 0.001 70x ~ $190 part 3](https://arbiscan.io/tx/0x13cdef0acc7d4017f82df308f0f628996b707396182fc2a2042e78b0ebc4657d)
+        - `sizeDeltaUsd`
+        - `initialCollateralDeltaAmount`
       - [Close long ETH 0.001 70x ~ $190 part 4](https://arbiscan.io/tx/0xf5f5d293ef7bdc6893941cda6a6fd57d67a20876a175aa1e424af9442868bb47)
+        - [Trace](./notes/market_decrease.md)
     - Short (open / close / deposit / withdraw)
     - TP
     - SL
@@ -451,3 +454,4 @@ Trades
 - DecreasePositionUtils
 - SwapPricingUtils
 - PositionPricingUtils
+- DecreasePositionCollateralUtils
