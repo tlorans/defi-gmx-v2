@@ -16,7 +16,9 @@ forge build
 - [ ] Course intro
   - Prerequisites
     - DAI, WETH, AMM, etc..
-    - Advanced Foundry (multicall)
+    - Advanced Foundry
+      - multicall
+      - library (delegatecall)
   - Goals and expected outcomes
 - [ ] Project setup
   - transaction links
@@ -80,6 +82,15 @@ forge build
 
 - [ ] Contract architecture
   - wnt = wrapped native token
+  - 2 step transcations
+    - user -> create order
+      - send execution fee
+      - send tokens
+      - create order
+    - keeper -> execute order
+      - execute order
+      - send tokens
+      - refund execution fee
   - multicall
   - execution fee
   - bank / vault
@@ -165,6 +176,8 @@ forge build
   - [ ] How is profit fully backed?
   - [ ] Contract calls (2 step tx - create order + execute order)
     - Swap
+      - [Token flow](./notes/execute-swap.png)
+      - [Trace](./notes/swap.md)
     - Limit
     - Long (open / close / deposit / withdraw)
     - Short (open / close / deposit / withdraw)
@@ -225,7 +238,7 @@ forge build
       - [Sell BTC/USDC GM (part 2)](https://arbiscan.io/tx/0xac64686c30e67f7eae3576be759dbaef774122601ebc0c15c8cf9001fb530627)
       - [Shift ETH/USDC -> LDO (part 1)](https://arbiscan.io/tx/0xaa88b76cd39de8931bdfb3cce46984f634ecfe6ca88b40965191f9b05b50605d)
       - [Shift ETH/USDC -> LDO (part 2)](https://arbiscan.io/tx/0x6b6db0a76a506b76c8cf517f59ca8a506b0f7e8e8f36f578a92ce7da0ddd38dc)
-  - [ ] GM token pricing
+  - [ ] GM token pricing -> `MarketUtils.getMarketTokenPrice`
     - fees
   - [ ] GLV token pricing
     - fees
@@ -294,16 +307,19 @@ Explain utilities, acquistion methods, differences and staking processes.
 
 ##### Transactions
 
-**_Trades_**
+**_Market swaps_**
 
 - [Swap DAI to ETH (part 1)](https://arbiscan.io/tx/0x747665f80ccd64918af4f4cd2d3c7e7c077d061d61bc47fc99f644d1eb4d18f4)
-- [Swap DAI to ETH (part 2 - receive ETH)](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
+- [Swap DAI to ETH (part 2)](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
+- [Swap DAI to GMX (part 1)](https://arbiscan.io/tx/0x35572d81e52d1a2f254bcdeb30232e4fae9c4fc178f8b92240f9169951f70c36)
+- [Swap DAI to GMX (part 2)](https://arbiscan.io/tx/0xb44af9795a4f728a3813aed7cafc7a66a5e4b6c12a2e1cfc3999be1ff960e9cd)
+
+**_Trades_**
+
 - [Short ETH](https://arbiscan.io/tx/0x910aceeabc176d44788500403b2db3f7973bd8118fb79f57c490c8ab0505b295)
 - [Short ETH (part 2? receive ETH)](https://arbiscan.io/tx/0x5212c55508b8f888f666220a17b584adc73623d044548c0822400ba52a6af8c8)
 - [Short ETH close position (part 1)](https://arbiscan.io/tx/0x35725018aaa145d36a6969ad31f6a20380e428e6a906de97cdcf07e5ca1a0ffa)
 - [Short ETH close position - receive USDC (part 2)](https://arbiscan.io/tx/0x0cb45095f9d18d328cd37f3f075e98920e7dbfce4369881c5d62208f903675b9)
-- [Swap DAI to GMX (part 1)](https://arbiscan.io/tx/0x35572d81e52d1a2f254bcdeb30232e4fae9c4fc178f8b92240f9169951f70c36)
-- [Swap DAI to GMX (part 2 - receive GMX)](https://arbiscan.io/tx/0xb44af9795a4f728a3813aed7cafc7a66a5e4b6c12a2e1cfc3999be1ff960e9cd)
 - [Short 0.01 ETH, ETH collateral (part 1)](https://arbiscan.io/tx/0x15f4bb54997d8efbf0816313e64120fe5bf89ab31fe78f4a647f47b61b629eea)
 - [Short 0.01 ETH, ETH collateral (part 2](https://arbiscan.io/tx/0x7039c81c3f14f54fbfb45c337fb13e4513b8e795a2d9237b66b2b191e717121e)
 - [Close short 0.01 ETH, ETH collateral (part 1)](https://arbiscan.io/tx/0x3825aab5d7bbfac2b68f75c77c1ff55e684496844a8dd605dc43a1348efceb22)
