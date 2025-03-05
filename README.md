@@ -59,8 +59,8 @@ forge build
   - [ ] Funding rate mechanism
   - [ ] Open interest
     - The total number of open contracts that have not been settled or closed out
-  - [ ] Market order
-  - [ ] Limit order
+  - [ ] Market swap
+  - [ ] Limit swap
   - [ ] Stop market
   - [ ] Index
   - [ ] Long
@@ -184,14 +184,30 @@ forge build
       - [Token flow](./notes/execute-swap.png)
       - [Trace](./notes/swap.md)
     - Limit
+      - [Limit order swap 2.63 USDC to ETH at $2780 (part 1)](https://arbiscan.io/tx/0x5a55b926aadaa832a42c55a4a60b0008193c773767e7289cdeb7eca0e1433595)
+      - [Limit order swap 2.63 USDC to ETH at $2780 (part 2)](https://arbiscan.io/tx/0x2306c6c8300a10a4e59c6dcc04513c84c0d2469172beb5c8f9cf1820eba308d0)
     - Long (open / close / deposit / withdraw)
+      - [Long ETH 0.001 70x ~ $190 part 1](https://arbiscan.io/tx/0xcac1ce9014aafcd3d8ae89c27cfd4866de36ff010ded5344a65bd4034d358413)
+        - `market`
+        - `initialCollateralToken`
+        - `swapPath`
+        - `sizeDeltaUsd`
+        - `executionFee`
+        - `orderType`
+      - [Long ETH 0.001 70x ~ $190 part 2](https://arbiscan.io/tx/0x29d95557ef789fd6d9031c739a29dd5adc112f3ff8aab0524cd6aa9ddfc4e278)
+        - `leverage = position size USD / collateral amount USD`
+        - `initialCollateralDeltaAmount`
+        - `swapPath`
+        - [Trace](./notes/long.md)
+      - [Close long ETH 0.001 70x ~ $190 part 3](https://arbiscan.io/tx/0x13cdef0acc7d4017f82df308f0f628996b707396182fc2a2042e78b0ebc4657d)
+      - [Close long ETH 0.001 70x ~ $190 part 4](https://arbiscan.io/tx/0xf5f5d293ef7bdc6893941cda6a6fd57d67a20876a175aa1e424af9442868bb47)
     - Short (open / close / deposit / withdraw)
     - TP
     - SL
     - Auto cancel
   - [ ] Foundry exercises
-    - Swap
-    - Limit order
+    - Market swap
+    - Limit swap
     - Long - open, close, deposit, withdraw
     - Short - open, close, deposit, withdraw
     - TP
@@ -312,28 +328,34 @@ Explain utilities, acquistion methods, differences and staking processes.
 
 ##### Transactions
 
-**_Market swaps_**
+Market swaps
 
 - [Swap DAI to ETH (part 1)](https://arbiscan.io/tx/0x747665f80ccd64918af4f4cd2d3c7e7c077d061d61bc47fc99f644d1eb4d18f4)
 - [Swap DAI to ETH (part 2)](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
 - [Swap DAI to GMX (part 1)](https://arbiscan.io/tx/0x35572d81e52d1a2f254bcdeb30232e4fae9c4fc178f8b92240f9169951f70c36)
 - [Swap DAI to GMX (part 2)](https://arbiscan.io/tx/0xb44af9795a4f728a3813aed7cafc7a66a5e4b6c12a2e1cfc3999be1ff960e9cd)
 
-**_Limit swaps_**
+Limit swaps
 
 - [Limit order swap 2.63 USDC to ETH at $2780 (part 1)](https://arbiscan.io/tx/0x5a55b926aadaa832a42c55a4a60b0008193c773767e7289cdeb7eca0e1433595)
 - [Limit order swap 2.63 USDC to ETH at $2780 (part 2)](https://arbiscan.io/tx/0x2306c6c8300a10a4e59c6dcc04513c84c0d2469172beb5c8f9cf1820eba308d0)
 
-**_Trades_**
+Trades
+
+- [Long ETH 0.001 75x ~ $190 part 1](https://arbiscan.io/tx/0xcac1ce9014aafcd3d8ae89c27cfd4866de36ff010ded5344a65bd4034d358413)
+- [Long ETH 0.001 75x ~ $190 part 2](https://arbiscan.io/tx/0x29d95557ef789fd6d9031c739a29dd5adc112f3ff8aab0524cd6aa9ddfc4e278)
+- [Long ETH 0.001 75x ~ $190 part 3](https://arbiscan.io/tx/0x13cdef0acc7d4017f82df308f0f628996b707396182fc2a2042e78b0ebc4657d)
+- [Long ETH 0.001 75x ~ $190 part 4](https://arbiscan.io/tx/0xf5f5d293ef7bdc6893941cda6a6fd57d67a20876a175aa1e424af9442868bb47)
+
+- [Short 0.01 ETH, ETH collateral (part 1)](https://arbiscan.io/tx/0x15f4bb54997d8efbf0816313e64120fe5bf89ab31fe78f4a647f47b61b629eea)
+- [Short 0.01 ETH, ETH collateral (part 2](https://arbiscan.io/tx/0x7039c81c3f14f54fbfb45c337fb13e4513b8e795a2d9237b66b2b191e717121e)
+- [Close short 0.01 ETH, ETH collateral (part 1)](https://arbiscan.io/tx/0x3825aab5d7bbfac2b68f75c77c1ff55e684496844a8dd605dc43a1348efceb22)
+- [Close short 0.01 ETH, ETH collateral (part 2)](https://arbiscan.io/tx/0x8ade23d7ad7ee6fb589a0d04724ee8c64f20e92e32688739e0c049b510c690f0)
 
 - [Short ETH](https://arbiscan.io/tx/0x910aceeabc176d44788500403b2db3f7973bd8118fb79f57c490c8ab0505b295)
 - [Short ETH (part 2? receive ETH)](https://arbiscan.io/tx/0x5212c55508b8f888f666220a17b584adc73623d044548c0822400ba52a6af8c8)
 - [Short ETH close position (part 1)](https://arbiscan.io/tx/0x35725018aaa145d36a6969ad31f6a20380e428e6a906de97cdcf07e5ca1a0ffa)
 - [Short ETH close position - receive USDC (part 2)](https://arbiscan.io/tx/0x0cb45095f9d18d328cd37f3f075e98920e7dbfce4369881c5d62208f903675b9)
-- [Short 0.01 ETH, ETH collateral (part 1)](https://arbiscan.io/tx/0x15f4bb54997d8efbf0816313e64120fe5bf89ab31fe78f4a647f47b61b629eea)
-- [Short 0.01 ETH, ETH collateral (part 2](https://arbiscan.io/tx/0x7039c81c3f14f54fbfb45c337fb13e4513b8e795a2d9237b66b2b191e717121e)
-- [Close short 0.01 ETH, ETH collateral (part 1)](https://arbiscan.io/tx/0x3825aab5d7bbfac2b68f75c77c1ff55e684496844a8dd605dc43a1348efceb22)
-- [Close short 0.01 ETH, ETH collateral (part 2)](https://arbiscan.io/tx/0x8ade23d7ad7ee6fb589a0d04724ee8c64f20e92e32688739e0c049b510c690f0)
 - [Short ETH 10 USDC 100x (part 1)](https://arbiscan.io/tx/0x0a7b404d5f3c8c5f2cedd2c452d81840bef1b89f583e4e1a80f4cc2930ddad42)
 - [Short ETH 10 USDC 100x (part 2)](https://arbiscan.io/tx/0x7fa1c583e2363ed1013035a33305f79571c760f713bed8065fe24b24e5b739d2)
 - [Close ETH 10 USDC 100x (part 1)](https://arbiscan.io/tx/0xc3357725621993a02203d945a52120fdf7172075c372687d917d2b1593a3e3d4)
@@ -343,10 +365,6 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [Long ETH 0.005 ETH 10x SL + TP (part 3)](https://arbiscan.io/tx/0xa8c6f918e2478e3b1e0e9ff43b088f4f371505b39fce7b38fe49cb30ab0e565a)
 - [Long ETH 0.005 ETH 10x SL + TP (part 4)](https://arbiscan.io/tx/0xa8c6f918e2478e3b1e0e9ff43b088f4f371505b39fce7b38fe49cb30ab0e565a)
 - [Claim funding fees](https://arbiscan.io/tx/0x4415830b1a12882409df17e80be26da8c20e4cc929f1764046ca3aae3ca8339e)
-- [Long ETH 0.001 75x ~ $190 part 1](https://arbiscan.io/tx/0xcac1ce9014aafcd3d8ae89c27cfd4866de36ff010ded5344a65bd4034d358413)
-- [Long ETH 0.001 75x ~ $190 part 2](https://arbiscan.io/tx/0x29d95557ef789fd6d9031c739a29dd5adc112f3ff8aab0524cd6aa9ddfc4e278)
-- [Long ETH 0.001 75x ~ close part 3](https://arbiscan.io/tx/0x13cdef0acc7d4017f82df308f0f628996b707396182fc2a2042e78b0ebc4657d)
-- [Long ETH 0.001 75x ~ close part 4](https://arbiscan.io/tx/0xf5f5d293ef7bdc6893941cda6a6fd57d67a20876a175aa1e424af9442868bb47)
 - [Long ETH 0.01 2x ~ $54.57 TP $2760 50% SL $2680 50%](?)
 - [Close short WETH 0.009 (part 1)](https://arbiscan.io/tx/0x53c1b3734b7886f457909f2d785cb62b291be6ba56c79b1bd397371d4d2b44a9)
 - [Close short WETH 0.009 (part 2)](https://arbiscan.io/tx/0x4c2c254c93caaffd6d4cdeba0018aeb98f4fcbfe3862102560c426e5a2b62b05)
@@ -425,3 +443,11 @@ Explain utilities, acquistion methods, differences and staking processes.
 ##### TODO
 
 - remove / clean notes
+- MarketUtils.distributePositionImpactPool
+- PositionUtils.updateFundingAndBorrowingState
+- SwapUtils.swap
+- PositionUtils
+- IncreasePositionUtils
+- DecreasePositionUtils
+- SwapPricingUtils
+- PositionPricingUtils

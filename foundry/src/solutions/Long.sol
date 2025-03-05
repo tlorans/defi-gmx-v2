@@ -61,8 +61,7 @@ contract Long {
         });
 
         // Create order
-        // address[] memory swapPath = new address[](1);
-        // swapPath[0] = GM_TOKEN_ETH_WETH_USDC;
+        // NOTE: Add GM_TOKEN_ETH_WETH_USDC to swapPath to swap collateral from WETH to USDC
         address[] memory swapPath = new address[](0);
 
         return exchangeRouter.createOrder(
@@ -74,7 +73,6 @@ contract Long {
                     uiFeeReceiver: address(0),
                     market: GM_TOKEN_ETH_WETH_USDC,
                     initialCollateralToken: WETH,
-                    // TODO: why swap? when to swap?
                     swapPath: swapPath
                 }),
                 numbers: IBaseOrderUtils.CreateOrderParamsNumbers({
