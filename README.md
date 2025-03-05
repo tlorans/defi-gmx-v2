@@ -80,207 +80,198 @@ forge build
 
 ### Contract architecture
 
-- [ ] Contract architecture
-  - wnt = wrapped native token
-  - 2 step transcations
-    - user -> create order
-      - send execution fee
-      - send tokens
-      - create order
-    - keeper -> execute order
-      - execute order
-      - send tokens
-      - refund execution fee
-  - multicall
-  - execution fee
-  - bank / vault
-  - router
-    - ExchangeRouter
-    - GlvRouter
-  - handlers
-  - utils (library)
-  - market tokens
-  - reader
-- Trading
+#### [ ] Contract architecture
 
-  - [ ] UI
-    - 2 steps transaciton process
-    - Transaction links
-    - Markets (ETH / USD, WBTC / USD, etc...)
-      - Index, long and short tokens
-      - Fully backed
-      - Synthetic
-    - Long / Short / Swap
-      - Swap
-        - 2 step tx
-        - Market
-          - swap fee on amount in
-        - Limit
+- wnt = wrapped native token
+- 2 step transcations
+  - user -> create order
+    - send execution fee
+    - send tokens
+    - create order
+  - keeper -> execute order
+    - execute order
+    - send tokens
+    - refund execution fee
+- multicall
+- execution fee
+- bank / vault
+- router
+  - ExchangeRouter
+  - GlvRouter
+- handlers
+- utils (library)
+- market tokens
+- reader
+
+#### Trading
+
+- [ ] UI
+  - 2 steps transaciton process
+  - Transaction links
+  - Markets (ETH / USD, WBTC / USD, etc...)
+    - Index, long and short tokens
+    - Fully backed
+    - Synthetic
+  - Long / Short / Swap
+    - Swap
+      - 2 step tx
       - Market
-        - Long
-          - 2 step tx
-          - Leverage
-          - profit in long asset?
-          - Profit and collateral can be swapped
-          - Pool fees
-            - open interest
-          - Liquidation price
-          - Price impact fee
-          - Fees
-          - TP / SL
-            - Auto cancel
-        - Short
-          - 2 step tx
-          - profit in stablecoin?
-          - Leverage
-          - Pool fees
-            - open interest
-          - Profit and collateral can be swapped
-          - Liquidation price
-          - Price impact fee
-          - Fees
-          - TP / SL
-            - Auto cancel
+        - swap fee on amount in
       - Limit
-        - Long -> create long position above limit
-        - Short -> create short position below limit
-      - TP / SL
-        - Long
-        - Short
-      - Stop market
-        - Long
-        - Short
-    - Open cost TODO: wat dis?
-    - Liquidation price
+    - Market
+      - Long
+        - 2 step tx
+        - Leverage
+        - profit in long asset?
+        - Profit and collateral can be swapped
+        - Pool fees
+          - open interest
+        - Liquidation price
+        - Price impact fee
+        - Fees
+        - TP / SL
+          - Auto cancel
+      - Short
+        - 2 step tx
+        - profit in stablecoin?
+        - Leverage
+        - Pool fees
+          - open interest
+        - Profit and collateral can be swapped
+        - Liquidation price
+        - Price impact fee
+        - Fees
+        - TP / SL
+          - Auto cancel
+    - Limit
+      - Long -> create long position above limit
+      - Short -> create short position below limit
+    - TP / SL
       - Long
       - Short
-    - Managing positions
-      - Close, deposit, withdraw collateral
-      - Claims (funding fees)
-    - [ ] Transactions
-  - [ ] Example strategies
-    - Long ETH, ETH collateral
-    - Long ETH, USDC collateral
-    - Short ETH, ETH collateral -> delta neutral?
-    - Short ETH, USDC collateral
-  - [ ] Fees (PositionPricingUtils.sol)
-    - Open / close
-    - Swap
-    - Price impact and rebates
-    - Funding fees
-    - Borrowing fee
-    - Newtork fee
-    - UI?
-  - [ ] [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
-    - [notes](./notes/price_impact.md)
-  - [ ] Math - Funding rate -> dynamic borrow fee?
-    - adaptive funding rate
-  - [ ] Math - liquidation price?
-  - [ ] Math - profit / loss?
-  - [ ] How is profit fully backed?
-  - [ ] Contract calls (2 step tx - create order + execute order)
-    - Swap
-      - [Swap DAI to ETH part 1](https://arbiscan.io/tx/0x747665f80ccd64918af4f4cd2d3c7e7c077d061d61bc47fc99f644d1eb4d18f4)
-      - [Swap DAI to ETH part 2](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
-      - [Token flow](./notes/execute-swap.png)
-      - [Trace](./notes/swap.md)
-    - Limit
-      - [Limit order swap 2.63 USDC to ETH at $2780 part 1](https://arbiscan.io/tx/0x5a55b926aadaa832a42c55a4a60b0008193c773767e7289cdeb7eca0e1433595)
-      - [Limit order swap 2.63 USDC to ETH at $2780 part 2](https://arbiscan.io/tx/0x2306c6c8300a10a4e59c6dcc04513c84c0d2469172beb5c8f9cf1820eba308d0)
-    - Long (open / close / deposit / withdraw)
-      - [Long ETH 0.001 70x ~ $190 part 1](https://arbiscan.io/tx/0xcac1ce9014aafcd3d8ae89c27cfd4866de36ff010ded5344a65bd4034d358413)
-        - `market`
-        - `initialCollateralToken`
-        - `swapPath`
-        - `sizeDeltaUsd`
-        - `executionFee`
-        - `orderType`
-      - [Long ETH 0.001 70x ~ $190 part 2](https://arbiscan.io/tx/0x29d95557ef789fd6d9031c739a29dd5adc112f3ff8aab0524cd6aa9ddfc4e278)
-        - `leverage = position size USD / collateral amount USD`
-        - `initialCollateralDeltaAmount`
-        - `swapPath`
-        - [Trace](./notes/long.md)
-      - [Close long ETH 0.001 70x ~ $190 part 1](https://arbiscan.io/tx/0x13cdef0acc7d4017f82df308f0f628996b707396182fc2a2042e78b0ebc4657d)
-        - `sizeDeltaUsd`
-        - `initialCollateralDeltaAmount`
-        - `decreasePositionSwapType`
-      - [Close long ETH 0.001 70x ~ $190 part 2](https://arbiscan.io/tx/0xf5f5d293ef7bdc6893941cda6a6fd57d67a20876a175aa1e424af9442868bb47)
-        - [Trace](./notes/market_decrease.md)
-    - Short (open / close / deposit / withdraw)
-      - [Short 0.01 ETH part 1](https://arbiscan.io/tx/0x15f4bb54997d8efbf0816313e64120fe5bf89ab31fe78f4a647f47b61b629eea)
-      - [Short 0.01 ETH part 2](https://arbiscan.io/tx/0x7039c81c3f14f54fbfb45c337fb13e4513b8e795a2d9237b66b2b191e717121e)
-      - [Close short 0.01 ETH part 1](https://arbiscan.io/tx/0x3825aab5d7bbfac2b68f75c77c1ff55e684496844a8dd605dc43a1348efceb22)
-      - [Close short 0.01 ETH part 2](https://arbiscan.io/tx/0x8ade23d7ad7ee6fb589a0d04724ee8c64f20e92e32688739e0c049b510c690f0)
-    - TP
-    - SL
-    - Auto cancel
-    - Claim funding fees
-  - [ ] Foundry exercises
-    - Market swap
-    - Limit swap
-    - Long - open, close, deposit, withdraw
-    - Short - open, close, deposit, withdraw
-    - TP
-    - SL
-    - Claim funding fees
+    - Stop market
+      - Long
+      - Short
+  - Open cost TODO: wat dis?
+  - Liquidation price
+    - Long
+    - Short
+  - Managing positions
+    - Close, deposit, withdraw collateral
+    - Claims (funding fees)
+  - [ ] Transactions
+- [ ] Example strategies
+  - Long ETH, ETH collateral
+  - Long ETH, USDC collateral
+  - Short ETH, ETH collateral -> delta neutral?
+  - Short ETH, USDC collateral
+- [ ] Fees (PositionPricingUtils.sol)
+  - Open / close
+  - Swap
+  - Price impact and rebates
+  - Funding fees
+  - Borrowing fee
+  - Newtork fee
+  - UI?
+- [ ] [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
+  - [notes](./notes/price_impact.md)
+- [ ] Math - Funding rate -> dynamic borrow fee?
+  - adaptive funding rate
+- [ ] Math - liquidation price?
+- [ ] Math - profit / loss?
+- [ ] How is profit fully backed?
+- [ ] Contract calls (2 step tx - create order + execute order)
+  - Swap
+    - [tx - Swap DAI to ETH part 1](https://arbiscan.io/tx/0x747665f80ccd64918af4f4cd2d3c7e7c077d061d61bc47fc99f644d1eb4d18f4)
+    - [tx - Swap DAI to ETH part 2](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
+    - [Token flow](./notes/execute-swap.png)
+    - [Trace](./notes/swap.md)
+  - Limit
+    - [tx - Limit order swap 2.63 USDC to ETH at $2780 part 1](https://arbiscan.io/tx/0x5a55b926aadaa832a42c55a4a60b0008193c773767e7289cdeb7eca0e1433595)
+    - [tx - Limit order swap 2.63 USDC to ETH at $2780 part 2](https://arbiscan.io/tx/0x2306c6c8300a10a4e59c6dcc04513c84c0d2469172beb5c8f9cf1820eba308d0)
+  - Long (open / close / deposit / withdraw)
+    - [tx - Long ETH 0.001 70x ~ $190 part 1](https://arbiscan.io/tx/0xcac1ce9014aafcd3d8ae89c27cfd4866de36ff010ded5344a65bd4034d358413)
+      - `market`
+      - `initialCollateralToken`
+      - `swapPath`
+      - `sizeDeltaUsd`
+      - `executionFee`
+      - `orderType`
+    - [tx - Long ETH 0.001 70x ~ $190 part 2](https://arbiscan.io/tx/0x29d95557ef789fd6d9031c739a29dd5adc112f3ff8aab0524cd6aa9ddfc4e278)
+      - `leverage = position size USD / collateral amount USD`
+      - `initialCollateralDeltaAmount`
+      - `swapPath`
+      - [Trace](./notes/long.md)
+    - [tx - Close long ETH 0.001 70x ~ $190 part 1](https://arbiscan.io/tx/0x13cdef0acc7d4017f82df308f0f628996b707396182fc2a2042e78b0ebc4657d)
+      - `sizeDeltaUsd`
+      - `initialCollateralDeltaAmount`
+      - `decreasePositionSwapType`
+    - [tx - Close long ETH 0.001 70x ~ $190 part 2](https://arbiscan.io/tx/0xf5f5d293ef7bdc6893941cda6a6fd57d67a20876a175aa1e424af9442868bb47)
+      - [Trace](./notes/market_decrease.md)
+  - Short (open / close / deposit / withdraw)
+    - [tx - Short 0.01 ETH part 1](https://arbiscan.io/tx/0x15f4bb54997d8efbf0816313e64120fe5bf89ab31fe78f4a647f47b61b629eea)
+    - [tx - Short 0.01 ETH part 2](https://arbiscan.io/tx/0x7039c81c3f14f54fbfb45c337fb13e4513b8e795a2d9237b66b2b191e717121e)
+    - [tx - Close short 0.01 ETH part 1](https://arbiscan.io/tx/0x3825aab5d7bbfac2b68f75c77c1ff55e684496844a8dd605dc43a1348efceb22)
+    - [tx - Close short 0.01 ETH part 2](https://arbiscan.io/tx/0x8ade23d7ad7ee6fb589a0d04724ee8c64f20e92e32688739e0c049b510c690f0)
+  - TP and SL
+    - [tx - Short ETH 0.01 ~ TP $2200 SL $2260 part 1](https://arbiscan.io/tx/0xfb4a9ddd2b80a4e7f739c0281a3869d89ee3cb96fe796446511098eb917016a4)]
+    - [tx - Short ETH 0.01 ~ TP $2200 SL $2260 part 2](https://arbiscan.io/tx/0x9a32d9750bc14d77756ab9ebae1141c2b4845f44cdf2091fc74b7df174b32887)
+  - Auto cancel
+  - Claim funding fees
+    - [tx - Claim funding fees](https://arbiscan.io/tx/0x4415830b1a12882409df17e80be26da8c20e4cc929f1764046ca3aae3ca8339e)
+- [ ] Foundry exercises
 
-- Liquidation
-  - [ ] UI
-    - Transactions
-  - [ ] ADL
-  - [ ] When executed?
-  - [ ] Fees
-  - [ ] Contract calls
-  - [x] Foundry exercises? -> Not public function -> no exercise
-  - [ ] ADL
-- Liquidity
-  - [ ] UI
-    - Difference between GLV and GM
-    - GM (GMX market) pools -> isolated pool?
-    - GLV (GMX liquidity vault) pools
-    - Buy
-      - Single and pair liquidity
-      - [ ] Token price
-        - `MarketUtils.getMarketTokenPrice`
-          - pool value usd / total market token supply
-          - TODO: what is impact pool
-            - Store funds collected from traders who pay positive price impact fees
-            - Pay out traders who receive negative price impact rebates
-            - position impact distribution rate
-      - [ ] Buy fee
-      - [ ] Network fee
-    - Sell
-      - Pair liquidity
-      - [ ] Sell fee
-      - [ ] Network fee
-    - [ ] Shift -> only possible within the same long / short?
-    - [x] Transactions
-      - [Buy GLV (part 1)](https://arbiscan.io/tx/0x8d7d6e6b99fbeb095aeee4e495c528e4187bbabd0a3f728ef874f6b31bf73405)
-      - [Buy GLV (part 2)](https://arbiscan.io/tx/0x3cfcd9e1bdcc57a727dd66d6ed38afe78bbf3430015072078876240d183129f3)
-      - [Buy GM ETH/USD (part 1)](https://arbiscan.io/tx/0x6021800ad3d31003082fa6dc7fb5b6b8ff83208cadfcca98ffaa0774d6f652b8)
-      - [Buy GM ETH/USD (part 2)](https://arbiscan.io/tx/0x719b63dbef8d38006918c0e787b98a8373606b6147b77ae84a91fe2338132f4a)
-      - [Sell GLV (part 1)](https://arbiscan.io/tx/0xb60ed4fa2252dae32f8252f5702c3caf0cd2f074a9e9b41eaaaae2cea3f760c6)
-      - [Sell GLV (part 2)](https://arbiscan.io/tx/0x5120cf011c75d9b67bdffa99c4e3c6fffb5e8bb428f0080fc7ccded361bf98e6)
-      - [Sell GM ETH/USD (part 1)](https://arbiscan.io/tx/0xda4bc1d39be6ea85f8323875cbc4920aa33d0af38d7af2eb3f3dd03d174ae98e)
-      - [Sell GM ETH/USD (part 2)](https://arbiscan.io/tx/0xbdc46442f47149089f4976190a97c81bf476eb43b0478689e0ac918a9a502641)
-      - [Buy BTC/USDC GLV (part 1)](https://arbiscan.io/tx/0x87ed238503646ef7d7045ce639efd59845db94384a00d37aedc174d52050eb83)
-      - [Buy BTC/USDC GLV (part 2)](https://arbiscan.io/tx/0x3f0c373aa132815204574ed7981c584d4f044eb2c00a160b7dd992822de66763)
-      - [Buy BTC/USDC GM (part 1)](https://arbiscan.io/tx/0xef88d101a155ffd16427fc78d50e6028d612c8bc1e8d46a7810d53882f705f91)
-      - [Buy BTC/USDC GM (part 2)](https://arbiscan.io/tx/0x54357ec00e44fa8d3d701368af4a3979a28dd2383b9eb5a3f299253e8ce217a1)
-      - [Sell BTC/USDC GM (part 1)](https://arbiscan.io/tx/0xae14c5e75e5f5e5669570fc8e4d288ce7e58aeaa49174f37c4a4588bc3d04aac)
-      - [Sell BTC/USDC GM (part 2)](https://arbiscan.io/tx/0xac64686c30e67f7eae3576be759dbaef774122601ebc0c15c8cf9001fb530627)
-      - [Shift ETH/USDC -> LDO (part 1)](https://arbiscan.io/tx/0xaa88b76cd39de8931bdfb3cce46984f634ecfe6ca88b40965191f9b05b50605d)
-      - [Shift ETH/USDC -> LDO (part 2)](https://arbiscan.io/tx/0x6b6db0a76a506b76c8cf517f59ca8a506b0f7e8e8f36f578a92ce7da0ddd38dc)
-  - [ ] GM token pricing -> `MarketUtils.getMarketTokenPrice`
-    - fees
-  - [ ] GLV token pricing
-    - fees
-  - [ ] Contract calls
-    - Mint / burn GM token
-    - Mint / burn GLV token
-  - [ ] Foundry exercises
-    - GM - Buy, sell, shift
-    - GLV - Buy, sell
+  - Market swap
+  - Limit swap
+  - Long - open, close, deposit, withdraw
+  - Short - open, close, deposit, withdraw
+  - TP
+  - SL
+  - Claim funding fees
+
+#### Liquidation
+
+- [ ] UI
+  - Transactions
+- [ ] ADL
+- [ ] When executed?
+- [ ] Fees
+- [ ] Contract calls
+- [x] Foundry exercises? -> Not public function -> no exercise
+- [ ] ADL
+
+#### Liquidity
+
+- [ ] UI
+  - Difference between GLV and GM
+  - GM (GMX market) pools -> isolated pool?
+  - GLV (GMX liquidity vault) pools
+  - Buy
+    - Single and pair liquidity
+    - [ ] Token price
+      - `MarketUtils.getMarketTokenPrice`
+        - pool value usd / total market token supply
+        - TODO: what is impact pool
+          - Store funds collected from traders who pay positive price impact fees
+          - Pay out traders who receive negative price impact rebates
+          - position impact distribution rate
+    - [ ] Buy fee
+    - [ ] Network fee
+  - Sell
+    - Pair liquidity
+    - [ ] Sell fee
+    - [ ] Network fee
+  - [ ] Shift -> only possible within the same long / short?
+- [ ] GM token pricing -> `MarketUtils.getMarketTokenPrice`
+  - fees
+- [ ] GLV token pricing
+  - fees
+- [ ] Contract calls
+  - Mint / burn GM token
+  - Mint / burn GLV token
+- [ ] Foundry exercises
+  - GM - Buy, sell, shift
+  - GLV - Buy, sell
 
 ### Tokenomics
 
@@ -369,18 +360,48 @@ Trades
 - [Close short ETH 10 USDC 100x part 1](https://arbiscan.io/tx/0xc3357725621993a02203d945a52120fdf7172075c372687d917d2b1593a3e3d4)
 - [Close short ETH 10 USDC 100x part 2](https://arbiscan.io/tx/0x8af4c27645b313be8a71cd38a10957e12d7fcd7653dd0de32353b67a0a0fef32)
 
+- [Short ETH 0.01 ~ TP $2200 SL $2260 part 1](https://arbiscan.io/tx/0xfb4a9ddd2b80a4e7f739c0281a3869d89ee3cb96fe796446511098eb917016a4)]
+- [Short ETH 0.01 ~ TP $2200 SL $2260 part 2](https://arbiscan.io/tx/0x9a32d9750bc14d77756ab9ebae1141c2b4845f44cdf2091fc74b7df174b32887)
+
+- [Claim funding fees](https://arbiscan.io/tx/0x4415830b1a12882409df17e80be26da8c20e4cc929f1764046ca3aae3ca8339e)
+
 - [Long ETH 0.005 ETH 10x SL + TP (part 1)](https://arbiscan.io/tx/0xffa7b6142f69d42565acaf36a8dd101cc8fc5b9d1c251d93eea5501b9d4b88d3)
 - [Long ETH 0.005 ETH 10x SL + TP (part 2)](https://arbiscan.io/tx/0xbc053961d45b116f305fed005bd1ec7d4ebb6215946ba7d4db27e2eb75b10828)
 - [Long ETH 0.005 ETH 10x SL + TP (part 3)](https://arbiscan.io/tx/0xa8c6f918e2478e3b1e0e9ff43b088f4f371505b39fce7b38fe49cb30ab0e565a)
 - [Long ETH 0.005 ETH 10x SL + TP (part 4)](https://arbiscan.io/tx/0xa8c6f918e2478e3b1e0e9ff43b088f4f371505b39fce7b38fe49cb30ab0e565a)
-- [Claim funding fees](https://arbiscan.io/tx/0x4415830b1a12882409df17e80be26da8c20e4cc929f1764046ca3aae3ca8339e)
+
 - [Long ETH 0.01 2x ~ $54.57 TP $2760 50% SL $2680 50%](?)
 - [Close short WETH 0.009 (part 1)](https://arbiscan.io/tx/0x53c1b3734b7886f457909f2d785cb62b291be6ba56c79b1bd397371d4d2b44a9)
 - [Close short WETH 0.009 (part 2)](https://arbiscan.io/tx/0x4c2c254c93caaffd6d4cdeba0018aeb98f4fcbfe3862102560c426e5a2b62b05)
-- [Short ETH 0.01 ~ TP $2200 SL $2260 part 1](https://arbiscan.io/tx/0xfb4a9ddd2b80a4e7f739c0281a3869d89ee3cb96fe796446511098eb917016a4)]
-- [Short ETH 0.01 ~ TP $2200 SL $2260 part 2](https://arbiscan.io/tx/0x9a32d9750bc14d77756ab9ebae1141c2b4845f44cdf2091fc74b7df174b32887)
+
 - [Limit long 100x 0.0000534 WBTC part 1](https://arbiscan.io/tx/0xb6edf782be9db8b493b296c5231d7041961c080fc941dcb6f3ca59f207794023)
 - [Limit long 100x 0.0000534 WBTC part 2](https://arbiscan.io/tx/0xf732ca126ef2582550bf7fcd0ef2a24f3d076d1456c4050b30974c7fc4d54cc3)
+
+Liquidity
+
+- [Buy GLV part 1](https://arbiscan.io/tx/0x8d7d6e6b99fbeb095aeee4e495c528e4187bbabd0a3f728ef874f6b31bf73405)
+- [Buy GLV part 2](https://arbiscan.io/tx/0x3cfcd9e1bdcc57a727dd66d6ed38afe78bbf3430015072078876240d183129f3)
+- [Sell GLV part 1](https://arbiscan.io/tx/0xb60ed4fa2252dae32f8252f5702c3caf0cd2f074a9e9b41eaaaae2cea3f760c6)
+- [Sell GLV part 2](https://arbiscan.io/tx/0x5120cf011c75d9b67bdffa99c4e3c6fffb5e8bb428f0080fc7ccded361bf98e6)
+- [Buy GM ETH/USD part 1](https://arbiscan.io/tx/0x6021800ad3d31003082fa6dc7fb5b6b8ff83208cadfcca98ffaa0774d6f652b8)
+- [Buy GM ETH/USD part 2](https://arbiscan.io/tx/0x719b63dbef8d38006918c0e787b98a8373606b6147b77ae84a91fe2338132f4a)
+- [Sell GM ETH/USD part 1](https://arbiscan.io/tx/0xda4bc1d39be6ea85f8323875cbc4920aa33d0af38d7af2eb3f3dd03d174ae98e)
+- [Sell GM ETH/USD part 2](https://arbiscan.io/tx/0xbdc46442f47149089f4976190a97c81bf476eb43b0478689e0ac918a9a502641)
+- [Buy BTC/USDC GLV part 1](https://arbiscan.io/tx/0x87ed238503646ef7d7045ce639efd59845db94384a00d37aedc174d52050eb83)
+- [Buy BTC/USDC GLV part 2](https://arbiscan.io/tx/0x3f0c373aa132815204574ed7981c584d4f044eb2c00a160b7dd992822de66763)
+- [Buy BTC/USDC GM part 1](https://arbiscan.io/tx/0xef88d101a155ffd16427fc78d50e6028d612c8bc1e8d46a7810d53882f705f91)
+- [Buy BTC/USDC GM part 2](https://arbiscan.io/tx/0x54357ec00e44fa8d3d701368af4a3979a28dd2383b9eb5a3f299253e8ce217a1)
+- [Sell BTC/USDC GM part 1](https://arbiscan.io/tx/0xae14c5e75e5f5e5669570fc8e4d288ce7e58aeaa49174f37c4a4588bc3d04aac)
+- [Sell BTC/USDC GM part 2](https://arbiscan.io/tx/0xac64686c30e67f7eae3576be759dbaef774122601ebc0c15c8cf9001fb530627)
+- [Shift ETH/USDC -> LDO part 1](https://arbiscan.io/tx/0xaa88b76cd39de8931bdfb3cce46984f634ecfe6ca88b40965191f9b05b50605d)
+- [Shift ETH/USDC -> LDO part 2](https://arbiscan.io/tx/0x6b6db0a76a506b76c8cf517f59ca8a506b0f7e8e8f36f578a92ce7da0ddd38dc)
+
+Stake
+
+- [Stake GMX](https://arbiscan.io/tx/0x0ed2a66323713c2e78dd53750612f3e9bcc97f2f8c02633a433a413889142067)
+- [Unstake GMX](https://arbiscan.io/tx/0x2bbfefc59c295349405a86b08f9bd68b020e49836e9775de74e442908732678f)
+- [Claim rewards](https://arbiscan.io/tx/0x23f1f338dc2456cf476692f34ea00838a1e621f8fd2aff330927edf256de8b1d)
+- [Delegate](https://arbiscan.io/tx/0x245404338a81a8faccddf6ad8e944928bac6b687db8d7e217e47fdde94abd84f)
 
 ##### Contracts
 

@@ -137,7 +137,6 @@ contract Long {
                     validFromTime: 0
                 }),
                 orderType: Order.OrderType.MarketDecrease,
-                // TODO: wat dis?
                 decreasePositionSwapType: Order.DecreasePositionSwapType.NoSwap,
                 isLong: true,
                 shouldUnwrapNativeToken: false,
