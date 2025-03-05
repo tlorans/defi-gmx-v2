@@ -23,8 +23,8 @@ OrderHandler.executeOrder
 │  └─ ExecuteOrderUtils.executeOrder
 │     ├─ OrderStoreUtils.remove
 │     ├─ MarketUtils.getMarketPrices
-│     ├─ MarketUtils.distributePositionImpactPool TODO:
-│     ├─ MarketUtils.updateFundingAndBorrowingState TODO:
+│     ├─ MarketUtils.distributePositionImpactPool
+│     ├─ PositionUtils.updateFundingAndBorrowingState
 │     ├─ processOrder
 │     │  └─ SwapOrderUtils.processOrder
 │     │     └─ SwapUtils.swap
@@ -33,8 +33,8 @@ OrderHandler.executeOrder
 │     │           └─ _swap
 │     │              ├─ Oracle.getPrimaryPrice
 │     │              ├─ Oracle.getPrimaryPrice
-│     │              ├─ SwapPricingUtils.getPriceImpactUsd TODO:
-│     │              ├─ SwapPricingUtils.getSwapFees TODO:
+│     │              ├─ SwapPricingUtils.getPriceImpactUsd
+│     │              ├─ SwapPricingUtils.getSwapFees
 │     │              ├─ MarketToken.transferOut
 │     │              ├─ MarketUtils.applyDeltaToPoolAmount
 │     │              │  └─ applyDeltaToVirtualInventoryForSwaps

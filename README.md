@@ -113,6 +113,7 @@ forge build
       - Swap
         - 2 step tx
         - Market
+          - swap fee on amount in
         - Limit
       - Market
         - Long
@@ -169,6 +170,8 @@ forge build
     - Borrowing fee
     - Newtork fee
     - UI?
+  - [ ] [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
+    - [notes](./notes/price_impact.md)
   - [ ] Math - Funding rate -> dynamic borrow fee?
     - adaptive funding rate
   - [ ] Math - liquidation price?
