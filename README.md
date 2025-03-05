@@ -82,6 +82,15 @@ forge build
 
 #### [ ] Contract architecture
 
+- data store
+- bank / vault
+- router
+  - ExchangeRouter
+  - GlvRouter
+- handlers
+- utils (library)
+- market tokens
+- reader
 - wnt = wrapped native token
 - 2 step transcations
   - user -> create order
@@ -94,14 +103,6 @@ forge build
     - refund execution fee
 - multicall
 - execution fee
-- bank / vault
-- router
-  - ExchangeRouter
-  - GlvRouter
-- handlers
-- utils (library)
-- market tokens
-- reader
 
 #### Trading
 
@@ -215,8 +216,13 @@ forge build
     - [tx - Close short 0.01 ETH part 2](https://arbiscan.io/tx/0x8ade23d7ad7ee6fb589a0d04724ee8c64f20e92e32688739e0c049b510c690f0)
   - TP and SL
     - [tx - Short ETH 0.01 ~ TP $2200 SL $2260 part 1](https://arbiscan.io/tx/0xfb4a9ddd2b80a4e7f739c0281a3869d89ee3cb96fe796446511098eb917016a4)]
+      - `StopLossDecrease`
+      - `LimitDecrease`
     - [tx - Short ETH 0.01 ~ TP $2200 SL $2260 part 2](https://arbiscan.io/tx/0x9a32d9750bc14d77756ab9ebae1141c2b4845f44cdf2091fc74b7df174b32887)
-  - Auto cancel
+    - [tx - Take profit short ETH 0.01 ~ TP $2200 SL $2260](https://arbiscan.io/tx/0x612165df3da2fd87dc0b6c86e76b7d69a5900208da025a80ad275c1319a012c2)
+      - `BaseOrderUtils.validateOrderTriggerPrice`
+      - ` OrderUtils.clearAutoCancelOrders`
+      - Auto cancel
   - Claim funding fees
     - [tx - Claim funding fees](https://arbiscan.io/tx/0x4415830b1a12882409df17e80be26da8c20e4cc929f1764046ca3aae3ca8339e)
 - [ ] Foundry exercises
@@ -362,6 +368,7 @@ Trades
 
 - [Short ETH 0.01 ~ TP $2200 SL $2260 part 1](https://arbiscan.io/tx/0xfb4a9ddd2b80a4e7f739c0281a3869d89ee3cb96fe796446511098eb917016a4)]
 - [Short ETH 0.01 ~ TP $2200 SL $2260 part 2](https://arbiscan.io/tx/0x9a32d9750bc14d77756ab9ebae1141c2b4845f44cdf2091fc74b7df174b32887)
+- [Take profit short ETH 0.01 ~ TP $2200 SL $2260](https://arbiscan.io/tx/0x612165df3da2fd87dc0b6c86e76b7d69a5900208da025a80ad275c1319a012c2)
 
 - [Claim funding fees](https://arbiscan.io/tx/0x4415830b1a12882409df17e80be26da8c20e4cc929f1764046ca3aae3ca8339e)
 
@@ -402,15 +409,6 @@ Stake
 - [Unstake GMX](https://arbiscan.io/tx/0x2bbfefc59c295349405a86b08f9bd68b020e49836e9775de74e442908732678f)
 - [Claim rewards](https://arbiscan.io/tx/0x23f1f338dc2456cf476692f34ea00838a1e621f8fd2aff330927edf256de8b1d)
 - [Delegate](https://arbiscan.io/tx/0x245404338a81a8faccddf6ad8e944928bac6b687db8d7e217e47fdde94abd84f)
-
-##### Contracts
-
-- [GLV WETH-USDC](https://arbiscan.io/address/0x528a5bac7e746c9a509a1f4f6df58a03d44279f9)
-- [GLV WBTC-USDC](https://arbiscan.io/address/0xdf03eed325b82bc1d4db8b49c30ecc9e05104b96)
-- [MarketToken - GM market (WBTC / USDC)](https://arbiscan.io/address/0x47c031236e19d024b42f8ae6780e44a573170703)
-- [MarketToken (WBTC / USDC)](https://arbiscan.io/address/0x467c4a46287f6c4918ddf780d4fd7b46419c2291)
-- [MarketToken (WBTC / USDC)](https://arbiscan.io/address/0x70d95587d40a2caf56bd97485ab3eec10bee6336)
-- [MarketToken WBTC?](https://arbiscan.io/address/0x7c11f78ce78768518d743e81fdfa2f860c6b9a77)
 
 ##### Perpetual
 
