@@ -53,7 +53,11 @@ contract GlvDev is Base {
 contract MarketDev is Base {
     MarketHelper marketHelper = new MarketHelper();
 
-    function getMinCollateralFactor(address market) internal view returns (uint256) {
+    function getMinCollateralFactor(address market)
+        internal
+        view
+        returns (uint256)
+    {
         return dataStore.getUint(Keys.minCollateralFactorKey(market));
     }
 

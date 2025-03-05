@@ -28,7 +28,6 @@ library Order {
         StopIncrease
     }
 
-
     enum SecondaryOrderType {
         None,
         Adl

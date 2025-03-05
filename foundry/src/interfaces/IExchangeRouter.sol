@@ -51,4 +51,10 @@ interface IExchangeRouter is IMulticall, IBaseRouter {
     ) external payable;
 
     function cancelOrder(bytes32 key) external payable;
+
+    function claimFundingFees(
+        address[] memory markets,
+        address[] memory tokens,
+        address receiver
+    ) external payable returns (uint256[] memory);
 }

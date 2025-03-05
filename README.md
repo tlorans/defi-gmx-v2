@@ -225,8 +225,8 @@ forge build
       - Auto cancel
   - Claim funding fees
     - [tx - Claim funding fees](https://arbiscan.io/tx/0x4415830b1a12882409df17e80be26da8c20e4cc929f1764046ca3aae3ca8339e)
+      - [Trace](./notes/claim_funding_fees.md)
 - [ ] Foundry exercises
-
   - Market swap
   - Limit swap
   - Long - open, close, deposit, withdraw
