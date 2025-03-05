@@ -160,7 +160,6 @@ forge build
   - Managing positions
     - Close, deposit, withdraw collateral
     - Claims (funding fees)
-  - [ ] Transactions
 - [ ] Example strategies
   - Long ETH, ETH collateral
   - Long ETH, USDC collateral
@@ -178,7 +177,6 @@ forge build
   - [notes](./notes/price_impact.md)
 - [ ] Math - Funding rate -> dynamic borrow fee?
   - adaptive funding rate
-- [ ] Math - liquidation price?
 - [ ] Math - profit / loss?
 - [ ] How is profit fully backed?
 - [ ] Contract calls (2 step tx - create order + execute order)
@@ -241,6 +239,7 @@ forge build
   - Transactions
 - [ ] ADL
 - [ ] When executed?
+- [ ] Math - liquidation price?
 - [ ] Fees
 - [ ] Contract calls
 - [x] Foundry exercises? -> Not public function -> no exercise
@@ -250,32 +249,50 @@ forge build
 
 - [ ] UI
   - Difference between GLV and GM
-  - GM (GMX market) pools -> isolated pool?
+  - GM (GMX market) pools
   - GLV (GMX liquidity vault) pools
-  - Buy
-    - Single and pair liquidity
-    - [ ] Token price
-      - `MarketUtils.getMarketTokenPrice`
-        - pool value usd / total market token supply
-        - TODO: what is impact pool
-          - Store funds collected from traders who pay positive price impact fees
-          - Pay out traders who receive negative price impact rebates
-          - position impact distribution rate
-    - [ ] Buy fee
-    - [ ] Network fee
-  - Sell
-    - Pair liquidity
-    - [ ] Sell fee
-    - [ ] Network fee
-  - [ ] Shift -> only possible within the same long / short?
-- [ ] GM token pricing -> `MarketUtils.getMarketTokenPrice`
-  - fees
-- [ ] GLV token pricing
-  - fees
+  - GM
+    - Markets
+      - index, long, short
+      - swap only
+    - Buy
+      - Single and pair liquidity
+      - Fees
+      - Network fee
+    - Sell
+      - Pair liquidity
+      - Fees
+      - Network fee
+    - Shift -> TODO: only possible within the same long / short?
+  - GLV
+    - BTC-USDC and WETH-USDC
+    - Composition
+    - Buy
+      - Pool TODO: pool to send tokens to?
+    - Sell
+      - Pool TODO: pool to remove tokens from?
+- [ ] GM
+  - Token pricing -> `MarketUtils.getMarketTokenPrice`
+  - Fees
+- [ ] GLV
+  - Token pricing
+  - Fees
+  - TODO: How is it rebalanced?
 - [ ] Contract calls
-  - Mint / burn GM token
+  - Mint / burn / shift GM token
   - Mint / burn GLV token
+  - [tx - Buy GLV part 1](https://arbiscan.io/tx/0x8d7d6e6b99fbeb095aeee4e495c528e4187bbabd0a3f728ef874f6b31bf73405)
+  - [tx - Buy GLV part 2](https://arbiscan.io/tx/0x3cfcd9e1bdcc57a727dd66d6ed38afe78bbf3430015072078876240d183129f3)
+  - [tx - Sell GLV part 1](https://arbiscan.io/tx/0xb60ed4fa2252dae32f8252f5702c3caf0cd2f074a9e9b41eaaaae2cea3f760c6)
+  - [tx - Sell GLV part 2](https://arbiscan.io/tx/0x5120cf011c75d9b67bdffa99c4e3c6fffb5e8bb428f0080fc7ccded361bf98e6)
+  - [tx - Buy BTC/USDC GM part 1](https://arbiscan.io/tx/0xef88d101a155ffd16427fc78d50e6028d612c8bc1e8d46a7810d53882f705f91)
+  - [tx - Buy BTC/USDC GM part 2](https://arbiscan.io/tx/0x54357ec00e44fa8d3d701368af4a3979a28dd2383b9eb5a3f299253e8ce217a1)
+  - [tx - Sell BTC/USDC GM part 1](https://arbiscan.io/tx/0xae14c5e75e5f5e5669570fc8e4d288ce7e58aeaa49174f37c4a4588bc3d04aac)
+  - [tx - Sell BTC/USDC GM part 2](https://arbiscan.io/tx/0xac64686c30e67f7eae3576be759dbaef774122601ebc0c15c8cf9001fb530627)
+  - [tx - Shift ETH/USDC to LDO/USD part 1](https://arbiscan.io/tx/0xaa88b76cd39de8931bdfb3cce46984f634ecfe6ca88b40965191f9b05b50605d)
+  - [tx - Shift ETH/USDC to LDO/USD part 2](https://arbiscan.io/tx/0x6b6db0a76a506b76c8cf517f59ca8a506b0f7e8e8f36f578a92ce7da0ddd38dc)
 - [ ] Foundry exercises
+  - TODO: synthetic tokens are EOA
   - GM - Buy, sell, shift
   - GLV - Buy, sell
 
@@ -300,10 +317,10 @@ Explain utilities, acquistion methods, differences and staking processes.
   - [ ] Foundry exercises
     - Buy -> DEX, no exercise
     - stake, delegate, unstake, claim rewards
-    - [Stake GMX](https://arbiscan.io/tx/0x0ed2a66323713c2e78dd53750612f3e9bcc97f2f8c02633a433a413889142067)
-    - [Unstake GMX](https://arbiscan.io/tx/0x2bbfefc59c295349405a86b08f9bd68b020e49836e9775de74e442908732678f)
-    - [Claim rewards](https://arbiscan.io/tx/0x23f1f338dc2456cf476692f34ea00838a1e621f8fd2aff330927edf256de8b1d)
-    - [Delegate](https://arbiscan.io/tx/0x245404338a81a8faccddf6ad8e944928bac6b687db8d7e217e47fdde94abd84f)
+    - [tx - Stake GMX](https://arbiscan.io/tx/0x0ed2a66323713c2e78dd53750612f3e9bcc97f2f8c02633a433a413889142067)
+    - [tx - Unstake GMX](https://arbiscan.io/tx/0x2bbfefc59c295349405a86b08f9bd68b020e49836e9775de74e442908732678f)
+    - [tx - Claim rewards](https://arbiscan.io/tx/0x23f1f338dc2456cf476692f34ea00838a1e621f8fd2aff330927edf256de8b1d)
+    - [tx - Delegate](https://arbiscan.io/tx/0x245404338a81a8faccddf6ad8e944928bac6b687db8d7e217e47fdde94abd84f)
 - [ ] esGMX -> has historically been awarded as an incentive for GMX Staking -> TODO: skip?
   - [ ] UI?
     - Vest to convert esGMX to GMX
@@ -400,8 +417,8 @@ Liquidity
 - [Buy BTC/USDC GM part 2](https://arbiscan.io/tx/0x54357ec00e44fa8d3d701368af4a3979a28dd2383b9eb5a3f299253e8ce217a1)
 - [Sell BTC/USDC GM part 1](https://arbiscan.io/tx/0xae14c5e75e5f5e5669570fc8e4d288ce7e58aeaa49174f37c4a4588bc3d04aac)
 - [Sell BTC/USDC GM part 2](https://arbiscan.io/tx/0xac64686c30e67f7eae3576be759dbaef774122601ebc0c15c8cf9001fb530627)
-- [Shift ETH/USDC -> LDO part 1](https://arbiscan.io/tx/0xaa88b76cd39de8931bdfb3cce46984f634ecfe6ca88b40965191f9b05b50605d)
-- [Shift ETH/USDC -> LDO part 2](https://arbiscan.io/tx/0x6b6db0a76a506b76c8cf517f59ca8a506b0f7e8e8f36f578a92ce7da0ddd38dc)
+- [Shift ETH/USDC to LDO/USD part 1](https://arbiscan.io/tx/0xaa88b76cd39de8931bdfb3cce46984f634ecfe6ca88b40965191f9b05b50605d)
+- [Shift ETH/USDC to LDO/USD part 2](https://arbiscan.io/tx/0x6b6db0a76a506b76c8cf517f59ca8a506b0f7e8e8f36f578a92ce7da0ddd38dc)
 
 Stake
 
