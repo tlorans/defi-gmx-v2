@@ -160,11 +160,15 @@ forge build
   - Managing positions
     - Close, deposit, withdraw collateral
     - Claims (funding fees)
-- [ ] Example strategies
+- [ ] Example strategies -> different liquidation price
   - Long ETH, ETH collateral
   - Long ETH, USDC collateral
   - Short ETH, ETH collateral -> delta neutral?
   - Short ETH, USDC collateral
+  - Long SOL, ETH collateral
+  - Long SOL, USDC collateral
+  - Short SOL, USDC collateral
+  - Short SOL, USDC collateral
 - [ ] Fees (PositionPricingUtils.sol)
   - Open / close
   - Swap
