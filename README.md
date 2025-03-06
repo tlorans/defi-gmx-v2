@@ -237,7 +237,6 @@ forge build
 
 - [ ] UI
   - Transactions
-- [ ] ADL
 - [ ] When executed?
 - [ ] Math - liquidation price?
 - [ ] Fees
@@ -481,6 +480,13 @@ Stake
 - how to get GMX dao token? -> stake GMX
 - difference between funding fee and borrowing fee
 
+  - funding fee -> trader to trader?
+  - borrow fee -> trader to LP?
+    - avoid a scenario where liquidity is fully reserved by a user opening equal long and short positions
+      for a small cost
+    - If there are more longs than shorts then longs would pay the borrowing fee
+    - If there are more shorts than longs then shorts would pay the borrowing fee
+
 - [GMX delegatees](https://www.tally.xyz/gov/gmx/delegates)
 - [Chainlink providers](https://docs.chain.link/data-feeds/price-feeds/addresses?network=arbitrum&page=1)
 - [ABI ninja](https://abi.ninja)
@@ -494,6 +500,6 @@ Stake
 - PositionUtils
 - IncreasePositionUtils
 - DecreasePositionUtils
+- DecreasePositionCollateralUtils.processCollateral
 - SwapPricingUtils
 - PositionPricingUtils
-- DecreasePositionCollateralUtils
