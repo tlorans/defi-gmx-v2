@@ -236,11 +236,11 @@ forge build
 #### Liquidation
 
 - [ ] UI
-  - Transactions
-- [ ] When executed?
+  - leverage + liquidation price
+- [ ] [When executed?](./notes/liquidation.md)
+  - Fees
 - [ ] Math - liquidation price?
-- [ ] Fees
-- [ ] Contract calls
+- [ ] [Contract calls](./notes/liquidation.md)
 - [x] Foundry exercises? -> Not public function -> no exercise
 - [ ] ADL
 
@@ -399,6 +399,10 @@ Trades
 
 - [Limit long 100x 0.0000534 WBTC part 1](https://arbiscan.io/tx/0xb6edf782be9db8b493b296c5231d7041961c080fc941dcb6f3ca59f207794023)
 - [Limit long 100x 0.0000534 WBTC part 2](https://arbiscan.io/tx/0xf732ca126ef2582550bf7fcd0ef2a24f3d076d1456c4050b30974c7fc4d54cc3)
+
+Liquidation
+
+- [Liquidation](https://arbiscan.io/tx/0xa379337b09d07c3fa4c648b5c82567f83102a60f64693ef8106c6782a3791f14)
 
 Liquidity
 
