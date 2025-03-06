@@ -239,7 +239,7 @@ forge build
   - leverage + liquidation price
 - [ ] [When executed?](./notes/liquidation.md)
   - Fees
-- [ ] Math - liquidation price
+- [ ] [Math - liquidation price](./notes/liq_price_approx.png)
   - UI demo
 - [ ] [Contract calls](./notes/liquidation.md)
 - [x] Foundry exercises? -> Not public function -> no exercise
