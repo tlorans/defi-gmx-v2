@@ -239,7 +239,8 @@ forge build
   - leverage + liquidation price
 - [ ] [When executed?](./notes/liquidation.md)
   - Fees
-- [ ] Math - liquidation price?
+- [ ] Math - liquidation price
+  - UI demo
 - [ ] [Contract calls](./notes/liquidation.md)
 - [x] Foundry exercises? -> Not public function -> no exercise
 - [ ] ADL
@@ -491,6 +492,7 @@ Stake
     - If there are more longs than shorts then longs would pay the borrowing fee
     - If there are more shorts than longs then shorts would pay the borrowing fee
 
+- [GMX GitHub interface](https://github.com/gmx-io/gmx-interface/)
 - [GMX delegatees](https://www.tally.xyz/gov/gmx/delegates)
 - [Chainlink providers](https://docs.chain.link/data-feeds/price-feeds/addresses?network=arbitrum&page=1)
 - [ABI ninja](https://abi.ninja)

@@ -46,32 +46,18 @@ discount = pro tier, referral discounts
 funding fee = TODO
 ```
 
-```solidity
-info.remainingCollateralUsd =
-    cache.collateralUsd.toInt256()
-    + cache.positionPnlUsd
-    + cache.priceImpactUsd
-    - collateralCostUsd.toInt256();
+Liquidation price estimate
 
-cache.minCollateralFactor = MarketUtils.getMinCollateralFactor(dataStore, market.marketToken);
+```
+remaining collateral < min collateral factor x position size in USD
+remaining collateral = collateral USD + position Pnl USD + price impact USD - collateral cost USD
+price imact = 0
+callateral cost = 0
 
-// validate if (remaining collateral) / position.size is less than the min collateral factor (max leverage exceeded)
-// this validation includes the position fee to be paid when closing the position
-// i.e. if the position does not have sufficient collateral after closing fees it is considered a liquidatable position
-info.minCollateralUsdForLeverage = Precision.applyFactor(position.sizeInUsd(), cache.minCollateralFactor).toInt256();
+remaining collateral = collateral USD + position Pnl USD < min
+                     = collateral USD < - pnl + min
 
-if (shouldValidateMinCollateralUsd) {
-    info.minCollateralUsd = dataStore.getUint(Keys.MIN_COLLATERAL_USD).toInt256();
-    if (info.remainingCollateralUsd < info.minCollateralUsd) {
-        return (true, "min collateral", info);
-    }
-}
+long -> loss when current price < entry price
+pnl = position size in token * (current price - entry price)
 
-if (info.remainingCollateralUsd <= 0) {
-    return (true, "< 0", info);
-}
-
-if (info.remainingCollateralUsd < info.minCollateralUsdForLeverage) {
-    return (true, "min collateral for leverage", info);
-}
 ```
