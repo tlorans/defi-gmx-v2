@@ -39,7 +39,18 @@ ExecuteOrderUtils.executeOrder
              position.setLongTokenClaimableFundingAmountPerSize
              position.setShortTokenClaimableFundingAmountPerSize
 
-DecreasePositionUtils.decreasePosition
-   PositionUtils.incrementClaimableFundingAmount
-      MarketUtils.incrementClaimableFundingAmount
+ExecuteOrderUtils.executeOrder
+    PositionUtils.updateFundingAndBorrowingState (update funding fee)
+       MarketUtils.updateFundingState
+        applyDeltaToFundingFeeAmountPerSize
+        applyDeltaToClaimableFundingAmountPerSize
+    processOrder
+       DecreasetOrderUtils.processOrder
+          DecreasePositionUtils.decreasePosition
+            DecreasePositionCollateralUtils.processCollateral
+                PositionPricingUtils.getPositionFees
+            PositionUtils.incrementClaimableFundingAmount
+            position.setFundingFeeAmountPerSize
+            position.setLongTokenClaimableFundingAmountPerSize
+            position.setShortTokenClaimableFundingAmountPerSize
 ```
