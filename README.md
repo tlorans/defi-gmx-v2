@@ -89,6 +89,7 @@ forge build
   - GlvRouter
 - handlers
 - utils (library)
+- even utils
 - market tokens
 - reader
 - wnt = wrapped native token
@@ -174,15 +175,28 @@ forge build
   - Swap
   - Price impact and rebates
   - Funding fees
+    - incentivise the balancing of long and short positions, the side with the larger open interest pays a funding fee to the side with the smaller open interest.
+    - Funding fees for the larger side is calculated as `(funding factor per second) * (open interest imbalance) ^ (funding exponent factor) / (total open interest)`.
   - Borrowing fee
   - Newtork fee
   - UI?
+  - Funding fees: if there is an imbalance of longs / shorts, the larger side pays a funding fee to the smaller side
+  - Borrowing fees: to avoid a user opening equal longs / shorts and unnecessarily taking up capacity
+  - Price impact: this allows the contracts to simulate a price impact similar to if the trader were trading using an aggregator for the reference exchanges, there is a negative price impact if an action reduces balance, and a positive price impact if an action improves balance
 - [ ] [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
   - [notes](./notes/price_impact.md)
 - [ ] Math - Funding rate -> dynamic borrow fee?
   - adaptive funding rate
 - [ ] Math - profit / loss?
 - [ ] How is profit fully backed?
+- [ ] Order types
+  - Market swaps
+  - Limit swaps
+  - Market increase
+  - Limit increase
+  - Market decrease
+  - Limit decrease
+  - Stop loss decrease
 - [ ] Contract calls (2 step tx - create order + execute order)
   - Swap
     - [tx - Swap DAI to ETH part 1](https://arbiscan.io/tx/0x747665f80ccd64918af4f4cd2d3c7e7c077d061d61bc47fc99f644d1eb4d18f4)
@@ -278,9 +292,14 @@ forge build
 - [ ] GM
   - Token pricing -> `MarketUtils.getMarketTokenPrice`
   - Fees
+  - Liquidity providers can deposit either the long or short collateral token or both to mint liquidity tokens.
+  - long collateral token is used to back long positions
+  - short collateral token is used to back short positions.
+  - Liquidity providers take on the profits and losses of traders for the market that they provide liquidity for
 - [ ] GLV
   - Token pricing
   - Fees
+  - a wrapper of multiple markets with the same long and short tokens. Liquidity is automatically rebalanced between underlying markets based on markets utilisation.
   - TODO: How is it rebalanced?
 - [ ] Contract calls
   - Mint / burn / shift GM token
@@ -464,8 +483,6 @@ Stake
 - [x] why longs pay shorts when long interest exceeds short interest
   - price up -> demand to open long -> pay premium to shors
 - why loss on short when leverage is high and index < open price?
-- difference between ETH/USD and ETH market / pool
-- difference between BTC/USDC and BTC GM pool
 - how is profit fully backed?
   > For example, if there is 1000 ETH and 1 million USDC in the pool and the max long open interest is limited to 900 ETH and the max short open interest is limited to be 900k USDC, then all profits can always be fully backed regardless of the price of ETH.
 - why borrowing fee = open interest \* cumulative borrowing
@@ -496,6 +513,7 @@ Stake
     - If there are more longs than shorts then longs would pay the borrowing fee
     - If there are more shorts than longs then shorts would pay the borrowing fee
 
+- [GMX GitHub synthetics](https://github.com/gmx-io/gmx-synthetics)
 - [GMX GitHub interface](https://github.com/gmx-io/gmx-interface/)
 - [GMX delegatees](https://www.tally.xyz/gov/gmx/delegates)
 - [Chainlink providers](https://docs.chain.link/data-feeds/price-feeds/addresses?network=arbitrum&page=1)

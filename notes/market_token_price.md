@@ -1,12 +1,11 @@
-# LP token price
+# market token price
 
 `MarketUtils.getMarketTokenPrice`
 
 ```
-LP token price = pool value USD / total market token supply
+LP token price = pool value USD / market token total supply
 
-pool value USD = value of liquidity provider tokens in the pool + portion of pending borrowing fees - pending trader pnl - impact pool
-               = value of long + value of short + portion of pending borrowing fees - pnl - impact pool
+pool value USD = USD values of long + short + portion of pending borrowing fees - pnl - impact pool
 
 value of long = long amount in pool / divisor * long token price
 value of short = short amount in pool / divisor * short token price

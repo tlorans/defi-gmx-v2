@@ -30,8 +30,8 @@ remaining collateral < min collateral factor x position size in USD
 
 remaining collateral = collateral USD + position Pnl USD + price impact USD - collateral cost USD
 
-position Pnl USD = long  -> position size in tokens * price - position size in USD
-                   short -> position size in USD - position size in tokens * price
+position Pnl USD = long  -> position size * price - position size in USD
+                   short -> position size in USD - position size * price
 
 price impact USD = max(0, price impact if position was fully closed)
 
@@ -44,20 +44,4 @@ liquidation fee = position size x liquidation fee factor
 ui fee = position size x UI fee factor
 discount = pro tier, referral discounts
 funding fee = TODO
-```
-
-Liquidation price estimate
-
-```
-remaining collateral < min collateral factor x position size in USD
-remaining collateral = collateral USD + position Pnl USD + price impact USD - collateral cost USD
-price imact = 0
-callateral cost = 0
-
-remaining collateral = collateral USD + position Pnl USD < min
-                     = collateral USD < - pnl + min
-
-long -> loss when current price < entry price
-pnl = position size in token * (current price - entry price)
-
 ```
