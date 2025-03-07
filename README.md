@@ -173,20 +173,15 @@ forge build
 - [ ] Fees (PositionPricingUtils.sol)
   - Open / close
   - Swap
-  - Price impact and rebates
-  - Funding fees
-    - incentivise the balancing of long and short positions, the side with the larger open interest pays a funding fee to the side with the smaller open interest.
-    - Funding fees for the larger side is calculated as `(funding factor per second) * (open interest imbalance) ^ (funding exponent factor) / (total open interest)`.
-  - Borrowing fee
-  - Newtork fee
-  - UI?
+  - Price impact: this allows the contracts to simulate a price impact similar to if the trader were trading using an aggregator for the reference exchanges, there is a negative price impact if an action reduces balance, and a positive price impact if an action improves balance
   - Funding fees: if there is an imbalance of longs / shorts, the larger side pays a funding fee to the smaller side
   - Borrowing fees: to avoid a user opening equal longs / shorts and unnecessarily taking up capacity
-  - Price impact: this allows the contracts to simulate a price impact similar to if the trader were trading using an aggregator for the reference exchanges, there is a negative price impact if an action reduces balance, and a positive price impact if an action improves balance
+  - Newtork fee
+  - UI?
 - [ ] [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
   - [notes](./notes/price_impact.md)
-- [ ] Math - Funding rate -> dynamic borrow fee?
-  - adaptive funding rate
+- [ ] Math - Funding rate
+- [ ] Math - borrowing fee
 - [ ] Math - profit / loss?
 - [ ] How is profit fully backed?
 - [ ] Order types
