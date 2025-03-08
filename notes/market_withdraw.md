@@ -1,6 +1,6 @@
-# market withdraw
+# Market withdraw
 
-### create withdrawal
+### Create withdrawal
 
 ```
 1. Send market token to withdrawal vault
@@ -15,7 +15,7 @@ ExchangeRouter.createWithdrawal
         └ WithdrawalStoreUtils.set
 ```
 
-### execute withdrawal
+### Execute withdrawal
 
 ```
 WithdrawalHandler.executeWithdrawal

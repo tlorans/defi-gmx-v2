@@ -1,6 +1,6 @@
-# market deposit
+# Market deposit
 
-### create deposit
+### Create deposit
 
 ```
 1. Send long and or short tokens to deposit vault
@@ -15,7 +15,7 @@ ExchangeRouter.createDeposit
         └ DepositStoreUtils.set
 ```
 
-### execute deposit
+### Execute deposit
 
 ```
 DepositHandler.executeDeposit
