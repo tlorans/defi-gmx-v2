@@ -302,7 +302,10 @@ forge build
   - a wrapper of multiple markets with the same long and short tokens. Liquidity is automatically rebalanced between underlying markets based on markets utilisation.
   - TODO: How is it rebalanced?
 - [ ] Contract calls
-  - Mint / burn / shift GM token
+  - GM token
+    - [Mint](./notes/market_deposit.md)
+    - [Burn](./notes/market_withdraw.md)
+    - Shift?
   - Mint / burn GLV token
   - [tx - Buy GLV part 1](https://arbiscan.io/tx/0x8d7d6e6b99fbeb095aeee4e495c528e4187bbabd0a3f728ef874f6b31bf73405)
   - [tx - Buy GLV part 2](https://arbiscan.io/tx/0x3cfcd9e1bdcc57a727dd66d6ed38afe78bbf3430015072078876240d183129f3)
