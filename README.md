@@ -170,23 +170,23 @@ forge build
   - Long SOL, USDC collateral
   - Short SOL, USDC collateral
   - Short SOL, USDC collateral
-- [ ] Fees (PositionPricingUtils.sol)
-  - Open / close
-  - Swap
-  - Price impact: this allows the contracts to simulate a price impact similar to if the trader were trading using an aggregator for the reference exchanges, there is a negative price impact if an action reduces balance, and a positive price impact if an action improves balance
-  - Funding fees: if there is an imbalance of longs / shorts, the larger side pays a funding fee to the smaller side
-  - Borrowing fees: to avoid a user opening equal longs / shorts and unnecessarily taking up capacity
-  - Newtork fee
+- [ ] Fees
+  - Execution fee
+  - Price impact
+    - [ ] [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
+    - [notes](./notes/price_impact.md)
+  - [Swap](./notes/swap/swap_fee.md)
+  - Position (`PositionPricingUtils.getPositionFees`)
+    - Funding fees: if there is an imbalance of longs / shorts, the larger side pays a funding fee to the smaller side
+      - [ ] Math - Funding rate
+        - equation
+        - how updated / claimed
+    - Borrowing fees: to avoid a user opening equal longs / shorts and unnecessarily taking up capacity
+      - [ ] Math - borrowing fee
+        - equation
+        - kink graph
+        - how updated / claimed
   - UI?
-- [ ] [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
-  - [notes](./notes/price_impact.md)
-- [ ] Math - Funding rate
-  - equation
-  - how updated / claimed
-- [ ] Math - borrowing fee
-  - equation
-  - kink graph
-  - how updated / claimed
 - [ ] Math - profit / loss?
 - [ ] How is profit fully backed?
 - [ ] Order types
