@@ -185,7 +185,7 @@ forge build
   - how updated / claimed
 - [ ] Math - borrowing fee
   - equation
-    - kink graph
+  - kink graph
   - how updated / claimed
 - [ ] Math - profit / loss?
 - [ ] How is profit fully backed?

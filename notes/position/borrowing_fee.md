@@ -2,20 +2,68 @@
 
 How is borrowing rate calculated?
 
+`MarketUtils.updateCumulativeBorrowingFactor`
+
 ```
 PositionUtils.updateFundingAndBorrowingState
 └ MarketUtils.updateCumulativeBorrowingFactor
-    └ getNextCumulativeBorrowingFactor
-        ├ getSecondsSinceCumulativeBorrowingFactorUpdated
-        ├ getBorrowingFactorPerSecond
-        │  ├ getReservedUsd
-        │  ├ getPoolUsdWithoutPnl
-        │  ├ if optimal usage factor != 0
-        │  │  └ getKinkBorrowingFactor
-        │  ├ getBorrowingExponentFactor
-        │  └ getBorrowingFactor
-        ├ getCumulativeBorrowingFactor
-        └ incrementCumulativeBorrowingFactor
+    ├ getNextCumulativeBorrowingFactor
+    │    ├ getSecondsSinceCumulativeBorrowingFactorUpdated
+    │    ├ getBorrowingFactorPerSecond
+    │    │  ├ getOptimalUsageFactor
+    │    │  ├ if optimal usage factor != 0
+    │    │  │  └ getKinkBorrowingFactor
+    │    │  │      └ getUsageFactor
+    │    │  ├ getBorrowingExponentFactor
+    │    │  └ getBorrowingFactor
+    │    ├ getCumulativeBorrowingFactor
+    └ incrementCumulativeBorrowingFactor
+```
+
+```solidity
+function getKinkBorrowingFactor(
+    DataStore dataStore,
+    Market.Props memory market,
+    bool isLong,
+    uint256 reservedUsd,
+    uint256 poolUsd,
+    uint256 optimalUsageFactor
+) internal view returns (uint256) {
+    uint256 usageFactor = getUsageFactor(
+        dataStore,
+        market,
+        isLong,
+        reservedUsd,
+        poolUsd
+    );
+
+    // f0
+    uint256 baseBorrowingFactor = dataStore.getUint(Keys.baseBorrowingFactorKey(market.marketToken, isLong));
+
+    // f0 * u
+    uint256 borrowingFactorPerSecond = Precision.applyFactor(
+        usageFactor,
+        baseBorrowingFactor
+    );
+
+    if (usageFactor > optimalUsageFactor && Precision.FLOAT_PRECISION > optimalUsageFactor) {
+        uint256 diff = usageFactor - optimalUsageFactor;
+
+        uint256 aboveOptimalUsageBorrowingFactor = dataStore.getUint(Keys.aboveOptimalUsageBorrowingFactorKey(market.marketToken, isLong));
+        uint256 additionalBorrowingFactorPerSecond;
+
+        if (aboveOptimalUsageBorrowingFactor > baseBorrowingFactor) {
+            additionalBorrowingFactorPerSecond = aboveOptimalUsageBorrowingFactor - baseBorrowingFactor;
+        }
+
+        uint256 divisor = Precision.FLOAT_PRECISION - optimalUsageFactor;
+
+        // f0 * u + f1 * (u - u_opt) / (1 - u_opt)
+        borrowingFactorPerSecond += additionalBorrowingFactorPerSecond * diff / divisor;
+    }
+
+    return borrowingFactorPerSecond;
+}
 ```
 
 How is borrowing fee calculated for trader?
