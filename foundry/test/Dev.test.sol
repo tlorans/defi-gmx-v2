@@ -62,19 +62,40 @@ contract MarketDev is Base {
     }
 
     function test_getMinCollateralFactor() public {
+        vm.skip(true);
         uint256 f = getMinCollateralFactor(GM_TOKEN_ETH_WETH_USDC);
         console.log("factor %e", f);
         // 5e27 / 1e30 = 0.005 -> 0.5% of position size
     }
 
     function test_getFundingFactors() public {
+        vm.skip(true);
         address market = GM_TOKEN_ETH_WETH_USDC;
-        uint256 fundingIncreaseFactorPerSecond = dataStore.getUint(Keys.fundingIncreaseFactorPerSecondKey(market));
-        uint256 thresholdForStableFunding = dataStore.getUint(Keys.thresholdForStableFundingKey(market));
-        uint256 thresholdForDecreaseFunding = dataStore.getUint(Keys.thresholdForDecreaseFundingKey(market));
+        uint256 fundingIncreaseFactorPerSecond =
+            dataStore.getUint(Keys.fundingIncreaseFactorPerSecondKey(market));
+        uint256 thresholdForStableFunding =
+            dataStore.getUint(Keys.thresholdForStableFundingKey(market));
+        uint256 thresholdForDecreaseFunding =
+            dataStore.getUint(Keys.thresholdForDecreaseFundingKey(market));
         console.log("fi %e", fundingIncreaseFactorPerSecond);
         console.log("s %e", thresholdForStableFunding);
         console.log("d %e", thresholdForDecreaseFunding);
+    }
+
+    function getOptimalUsageFactor(address market, bool isLong)
+        internal
+        view
+        returns (uint256)
+    {
+        return dataStore.getUint(Keys.optimalUsageFactorKey(market, isLong));
+    }
+
+    function test_getOptimalUsageFactor() public {
+        address market = GM_TOKEN_ETH_WETH_USDC;
+        uint256 l = getOptimalUsageFactor(market, true);
+        uint256 s = getOptimalUsageFactor(market, false);
+        console.log("l %e", l);
+        console.log("s %e", s);
     }
 
     /*

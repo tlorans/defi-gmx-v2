@@ -181,7 +181,12 @@ forge build
 - [ ] [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
   - [notes](./notes/price_impact.md)
 - [ ] Math - Funding rate
+  - equation
+  - how updated / claimed
 - [ ] Math - borrowing fee
+  - equation
+    - kink graph
+  - how updated / claimed
 - [ ] Math - profit / loss?
 - [ ] How is profit fully backed?
 - [ ] Order types
@@ -486,6 +491,7 @@ Stake
 - how is funding fee calculated?
 - what is price impact pool?
 - what is position size?
+- what is reserve?
 - what is reserve factor?
   -> reserveUSD represents the total value of tokens reserved in USD terms for open positions.
 - what is virtual inventory
@@ -526,3 +532,4 @@ Stake
 - DecreasePositionCollateralUtils.processCollateral
 - SwapPricingUtils
 - PositionPricingUtils
+- MarketUtils.distributePositionImpactPool
