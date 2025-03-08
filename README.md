@@ -522,3 +522,4 @@ Stake
 - SwapPricingUtils
 - PositionPricingUtils
 - MarketUtils.distributePositionImpactPool
+- ExchangeRouter.claimCollateral
