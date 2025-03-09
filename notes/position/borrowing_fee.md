@@ -1,6 +1,9 @@
 # Borrowing fee
 
-How is borrowing rate calculated?
+- Paid from position holder (trader) to liquidity provider.
+- Discourages a user opening equal longs / shorts and unnecessarily taking up capacity
+
+> How is borrowing fee rate calculated?
 
 `MarketUtils.updateCumulativeBorrowingFactor`
 
@@ -20,68 +23,13 @@ PositionUtils.updateFundingAndBorrowingState
     └ incrementCumulativeBorrowingFactor
 ```
 
-```solidity
-function getKinkBorrowingFactor(
-    DataStore dataStore,
-    Market.Props memory market,
-    bool isLong,
-    uint256 reservedUsd,
-    uint256 poolUsd,
-    uint256 optimalUsageFactor
-) internal view returns (uint256) {
-    uint256 usageFactor = getUsageFactor(
-        dataStore,
-        market,
-        isLong,
-        reservedUsd,
-        poolUsd
-    );
-
-    // f0
-    uint256 baseBorrowingFactor = dataStore.getUint(Keys.baseBorrowingFactorKey(market.marketToken, isLong));
-
-    // f0 * u
-    uint256 borrowingFactorPerSecond = Precision.applyFactor(
-        usageFactor,
-        baseBorrowingFactor
-    );
-
-    if (usageFactor > optimalUsageFactor && Precision.FLOAT_PRECISION > optimalUsageFactor) {
-        uint256 diff = usageFactor - optimalUsageFactor;
-
-        uint256 aboveOptimalUsageBorrowingFactor = dataStore.getUint(Keys.aboveOptimalUsageBorrowingFactorKey(market.marketToken, isLong));
-        uint256 additionalBorrowingFactorPerSecond;
-
-        if (aboveOptimalUsageBorrowingFactor > baseBorrowingFactor) {
-            additionalBorrowingFactorPerSecond = aboveOptimalUsageBorrowingFactor - baseBorrowingFactor;
-        }
-
-        uint256 divisor = Precision.FLOAT_PRECISION - optimalUsageFactor;
-
-        // f0 * u + f1 * (u - u_opt) / (1 - u_opt)
-        borrowingFactorPerSecond += additionalBorrowingFactorPerSecond * diff / divisor;
-    }
-
-    return borrowingFactorPerSecond;
-}
-```
-
-How is borrowing fee calculated for trader?
+> How is borrowing fee calculated for trader?
 
 `MarketUtils.getBorrowingFees`
 
-```solidity
-function getBorrowingFees(DataStore dataStore, Position.Props memory position) internal view returns (uint256) {
-    uint256 cumulativeBorrowingFactor = getCumulativeBorrowingFactor(dataStore, position.market(), position.isLong());
-    if (position.borrowingFactor() > cumulativeBorrowingFactor) {
-        revert Errors.UnexpectedBorrowingFactor(position.borrowingFactor(), cumulativeBorrowingFactor);
-    }
-    uint256 diffFactor = cumulativeBorrowingFactor - position.borrowingFactor();
-    return Precision.applyFactor(position.sizeInUsd(), diffFactor);
-}
-```
+> How is borrowing fee updated for trader?
 
-How is borrowing updated for trader? -> increase / decrease position -> increase pool amount
+Increase or decrease in position increases pool amount
 
 ```
 ExecuteOrderUtils.executeOrder
@@ -111,4 +59,6 @@ ExecuteOrderUtils.executeOrder
             └ params.position.setBorrowingFactor
 ```
 
-How is borrowing claimed by LP? -> claim from increased pool amount
+> How is borrowing claimed by LP?
+
+Claim from increased pool amount

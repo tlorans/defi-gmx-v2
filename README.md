@@ -182,14 +182,12 @@ forge build
     - [Deposit and withdrawal fees](./notes/swap/swap_fee.md)
     - Price impact
     - Funding fees: if there is an imbalance of longs / shorts, the larger side pays a funding fee to the smaller side
-      - [ ] Math - Funding rate
-        - equation
-        - how updated / claimed
-    - Borrowing fees: to avoid a user opening equal longs / shorts and unnecessarily taking up capacity
-      - [ ] Math - borrowing fee
-        - equation
-        - kink graph
-        - how updated / claimed
+      - Math
+      - how updated / claimed
+    - [Borrowing fees:](./notes/position/borrowing_fee.md)
+      - Math
+      - Kink graph
+      - How updated / claimed
   - UI?
 - [ ] Math - profit / loss?
 - [ ] How is profit fully backed?
