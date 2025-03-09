@@ -169,8 +169,10 @@ forge build
   - Long SOL, USDC collateral
   - Short SOL, USDC collateral
   - Short SOL, USDC collateral
-- [ ] [Math - profit and loss](./notes/position/pnl.md)
-- [ ] How is profit fully backed?
+- How is leverage possible?
+- [Math - profit and loss](./notes/position/pnl.md)
+- How is profit fully backed?
+  > For example, if there is 1000 ETH and 1 million USDC in the pool and the max long open interest is limited to 900 ETH and the max short open interest is limited to be 900k USDC, then all profits can always be fully backed regardless of the price of ETH.
 - [ ] Fees
   - Execution fee
     - UI
@@ -477,45 +479,10 @@ Stake
 - [x] perpetual contract -> who is the counter party -> GMX
 - [x] where does profit / loss come from?
       -> peer to pool trades (<- liquidity provider)
-- funding rate mechanism
-  - is it price at every 8 hours or accumulated every second?
-  - how is payment settled?
-- what is the price of perpetual contract?
-- how is leverage possible? -> position size USD / collateral USD
-- where are the tokens stored? -> market token
-- [x] why longs pay shorts when long interest exceeds short interest
-  - price up -> demand to open long -> pay premium to shors
-- why loss on short when leverage is high and index < open price?
-- how is profit fully backed?
-  > For example, if there is 1000 ETH and 1 million USDC in the pool and the max long open interest is limited to 900 ETH and the max short open interest is limited to be 900k USDC, then all profits can always be fully backed regardless of the price of ETH.
-- why borrowing fee = open interest \* cumulative borrowing
-- how LP token price is calculated
-- swap calculation for long -> market and short -> market
-- how is funding fee calculated?
-- what is price impact pool?
-- what is position size?
 - what is reserve?
 - what is reserve factor?
-  -> reserveUSD represents the total value of tokens reserved in USD terms for open positions.
 - what is virtual inventory
-- crossover
-  -> a crossover in balance is for example if the long open interest is larger
-  than the short open interest, and a short position is opened such that the
-  short open interest becomes larger than the long open interest
-- why clear price after order? -> price is set for each execution of order
-- why reserve must be below threshold?
-- TODO: graph execution price?
-- why market index token set to EOA? synthetic assets
 - what is an atomic provider?
-- how to get GMX dao token? -> stake GMX
-- difference between funding fee and borrowing fee
-
-  - funding fee -> trader to trader?
-  - borrow fee -> trader to LP?
-    - avoid a scenario where liquidity is fully reserved by a user opening equal long and short positions
-      for a small cost
-    - If there are more longs than shorts then longs would pay the borrowing fee
-    - If there are more shorts than longs then shorts would pay the borrowing fee
 
 ##### TODO
 
