@@ -57,8 +57,7 @@ forge build
   - [ ] Synthetic asset
   - [ ] Futures
   - [ ] Funding rate mechanism
-  - [ ] Open interest
-    - The total number of open contracts that have not been settled or closed out
+  - [ ] [Open interest](./notes/open_interest.md)
   - [ ] Market swap
   - [ ] Limit swap
   - [ ] Stop market

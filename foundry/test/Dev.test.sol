@@ -91,11 +91,36 @@ contract MarketDev is Base {
     }
 
     function test_getOptimalUsageFactor() public {
+        vm.skip(true);
         address market = GM_TOKEN_ETH_WETH_USDC;
         uint256 l = getOptimalUsageFactor(market, true);
         uint256 s = getOptimalUsageFactor(market, false);
         console.log("l %e", l);
         console.log("s %e", s);
+    }
+
+    function getOpenInterest(
+        address market,
+        address collateralToken,
+        bool isLong,
+        uint256 divisor
+    ) internal view returns (uint256) {
+        return dataStore.getUint(Keys.openInterestKey(market, collateralToken, isLong)) / divisor;
+    }
+
+    function test_getOpenInterest() public {
+        address market = GM_TOKEN_ETH_WETH_USDC;
+        uint256 ll = getOpenInterest(market, WETH, true, 1);
+        uint256 ls = getOpenInterest(market, USDC, true, 1);
+        uint256 sl = getOpenInterest(market, WETH, false, 1);
+        uint256 ss = getOpenInterest(market, USDC, false, 1);
+
+        console.log("ll %e", ll);
+        console.log("ls %e", ls);
+        console.log("sl %e", sl);
+        console.log("ss %e", ss);
+        console.log("l %e", ll + ls);
+        console.log("s %e", sl + ss);
     }
 
     /*

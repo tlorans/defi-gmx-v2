@@ -1,12 +1,13 @@
-# open interest
+# Open interest
 
 ```
-open interest = sum(open positions in USD)
+open interest = sum(open position in USD)
+open interest in tokens = sum(open positions in USD / price of index at entry)
 ```
 
 4 types of open interests
 
-- long with long token as collateral
-- long with short token as collateral
-- short with long token as collateral
-- short with short token as collateral
+- Long with long token as collateral
+- Long with short token as collateral
+- Short with long token as collateral
+- Short with short token as collateral
