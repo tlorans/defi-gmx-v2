@@ -1,51 +1,134 @@
 # Funding fee
 
-Larger side pays smaller side
+- Incentivise the balancing of long and short positions,
+- Side with larger open interest pays a funding fee to the side with the smaller open interest
+- Balances long and short demands
 
-How is borrowing rate calculated?
-
-How is borrowing fee updated for trader?
-
-How is borrowing claimed by LP? -> claim from increased pool amount
+> How is funding fee rate calculated?
 
 `MarketUtils.getNextFundingAmountPerSize`
 
-`MarketUtils.getNextFundingFactorPerSecond`
-
-`funding usd = larger side open interest * funding per sec * dt from last update`
+Funding fee in USD per size
 
 ```
-f = |o - s| ^ e / (o  + s)
-Fi = funding increase factor per sec
+f = Funding fee factor per second
+dt = Time elapsed since last update
+divisor = Long token  = short token -> 2
+        = Long token != short token -> 1
+funding fee in USD per size = f * dt * size of larger side / size of smaller side / divisor
+```
+
+`MarketUtils.getNextFundingFactorPerSecond`
+
+Funding factor per second
+
+```
+F = funding factor per second
+L = Long open interest
+S = Short open interest
+e = Funding exponent factor
+
+f = |L - S| ^ e / (L  + S)
+
+Fi = Funding increase factor per sec
+Fd = Funding decrease factor per sec
+F_min = min funding factor per sec
+F_max = max funding factor per sec
+F_market = Funding factor for this market
 
 if Fi = 0
-   funding factor per sec = min(f * F_market, max funding factor per sec)
+   F = min(f * F_market, F_max)
 
+F0 = Saved funding factor per second
+F0 > 0 = longs pay shorts
+F0 < 0 = shorts pay longs
 
-if is_skew_same_dir_as_funding
-   if f > stable funding threshold
+Ts = Threshold for stable funding
+Td = Threshold for decrease funding
+
+if (F0 > 0 and L > S) or (F0 < 0 and L < S)
+   if f > Ts
       increase funding rate
-   else if f < decrease threshold
+   else if f < Td
       decrease funding rate
 else
    increase funding rate
 
-if Fi > 0
-   if funding rate increase
-      funding factor per sec = prev funding factor per sec + f * Fi * dt
+if funding rate increase
+   F = F0 +/- f * Fi * dt (sign depends on direction of next funding)
 
-   if funding rate decrease
-      if prev funding factor per sec <= Fd * dt
-         funding factor per sec = +/- 1 (preserve prev sign)
-      else
-         funding factor per sec = +/- 1 (preserve prev sign) * (funding factor per sec - Fd * dt)
+if funding rate decrease
+   if |F0| <= Fd * dt
+      F = F0 / |F0|
+   else
+      F = (|F0| - Fd * dt) * F0 / |F0|
 
-TODO: bound funding factor per sec
-
-funding fee in USD per size = f * dt * size of larger side / size of smaller side
+s = F / |F|
+F = s * min(|F|, F_max)
+F = s * max(|F|, F_min)
 ```
 
-# Claim funding fees
+> How is funding fee updated for trader?
+
+```
+MarketUtils.updateFundingState
+├─ getNextFundingAmountPerSize
+│  ├─ getOpenInterest
+│  ├─ getOpenInterest
+│  ├─ getOpenInterest
+│  ├─ getOpenInterest
+│  ├─ getSecondsSinceFundingUpdated
+│  ├─ getNextFundingFactorPerSecond
+│  ├─ getFundingAmountPerSizeDelta
+│  ├─ getFundingAmountPerSizeDelta
+│  ├─ getFundingAmountPerSizeDelta
+│  └─ getFundingAmountPerSizeDelta
+├─ applyDeltaToFundingFeeAmountPerSize
+├─ applyDeltaToClaimableFundingAmountPerSize
+└─ setSavedFundingFactorPerSecond
+
+ExecuteOrderUtils.executeOrder
+├─ PositionUtils.updateFundingAndBorrowingState (update funding fee)
+│  └─ MarketUtils.updateFundingState
+└─ processOrder
+   └─ IncreaseOrderUtils.processOrder
+      └─ IncreasePositionUtils.increasePosition
+         ├─ if position.sizeInUsd = 0 (set funding fee to latest for new position)
+         │   ├─ position.setFundingFeeAmountPerSize
+         │   ├─ position.setLongTokenClaimableFundingAmountPerSize
+         │   └─ position.setShortTokenClaimableFundingAmountPerSize
+         ├─ processCollateral
+         │   └─ PositionPricingUtils.getPositionFees
+         │      ├─ MarketUtils.getFundingFeeAmountPerSize (get latest funding fees for position)
+         │      ├─ MarketUtils.getClaimableFundingAmountPerSize
+         │      ├─ MarketUtils.getClaimableFundingAmountPerSize
+         │      └─ getFundingFees (calculate funding fees and claimable fees)
+         │         ├─ MarketUtils.getFundingAmount
+         │         ├─ MarketUtils.getFundingAmount
+         │         └─ MarketUtils.getFundingAmount
+         ├─ PositionUtils.incrementClaimableFundingAmount (store claimable funding fees)
+         │   └─ MarketUtils.incrementClaimableFundingAmount
+         ├─ position.setFundingFeeAmountPerSize (update funding fees to latest)
+         ├─ position.setLongTokenClaimableFundingAmountPerSize
+         └─ position.setShortTokenClaimableFundingAmountPerSize
+
+ExecuteOrderUtils.executeOrder
+├─ PositionUtils.updateFundingAndBorrowingState (update funding fee)
+│  └─ MarketUtils.updateFundingState
+└─ processOrder
+   └─ DecreaseOrderUtils.processOrder
+      └─ DecreasePositionUtils.decreasePosition
+         ├─ DecreasePositionCollateralUtils.processCollateral
+         │   └─ PositionPricingUtils.getPositionFees
+         ├─ PositionUtils.incrementClaimableFundingAmount
+         ├─ position.setFundingFeeAmountPerSize
+         ├─ position.setLongTokenClaimableFundingAmountPerSize
+         └─ position.setShortTokenClaimableFundingAmountPerSize
+```
+
+> How is funding fee claimed by LP?
+
+Claim fees from increased pool amount
 
 ```
 ExchangeRouter.claimFundingFees
@@ -56,48 +139,4 @@ ExchangeRouter.claimFundingFees
       ├─ DataStore.setUint(key, 0)
       ├─ DataStore.decrementUint
       └─ MarketToken.transferOut
-```
-
-```
-ExecuteOrderUtils.executeOrder
-    PositionUtils.updateFundingAndBorrowingState (update funding fee)
-       MarketUtils.updateFundingState
-        applyDeltaToFundingFeeAmountPerSize
-        applyDeltaToClaimableFundingAmountPerSize
-    processOrder
-       IncreaseOrderUtils.processOrder
-          IncreasePositionUtils.increasePosition
-             if position.sizeInUsd = 0 (set funding fee to latest for new position)
-                position.setFundingFeeAmountPerSize
-                position.setLongTokenClaimableFundingAmountPerSize
-                position.setShortTokenClaimableFundingAmountPerSize
-             processCollateral
-                PositionPricingUtils.getPositionFees
-                  MarketUtils.getFundingFeeAmountPerSize (get latest funding fees for position)
-                  MarketUtils.getClaimableFundingAmountPerSize
-                  MarketUtils.getClaimableFundingAmountPerSize
-                  getFundingFees (calculate funding fees and claimable fees)
-                      MarketUtils.getFundingAmount
-                      MarketUtils.getFundingAmount
-                      MarketUtils.getFundingAmount
-             PositionUtils.incrementClaimableFundingAmount (store claimable funding fees)
-                MarketUtils.incrementClaimableFundingAmount
-             position.setFundingFeeAmountPerSize (update funding fees to latest)
-             position.setLongTokenClaimableFundingAmountPerSize
-             position.setShortTokenClaimableFundingAmountPerSize
-
-ExecuteOrderUtils.executeOrder
-    PositionUtils.updateFundingAndBorrowingState (update funding fee)
-       MarketUtils.updateFundingState
-        applyDeltaToFundingFeeAmountPerSize
-        applyDeltaToClaimableFundingAmountPerSize
-    processOrder
-       DecreasetOrderUtils.processOrder
-          DecreasePositionUtils.decreasePosition
-            DecreasePositionCollateralUtils.processCollateral
-                PositionPricingUtils.getPositionFees
-            PositionUtils.incrementClaimableFundingAmount
-            position.setFundingFeeAmountPerSize
-            position.setLongTokenClaimableFundingAmountPerSize
-            position.setShortTokenClaimableFundingAmountPerSize
 ```

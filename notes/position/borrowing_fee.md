@@ -19,7 +19,7 @@ PositionUtils.updateFundingAndBorrowingState
     │    │  │      └ getUsageFactor
     │    │  ├ getBorrowingExponentFactor
     │    │  └ getBorrowingFactor
-    │    ├ getCumulativeBorrowingFactor
+    │    └ getCumulativeBorrowingFactor
     └ incrementCumulativeBorrowingFactor
 ```
 

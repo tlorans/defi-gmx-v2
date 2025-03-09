@@ -172,23 +172,27 @@ forge build
   - Short SOL, USDC collateral
 - [ ] Fees
   - Execution fee
+    - UI
   - [Price impact](./notes/price_impact.md)
+    - UI
     - [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
   - [Swap](./notes/swap/swap_fee.md)
+    - UI
     - Swap fee
     - Price impact
-    - UI
   - Position
+    - UI
     - [Deposit and withdrawal fees](./notes/swap/swap_fee.md)
     - Price impact
-    - Funding fees: if there is an imbalance of longs / shorts, the larger side pays a funding fee to the smaller side
+    - [Funding fees](./notes/position/funding_fee.md)
       - Math
-      - how updated / claimed
+        - Cumulative funding fee factor
+      - How updated / claimed
     - [Borrowing fees:](./notes/position/borrowing_fee.md)
       - Math
+        - Cumulative borrowing fee factor
       - Kink graph
       - How updated / claimed
-  - UI?
 - [ ] Math - profit / loss?
 - [ ] How is profit fully backed?
 - [ ] Order types
@@ -259,6 +263,7 @@ forge build
   - leverage + liquidation price
 - [ ] [When executed?](./notes/liquidation.md)
   - Fees
+- [ ] Math - how much collateral?
 - [ ] [Math - liquidation price](./notes/liq_price_approx.png)
   - UI demo
 - [ ] [Contract calls](./notes/liquidation.md)
@@ -460,6 +465,14 @@ Stake
 - [Perps Hackathon Workshop 3a - risk management](https://www.youtube.com/watch?v=sKL8sgF3_co&list=PLFEm8se77ryMielAM_RuyMSQVrum9CN5S)
 - [The Cartoon Guide to Perps](https://www.paradigm.xyz/2021/03/the-cartoon-guide-to-perps)
 
+### Links
+
+- [GMX GitHub synthetics](https://github.com/gmx-io/gmx-synthetics)
+- [GMX GitHub interface](https://github.com/gmx-io/gmx-interface/)
+- [GMX delegatees](https://www.tally.xyz/gov/gmx/delegates)
+- [Chainlink providers](https://docs.chain.link/data-feeds/price-feeds/addresses?network=arbitrum&page=1)
+- [ABI ninja](https://abi.ninja)
+
 ### TODO: questions to answer
 
 - [x] perpetual contract -> who is the counter party -> GMX
@@ -504,12 +517,6 @@ Stake
       for a small cost
     - If there are more longs than shorts then longs would pay the borrowing fee
     - If there are more shorts than longs then shorts would pay the borrowing fee
-
-- [GMX GitHub synthetics](https://github.com/gmx-io/gmx-synthetics)
-- [GMX GitHub interface](https://github.com/gmx-io/gmx-interface/)
-- [GMX delegatees](https://www.tally.xyz/gov/gmx/delegates)
-- [Chainlink providers](https://docs.chain.link/data-feeds/price-feeds/addresses?network=arbitrum&page=1)
-- [ABI ninja](https://abi.ninja)
 
 ##### TODO
 
