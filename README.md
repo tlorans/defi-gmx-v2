@@ -169,6 +169,8 @@ forge build
   - Long SOL, USDC collateral
   - Short SOL, USDC collateral
   - Short SOL, USDC collateral
+- [ ] [Math - profit and loss](./notes/position/pnl.md)
+- [ ] How is profit fully backed?
 - [ ] Fees
   - Execution fee
     - UI
@@ -179,7 +181,7 @@ forge build
     - UI
     - Swap fee
     - Price impact
-  - Position
+  - [Position](./notes/position/fees.md)
     - UI
     - [Deposit and withdrawal fees](./notes/swap/swap_fee.md)
     - Price impact
@@ -192,8 +194,6 @@ forge build
         - Cumulative borrowing fee factor
       - Kink graph
       - How updated / claimed
-- [ ] Math - profit / loss?
-- [ ] How is profit fully backed?
 - [ ] Order types
   - Market swaps
   - Limit swaps
