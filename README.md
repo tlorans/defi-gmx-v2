@@ -205,33 +205,32 @@ forge build
   - Limit decrease
   - Stop loss decrease
 - [ ] Contract calls (2 step tx - create order + execute order)
-  - Swap
+  - [Swap](./notes/swap/swap.md)
+    - [Token flow](./notes/execute_swap.png)
     - [tx - Swap DAI to ETH part 1](https://arbiscan.io/tx/0x747665f80ccd64918af4f4cd2d3c7e7c077d061d61bc47fc99f644d1eb4d18f4)
     - [tx - Swap DAI to ETH part 2](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
-    - [Token flow](./notes/execute-swap.png)
-    - [Trace](./notes/swap.md)
   - Limit
     - [tx - Limit order swap 2.63 USDC to ETH at $2780 part 1](https://arbiscan.io/tx/0x5a55b926aadaa832a42c55a4a60b0008193c773767e7289cdeb7eca0e1433595)
     - [tx - Limit order swap 2.63 USDC to ETH at $2780 part 2](https://arbiscan.io/tx/0x2306c6c8300a10a4e59c6dcc04513c84c0d2469172beb5c8f9cf1820eba308d0)
   - Long (open / close / deposit / withdraw)
-    - [tx - Long ETH 0.001 70x ~ $190 part 1](https://arbiscan.io/tx/0xcac1ce9014aafcd3d8ae89c27cfd4866de36ff010ded5344a65bd4034d358413)
-      - `market`
-      - `initialCollateralToken`
-      - `swapPath`
-      - `sizeDeltaUsd`
-      - `executionFee`
-      - `orderType`
-    - [tx - Long ETH 0.001 70x ~ $190 part 2](https://arbiscan.io/tx/0x29d95557ef789fd6d9031c739a29dd5adc112f3ff8aab0524cd6aa9ddfc4e278)
-      - `leverage = position size USD / collateral amount USD`
-      - `initialCollateralDeltaAmount`
-      - `swapPath`
-      - [Trace](./notes/long.md)
-    - [tx - Close long ETH 0.001 70x ~ $190 part 1](https://arbiscan.io/tx/0x13cdef0acc7d4017f82df308f0f628996b707396182fc2a2042e78b0ebc4657d)
-      - `sizeDeltaUsd`
-      - `initialCollateralDeltaAmount`
-      - `decreasePositionSwapType`
-    - [tx - Close long ETH 0.001 70x ~ $190 part 2](https://arbiscan.io/tx/0xf5f5d293ef7bdc6893941cda6a6fd57d67a20876a175aa1e424af9442868bb47)
-      - [Trace](./notes/market_decrease.md)
+    - [Open](./notes/position/market_increase.md)
+      - [tx - Long ETH 0.001 70x ~ $190 part 1](https://arbiscan.io/tx/0xcac1ce9014aafcd3d8ae89c27cfd4866de36ff010ded5344a65bd4034d358413)
+        - `market`
+        - `initialCollateralToken`
+        - `swapPath`
+        - `sizeDeltaUsd`
+        - `executionFee`
+        - `orderType`
+      - [tx - Long ETH 0.001 70x ~ $190 part 2](https://arbiscan.io/tx/0x29d95557ef789fd6d9031c739a29dd5adc112f3ff8aab0524cd6aa9ddfc4e278)
+        - `leverage = position size USD / collateral amount USD`
+        - `initialCollateralDeltaAmount`
+        - `swapPath`
+    - [Close](./notes/position/market_decrease.md)
+      - [tx - Close long ETH 0.001 70x ~ $190 part 1](https://arbiscan.io/tx/0x13cdef0acc7d4017f82df308f0f628996b707396182fc2a2042e78b0ebc4657d)
+        - `sizeDeltaUsd`
+        - `initialCollateralDeltaAmount`
+        - `decreasePositionSwapType`
+      - [tx - Close long ETH 0.001 70x ~ $190 part 2](https://arbiscan.io/tx/0xf5f5d293ef7bdc6893941cda6a6fd57d67a20876a175aa1e424af9442868bb47)
   - Short (open / close / deposit / withdraw)
     - [tx - Short 0.01 ETH part 1](https://arbiscan.io/tx/0x15f4bb54997d8efbf0816313e64120fe5bf89ab31fe78f4a647f47b61b629eea)
     - [tx - Short 0.01 ETH part 2](https://arbiscan.io/tx/0x7039c81c3f14f54fbfb45c337fb13e4513b8e795a2d9237b66b2b191e717121e)
@@ -246,9 +245,8 @@ forge build
       - `BaseOrderUtils.validateOrderTriggerPrice`
       - ` OrderUtils.clearAutoCancelOrders`
       - Auto cancel
-  - Claim funding fees
+  - [Claim funding fees](./notes/position/claim_funding_fees.md)
     - [tx - Claim funding fees](https://arbiscan.io/tx/0x4415830b1a12882409df17e80be26da8c20e4cc929f1764046ca3aae3ca8339e)
-      - [Trace](./notes/claim_funding_fees.md)
 - [ ] Foundry exercises
   - Market swap
   - Limit swap
