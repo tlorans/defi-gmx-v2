@@ -163,7 +163,7 @@ forge build
 - [ ] Example strategies -> different liquidation price
   - Long ETH, ETH collateral
   - Long ETH, USDC collateral
-  - Short ETH, ETH collateral -> delta neutral?
+  - Short ETH, ETH collateral
   - Short ETH, USDC collateral
   - Long SOL, ETH collateral
   - Long SOL, USDC collateral
@@ -485,8 +485,9 @@ Stake
 ##### TODO
 
 - remove / clean notes
+- virtual inventory
 - MarketUtils.distributePositionImpactPool
-- PositionUtils.updateFundingAndBorrowingState
+- MarketUtils.applyDeltaToCollateralSum
 - SwapUtils.swap
 - PositionUtils
 - IncreasePositionUtils
