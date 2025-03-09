@@ -172,11 +172,15 @@ forge build
   - Short SOL, USDC collateral
 - [ ] Fees
   - Execution fee
-  - Price impact
-    - [ ] [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
-    - [notes](./notes/price_impact.md)
+  - [Price impact](./notes/price_impact.md)
+    - [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
   - [Swap](./notes/swap/swap_fee.md)
-  - Position (`PositionPricingUtils.getPositionFees`)
+    - Swap fee
+    - Price impact
+    - UI
+  - Position
+    - [Deposit and withdrawal fees](./notes/swap/swap_fee.md)
+    - Price impact
     - Funding fees: if there is an imbalance of longs / shorts, the larger side pays a funding fee to the smaller side
       - [ ] Math - Funding rate
         - equation

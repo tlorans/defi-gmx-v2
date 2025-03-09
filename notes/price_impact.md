@@ -1,47 +1,74 @@
 # Price impact
 
-https://www.desmos.com/calculator/sykma4sbbb
+TODO: virtual inventory
 
-https://www.desmos.com/calculator/fywgtpxsci
+`SwapPricingUtils.getPriceImpactUsd`
 
-If a trade:
+`PricingUtils.getPriceImpactUsdForSameSideRebalance`
 
-- Reduce Skew = Positive Impact
-- Increase Skew = Negative Impact
+`PricingUtils.getPriceImpactUsdForCrossoverRebalance`
 
-same side (long < short and next long < next short or long >= short and next long >= next short)
--> positive impact (++)
--> negative impact (-)
-cross over (otherwise)
--> positive impact (+)
--> negative impact (-)
+[Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
+
+### Imbalance
 
 ```
-imbalance = long USD - short USD
+imbalance = swap = long tokens in pool USD - short tokens in pool USD
+          = long and short = long open interest - short open interes
+```
 
-price impact =
-  (initial imbalance) ^ (price impact exponent) * (price impact factor / 2)
-- (next imbalance) ^ (price impact exponent) * (price impact factor / 2)
+If an action (swap, long, short, deposit)
+
+- Reduces imbalance = positive impact
+- Increases imbalance = negative impact
+
+### Same side
+
+```
+same side = long < short and next long < next short
+            or
+            long >= short and next long >= next short
+```
+
+### Cross over
+
+```
+cross over = not same side
+```
+
+### Price impact
+
+```
+d0 = initial imbalance
+d1 = next imbalance
+e = exponent factor
+
+# same side
+f = impact factor
+same side price impact = d0 ^ e * f - d1 ^ e * f
+
+# cross over
+p = positive impact factor
+n = negative impact factor
+
+p <= n
+
+cross over price impact = d0 ^ e * p - d1 ^ e * n
 ```
 
 > Why exponents?
 
-Make price manipulation rapidly expensive
-
-```
-is same side = (token A USD <= token B USD) == (next token A USD <= next token B USD)
-             =    long 0 <= short 0 and long 1 <= short 1
-               or long 0 >  short 0 and long 1 >  short 1
-
-```
+Makes price manipulation rapidly expensive
 
 > Why positive impact factor must be <= negative impact factor
 
-```
-if the positive impact factor is more than the negative impact factor, positions could be opened
+`MarketUtils.getAdjustedSwapImpactFactors`
+
+If the positive impact factor is more than the negative impact factor, positions could be opened
 and closed immediately for a profit if the difference is sufficient to cover the position fees
 
-example from graph
+```
+Example from graph
 
 f_p = 0.3 > f_n = 0.1
 x0 = 2, x1 = 1, -> p = 0.9
