@@ -45,20 +45,19 @@ forge build
   - Where does profit / loss come from?
   - Fee distribution
 - [ ] Terminologies and examples
-  - [ ] Synthetic asset
-  - [ ] Funding rate
-  - [ ] [Open interest](./notes/open_interest.md)
-  - [ ] Perpetual swap
-  - [ ] Market swap
-  - [ ] Limit swap
-  - [ ] Stop market
-  - [ ] Index
-  - [ ] Long
-  - [ ] Short
-  - [ ] Leverage
-  - [ ] Liquidity pools
-  - [ ] Markets (index, long, short)
-  - [ ] Liquidation price
+  - Perpetual swap
+  - Long
+  - Short
+  - Leverage
+  - Liquidation price
+  - Markets (index, long, short)
+    - Synthetic asset
+  - Liquidity pools
+  - Funding rate
+  - [Open interest](./notes/open_interest.md)
+  - Market swap
+  - Limit swap
+  - Stop market
 
 ### Contract architecture
 
