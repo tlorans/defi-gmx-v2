@@ -49,9 +49,12 @@ forge build
   - Long
   - Short
   - Leverage
-  - Liquidation price
+  - Liquidation
   - Markets (index, long, short)
     - Synthetic asset
+    - Index
+    - Long
+    - Short
   - Liquidity pools
   - Funding rate
   - [Open interest](./notes/open_interest.md)
