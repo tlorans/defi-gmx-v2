@@ -3,6 +3,7 @@
 - Incentivise the balancing of long and short positions,
 - Side with larger open interest pays a funding fee to the side with the smaller open interest
 - Balances long and short demands
+  - Traders pay each other instead of LPs directly covering trader profits
 
 > How is funding fee rate calculated?
 
