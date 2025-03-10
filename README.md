@@ -285,7 +285,6 @@ forge build
 - [ ] GLV
   - [Token pricing](./notes/glv_liquidity/glv_token_price.md)
   - Fees
-  - a wrapper of multiple markets with the same long and short tokens. Liquidity is automatically rebalanced between underlying markets based on markets utilisation.
 - [ ] Contract calls
   - GM
     - [Mint](./notes/gm_liquidity/market_deposit.md)
@@ -469,7 +468,6 @@ Stake
 
 - remove / clean notes
 
-- getPoolValueInfo
 - How is GLV rebalanced?
 
 - DecreasePositionUtils
