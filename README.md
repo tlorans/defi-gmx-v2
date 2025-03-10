@@ -179,6 +179,7 @@ forge build
   - [Price impact](./notes/price_impact.md)
     - UI
     - [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
+    - [Virtual inventory](./notes/virtual_inventory.md)
   - [Swap](./notes/swap/swap_fees.md)
     - UI
     - Swap fee
@@ -466,23 +467,21 @@ Stake
 
 ### Links
 
+- [GMX app](https://app.gmx.io/)
+- [GMX doc](https://docs.gmx.io/docs/intro/)
 - [GMX GitHub synthetics](https://github.com/gmx-io/gmx-synthetics)
 - [GMX GitHub interface](https://github.com/gmx-io/gmx-interface/)
 - [GMX delegatees](https://www.tally.xyz/gov/gmx/delegates)
+- [Tenderly](https://tenderly.co)
 - [Chainlink providers](https://docs.chain.link/data-feeds/price-feeds/addresses?network=arbitrum&page=1)
 - [ABI ninja](https://abi.ninja)
 
 ##### TODO
 
 - how is profit / loss backed?
-- what is reserve?
-- what is reserve factor?
-- what is virtual inventory
-- what is an atomic provider?
 
 - remove / clean notes
-- virtual inventory
-- MarketUtils.applyDeltaToCollateralSum
+
 - SwapUtils.swap
 - PositionUtils
 - IncreasePositionUtils
@@ -492,3 +491,6 @@ Stake
 - PositionPricingUtils
 - MarketUtils.distributePositionImpactPool
 - ExchangeRouter.claimCollateral
+- MarketUtils.incrementClaimableCollateralAmount
+  - Something with decrease position
+- what is an atomic provider?
