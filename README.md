@@ -40,42 +40,25 @@ forge build
 - [ ] How the protocol works
   - Users (traders, LP (GM / GLV holders) and GMX holders, keepers)
   - Funding mechanism
-    - Open interest
-    - Price impact
-    - Borrowing fees
-    - Funding
+  - Borrowing fees
+  - Price impact
   - Where does profit / loss come from?
   - Fee distribution
 - [ ] Terminologies and examples
-  - [ ] Spot trading
-  - [ ] Perpetuals
-    - Use cases
-      - Price speculation
-      - Hedging
-      - Arbitrage
-  - [ ] Derivative
   - [ ] Synthetic asset
-  - [ ] Futures
-  - [ ] Funding rate mechanism
+  - [ ] Funding rate
   - [ ] [Open interest](./notes/open_interest.md)
+  - [ ] Perpetual swap
   - [ ] Market swap
   - [ ] Limit swap
   - [ ] Stop market
   - [ ] Index
   - [ ] Long
-    - to long
-    - long token
   - [ ] Short
-    - to short
-    - short token
   - [ ] Leverage
-  - [ ] Margin TODO: remove?
-  - [ ] Initial margin TODO: remove?
-  - [ ] Maintanence margin TODO: remove?
   - [ ] Liquidity pools
   - [ ] Markets (index, long, short)
   - [ ] Liquidation price
-  - [ ] Well fundedness
 
 ### Contract architecture
 
@@ -322,7 +305,6 @@ forge build
       - [tx - Sell GLV part 1](https://arbiscan.io/tx/0xb60ed4fa2252dae32f8252f5702c3caf0cd2f074a9e9b41eaaaae2cea3f760c6)
       - [tx - Sell GLV part 2](https://arbiscan.io/tx/0x5120cf011c75d9b67bdffa99c4e3c6fffb5e8bb428f0080fc7ccded361bf98e6)
 - [ ] Foundry exercises
-  - TODO: synthetic tokens are EOA
   - GM - Buy, sell, shift
   - GLV - Buy, sell
 
