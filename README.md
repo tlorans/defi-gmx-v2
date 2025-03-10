@@ -307,9 +307,7 @@ forge build
   - Token pricing
   - Fees
   - a wrapper of multiple markets with the same long and short tokens. Liquidity is automatically rebalanced between underlying markets based on markets utilisation.
-  - TODO: How is it rebalanced?
 - [ ] Contract calls
-
   - GM
     - [Mint](./notes/gm_liquidity/market_deposit.md)
       - [tx - Buy GM ETH/USD part 1](https://arbiscan.io/tx/0x6021800ad3d31003082fa6dc7fb5b6b8ff83208cadfcca98ffaa0774d6f652b8)
@@ -317,7 +315,7 @@ forge build
     - [Burn](./notes/gm_liquidity/market_withdraw.md)
       - [tx - Sell GM ETH/USD part 1](https://arbiscan.io/tx/0xda4bc1d39be6ea85f8323875cbc4920aa33d0af38d7af2eb3f3dd03d174ae98e)
       - [tx - Sell GM ETH/USD part 2](https://arbiscan.io/tx/0xbdc46442f47149089f4976190a97c81bf476eb43b0478689e0ac918a9a502641)
-    - Shift?
+    - [Shift](./notes/gm_liquidity/market_shift.md)
       - [tx - Shift ETH/USDC to LDO/USD part 1](https://arbiscan.io/tx/0xaa88b76cd39de8931bdfb3cce46984f634ecfe6ca88b40965191f9b05b50605d)
       - [tx - Shift ETH/USDC to LDO/USD part 2](https://arbiscan.io/tx/0x6b6db0a76a506b76c8cf517f59ca8a506b0f7e8e8f36f578a92ce7da0ddd38dc)
   - GLV
@@ -327,7 +325,6 @@ forge build
     - [Burn](./notes/glv_liquidity/glv_withdraw.md)
       - [tx - Sell GLV part 1](https://arbiscan.io/tx/0xb60ed4fa2252dae32f8252f5702c3caf0cd2f074a9e9b41eaaaae2cea3f760c6)
       - [tx - Sell GLV part 2](https://arbiscan.io/tx/0x5120cf011c75d9b67bdffa99c4e3c6fffb5e8bb428f0080fc7ccded361bf98e6)
-
 - [ ] Foundry exercises
   - TODO: synthetic tokens are EOA
   - GM - Buy, sell, shift
