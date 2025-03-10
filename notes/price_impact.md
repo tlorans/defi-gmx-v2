@@ -1,12 +1,16 @@
 # Price impact
 
-TODO: virtual inventory
-
 `SwapPricingUtils.getPriceImpactUsd`
 
 `PricingUtils.getPriceImpactUsdForSameSideRebalance`
 
 `PricingUtils.getPriceImpactUsdForCrossoverRebalance`
+
+`MarketUtils.getPositionImpactPoolAmount`
+
+`MarketUtils.getSwapImpactPoolAmount`
+
+`MarketUtils.getPoolValueInfo`
 
 [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
 
@@ -21,6 +25,16 @@ If an action (swap, long, short, deposit)
 
 - Reduces imbalance = positive impact
 - Increases imbalance = negative impact
+
+### Impact pools
+
+- Swap impact pool
+  - Pay positive impact to user
+  - Store negative impact from user
+- Position impact pool
+  - Pay positive impact to user
+  - Store negative impact from user
+  - Slowly released back to pool for LP to claim
 
 ### Same side
 

@@ -472,21 +472,16 @@ Stake
 - [Chainlink providers](https://docs.chain.link/data-feeds/price-feeds/addresses?network=arbitrum&page=1)
 - [ABI ninja](https://abi.ninja)
 
-### TODO: questions to answer
+##### TODO
 
-- [x] perpetual contract -> who is the counter party -> GMX
-- [x] where does profit / loss come from?
-      -> peer to pool trades (<- liquidity provider)
+- how is profit / loss backed?
 - what is reserve?
 - what is reserve factor?
 - what is virtual inventory
 - what is an atomic provider?
 
-##### TODO
-
 - remove / clean notes
 - virtual inventory
-- MarketUtils.distributePositionImpactPool
 - MarketUtils.applyDeltaToCollateralSum
 - SwapUtils.swap
 - PositionUtils
