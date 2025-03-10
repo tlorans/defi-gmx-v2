@@ -179,13 +179,13 @@ forge build
   - [Price impact](./notes/price_impact.md)
     - UI
     - [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
-  - [Swap](./notes/swap/swap_fee.md)
+  - [Swap](./notes/swap/swap_fees.md)
     - UI
     - Swap fee
     - Price impact
-  - [Position](./notes/position/fees.md)
+  - [Position](./notes/position/position_fees.md)
     - UI
-    - [Deposit and withdrawal fees](./notes/swap/swap_fee.md)
+    - [Deposit and withdrawal fees](./notes/swap/swap_fees.md)
     - Price impact
     - [Funding fees](./notes/position/funding_fee.md)
       - Math
@@ -206,7 +206,7 @@ forge build
   - Stop loss decrease
 - [ ] Contract calls (2 step tx - create order + execute order)
   - [Swap](./notes/swap/swap.md)
-    - [Token flow](./notes/execute-swap.png)
+    - [Token flow](./notes/execute_swap.png)
     - [tx - Swap DAI to ETH part 1](https://arbiscan.io/tx/0x747665f80ccd64918af4f4cd2d3c7e7c077d061d61bc47fc99f644d1eb4d18f4)
     - [tx - Swap DAI to ETH part 2](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
   - Limit
