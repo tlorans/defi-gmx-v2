@@ -297,14 +297,10 @@ forge build
     - Sell
       - Pool TODO: pool to remove tokens from?
 - [ ] GM
-  - Token pricing -> `MarketUtils.getMarketTokenPrice`
+  - [Token price](./notes/gm_liquidity/market_token_price.md)
   - Fees
-  - Liquidity providers can deposit either the long or short collateral token or both to mint liquidity tokens.
-  - long collateral token is used to back long positions
-  - short collateral token is used to back short positions.
-  - Liquidity providers take on the profits and losses of traders for the market that they provide liquidity for
 - [ ] GLV
-  - Token pricing
+  - [Token pricing](./notes/glv_liquidity/glv_token_price.md)
   - Fees
   - a wrapper of multiple markets with the same long and short tokens. Liquidity is automatically rebalanced between underlying markets based on markets utilisation.
 - [ ] Contract calls
@@ -491,6 +487,7 @@ Stake
 
 - remove / clean notes
 
+- getPoolValueInfo
 - How is GLV rebalanced?
 
 - DecreasePositionUtils
