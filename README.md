@@ -478,19 +478,11 @@ Stake
 
 ##### TODO
 
-- how is profit / loss backed?
-
 - remove / clean notes
 
-- SwapUtils.swap
-- PositionUtils
-- IncreasePositionUtils
+- Liquidity contract calls
+
 - DecreasePositionUtils
 - DecreasePositionCollateralUtils.processCollateral
-- SwapPricingUtils
-- PositionPricingUtils
-- MarketUtils.distributePositionImpactPool
 - ExchangeRouter.claimCollateral
-- MarketUtils.incrementClaimableCollateralAmount
-  - Something with decrease position
 - what is an atomic provider?

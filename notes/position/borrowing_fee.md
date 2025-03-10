@@ -27,6 +27,8 @@ PositionUtils.updateFundingAndBorrowingState
 
 `MarketUtils.getBorrowingFees`
 
+`MarketUtils.getTotalPendingBorrowingFees`
+
 > How is borrowing fee updated for trader?
 
 Increase or decrease in position increases pool amount
