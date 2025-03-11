@@ -42,13 +42,13 @@ forge build
     - Long
     - Short
   - [Leverage](./notes/terms/lev.png)
-  - Markets (index, long, short)
+  - [Markets](./notes/terms/market.png)
     - Index
     - Long
     - Short
     - Synthetic asset
-    - Liquidity pools
     - Both tokens are needed
+  - [Liquidity provider](./notes/terms/lp.png)
   - [Position size](./notes/terms/pos.png)
   - Liquidation
     - Collateral
