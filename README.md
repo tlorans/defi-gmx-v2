@@ -23,7 +23,7 @@ forge build
 - [ ] Project setup
   - transaction links
   - exercises
-- [ ] UI - Quick guide on how to bridge ETH
+- [ ] UI - Quick guide on how to bridge ETH?
   - [ ] Transactions
 
 ### Protocol
@@ -53,53 +53,8 @@ forge build
   - [Liquidation](./notes/terms/liquidation.png)
     - Collateral
   - [Open interest](./notes/terms/open_interest.png)
-  - Funding rate
-  - Market swap
-  - Limit swap
-  - Stop market
-- [ ] How the protocol works
-  - Users (traders, LP (GM / GLV holders) and GMX holders, keepers)
-  - Funding mechanism
-  - Borrowing fees
-  - Price impact
-  - Where does profit / loss come from?
-    - Default profit paid in long pos -> long token, short pos -> short token
-  - Fee distribution
-
-### Contract architecture
-
-#### [ ] Contract architecture
-
-- data store
-- bank / vault
-- router
-  - ExchangeRouter
-  - GlvRouter
-- handlers
-- utils (library)
-- even utils
-- market tokens
-- reader
-- oracle
-- keeper
-- wnt = wrapped native token
-- 2 step transcations
-  - user -> create order
-    - send execution fee
-    - send tokens
-    - create order
-  - keeper -> execute order
-    - execute order
-    - send tokens
-    - refund execution fee
-- multicall
-- execution fee
-
-#### Trading
-
-- [ ] UI
+- [ ] UI trade
   - 2 steps transaciton process
-  - Transaction links
   - Markets (ETH / USD, WBTC / USD, etc...)
     - Index, long and short tokens
     - Fully backed
@@ -135,6 +90,15 @@ forge build
         - Fees
         - TP / SL
           - Auto cancel
+      - Example strategies -> different liquidation price
+        - Long ETH, ETH collateral
+        - Long ETH, USDC collateral
+        - Short ETH, ETH collateral
+        - Short ETH, USDC collateral
+        - Long SOL, ETH collateral
+        - Long SOL, USDC collateral
+        - Short SOL, USDC collateral
+        - Short SOL, USDC collateral
     - Limit
       - Long -> create long position above limit
       - Short -> create short position below limit
@@ -144,26 +108,73 @@ forge build
     - Stop market
       - Long
       - Short
-  - Open cost TODO: wat dis?
-  - Liquidation price
-    - Long
-    - Short
   - Managing positions
     - Close, deposit, withdraw collateral
     - Claims (funding fees)
-- [ ] Example strategies -> different liquidation price
-  - Long ETH, ETH collateral
-  - Long ETH, USDC collateral
-  - Short ETH, ETH collateral
-  - Short ETH, USDC collateral
-  - Long SOL, ETH collateral
-  - Long SOL, USDC collateral
-  - Short SOL, USDC collateral
-  - Short SOL, USDC collateral
-- [Math - position size and pnl] TODO: `PositionUtils.getPositionPnlUsd`
+- [ ] UI liquidity
+  - Difference between GLV and GM
+  - GM (GMX market) pools
+  - GLV (GMX liquidity vault) pools
+  - GM
+    - Markets
+      - index, long, short
+      - swap only
+    - Buy
+      - Single and pair liquidity
+      - Fees
+      - Network fee
+    - Sell
+      - Pair liquidity
+      - Fees
+      - Network fee
+    - Shift -> TODO: only possible within the same long / short?
+  - GLV
+    - BTC-USDC and WETH-USDC
+    - Composition
+    - Buy
+      - Pool TODO: pool to send tokens to?
+    - Sell
+      - Pool TODO: pool to remove tokens from?
+
+### Contract architecture
+
+- [ ] How the protocol works
+  - Users (traders, LP (GM / GLV holders) and GMX holders, keepers)
+  - Funding fees
+  - Borrowing fees
+  - Price impact
+  - Where does profit / loss come from?
+    - Default profit paid in long pos -> long token, short pos -> short token
+  - Fee distribution
+- [ ] Contract architecture
+  - data store
+  - bank / vault
+  - router
+    - ExchangeRouter
+    - GlvRouter
+  - handlers
+  - utils (library)
+  - even utils
+  - market tokens
+  - reader
+  - oracle
+  - keeper
+  - wnt = wrapped native token
+  - 2 step transcations
+    - user -> create order
+      - send execution fee
+      - send tokens
+      - create order
+    - keeper -> execute order
+      - execute order
+      - send tokens
+      - refund execution fee
+  - multicall
+  - execution fee
+
+#### Trading
+
 - [Math - profit and loss](./notes/position/pnl.md)
-- How is profit backed?
-  > For example, if there is 1000 ETH and 1 million USDC in the pool and the max long open interest is limited to 900 ETH and the max short open interest is limited to be 900k USDC, then all profits can always be fully backed regardless of the price of ETH.
 - [ ] Fees
   - Execution fee
     - UI
@@ -264,30 +275,6 @@ forge build
 
 #### Liquidity
 
-- [ ] UI
-  - Difference between GLV and GM
-  - GM (GMX market) pools
-  - GLV (GMX liquidity vault) pools
-  - GM
-    - Markets
-      - index, long, short
-      - swap only
-    - Buy
-      - Single and pair liquidity
-      - Fees
-      - Network fee
-    - Sell
-      - Pair liquidity
-      - Fees
-      - Network fee
-    - Shift -> TODO: only possible within the same long / short?
-  - GLV
-    - BTC-USDC and WETH-USDC
-    - Composition
-    - Buy
-      - Pool TODO: pool to send tokens to?
-    - Sell
-      - Pool TODO: pool to remove tokens from?
 - [ ] GM
   - [Token price](./notes/gm_liquidity/market_token_price.md)
   - Fees
