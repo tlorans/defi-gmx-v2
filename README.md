@@ -41,10 +41,7 @@ forge build
   - [Perpetual swap](./notes/terms/perp.png)
     - Long
     - Short
-  - [Position size](./notes/terms/pos.png)
   - [Leverage](./notes/terms/lev.png)
-  - Liquidation
-    - Collateral
   - Markets (index, long, short)
     - Index
     - Long
@@ -52,6 +49,9 @@ forge build
     - Synthetic asset
     - Liquidity pools
     - Both tokens are needed
+  - [Position size](./notes/terms/pos.png)
+  - Liquidation
+    - Collateral
   - Funding rate
   - [Open interest](./notes/open_interest.md)
   - Market swap
