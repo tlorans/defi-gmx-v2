@@ -31,6 +31,15 @@ OrderHandler.executeOrder
 │     │     ├─ PositionStoeUtils.get
 │     │     ├─ DecreasePositionUtils.decreasePosition
 │     │     │  ├─ DecreasePositionCollateralUtils.processCollateral
+│     │     │  │  ├─ PositionUtils.getPositionPnlUsd
+│     │     │  │  ├─ MarketUtils.applyDeltaToPoolAmount
+│     │     │  │  ├─ DecreasePositionSwapUtils.swapProfitToCollateralToken
+│     │     │  │  ├─ PositionPricingUtils.getPositionFees
+│     │     │  │  ├─ payForCost
+│     │     │  │  ├─ payForCost
+│     │     │  │  ├─ payForCost
+│     │     │  │  ├─ payForCost
+│     │     │  │  └─ payForCost
 │     │     │  ├─ PositionUtils.updateTotalBorrowing
 │     │     │  ├─ PositionStoreUtils.set or remove
 │     │     │  ├─ MarketUtils.applyDeltaToCollateralSum

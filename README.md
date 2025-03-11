@@ -43,6 +43,7 @@ forge build
   - Borrowing fees
   - Price impact
   - Where does profit / loss come from?
+    - Default profit paid in long pos -> long token, short pos -> short token
   - Fee distribution
 - [ ] Terminologies and examples
   - Perpetual swap
@@ -156,7 +157,7 @@ forge build
   - Short SOL, USDC collateral
 - How is leverage possible?
 - [Math - profit and loss](./notes/position/pnl.md)
-- How is profit fully backed?
+- How is profit backed?
   > For example, if there is 1000 ETH and 1 million USDC in the pool and the max long open interest is limited to 900 ETH and the max short open interest is limited to be 900k USDC, then all profits can always be fully backed regardless of the price of ETH.
 - [ ] Fees
   - Execution fee
@@ -216,6 +217,7 @@ forge build
         - `sizeDeltaUsd`
         - `initialCollateralDeltaAmount`
         - `decreasePositionSwapType`
+        - Default profit paid in long pos -> long token, short pos -> short token
       - [tx - Close long ETH 0.001 70x ~ $190 part 2](https://arbiscan.io/tx/0xf5f5d293ef7bdc6893941cda6a6fd57d67a20876a175aa1e424af9442868bb47)
   - Short (open / close / deposit / withdraw)
     - [tx - Short 0.01 ETH part 1](https://arbiscan.io/tx/0x15f4bb54997d8efbf0816313e64120fe5bf89ab31fe78f4a647f47b61b629eea)
