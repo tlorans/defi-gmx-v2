@@ -30,10 +30,8 @@ forge build
 
 - [ ] What is GMX?
   - Decentralized spot and perpetual exchange
-  - Speculate on the price of an underlying asset without owning the asset itself
   - Key features
     - 2 step transactions
-      - key
     - 0 price impact?
     - Dynamic funding rate?
     - Isolated pools
@@ -339,23 +337,7 @@ Explain utilities, acquistion methods, differences and staking processes.
 
 - TODO: application
 
-## Resources
-
-##### Arbitrum
-
-- [Arbitrum](https://arbitrum.io/)
-- [Arbitrum bridge](https://bridge.arbitrum.io/)
-- [Bridge DAI from ETH to Arbitrum One tx](https://etherscan.io/tx/0xb15ea04494164f2d1dd6a12222010c65f496190e69f6acd909d0b6c80fbf37cb)
-- [Deposit ETH into Arbitrum One tx](https://etherscan.io/tx/0x1752e3449694e4c3d516093294f39a2a3576198db7d3af3975704b0a339bf4b1)
-
-##### GMX
-
-- [GMX](https://gmx.io/)
-- [GMX GitHub](https://github.com/gmx-io/gmx-contracts)
-- [GMX Synthetics GitHub](https://github.com/gmx-io/gmx-synthetics)
-- [Unveiling GMX v2: A Game-Changer for DeFi Derivatives?](https://blog.rudy.capital/unveiling-gmx-v2-a-game-changer-for-defi-derivatives-5ff20f2ab731)
-
-##### Transactions
+### Transactions
 
 Market swaps
 
@@ -434,23 +416,11 @@ Stake
 - [Claim rewards](https://arbiscan.io/tx/0x23f1f338dc2456cf476692f34ea00838a1e621f8fd2aff330927edf256de8b1d)
 - [Delegate](https://arbiscan.io/tx/0x245404338a81a8faccddf6ad8e944928bac6b687db8d7e217e47fdde94abd84f)
 
-##### Perpetual
-
-- [What Are Binance Perpetual Futures Contracts ｜Explained for beginners](https://www.youtube.com/watch?v=H7Irc5jSk0A)
-- [What is a Perpetual Contract in Crypto?](https://www.youtube.com/watch?v=NAlXsnbcxIY)
-- [What Are Perpetual Contracts and How Funding Rates Work | dYdX Academy](https://www.youtube.com/watch?v=MMjR_LRhfK0)
-- [What Are Crypto Derivatives? (Perpetual, Futures Contract Explained)](https://www.youtube.com/watch?v=5vW7hX6k5ho)
-- [Bitcoin Derivatives: Perpetual Swaps 101](https://www.youtube.com/watch?v=wfx78LWd3PM)
-- [Short VS Long Squeeze: Trading Traps EXPLAINED](https://www.youtube.com/watch?v=2ZblGdw1y-s)
-- [dYdX - Perpetual Futures Example](https://www.youtube.com/watch?v=V3sKCP-4FJ4)
-- [Forwards and Futures Contracts](https://www.youtube.com/playlist?list=PLSXINdSn1dzXcrlZkoFHVfJzWEjInzoQe)
-- [GMX V2: A Guide for Traders and Liquidity Providers](https://www.youtube.com/watch?v=6PEn6iEuFGA)
-- [Perps Hackathon Workshop 2a - Mathematical Modeling for Perpetual Swap Exchanges](https://www.youtube.com/watch?v=YIGsc8X_LH8)
-- [Perps Hackathon Workshop 3a - risk management](https://www.youtube.com/watch?v=sKL8sgF3_co&list=PLFEm8se77ryMielAM_RuyMSQVrum9CN5S)
-- [The Cartoon Guide to Perps](https://www.paradigm.xyz/2021/03/the-cartoon-guide-to-perps)
-
 ### Links
 
+##### GMX
+
+- [GMX](https://gmx.io/)
 - [GMX app](https://app.gmx.io/)
 - [GMX doc](https://docs.gmx.io/docs/intro/)
 - [GMX GitHub synthetics](https://github.com/gmx-io/gmx-synthetics)
@@ -459,6 +429,13 @@ Stake
 - [Tenderly](https://tenderly.co)
 - [Chainlink providers](https://docs.chain.link/data-feeds/price-feeds/addresses?network=arbitrum&page=1)
 - [ABI ninja](https://abi.ninja)
+
+##### Arbitrum
+
+- [Arbitrum](https://arbitrum.io/)
+- [Arbitrum bridge](https://bridge.arbitrum.io/)
+- [Bridge DAI from ETH to Arbitrum One tx](https://etherscan.io/tx/0xb15ea04494164f2d1dd6a12222010c65f496190e69f6acd909d0b6c80fbf37cb)
+- [Deposit ETH into Arbitrum One tx](https://etherscan.io/tx/0x1752e3449694e4c3d516093294f39a2a3576198db7d3af3975704b0a339bf4b1)
 
 ##### TODO
 
