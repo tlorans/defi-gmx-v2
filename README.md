@@ -52,7 +52,7 @@ forge build
   - [Position size](./notes/terms/pos.png)
   - [Liquidation](./notes/terms/liquidation.png)
     - Collateral
-  - [Open interest](./notes/open_interest.png)
+  - [Open interest](./notes/terms/open_interest.png)
   - Funding rate
   - Market swap
   - Limit swap
