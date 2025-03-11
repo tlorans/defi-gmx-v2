@@ -42,7 +42,9 @@ ExecuteOrderUtils.executeOrder
             ├ processCollateral
             │   ├ PositionPricingUtils.getPositionFees
             │   │  └ MarketUtils.getBorrowingFees
+            │   ├ MarketUtils.applyDeltaToCollateralSum
             │   └ MarketUtils.applyDeltaToPoolAmount
+            ├ params.position.setCollateralAmount
             ├ MarketUtils.getCumulativeBorrowingFactor
             ├ PositionUtils.updateTotalBorrowing
             └ params.position.setBorrowingFactor
@@ -58,7 +60,9 @@ ExecuteOrderUtils.executeOrder
             │   └ MarketUtils.applyDeltaToPoolAmount
             ├ MarketUtils.getCumulativeBorrowingFactor
             ├ PositionUtils.updateTotalBorrowing
-            └ params.position.setBorrowingFactor
+            ├ params.position.setBorrowingFactor
+            ├ params.position.setCollateralAmount
+            └ MarketUtils.applyDeltaToCollateralSum
 ```
 
 > How is borrowing claimed by LP?
