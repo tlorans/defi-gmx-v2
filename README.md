@@ -46,11 +46,12 @@ forge build
     - Default profit paid in long pos -> long token, short pos -> short token
   - Fee distribution
 - [ ] Terminologies and examples
-  - Perpetual swap
-  - Long
-  - Short
-  - Leverage
+  - [Perpetual swap](./notes/terms/perp.png)
+    - Long
+    - Short
+  - [Leverage](./notes/terms/lev.png)
   - Liquidation
+    - Collateral
   - Markets (index, long, short)
     - Synthetic asset
     - Index
