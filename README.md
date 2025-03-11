@@ -37,6 +37,26 @@ forge build
     - 0 price impact?
     - Dynamic funding rate?
     - Isolated pools
+- [ ] Terminologies and examples
+  - [Perpetual swap](./notes/terms/perp.png)
+    - Long
+    - Short
+  - [Position size](./notes/terms/pos.png)
+  - [Leverage](./notes/terms/lev.png)
+  - Liquidation
+    - Collateral
+  - Markets (index, long, short)
+    - Index
+    - Long
+    - Short
+    - Synthetic asset
+    - Liquidity pools
+    - Both tokens are needed
+  - Funding rate
+  - [Open interest](./notes/open_interest.md)
+  - Market swap
+  - Limit swap
+  - Stop market
 - [ ] How the protocol works
   - Users (traders, LP (GM / GLV holders) and GMX holders, keepers)
   - Funding mechanism
@@ -45,24 +65,6 @@ forge build
   - Where does profit / loss come from?
     - Default profit paid in long pos -> long token, short pos -> short token
   - Fee distribution
-- [ ] Terminologies and examples
-  - [Perpetual swap](./notes/terms/perp.png)
-    - Long
-    - Short
-  - [Leverage](./notes/terms/lev.png)
-  - Liquidation
-    - Collateral
-  - Markets (index, long, short)
-    - Synthetic asset
-    - Index
-    - Long
-    - Short
-  - Liquidity pools
-  - Funding rate
-  - [Open interest](./notes/open_interest.md)
-  - Market swap
-  - Limit swap
-  - Stop market
 
 ### Contract architecture
 
@@ -78,6 +80,8 @@ forge build
 - even utils
 - market tokens
 - reader
+- oracle
+- keeper
 - wnt = wrapped native token
 - 2 step transcations
   - user -> create order
@@ -156,7 +160,7 @@ forge build
   - Long SOL, USDC collateral
   - Short SOL, USDC collateral
   - Short SOL, USDC collateral
-- How is leverage possible?
+- [Math - position size and pnl] TODO: `PositionUtils.getPositionPnlUsd`
 - [Math - profit and loss](./notes/position/pnl.md)
 - How is profit backed?
   > For example, if there is 1000 ETH and 1 million USDC in the pool and the max long open interest is limited to 900 ETH and the max short open interest is limited to be 900k USDC, then all profits can always be fully backed regardless of the price of ETH.
