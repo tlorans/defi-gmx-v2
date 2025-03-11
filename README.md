@@ -50,9 +50,9 @@ forge build
     - Both tokens are needed
   - [Liquidity provider](./notes/terms/lp.png)
   - [Position size](./notes/terms/pos.png)
-  - [Liquidation](./notes/terms/liquidation)
+  - [Liquidation](./notes/terms/liquidation.png)
     - Collateral
-  - [Open interest](./notes/open_interest.md)
+  - [Open interest](./notes/open_interest.png)
   - Funding rate
   - Market swap
   - Limit swap
