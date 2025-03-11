@@ -67,7 +67,8 @@ forge build
       - Long
         - 2 step tx
         - Leverage
-        - profit in long asset?
+        - profit in long asset
+        - swap pnl
         - Profit and collateral can be swapped
         - Pool fees
           - open interest
@@ -76,6 +77,7 @@ forge build
         - Fees
         - TP / SL
           - Auto cancel
+        - Deposit / withdraw collateral
       - Short
         - 2 step tx
         - profit in stablecoin?
@@ -136,7 +138,7 @@ forge build
 
 ### Contract architecture
 
-- [ ] How the protocol works
+- [ ] TODO: excalidraw - How the protocol works
   - Users (traders, LP (GM / GLV holders) and GMX holders, keepers)
   - Funding fees
   - Borrowing fees
@@ -144,7 +146,7 @@ forge build
   - Where does profit / loss come from?
     - Default profit paid in long pos -> long token, short pos -> short token
   - Fee distribution
-- [ ] Contract architecture
+- [ ] TODO: excalidraw - Contract architecture
   - data store
   - bank / vault
   - router
@@ -172,28 +174,31 @@ forge build
 
 #### Trading
 
-- [Math - profit and loss](./notes/position/pnl.md)
+- [Code - profit and loss](./notes/position/pnl.md)
 - [ ] Fees
-  - Execution fee
-    - UI
-  - [Price impact](./notes/price_impact.md)
-    - UI
-    - [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
-    - [Virtual inventory](./notes/virtual_inventory.md)
-  - [Swap](./notes/swap/swap_fees.md)
-    - UI
-    - Swap fee
+  - Common fees
+    - Execution fee
+      - UI and transcations
     - Price impact
+      - UI
+      - [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
+      - [Code - price impact](./notes/price_impact.md)
+      - [Code - virtual inventory](./notes/virtual_inventory.md)
+  - Swap
+    - UI
+      - Swap fee on amount in
+      - Price impact
+    - [Code](./notes/swap/swap_fees.md)
   - [Position](./notes/position/position_fees.md)
     - UI
     - [Deposit and withdrawal fees](./notes/swap/swap_fees.md)
     - Price impact
     - [Funding fees](./notes/position/funding_fee.md)
-      - Math
+      - TODO: excalidraw - Math
         - Cumulative funding fee factor
       - How updated / claimed
     - [Borrowing fees:](./notes/position/borrowing_fee.md)
-      - Math
+      - TODO: excalidraw - Math
         - Cumulative borrowing fee factor
       - Kink graph
       - How updated / claimed
@@ -263,8 +268,7 @@ forge build
 - [ ] UI
   - leverage + liquidation price
 - [ ] [When executed?](./notes/liquidation.md)
-  - Fees
-- [ ] Math - how much collateral?
+- Fees
 - [ ] [Math - liquidation price](./notes/liq_price_approx.png)
   - UI demo
 - [ ] [Contract calls](./notes/liquidation.md)
