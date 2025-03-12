@@ -27,6 +27,8 @@ PositionUtils.updateFundingAndBorrowingState
 
 `MarketUtils.getBorrowingFees`
 
+`MarketUtils.getNextBorrowingFees`
+
 `MarketUtils.getTotalPendingBorrowingFees`
 
 > How is borrowing fee updated for trader?
