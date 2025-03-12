@@ -197,10 +197,9 @@ forge build
       - [Math](./notes/position/borrowing_fee.png)
       - [How to updated borrowing fee](./notes/positions/borrowin_fee.md)
       - Kink graph
-    - [Funding fees](./notes/position/funding_fee.md)
-      - TODO: excalidraw - Math
-        - Cumulative funding fee factor
-      - How updated / claimed
+    - Funding fees
+      - [Math](./notes/positions/funding_fee.md)
+      - [How to update and claim](./notes/position/funding_fee.md)
 - [ ] Order types
   - Market swaps
   - Limit swaps
