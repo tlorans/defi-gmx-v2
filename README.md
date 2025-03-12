@@ -193,11 +193,10 @@ forge build
     - UI
     - [Deposit and withdrawal fees](./notes/swap/swap_fees.md)
     - Price impact
-    - [Borrowing fees:](./notes/position/borrowing_fee.md)
-      - TODO: excalidraw - Math
-        - Cumulative borrowing fee factor
+    - Borrowing fees
+      - [Math](./notes/position/borrowing_fee.png)
+      - [How to updated borrowing fee](./notes/positions/borrowin_fee.md)
       - Kink graph
-      - How updated / claimed
     - [Funding fees](./notes/position/funding_fee.md)
       - TODO: excalidraw - Math
         - Cumulative funding fee factor
