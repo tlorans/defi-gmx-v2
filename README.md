@@ -198,7 +198,7 @@ forge build
       - [How to updated borrowing fee](./notes/positions/borrowin_fee.md)
       - Kink graph
     - Funding fees
-      - [Math](./notes/positions/funding_fee.md)
+      - [Math](./notes/positions/funding_fee.png)
       - [How to update and claim](./notes/position/funding_fee.md)
 - [ ] Order types
   - Market swaps
