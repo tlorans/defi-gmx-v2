@@ -8,8 +8,7 @@ import "../src/Constants.sol";
 import {IRewardRouterV2} from "../src/interfaces/IRewardRouterV2.sol";
 import {IRewardTracker} from "../src/interfaces/IRewardTracker.sol";
 import {IGovToken} from "../src/interfaces/IGovToken.sol";
-// TODO: import from exercises
-import {Stake} from "../src/solutions/Stake.sol";
+import {Stake} from "@exercises/Stake.sol";
 
 contract StakeTest is Test {
     IERC20 constant gmx = IERC20(GMX);

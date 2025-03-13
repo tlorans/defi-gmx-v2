@@ -14,8 +14,7 @@ import {GlvDeposit} from "../src/types/GlvDeposit.sol";
 import {GlvWithdrawal} from "../src/types/GlvWithdrawal.sol";
 import "../src/Constants.sol";
 import {Role} from "../src/lib/Role.sol";
-// TODO: import from exercises
-import {GlvLiquidity} from "../src/solutions/GlvLiquidity.sol";
+import {GlvLiquidity} from "@exercises/GlvLiquidity.sol";
 
 contract GlvLiquidityTest is Test {
     IERC20 constant weth = IERC20(WETH);

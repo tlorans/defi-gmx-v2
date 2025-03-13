@@ -12,8 +12,7 @@ import {Position} from "../src/types/Position.sol";
 import "../src/Constants.sol";
 import {Role} from "../src/lib/Role.sol";
 import {Oracle} from "../src/lib/Oracle.sol";
-// TODO: import from exercises
-import {Long} from "../src/solutions/Long.sol";
+import {Long} from "@exercises/Long.sol";
 
 contract LongTest is Test {
     IERC20 constant weth = IERC20(WETH);

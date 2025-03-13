@@ -12,8 +12,7 @@ import {Deposit} from "../src/types/Deposit.sol";
 import {Withdrawal} from "../src/types/Withdrawal.sol";
 import "../src/Constants.sol";
 import {Role} from "../src/lib/Role.sol";
-// TODO: import from exercises
-import {MarketLiquidity} from "../src/solutions/MarketLiquidity.sol";
+import {MarketLiquidity} from "@exercises/MarketLiquidity.sol";
 
 contract MarketLiquidityTest is Test {
     IERC20 constant wbtc = IERC20(WBTC);

@@ -10,8 +10,7 @@ import {OracleUtils} from "../src/types/OracleUtils.sol";
 import {Order} from "../src/types/Order.sol";
 import "../src/Constants.sol";
 import {Role} from "../src/lib/Role.sol";
-// TODO: import from exercises
-import {Swap} from "../src/solutions/Swap.sol";
+import {Swap} from "@exercises/Swap.sol";
 
 contract SwapTest is Test {
     IERC20 constant weth = IERC20(WETH);

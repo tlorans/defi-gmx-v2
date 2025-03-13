@@ -5,8 +5,7 @@ import {Test, console} from "forge-std/Test.sol";
 import "./lib/TestHelper.sol";
 import {IERC20} from "../src/interfaces/IERC20.sol";
 import "../src/Constants.sol";
-// TODO: import from exercises
-import {ClaimFundingFees} from "../src/solutions/ClaimFundingFees.sol";
+import {ClaimFundingFees} from "@exercises/ClaimFundingFees.sol";
 
 contract ClaimFundingFeesTest is Test {
     IERC20 constant weth = IERC20(WETH);

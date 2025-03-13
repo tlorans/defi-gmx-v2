@@ -13,8 +13,7 @@ import {Position} from "../src/types/Position.sol";
 import "../src/Constants.sol";
 import {Role} from "../src/lib/Role.sol";
 import {Oracle} from "../src/lib/Oracle.sol";
-// TODO: import from exercises
-import {TakeProfitAndStopLoss} from "../src/solutions/TakeProfitAndStopLoss.sol";
+import {TakeProfitAndStopLoss} from "@exercises/TakeProfitAndStopLoss.sol";
 
 contract TakeProfitAndStopLossTest is Test {
     IERC20 constant weth = IERC20(WETH);
