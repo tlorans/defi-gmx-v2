@@ -6,51 +6,54 @@ import {IERC20} from "../interfaces/IERC20.sol";
 import {IExchangeRouter} from "../interfaces/IExchangeRouter.sol";
 import {IOrderHandler} from "../interfaces/IOrderHandler.sol";
 import {IReader} from "../interfaces/IReader.sol";
-import {IDataStore} from "../interfaces/IDataStore.sol";
 import {Order} from "../types/Order.sol";
+import {Position} from "../types/Position.sol";
 import {IBaseOrderUtils} from "../types/IBaseOrderUtils.sol";
 import "../Constants.sol";
 
-contract Swap {
+contract Limit {
     IERC20 constant weth = IERC20(WETH);
-    IERC20 constant dai = IERC20(DAI);
+    IERC20 constant usdc = IERC20(USDC);
     IExchangeRouter constant exchangeRouter = IExchangeRouter(EXCHANGE_ROUTER);
-    IDataStore constant dataStore = IDataStore(DATA_STORE);
     IReader constant reader = IReader(READER);
 
-    // Task 1 - Receive execution fee refund from GMX
+    // Receive execution fee refund from GMX
     receive() external payable {}
 
-    // Task 2 - Create order to swap WETH to DAI
-    function createOrder(uint256 wethAmount)
+    // Create limit order to swap USDC to WETH
+    function createLimitOrder(uint256 usdcAmount, uint256 maxEthPrice)
         external
         payable
         returns (bytes32 key)
     {
         uint256 executionFee = 0.1 * 1e18;
 
-        weth.transferFrom(msg.sender, address(this), wethAmount);
+        usdc.transferFrom(msg.sender, address(this), usdcAmount);
 
-        // Send gas fee to order vault
+        // Send gas fee
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee
         });
 
-        // Send WETH to order vault
-        weth.approve(ROUTER, wethAmount);
+        // Send token
+        usdc.approve(ROUTER, usdcAmount);
         exchangeRouter.sendTokens({
-            token: WETH,
+            token: USDC,
             receiver: ORDER_VAULT,
-            amount: wethAmount
+            amount: usdcAmount
         });
 
-        // Create order to swap WETH to DAI
-        address[] memory swapPath = new address[](2);
-        swapPath[0] = GM_TOKEN_ETH_WETH_USDC;
-        swapPath[1] = GM_TOKEN_SWAP_ONLY_USDC_DAI;
+        // Create order
+        // usdcAmount = 1e6
+        // maxEthPrice = 1e8
+        // ETH amount = 1e18
+        uint256 minOutputAmount = usdcAmount * 1e20 / maxEthPrice;
 
-        key = exchangeRouter.createOrder(
+        address[] memory swapPath = new address[](1);
+        swapPath[0] = GM_TOKEN_ETH_WETH_USDC;
+
+        return exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({
                 addresses: IBaseOrderUtils.CreateOrderParamsAddresses({
                     receiver: address(this),
@@ -58,7 +61,7 @@ contract Swap {
                     callbackContract: address(0),
                     uiFeeReceiver: address(0),
                     market: address(0),
-                    initialCollateralToken: WETH,
+                    initialCollateralToken: USDC,
                     swapPath: swapPath
                 }),
                 numbers: IBaseOrderUtils.CreateOrderParamsNumbers({
@@ -68,21 +71,16 @@ contract Swap {
                     acceptablePrice: 0,
                     executionFee: executionFee,
                     callbackGasLimit: 0,
-                    minOutputAmount: 1,
+                    minOutputAmount: minOutputAmount,
                     validFromTime: 0
                 }),
-                orderType: Order.OrderType.MarketSwap,
+                orderType: Order.OrderType.LimitSwap,
                 decreasePositionSwapType: Order.DecreasePositionSwapType.NoSwap,
                 isLong: false,
-                shouldUnwrapNativeToken: true,
+                shouldUnwrapNativeToken: false,
                 autoCancel: false,
                 referralCode: bytes32(uint256(0))
             })
         );
-    }
-
-    // Task 3 - Get order
-    function getOrder(bytes32 key) external view returns (Order.Props memory) {
-        return reader.getOrder(address(dataStore), key);
     }
 }
