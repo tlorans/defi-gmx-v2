@@ -23,6 +23,17 @@ PositionUtils.updateFundingAndBorrowingState
     └ incrementCumulativeBorrowingFactor
 ```
 
+`MarketUtils.getBorrowingFactorPerSecond`
+
+```
+if optimal usage factor = 0
+    e = borrowing exponent factor
+    r = reserve USD
+    P = pool USD
+    b = borrowing factor
+    r^e / P * b
+```
+
 `MarketUtils.getUsageFactor`
 
 ```
