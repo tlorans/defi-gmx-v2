@@ -81,6 +81,9 @@ contract SwapTest is Test {
             "order type"
         );
 
+        Order.Props memory o = swap.getOrder(key);
+        assertEq(o.addresses.receiver, address(swap), "get order receiver");
+
         // Execute order
         skip(1);
 

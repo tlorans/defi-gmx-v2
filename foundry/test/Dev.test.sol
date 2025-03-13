@@ -105,7 +105,9 @@ contract MarketDev is Base {
         bool isLong,
         uint256 divisor
     ) internal view returns (uint256) {
-        return dataStore.getUint(Keys.openInterestKey(market, collateralToken, isLong)) / divisor;
+        return dataStore.getUint(
+            Keys.openInterestKey(market, collateralToken, isLong)
+        ) / divisor;
     }
 
     function test_getOpenInterest() public {
@@ -124,8 +126,13 @@ contract MarketDev is Base {
         console.log("s %e", sl + ss);
     }
 
-    function getVirtualInventoryForSwaps(address market) internal view returns (bool, uint256, uint256) {
-        bytes32 virtualMarketId = dataStore.getBytes32(Keys.virtualMarketIdKey(market));
+    function getVirtualInventoryForSwaps(address market)
+        internal
+        view
+        returns (bool, uint256, uint256)
+    {
+        bytes32 virtualMarketId =
+            dataStore.getBytes32(Keys.virtualMarketIdKey(market));
         console.logBytes32(virtualMarketId);
         if (virtualMarketId == bytes32(0)) {
             return (false, 0, 0);
@@ -133,24 +140,40 @@ contract MarketDev is Base {
 
         return (
             true,
-            dataStore.getUint(Keys.virtualInventoryForSwapsKey(virtualMarketId, true)),
-            dataStore.getUint(Keys.virtualInventoryForSwapsKey(virtualMarketId, false))
+            dataStore.getUint(
+                Keys.virtualInventoryForSwapsKey(virtualMarketId, true)
+            ),
+            dataStore.getUint(
+                Keys.virtualInventoryForSwapsKey(virtualMarketId, false)
+            )
         );
     }
 
-    function getVirtualInventoryForPositions(address token) internal view returns (bool, int256) {
-        bytes32 virtualTokenId = dataStore.getBytes32(Keys.virtualTokenIdKey(token));
+    function getVirtualInventoryForPositions(address token)
+        internal
+        view
+        returns (bool, int256)
+    {
+        bytes32 virtualTokenId =
+            dataStore.getBytes32(Keys.virtualTokenIdKey(token));
         if (virtualTokenId == bytes32(0)) {
             return (false, 0);
         }
 
-        return (true, dataStore.getInt(Keys.virtualInventoryForPositionsKey(virtualTokenId)));
+        return (
+            true,
+            dataStore.getInt(
+                Keys.virtualInventoryForPositionsKey(virtualTokenId)
+            )
+        );
     }
 
     function test_getVirtualInv() public {
         {
-            (, uint256 l1, uint256 s1) = getVirtualInventoryForSwaps(GM_TOKEN_ETH_WETH_USDC);
-            (, uint256 l2, uint256 s2) = getVirtualInventoryForSwaps(GM_TOKEN_AAVE_WETH_USDC);
+            (, uint256 l1, uint256 s1) =
+                getVirtualInventoryForSwaps(GM_TOKEN_ETH_WETH_USDC);
+            (, uint256 l2, uint256 s2) =
+                getVirtualInventoryForSwaps(GM_TOKEN_AAVE_WETH_USDC);
 
             console.log("s1 %e", s1);
             console.log("s2 %e", s2);
