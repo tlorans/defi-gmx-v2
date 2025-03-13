@@ -26,7 +26,7 @@ forge build
 - [ ] UI - Quick guide on how to bridge ETH?
   - [ ] Transactions
 
-### Protocol
+### Foundation
 
 - [ ] What is GMX?
   - Decentralized spot and perpetual exchange
@@ -35,7 +35,7 @@ forge build
     - 0 price impact?
     - Dynamic funding rate?
     - Isolated pools
-- [ ] Terminologies and examples
+- [x] Terminologies and examples
   - [Perpetual swap](./notes/terms/perp.png)
     - Long
     - Short
@@ -172,7 +172,7 @@ forge build
   - multicall
   - execution fee
 
-#### Trading
+### Trading
 
 - [Code - profit and loss](./notes/position/pnl.md)
 - [ ] Fees
@@ -261,7 +261,7 @@ forge build
   - SL
   - Claim funding fees
 
-#### Liquidation
+### Liquidation
 
 - [ ] UI
   - leverage + liquidation price
@@ -273,7 +273,7 @@ forge build
 - [x] Foundry exercises? -> Not public function -> no exercise
 - [ ] ADL
 
-#### Liquidity
+### Liquidity
 
 - [ ] GM
   - [Token price](./notes/gm_liquidity/market_token_price.md)
@@ -331,13 +331,13 @@ Explain utilities, acquistion methods, differences and staking processes.
 - [ ] GLP (V1)
   - Quick explanation
 
-### Footnote
-
-- 63 / 64 gas
-
 ### Application
 
 - TODO: application
+
+### Footnote
+
+- 63 / 64 gas
 
 ### Transactions
 
