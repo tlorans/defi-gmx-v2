@@ -23,6 +23,29 @@ PositionUtils.updateFundingAndBorrowingState
     └ incrementCumulativeBorrowingFactor
 ```
 
+`MarketUtils.getUsageFactor`
+
+```
+usage factor = max(reserve usage factor, open interest usage factor)
+reserve usage factor = reserve usage / max reserve
+max reserve = reserve factor * pool usd
+open interest usage factor = open interest / max open interest
+```
+
+`MarketUtils.getKinkBorrowingFactor`
+
+```
+u = usage factor
+u_o = optimal usage factor
+b0 = base borrowing factor
+b1 = above optimal usage borrowing factor
+
+kink borrowing factor per second = b0 * u
+
+if u > u_o
+    kink borrowing factor per second += max(b1 - b0, 0) * (u - u_o) / (1 - u_o)
+```
+
 > How is borrowing fee calculated for trader?
 
 `MarketUtils.getBorrowingFees`

@@ -195,8 +195,8 @@ forge build
     - Price impact
     - Borrowing fees
       - [Math](./notes/position/borrowing_fee.png)
-      - [How to updated borrowing fee](./notes/positions/borrowin_fee.md)
-      - Kink graph
+      - [How to updated borrowing fee](./notes/positions/borrowing_fee.md)
+      - [Kink graph](https://www.desmos.com/calculator/9khv07nrfb)
     - Funding fees
       - [Math](./notes/positions/funding_fee.png)
       - [How to update and claim](./notes/position/funding_fee.md)

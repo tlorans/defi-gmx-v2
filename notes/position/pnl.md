@@ -11,5 +11,5 @@ Long
 (position.sizeInTokens * indexTokenPrice) - position.sizeInUsd
 
 Short
-position.sizeInUsd -  (position.sizeInTokens * indexTokenPrice)
+position.sizeInUsd - (position.sizeInTokens * indexTokenPrice)
 ```
