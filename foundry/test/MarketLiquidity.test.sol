@@ -12,6 +12,7 @@ import {Deposit} from "../src/types/Deposit.sol";
 import {Withdrawal} from "../src/types/Withdrawal.sol";
 import "../src/Constants.sol";
 import {Role} from "../src/lib/Role.sol";
+import {Oracle} from "../src/lib/Oracle.sol";
 import {MarketLiquidity} from "@exercises/MarketLiquidity.sol";
 
 contract MarketLiquidityTest is Test {
@@ -24,6 +25,7 @@ contract MarketLiquidityTest is Test {
     IReader constant reader = IReader(READER);
 
     TestHelper testHelper;
+    Oracle oracle;
     MarketLiquidity marketLiquidity;
     address keeper;
 
@@ -36,8 +38,9 @@ contract MarketLiquidityTest is Test {
     function setUp() public {
         testHelper = new TestHelper();
         keeper = testHelper.getRoleMember(Role.ORDER_KEEPER);
+        oracle = new Oracle();
 
-        marketLiquidity = new MarketLiquidity();
+        marketLiquidity = new MarketLiquidity(address(oracle));
         deal(USDC, address(this), 1000 * 1e6);
 
         tokens = new address[](3);
@@ -56,7 +59,7 @@ contract MarketLiquidityTest is Test {
         oracles = new TestHelper.OracleParams[](3);
         oracles[0] = TestHelper.OracleParams({
             chainlink: CHAINLINK_BTC_USD,
-            // Same as WBTC
+            // Same as WBTC decimals
             multiplier: 1e8,
             deltaPrice: 0
         });
@@ -73,6 +76,9 @@ contract MarketLiquidityTest is Test {
     }
 
     function testMarketLiquidity() public {
+        uint256 marketTokenPrice = marketLiquidity.getMarketTokenPrice();
+        assertGt(marketTokenPrice, 0, "market token price = 0");
+
         uint256 executionFee = 0.1 * 1e18;
         uint256 usdcAmount = 1000 * 1e6;
         usdc.approve(address(marketLiquidity), usdcAmount);

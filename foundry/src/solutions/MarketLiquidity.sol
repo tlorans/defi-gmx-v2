@@ -8,10 +8,12 @@ import {IDataStore} from "../interfaces/IDataStore.sol";
 import {IReader} from "../interfaces/IReader.sol";
 import {Order} from "../types/Order.sol";
 import {Market} from "../types/Market.sol";
+import {MarketPoolValueInfo} from "../types/MarketPoolValueInfo.sol";
 import {Price} from "../types/Price.sol";
 import {DepositUtils} from "../types/DepositUtils.sol";
 import {WithdrawalUtils} from "../types/WithdrawalUtils.sol";
 import {Keys} from "../lib/Keys.sol";
+import {Oracle} from "../lib/Oracle.sol";
 import "../Constants.sol";
 
 contract MarketLiquidity {
@@ -22,59 +24,46 @@ contract MarketLiquidity {
     IDataStore constant dataStore = IDataStore(DATA_STORE);
     IReader constant reader = IReader(READER);
 
+    Oracle immutable oracle;
+
+    constructor(address _oracle) {
+        oracle = Oracle(_oracle);
+    }
+
     // Task 1 - Receive execution fee refund from GMX
     receive() external payable {}
 
-    /*
-    function getMarketTokenPrice(
-        DataStore dataStore,
-        Market.Props memory market,
-        Price.Props memory indexTokenPrice,
-        Price.Props memory longTokenPrice,
-        Price.Props memory shortTokenPrice,
-        bytes32 pnlFactorType,
-        bool maximize
-    ) external view returns (int256, MarketPoolValueInfo.Props memory) {
-        return
-            MarketUtils.getMarketTokenPrice(
-                dataStore,
-                market,
-                indexTokenPrice,
-                longTokenPrice,
-                shortTokenPrice,
-                pnlFactorType,
-                maximize
-            );
-    }
-    */
-
+    // Task 2 - Get market token price
     function getMarketTokenPrice() public view returns (uint256) {
-        uint256 ethPrice = 2000 * 1e8;
+        uint256 btcPrice = oracle.getPrice(CHAINLINK_BTC_USD);
 
-        reader.getMarketTokenPrice({
+        (int256 price, MarketPoolValueInfo.Props memory info) = reader.getMarketTokenPrice({
             dataStore: address(dataStore),
             market: Market.Props({
-                marketToken: GM_TOKEN_ETH_WETH_USDC,
-                indexToken: WETH,
-                longToken: WETH,
+                marketToken: GM_TOKEN_BTC_WBTC_USDC,
+                indexToken: GMX_BTC_WBTC_USDC_INDEX,
+                longToken: WBTC,
                 shortToken: USDC
             }),
             indexTokenPrice: Price.Props({
-                min: ethPrice * 1e30 / (1e8 * 1e18) * 99 / 100,
-                max: ethPrice * 1e30 / (1e8 * 1e18) * 101 / 100
+                min: btcPrice * 1e30 / (1e8 * 1e8) * 99 / 100,
+                max: btcPrice * 1e30 / (1e8 * 1e8) * 101 / 100
             }),
             longTokenPrice: Price.Props({
-                min: ethPrice * 1e30 / (1e8 * 1e18) * 99 / 100,
-                max: ethPrice * 1e30 / (1e8 * 1e18) * 101 / 100
+                min: btcPrice * 1e30 / (1e8 * 1e8) * 99 / 100,
+                max: btcPrice * 1e30 / (1e8 * 1e8) * 101 / 100
             }),
             shortTokenPrice: Price.Props({
                 min: 1 * 1e30 / 1e6 * 99 / 100,
                 max: 1 * 1e30 / 1e6 * 101 / 100
             }),
             pnlFactorType: Keys.MAX_PNL_FACTOR_FOR_DEPOSITS,
-            maximize: false
+            maximize: true
         });
 
+        require(price >= 0, "price < 0");
+
+        return uint256(price);
     }
 
     // Task 2 - Create order to deposit USDC into GM_TOKEN_BTC_WBTC_USDC
@@ -101,6 +90,9 @@ contract MarketLiquidity {
         });
 
         // Create order to deposit USDC into GM_TOKEN_BTC_WBTC_USDC
+        uint256 marketTokenPrice = getMarketTokenPrice();
+        uint256 minMarketTokens = usdcAmount * 1e24 * 1e18 / marketTokenPrice;
+
         return exchangeRouter.createDeposit(
             DepositUtils.CreateDepositParams({
                 receiver: address(this),
@@ -111,9 +103,7 @@ contract MarketLiquidity {
                 initialShortToken: USDC,
                 longTokenSwapPath: new address[](0),
                 shortTokenSwapPath: new address[](0),
-                // TODO: how to calculate?
-                // minMarketTokens: 4158804842790729588,
-                minMarketTokens: 1,
+                minMarketTokens: minMarketTokens,
                 shouldUnwrapNativeToken: false,
                 executionFee: executionFee,
                 callbackGasLimit: 0
@@ -141,17 +131,14 @@ contract MarketLiquidity {
         });
 
         // Create order
-        address[] memory longTokenSwapPath = new address[](0);
-        address[] memory shortTokenSwapPath = new address[](0);
-
         return exchangeRouter.createWithdrawal(
             WithdrawalUtils.CreateWithdrawalParams({
                 receiver: address(this),
                 callbackContract: address(0),
                 uiFeeReceiver: address(0),
                 market: GM_TOKEN_BTC_WBTC_USDC,
-                longTokenSwapPath: longTokenSwapPath,
-                shortTokenSwapPath: shortTokenSwapPath,
+                longTokenSwapPath: new address[](0),
+                shortTokenSwapPath: new address[](0),
                 // TODO: how to calculate this
                 minLongTokenAmount: 1,
                 // TODO: how to calculate this
