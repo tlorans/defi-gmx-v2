@@ -2,6 +2,8 @@
 pragma solidity 0.8.26;
 
 interface IDataStore {
+    function incrementUint(bytes32 key, uint256 value) external returns (uint256);
+
     function getUint(bytes32 key) external view returns (uint256);
     function getInt(bytes32 key) external view returns (int256);
     function getAddress(bytes32 key) external view returns (address);
