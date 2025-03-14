@@ -23,6 +23,7 @@ forge build
 - [ ] Project setup
   - transaction links
   - exercises
+    - types and library functions copied from gmx code
 - [ ] UI - Quick guide on how to bridge ETH?
   - [ ] Transactions
 
