@@ -13,6 +13,8 @@ import {IGlvReader} from "../src/interfaces/IGlvReader.sol";
 import "../src/Constants.sol";
 import {Price} from "../src/types/Price.sol";
 import {Market} from "../src/types/Market.sol";
+import {MarketUtils} from "../src/types/MarketUtils.sol";
+import {Price} from "../src/types/Price.sol";
 import {Glv} from "../src/types/Glv.sol";
 import {MarketPoolValueInfo} from "../src/types/MarketPoolValueInfo.sol";
 import {Keys} from "../src/lib/Keys.sol";
@@ -23,6 +25,44 @@ contract Base is Test {
     IReader internal constant reader = IReader(READER);
     IGlvReader internal constant glvReader = IGlvReader(GLV_READER);
     IDataStore internal constant dataStore = IDataStore(DATA_STORE);
+}
+
+contract PositionDev is Base {
+    function test_pnl() public {
+        MarketUtils.MarketPrices memory prices = MarketUtils.MarketPrices({
+            indexTokenPrice: Price.Props({
+                min: 2000 * 1e30 / 1e18 * 99 / 100 ,
+                max: 2000 * 1e30 / 1e18 * 101 / 100 ,
+            }),
+            longTokenPrice: Price.Props({
+                min: 2000 * 1e30 / 1e18 * 99 / 100 ,
+                max: 2000 * 1e30 / 1e18 * 101 / 100 ,
+            });
+            shortTokenPrice: Price.Props({
+                min: 1 * 1e30 / 1e6 * 99 / 100 ,
+                max: 1 * 1e30 / 1e6 * 101 / 100 ,
+            });
+        });
+
+        (int256 pnl, int256 uncappedPnl, uint256 sizeDeltaInTokens) = reader.getPositionPnlUsd({
+            dataStore: address(dataStore),
+            market: Market({
+                marketToken: GM_TOKEN_ETH_WETH_USDC,
+                indexToken: WETH,
+                longToken: WETH,
+                shortToken: USDC
+            }),
+            prices: prices,
+            positionKey: "",
+            sizeDeltaUsd: 0
+        });
+
+        console.log("pnl %e", pnl);
+        console.log("uncapped pnl %e", uncappedPnl);
+        console.log("size delta in tokens %e", sizeDeltaInTokens);
+
+
+    }
 }
 
 /*
@@ -50,6 +90,7 @@ contract GlvDev is Base {
 }
 */
 
+/*
 contract MarketDev is Base {
     MarketHelper marketHelper = new MarketHelper();
 
@@ -182,7 +223,6 @@ contract MarketDev is Base {
         }
     }
 
-    /*
     function logMarket(
         address market,
         address index,
@@ -235,8 +275,8 @@ contract MarketDev is Base {
             console.log("key", i, keys[i]);
         }
     }
-    */
 }
+*/
 
 /*
 contract OracleDev is Base {

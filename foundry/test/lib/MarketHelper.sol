@@ -34,7 +34,7 @@ contract MarketHelper {
         info[token] = Info(name, oracle, decimals);
     }
 
-    function getPriceFeed(address token) internal returns (address) {
+    function getPriceFeed(address token) internal view returns (address) {
         return dataStore.getAddress(Keys.priceFeedKey(token));
     }
 
@@ -110,7 +110,7 @@ contract MarketHelper {
         set("GMX_ADA_WBTC_USDC_INDEX", GMX_ADA_WBTC_USDC_INDEX, 6);
     }
 
-    function get(address token) external returns (Info memory) {
+    function get(address token) external view returns (Info memory) {
         return info[token];
     }
 
