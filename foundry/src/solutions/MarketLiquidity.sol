@@ -4,13 +4,10 @@ pragma solidity 0.8.26;
 import {console} from "forge-std/Test.sol";
 import {IERC20} from "../interfaces/IERC20.sol";
 import {IExchangeRouter} from "../interfaces/IExchangeRouter.sol";
-import {IOrderHandler} from "../interfaces/IOrderHandler.sol";
 import {IReader} from "../interfaces/IReader.sol";
 import {Order} from "../types/Order.sol";
-import {Position} from "../types/Position.sol";
 import {DepositUtils} from "../types/DepositUtils.sol";
 import {WithdrawalUtils} from "../types/WithdrawalUtils.sol";
-import {Oracle} from "../lib/Oracle.sol";
 import "../Constants.sol";
 
 contract MarketLiquidity {
@@ -23,14 +20,13 @@ contract MarketLiquidity {
     // Receive execution fee refund from GMX
     receive() external payable {}
 
-    // Create order to short WETH with USDC collateral
+    // Create order to deposit USDC into GM_TOKEN_BTC_WBTC_USDC
     function createDeposit(uint256 usdcAmount)
         external
         payable
         returns (bytes32 key)
     {
         uint256 executionFee = 0.1 * 1e18;
-
         usdc.transferFrom(msg.sender, address(this), usdcAmount);
 
         // Send gas fee

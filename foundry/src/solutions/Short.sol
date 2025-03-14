@@ -4,7 +4,6 @@ pragma solidity 0.8.26;
 import {console} from "forge-std/Test.sol";
 import {IERC20} from "../interfaces/IERC20.sol";
 import {IExchangeRouter} from "../interfaces/IExchangeRouter.sol";
-import {IOrderHandler} from "../interfaces/IOrderHandler.sol";
 import {IDataStore} from "../interfaces/IDataStore.sol";
 import {IReader} from "../interfaces/IReader.sol";
 import {Order} from "../types/Order.sol";
@@ -35,7 +34,6 @@ contract Short {
         returns (bytes32 key)
     {
         uint256 executionFee = 0.1 * 1e18;
-
         usdc.transferFrom(msg.sender, address(this), usdcAmount);
 
         // Send gas fee to order vault

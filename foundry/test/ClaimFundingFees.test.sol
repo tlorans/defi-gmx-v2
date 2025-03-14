@@ -23,20 +23,26 @@ contract ClaimFundingFeesTest is Test {
 
         vm.prank(EXCHANGE_ROUTER);
         dataStore.incrementUint(
-            Keys.claimableFundingAmountKey(GM_TOKEN_ETH_WETH_USDC, USDC, address(claimFundingFees)),
+            Keys.claimableFundingAmountKey(
+                GM_TOKEN_ETH_WETH_USDC, USDC, address(claimFundingFees)
+            ),
             1e6
         );
 
         vm.prank(EXCHANGE_ROUTER);
         dataStore.incrementUint(
-            Keys.claimableFundingAmountKey(GM_TOKEN_ETH_WETH_USDC, WETH, address(claimFundingFees)),
+            Keys.claimableFundingAmountKey(
+                GM_TOKEN_ETH_WETH_USDC, WETH, address(claimFundingFees)
+            ),
             2e18
         );
     }
 
     function testClaimFundingFees() public {
-        uint256 usdcFundingFees = claimFundingFees.getClaimableAmount(GM_TOKEN_ETH_WETH_USDC, USDC);
-        uint256 wethFundingFees = claimFundingFees.getClaimableAmount(GM_TOKEN_ETH_WETH_USDC, WETH);
+        uint256 usdcFundingFees =
+            claimFundingFees.getClaimableAmount(GM_TOKEN_ETH_WETH_USDC, USDC);
+        uint256 wethFundingFees =
+            claimFundingFees.getClaimableAmount(GM_TOKEN_ETH_WETH_USDC, WETH);
 
         console.log("USDC %e", usdcFundingFees);
         console.log("WETH %e", wethFundingFees);

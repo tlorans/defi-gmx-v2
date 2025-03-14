@@ -33,7 +33,6 @@ contract Short {
         returns (bytes32 key)
     {
         uint256 executionFee = 0.1 * 1e18;
-
         usdc.transferFrom(msg.sender, address(this), usdcAmount);
 
         // Send gas fee to order vault

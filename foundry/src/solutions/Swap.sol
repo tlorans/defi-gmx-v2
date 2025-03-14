@@ -27,7 +27,6 @@ contract Swap {
         returns (bytes32 key)
     {
         uint256 executionFee = 0.1 * 1e18;
-
         weth.transferFrom(msg.sender, address(this), wethAmount);
 
         // Send execution fee to order vault

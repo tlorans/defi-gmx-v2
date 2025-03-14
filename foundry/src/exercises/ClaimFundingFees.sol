@@ -13,10 +13,12 @@ contract ClaimFundingFees {
     IExchangeRouter constant exchangeRouter = IExchangeRouter(EXCHANGE_ROUTER);
 
     // Task 1 - Get claimable funding fee
-    function getClaimableAmount(address market, address token) external view returns (uint256) {
-    }
+    function getClaimableAmount(address market, address token)
+        external
+        view
+        returns (uint256)
+    {}
 
     // Task 2 - Claim funding fees
-    function claimFundingFees() external {
-    }
+    function claimFundingFees() external {}
 }
