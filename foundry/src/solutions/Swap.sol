@@ -31,7 +31,7 @@ contract Swap {
 
         weth.transferFrom(msg.sender, address(this), wethAmount);
 
-        // Send gas fee to order vault
+        // Send execution fee to order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee

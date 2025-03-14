@@ -30,7 +30,7 @@ contract Swap {
 
         weth.transferFrom(msg.sender, address(this), wethAmount);
 
-        // Send gas fee to order vault
+        // Send execution fee to order vault
         // Send WETH to order vault
         // Create order to swap WETH to DAI
     }

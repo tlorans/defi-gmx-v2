@@ -65,10 +65,11 @@ contract LongTest is Test {
     function testLong() public {
         uint256 executionFee = 1e18;
         uint256 wethAmount = 1e18;
+        uint256 leverage = 10;
         weth.approve(address(long), wethAmount);
 
         bytes32 longOrderKey =
-            long.createLongOrder{value: executionFee}(wethAmount);
+            long.createLongOrder{value: executionFee}(leverage, wethAmount);
 
         Order.Props memory longOrder = reader.getOrder(DATA_STORE, longOrderKey);
         assertEq(longOrder.addresses.receiver, address(long), "order receiver");

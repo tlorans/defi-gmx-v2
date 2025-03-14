@@ -5,6 +5,7 @@ import {console} from "forge-std/Test.sol";
 import {IERC20} from "../interfaces/IERC20.sol";
 import {IExchangeRouter} from "../interfaces/IExchangeRouter.sol";
 import {IOrderHandler} from "../interfaces/IOrderHandler.sol";
+import {IDataStore} from "../interfaces/IDataStore.sol";
 import {IReader} from "../interfaces/IReader.sol";
 import {Order} from "../types/Order.sol";
 import {Position} from "../types/Position.sol";
@@ -16,6 +17,7 @@ contract Long {
     IERC20 constant weth = IERC20(WETH);
     IERC20 constant usdc = IERC20(USDC);
     IExchangeRouter constant exchangeRouter = IExchangeRouter(EXCHANGE_ROUTER);
+    IDataStore constant dataStore = IDataStore(DATA_STORE);
     IReader constant reader = IReader(READER);
     Oracle immutable oracle;
 
@@ -23,11 +25,11 @@ contract Long {
         oracle = Oracle(_oracle);
     }
 
-    // Receive execution fee refund from GMX
+    // Task 1 - Receive execution fee refund from GMX
     receive() external payable {}
 
-    // Create order to long WETH with WETH collateral
-    function createLongOrder(uint256 wethAmount)
+    // Task 2 - Create order to long WETH with WETH collateral
+    function createLongOrder(uint256 leverage, uint256 wethAmount)
         external
         payable
         returns (bytes32 key)
@@ -36,23 +38,13 @@ contract Long {
 
         weth.transferFrom(msg.sender, address(this), wethAmount);
 
-        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
-        // TODO: how to calculate sizeDeltaUsd
-        // 1 USD = 1e30
-        uint256 sizeDeltaUsd = 10 * wethAmount * ethPrice * 1e4;
-        // NOTE:
-        // increase order:
-        // - long: executionPrice should be smaller than acceptablePrice
-        // - short: executionPrice should be larger than acceptablePrice
-        uint256 acceptablePrice = ethPrice * 1e4 * 101 / 100;
-
-        // Send gas fee
+        // Send execution fee to order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee
         });
 
-        // Send token
+        // Send WETH to order vault
         weth.approve(ROUTER, wethAmount);
         exchangeRouter.sendTokens({
             token: WETH,
@@ -61,7 +53,18 @@ contract Long {
         });
 
         // Create order
-        // NOTE: Add GM_TOKEN_ETH_WETH_USDC to swapPath to swap collateral from WETH to USDC
+        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
+        // 1 USD = 1e30
+        // WETH = 18 decimal
+        // ETH price = 8 decimals
+        // 18 + 8 + 4 = 30
+        uint256 sizeDeltaUsd = leverage * wethAmount * ethPrice * 1e4;
+        // NOTE:
+        // increase order:
+        // - long: executionPrice should be smaller than acceptablePrice
+        // - short: executionPrice should be larger than acceptablePrice
+        uint256 acceptablePrice = ethPrice * 1e4 * 101 / 100;
+
         address[] memory swapPath = new address[](0);
 
         return exchangeRouter.createOrder(
@@ -95,12 +98,41 @@ contract Long {
         );
     }
 
+    // Task 3 - Get position key
+    function getPositionKey() public view returns (bytes32 key) {
+        return Position.getPositionKey({
+            account: address(this),
+            market: GM_TOKEN_ETH_WETH_USDC,
+            collateralToken: WETH,
+            isLong: true
+        });
+    }
+
+    // Task 4 - Get position
+    function getPosition(bytes32 key)
+        public
+        view
+        returns (Position.Props memory)
+    {
+        return reader.getPosition(address(dataStore), key);
+    }
+
+    // TODO: how to get current pnl?
+
+    // Task ? - Create order to close a long position
     function createCloseOrder() external payable returns (bytes32 key) {
         uint256 executionFee = 0.1 * 1e18;
 
         Position.Props memory position = getPosition(getPositionKey());
         require(position.numbers.sizeInUsd > 0, "position size = 0");
 
+        // Send execution fee to order vault
+        exchangeRouter.sendWnt{value: executionFee}({
+            receiver: ORDER_VAULT,
+            amount: executionFee
+        });
+
+        // Create order
         // NOTE:
         // decrease order:
         // - long: executionPrice should be larger than acceptablePrice
@@ -108,13 +140,6 @@ contract Long {
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD) * 1e4;
         uint256 acceptablePrice = ethPrice * 99 / 100;
 
-        // Send gas fee
-        exchangeRouter.sendWnt{value: executionFee}({
-            receiver: ORDER_VAULT,
-            amount: executionFee
-        });
-
-        // Create order
         return exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({
                 addresses: IBaseOrderUtils.CreateOrderParamsAddresses({
@@ -144,23 +169,5 @@ contract Long {
                 referralCode: bytes32(uint256(0))
             })
         );
-    }
-
-    function getPositionKey() public view returns (bytes32 key) {
-        return Position.getPositionKey({
-            account: address(this),
-            market: GM_TOKEN_ETH_WETH_USDC,
-            collateralToken: WETH,
-            isLong: true
-        });
-    }
-
-    // TODO: how to get current pnl?
-    function getPosition(bytes32 key)
-        public
-        view
-        returns (Position.Props memory)
-    {
-        return reader.getPosition(DATA_STORE, key);
     }
 }

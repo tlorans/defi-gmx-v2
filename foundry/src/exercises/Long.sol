@@ -27,7 +27,7 @@ contract Long {
     receive() external payable {}
 
     // Create order to long WETH with WETH collateral
-    function createLongOrder(uint256 wethAmount)
+    function createLongOrder(uint256, uint256 wethAmount)
         external
         payable
         returns (bytes32 key)
