@@ -17,10 +17,10 @@ contract MarketLiquidity {
     IExchangeRouter constant exchangeRouter = IExchangeRouter(EXCHANGE_ROUTER);
     IReader constant reader = IReader(READER);
 
-    // Receive execution fee refund from GMX
+    // Task 1 - Receive execution fee refund from GMX
     receive() external payable {}
 
-    // Create order to deposit USDC into GM_TOKEN_BTC_WBTC_USDC
+    // Task 2 - Create order to deposit USDC into GM_TOKEN_BTC_WBTC_USDC
     function createDeposit(uint256 usdcAmount)
         external
         payable
@@ -29,14 +29,13 @@ contract MarketLiquidity {
         uint256 executionFee = 0.1 * 1e18;
         usdc.transferFrom(msg.sender, address(this), usdcAmount);
 
-        // Send gas fee
+        // Send gas fee to deposit vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: DEPOSIT_VAULT,
             amount: executionFee
         });
 
-        // TODO: double sided liquidity?
-        // Send token
+        // Send USDC to deposit vault
         usdc.approve(ROUTER, usdcAmount);
         exchangeRouter.sendTokens({
             token: USDC,
@@ -44,10 +43,7 @@ contract MarketLiquidity {
             amount: usdcAmount
         });
 
-        // Create order
-        address[] memory longTokenSwapPath = new address[](0);
-        address[] memory shortTokenSwapPath = new address[](0);
-
+        // Create order to deposit USDC into GM_TOKEN_BTC_WBTC_USDC
         return exchangeRouter.createDeposit(
             DepositUtils.CreateDepositParams({
                 receiver: address(this),
@@ -56,8 +52,8 @@ contract MarketLiquidity {
                 market: GM_TOKEN_BTC_WBTC_USDC,
                 initialLongToken: WBTC,
                 initialShortToken: USDC,
-                longTokenSwapPath: longTokenSwapPath,
-                shortTokenSwapPath: shortTokenSwapPath,
+                longTokenSwapPath: new address[](0),
+                shortTokenSwapPath: new address[](0),
                 // TODO: how to calculate?
                 // minMarketTokens: 4158804842790729588,
                 minMarketTokens: 1,

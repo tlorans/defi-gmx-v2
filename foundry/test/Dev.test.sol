@@ -27,6 +27,19 @@ contract Base is Test {
     IDataStore internal constant dataStore = IDataStore(DATA_STORE);
 }
 
+contract Key is Base {
+    function getMaxPnlFactor(bytes32 pnlFactorType, address market, bool isLong) internal view returns (uint256) {
+        return dataStore.getUint(Keys.maxPnlFactorKey(pnlFactorType, market, isLong));
+    }
+
+    function test() public {
+        bytes32 pnlFactorType = Keys.MAX_PNL_FACTOR_FOR_DEPOSITS;
+        uint256 f = getMaxPnlFactor(pnlFactorType, GM_TOKEN_BTC_WBTC_USDC, true);
+        console.log("f %e", f);
+    }
+}
+
+
 /*
 contract GlvDev is Base {
     function test() public {
