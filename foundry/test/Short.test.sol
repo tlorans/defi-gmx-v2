@@ -65,10 +65,11 @@ contract ShortTest is Test {
     function testShort() public {
         uint256 executionFee = 1e18;
         uint256 usdcAmount = 100 * 1e6;
+        uint256 leverage = 10;
         usdc.approve(address(short), usdcAmount);
 
         bytes32 shortOrderKey =
-            short.createShortOrder{value: executionFee}(usdcAmount);
+            short.createShortOrder{value: executionFee}(leverage, usdcAmount);
 
         Order.Props memory shortOrder =
             reader.getOrder(DATA_STORE, shortOrderKey);

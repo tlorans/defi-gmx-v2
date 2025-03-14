@@ -18,7 +18,7 @@ contract Limit {
 
     // Task 1 - Receive execution fee refund from GMX
 
-    // Task 2 - Create limit order to swap USDC to WETH
+    // Task 2 - Create a limit order to swap USDC to WETH
     function createLimitOrder(uint256 usdcAmount, uint256 maxEthPrice)
         external
         payable

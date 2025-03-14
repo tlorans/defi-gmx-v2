@@ -23,11 +23,11 @@ contract Short {
         oracle = Oracle(_oracle);
     }
 
-    // Receive execution fee refund from GMX
+    // Task 1 - Receive execution fee refund from GMX
     receive() external payable {}
 
-    // Create order to short WETH with USDC collateral
-    function createShortOrder(uint256 usdcAmount)
+    // Task 2 - Create order to short ETH with USDC collateral
+    function createShortOrder(uint256 leverage, uint256 usdcAmount)
         external
         payable
         returns (bytes32 key)
@@ -37,9 +37,8 @@ contract Short {
         usdc.transferFrom(msg.sender, address(this), usdcAmount);
 
         uint256 usdcPrice = oracle.getPrice(CHAINLINK_USDC_USD);
-        // TODO: how to calculate sizeDeltaUsd
         // 1 USD = 1e30
-        uint256 sizeDeltaUsd = 10 * usdcAmount * usdcPrice * 1e16;
+        uint256 sizeDeltaUsd = leverage * usdcAmount * usdcPrice * 1e16;
         // NOTE:
         // increase order:
         // - long: executionPrice should be smaller than acceptablePrice
@@ -47,13 +46,13 @@ contract Short {
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD) * 1e4;
         uint256 acceptablePrice = ethPrice * 99 / 100;
 
-        // Send gas fee
+        // Send gas fee to order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee
         });
 
-        // Send token
+        // Send USDC to order vault
         usdc.approve(ROUTER, usdcAmount);
         exchangeRouter.sendTokens({
             token: USDC,
@@ -61,7 +60,7 @@ contract Short {
             amount: usdcAmount
         });
 
-        // Create order
+        // Create order to short ETH with USDC collateral
         return exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({
                 addresses: IBaseOrderUtils.CreateOrderParamsAddresses({
@@ -93,6 +92,7 @@ contract Short {
         );
     }
 
+    // Task 3 - Create order to close the short position created by this contract
     function createCloseOrder() external payable returns (bytes32 key) {
         uint256 executionFee = 0.1 * 1e18;
 

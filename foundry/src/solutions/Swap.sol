@@ -21,7 +21,7 @@ contract Swap {
     // Task 1 - Receive execution fee refund from GMX
     receive() external payable {}
 
-    // Task 2 - Create order to swap WETH to DAI
+    // Task 2 - Create a order to swap WETH to DAI
     function createOrder(uint256 wethAmount)
         external
         payable
