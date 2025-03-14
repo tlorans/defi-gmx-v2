@@ -30,10 +30,9 @@ contract TakeProfitAndStopLoss {
         uint256 leverage,
         uint256 usdcAmount
     ) external payable returns (bytes32[] memory keys) {
-        keys = new bytes32[](3);
         uint256 executionFee = 0.1 * 1e18;
-
         usdc.transferFrom(msg.sender, address(this), usdcAmount);
+        keys = new bytes32[](3);
 
         // Send execution fee to order vault
         exchangeRouter.sendWnt{value: executionFee}({
@@ -53,7 +52,6 @@ contract TakeProfitAndStopLoss {
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
         // 1 USD = 1e30
         uint256 sizeDeltaUsd = leverage * usdcAmount * 1e24;
-        uint256 acceptablePrice = ethPrice * 1e4 * 101 / 100;
 
         keys[0] = exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({
@@ -70,7 +68,7 @@ contract TakeProfitAndStopLoss {
                     sizeDeltaUsd: sizeDeltaUsd,
                     initialCollateralDeltaAmount: 0,
                     triggerPrice: 0,
-                    acceptablePrice: acceptablePrice,
+                    acceptablePrice: ethPrice * 1e4 * 101 / 100,
                     executionFee: executionFee,
                     callbackGasLimit: 0,
                     minOutputAmount: 0,
@@ -111,7 +109,7 @@ contract TakeProfitAndStopLoss {
                     executionFee: executionFee,
                     callbackGasLimit: 0,
                     minOutputAmount: 0,
-                    validFromTime: 0
+                    validFromTime: block.timestamp
                 }),
                 orderType: Order.OrderType.StopLossDecrease,
                 decreasePositionSwapType: Order.DecreasePositionSwapType.NoSwap,
@@ -149,7 +147,7 @@ contract TakeProfitAndStopLoss {
                     executionFee: executionFee,
                     callbackGasLimit: 0,
                     minOutputAmount: 0,
-                    validFromTime: 0
+                    validFromTime: block.timestamp
                 }),
                 orderType: Order.OrderType.LimitDecrease,
                 decreasePositionSwapType: Order

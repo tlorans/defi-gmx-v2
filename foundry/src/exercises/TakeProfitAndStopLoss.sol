@@ -30,137 +30,19 @@ contract TakeProfitAndStopLoss {
         uint256 leverage,
         uint256 usdcAmount
     ) external payable returns (bytes32[] memory keys) {
-        keys = new bytes32[](3);
         uint256 executionFee = 0.1 * 1e18;
-
         usdc.transferFrom(msg.sender, address(this), usdcAmount);
+        keys = new bytes32[](3);
 
         // Send execution fee to order vault
-        exchangeRouter.sendWnt{value: executionFee}({
-            receiver: ORDER_VAULT,
-            amount: executionFee
-        });
-
         // Send USDC to order vault
-        usdc.approve(ROUTER, usdcAmount);
-        exchangeRouter.sendTokens({
-            token: USDC,
-            receiver: ORDER_VAULT,
-            amount: usdcAmount
-        });
-
         // Create long order to long ETH with USDC collateral
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
-        // 1 USD = 1e30
-        uint256 sizeDeltaUsd = leverage * usdcAmount * 1e24;
-        uint256 acceptablePrice = ethPrice * 1e4 * 101 / 100;
-
-        keys[0] = exchangeRouter.createOrder(
-            IBaseOrderUtils.CreateOrderParams({
-                addresses: IBaseOrderUtils.CreateOrderParamsAddresses({
-                    receiver: address(this),
-                    cancellationReceiver: address(0),
-                    callbackContract: address(0),
-                    uiFeeReceiver: address(0),
-                    market: GM_TOKEN_ETH_WETH_USDC,
-                    initialCollateralToken: USDC,
-                    swapPath: new address[](0)
-                }),
-                numbers: IBaseOrderUtils.CreateOrderParamsNumbers({
-                    sizeDeltaUsd: sizeDeltaUsd,
-                    initialCollateralDeltaAmount: 0,
-                    triggerPrice: 0,
-                    acceptablePrice: acceptablePrice,
-                    executionFee: executionFee,
-                    callbackGasLimit: 0,
-                    minOutputAmount: 0,
-                    validFromTime: 0
-                }),
-                orderType: Order.OrderType.MarketIncrease,
-                decreasePositionSwapType: Order.DecreasePositionSwapType.NoSwap,
-                isLong: true,
-                shouldUnwrapNativeToken: false,
-                autoCancel: false,
-                referralCode: bytes32(uint256(0))
-            })
-        );
 
         // Send execution fee to order vault
-        exchangeRouter.sendWnt{value: executionFee}({
-            receiver: ORDER_VAULT,
-            amount: executionFee
-        });
-
         // Create stop loss for 90% of current ETH price
-        keys[1] = exchangeRouter.createOrder(
-            IBaseOrderUtils.CreateOrderParams({
-                addresses: IBaseOrderUtils.CreateOrderParamsAddresses({
-                    receiver: address(this),
-                    cancellationReceiver: address(0),
-                    callbackContract: address(0),
-                    uiFeeReceiver: address(0),
-                    market: GM_TOKEN_ETH_WETH_USDC,
-                    initialCollateralToken: USDC,
-                    swapPath: new address[](0)
-                }),
-                numbers: IBaseOrderUtils.CreateOrderParamsNumbers({
-                    sizeDeltaUsd: sizeDeltaUsd,
-                    initialCollateralDeltaAmount: usdcAmount,
-                    triggerPrice: ethPrice * 1e4 * 90 / 100,
-                    acceptablePrice: 0,
-                    executionFee: executionFee,
-                    callbackGasLimit: 0,
-                    minOutputAmount: 0,
-                    validFromTime: 0
-                }),
-                orderType: Order.OrderType.StopLossDecrease,
-                decreasePositionSwapType: Order.DecreasePositionSwapType.NoSwap,
-                isLong: true,
-                shouldUnwrapNativeToken: false,
-                // NOTE: auto cancel this order when the position is closed
-                autoCancel: true,
-                referralCode: bytes32(uint256(0))
-            })
-        );
 
         // Send execution fee to order vault
-        exchangeRouter.sendWnt{value: executionFee}({
-            receiver: ORDER_VAULT,
-            amount: executionFee
-        });
-
         // Create order to take profit above 110% of current price
-        keys[2] = exchangeRouter.createOrder(
-            IBaseOrderUtils.CreateOrderParams({
-                addresses: IBaseOrderUtils.CreateOrderParamsAddresses({
-                    receiver: address(this),
-                    cancellationReceiver: address(0),
-                    callbackContract: address(0),
-                    uiFeeReceiver: address(0),
-                    market: GM_TOKEN_ETH_WETH_USDC,
-                    initialCollateralToken: USDC,
-                    swapPath: new address[](0)
-                }),
-                numbers: IBaseOrderUtils.CreateOrderParamsNumbers({
-                    sizeDeltaUsd: sizeDeltaUsd,
-                    initialCollateralDeltaAmount: usdcAmount,
-                    triggerPrice: ethPrice * 1e4 * 110 / 100,
-                    acceptablePrice: ethPrice * 1e4 * 99 / 100,
-                    executionFee: executionFee,
-                    callbackGasLimit: 0,
-                    minOutputAmount: 0,
-                    validFromTime: 0
-                }),
-                orderType: Order.OrderType.LimitDecrease,
-                decreasePositionSwapType: Order
-                    .DecreasePositionSwapType
-                    .SwapPnlTokenToCollateralToken,
-                isLong: true,
-                shouldUnwrapNativeToken: false,
-                // NOTE: auto cancel this order when the position is closed
-                autoCancel: true,
-                referralCode: bytes32(uint256(0))
-            })
-        );
     }
 }
