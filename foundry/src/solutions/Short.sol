@@ -5,6 +5,7 @@ import {console} from "forge-std/Test.sol";
 import {IERC20} from "../interfaces/IERC20.sol";
 import {IExchangeRouter} from "../interfaces/IExchangeRouter.sol";
 import {IOrderHandler} from "../interfaces/IOrderHandler.sol";
+import {IDataStore} from "../interfaces/IDataStore.sol";
 import {IReader} from "../interfaces/IReader.sol";
 import {Order} from "../types/Order.sol";
 import {Position} from "../types/Position.sol";
@@ -16,6 +17,7 @@ contract Short {
     IERC20 constant weth = IERC20(WETH);
     IERC20 constant usdc = IERC20(USDC);
     IExchangeRouter constant exchangeRouter = IExchangeRouter(EXCHANGE_ROUTER);
+    IDataStore constant dataStore = IDataStore(DATA_STORE);
     IReader constant reader = IReader(READER);
     Oracle immutable oracle;
 
@@ -36,16 +38,6 @@ contract Short {
 
         usdc.transferFrom(msg.sender, address(this), usdcAmount);
 
-        uint256 usdcPrice = oracle.getPrice(CHAINLINK_USDC_USD);
-        // 1 USD = 1e30
-        uint256 sizeDeltaUsd = leverage * usdcAmount * usdcPrice * 1e16;
-        // NOTE:
-        // increase order:
-        // - long: executionPrice should be smaller than acceptablePrice
-        // - short: executionPrice should be larger than acceptablePrice
-        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD) * 1e4;
-        uint256 acceptablePrice = ethPrice * 99 / 100;
-
         // Send gas fee to order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
@@ -61,6 +53,16 @@ contract Short {
         });
 
         // Create order to short ETH with USDC collateral
+        uint256 usdcPrice = oracle.getPrice(CHAINLINK_USDC_USD);
+        // 1 USD = 1e30
+        uint256 sizeDeltaUsd = leverage * usdcAmount * usdcPrice * 1e16;
+        // NOTE:
+        // increase order:
+        // - long: executionPrice should be smaller than acceptablePrice
+        // - short: executionPrice should be larger than acceptablePrice
+        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD) * 1e4;
+        uint256 acceptablePrice = ethPrice * 99 / 100;
+
         return exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({
                 addresses: IBaseOrderUtils.CreateOrderParamsAddresses({
@@ -92,10 +94,36 @@ contract Short {
         );
     }
 
+    // Task 3 - Get position key
+    function getPositionKey() public view returns (bytes32 key) {
+        return Position.getPositionKey({
+            account: address(this),
+            market: GM_TOKEN_ETH_WETH_USDC,
+            collateralToken: USDC,
+            isLong: false
+        });
+    }
+
+    // Task 4 - Get position
+    function getPosition(bytes32 key)
+        public
+        view
+        returns (Position.Props memory)
+    {
+        return reader.getPosition(address(dataStore), key);
+    }
+
     // Task 3 - Create order to close the short position created by this contract
     function createCloseOrder() external payable returns (bytes32 key) {
         uint256 executionFee = 0.1 * 1e18;
 
+        // Send gas fee to order vault
+        exchangeRouter.sendWnt{value: executionFee}({
+            receiver: ORDER_VAULT,
+            amount: executionFee
+        });
+
+        // Create order to close the short position
         Position.Props memory position = getPosition(getPositionKey());
         require(position.numbers.sizeInUsd > 0, "position size = 0");
 
@@ -106,13 +134,6 @@ contract Short {
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD) * 1e4;
         uint256 acceptablePrice = ethPrice * 110 / 100;
 
-        // Send gas fee
-        exchangeRouter.sendWnt{value: executionFee}({
-            receiver: ORDER_VAULT,
-            amount: executionFee
-        });
-
-        // Create order
         return exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({
                 addresses: IBaseOrderUtils.CreateOrderParamsAddresses({
@@ -142,22 +163,5 @@ contract Short {
                 referralCode: bytes32(uint256(0))
             })
         );
-    }
-
-    function getPositionKey() public view returns (bytes32 key) {
-        return Position.getPositionKey({
-            account: address(this),
-            market: GM_TOKEN_ETH_WETH_USDC,
-            collateralToken: USDC,
-            isLong: false
-        });
-    }
-
-    function getPosition(bytes32 key)
-        public
-        view
-        returns (Position.Props memory)
-    {
-        return reader.getPosition(DATA_STORE, key);
     }
 }
