@@ -50,7 +50,7 @@ contract Swap {
         swapPath[0] = GM_TOKEN_ETH_WETH_USDC;
         swapPath[1] = GM_TOKEN_SWAP_ONLY_USDC_DAI;
 
-        key = exchangeRouter.createOrder(
+        return exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({
                 addresses: IBaseOrderUtils.CreateOrderParamsAddresses({
                     receiver: address(this),

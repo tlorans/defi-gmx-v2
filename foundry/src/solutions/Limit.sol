@@ -15,12 +15,11 @@ contract Limit {
     IERC20 constant weth = IERC20(WETH);
     IERC20 constant usdc = IERC20(USDC);
     IExchangeRouter constant exchangeRouter = IExchangeRouter(EXCHANGE_ROUTER);
-    IReader constant reader = IReader(READER);
 
-    // Receive execution fee refund from GMX
+    // Task 1 - Receive execution fee refund from GMX
     receive() external payable {}
 
-    // Create limit order to swap USDC to WETH
+    // Task 2 - Create limit order to swap USDC to WETH
     function createLimitOrder(uint256 usdcAmount, uint256 maxEthPrice)
         external
         payable
@@ -30,13 +29,13 @@ contract Limit {
 
         usdc.transferFrom(msg.sender, address(this), usdcAmount);
 
-        // Send gas fee
+        // Send gas fee to order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee
         });
 
-        // Send token
+        // Send USDC to order vault
         usdc.approve(ROUTER, usdcAmount);
         exchangeRouter.sendTokens({
             token: USDC,
@@ -44,7 +43,7 @@ contract Limit {
             amount: usdcAmount
         });
 
-        // Create order
+        // Create order to swap USDC to WETH
         // usdcAmount = 1e6
         // maxEthPrice = 1e8
         // ETH amount = 1e18
