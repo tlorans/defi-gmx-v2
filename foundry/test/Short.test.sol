@@ -108,9 +108,6 @@ contract ShortTest is Test {
         testHelper.set("ETH keeper after", keeper.balance);
         testHelper.set("ETH short after", address(short).balance);
 
-        console.log("ETH keeper: %e", testHelper.get("ETH keeper after"));
-        console.log("ETH short: %e", testHelper.get("ETH short after"));
-
         assertGe(
             testHelper.get("ETH keeper after"),
             testHelper.get("ETH keeper before"),
@@ -212,10 +209,6 @@ contract ShortTest is Test {
 
         assertEq(wethBal, 0, "WETH balance != 0");
         assertGe(usdcBal, usdcAmount, "USDC balance < initial collateral");
-
-        console.log("ETH keeper: %e", testHelper.get("ETH keeper after"));
-        console.log("ETH short: %e", testHelper.get("ETH short after"));
-
         assertGe(
             testHelper.get("ETH keeper after"),
             testHelper.get("ETH keeper before"),

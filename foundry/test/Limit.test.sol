@@ -115,9 +115,6 @@ contract LongTest is Test {
         testHelper.set("WETH limit", weth.balanceOf(address(limit)));
         testHelper.set("USDC limit", usdc.balanceOf(address(limit)));
 
-        console.log("ETH keeper: %e", testHelper.get("ETH keeper after"));
-        console.log("ETH limit: %e", testHelper.get("ETH limit after"));
-
         uint256 wethBal = testHelper.get("WETH limit");
         uint256 usdcBal = testHelper.get("USDC limit");
 

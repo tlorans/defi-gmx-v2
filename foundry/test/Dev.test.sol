@@ -27,44 +27,6 @@ contract Base is Test {
     IDataStore internal constant dataStore = IDataStore(DATA_STORE);
 }
 
-contract PositionDev is Base {
-    function test_pnl() public {
-        MarketUtils.MarketPrices memory prices = MarketUtils.MarketPrices({
-            indexTokenPrice: Price.Props({
-                min: 2000 * 1e30 / 1e18 * 99 / 100 ,
-                max: 2000 * 1e30 / 1e18 * 101 / 100 ,
-            }),
-            longTokenPrice: Price.Props({
-                min: 2000 * 1e30 / 1e18 * 99 / 100 ,
-                max: 2000 * 1e30 / 1e18 * 101 / 100 ,
-            });
-            shortTokenPrice: Price.Props({
-                min: 1 * 1e30 / 1e6 * 99 / 100 ,
-                max: 1 * 1e30 / 1e6 * 101 / 100 ,
-            });
-        });
-
-        (int256 pnl, int256 uncappedPnl, uint256 sizeDeltaInTokens) = reader.getPositionPnlUsd({
-            dataStore: address(dataStore),
-            market: Market({
-                marketToken: GM_TOKEN_ETH_WETH_USDC,
-                indexToken: WETH,
-                longToken: WETH,
-                shortToken: USDC
-            }),
-            prices: prices,
-            positionKey: "",
-            sizeDeltaUsd: 0
-        });
-
-        console.log("pnl %e", pnl);
-        console.log("uncapped pnl %e", uncappedPnl);
-        console.log("size delta in tokens %e", sizeDeltaInTokens);
-
-
-    }
-}
-
 /*
 contract GlvDev is Base {
     function test() public {

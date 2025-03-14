@@ -112,7 +112,6 @@ contract SwapTest is Test {
         testHelper.set("ETH swap after", address(swap).balance);
         testHelper.set("DAI swap after", dai.balanceOf(address(swap)));
 
-        console.log("ETH keeper: %e", testHelper.get("ETH keeper after"));
         console.log("ETH swap: %e", testHelper.get("ETH swap after"));
         console.log("DAI swap: %e", testHelper.get("DAI swap after"));
 

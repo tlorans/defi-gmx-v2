@@ -9,6 +9,9 @@ import {IDataStore} from "../interfaces/IDataStore.sol";
 import {IReader} from "../interfaces/IReader.sol";
 import {Order} from "../types/Order.sol";
 import {Position} from "../types/Position.sol";
+import {Market} from "../types/Market.sol";
+import {MarketUtils} from "../types/MarketUtils.sol";
+import {Price} from "../types/Price.sol";
 import {IBaseOrderUtils} from "../types/IBaseOrderUtils.sol";
 import {Oracle} from "../lib/Oracle.sol";
 import "../Constants.sol";
@@ -117,9 +120,47 @@ contract Long {
         return reader.getPosition(address(dataStore), key);
     }
 
-    // TODO: how to get current pnl?
+    // Task 5 - Get position profit and loss
+    function getPositionPnlUsd(bytes32 key, uint256 ethPrice)
+        external
+        view
+        returns (int256)
+    {
+        Position.Props memory position = getPosition(key);
 
-    // Task ? - Create order to close a long position
+        MarketUtils.MarketPrices memory prices = MarketUtils.MarketPrices({
+            indexTokenPrice: Price.Props({
+                min: ethPrice * 1e30 / (1e8 * 1e18) * 99 / 100,
+                max: ethPrice * 1e30 / (1e8 * 1e18) * 101 / 100
+            }),
+            longTokenPrice: Price.Props({
+                min: ethPrice * 1e30 / (1e8 * 1e18) * 99 / 100,
+                max: ethPrice * 1e30 / (1e8 * 1e18) * 101 / 100
+            }),
+            shortTokenPrice: Price.Props({
+                min: 1 * 1e30 / 1e6 * 99 / 100,
+                max: 1 * 1e30 / 1e6 * 101 / 100
+            })
+        });
+
+        (int256 pnl, int256 uncappedPnl, uint256 sizeDeltaInTokens) = reader
+            .getPositionPnlUsd({
+            dataStore: address(dataStore),
+            market: Market.Props({
+                marketToken: GM_TOKEN_ETH_WETH_USDC,
+                indexToken: WETH,
+                longToken: WETH,
+                shortToken: USDC
+            }),
+            prices: prices,
+            positionKey: key,
+            sizeDeltaUsd: position.numbers.sizeInUsd
+        });
+
+        return pnl;
+    }
+
+    // Task 6 - Create order to close a long position
     function createCloseOrder() external payable returns (bytes32 key) {
         uint256 executionFee = 0.1 * 1e18;
 

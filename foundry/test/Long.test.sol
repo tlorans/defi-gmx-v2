@@ -106,9 +106,6 @@ contract LongTest is Test {
         testHelper.set("ETH keeper after", keeper.balance);
         testHelper.set("ETH long after", address(long).balance);
 
-        console.log("ETH keeper: %e", testHelper.get("ETH keeper after"));
-        console.log("ETH long: %e", testHelper.get("ETH long after"));
-
         assertGe(
             testHelper.get("ETH keeper after"),
             testHelper.get("ETH keeper before"),
@@ -153,6 +150,12 @@ contract LongTest is Test {
             long.getPosition(positionKey).addresses.account,
             "position"
         );
+
+        // Test position profit and loss
+        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
+        int256 pnl = long.getPositionPnlUsd(positionKey, ethPrice * 110 / 100);
+        console.log("pnl %e", pnl);
+        assertGt(pnl, 0, "profit <= 0");
 
         // Create close order
         skip(1);
@@ -207,10 +210,6 @@ contract LongTest is Test {
 
         assertGe(wethBal, wethAmount, "WETH balance < initial collateral");
         assertEq(usdcBal, 0, "USDC balance != 0");
-
-        console.log("ETH keeper: %e", testHelper.get("ETH keeper after"));
-        console.log("ETH long: %e", testHelper.get("ETH long after"));
-
         assertGe(
             testHelper.get("ETH keeper after"),
             testHelper.get("ETH keeper before"),
