@@ -29,7 +29,6 @@ contract Long {
     }
 
     // Task 1 - Receive execution fee refund from GMX
-    receive() external payable {}
 
     // Task 2 - Create order to long WETH with WETH collateral
     function createLongOrder(uint256 leverage, uint256 wethAmount)
@@ -42,173 +41,33 @@ contract Long {
         weth.transferFrom(msg.sender, address(this), wethAmount);
 
         // Send execution fee to order vault
-        exchangeRouter.sendWnt{value: executionFee}({
-            receiver: ORDER_VAULT,
-            amount: executionFee
-        });
-
         // Send WETH to order vault
-        weth.approve(ROUTER, wethAmount);
-        exchangeRouter.sendTokens({
-            token: WETH,
-            receiver: ORDER_VAULT,
-            amount: wethAmount
-        });
-
         // Create order
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
-        // 1 USD = 1e30
-        // WETH = 18 decimal
-        // ETH price = 8 decimals
-        // 18 + 8 + 4 = 30
-        uint256 sizeDeltaUsd = leverage * wethAmount * ethPrice * 1e4;
-        // NOTE:
-        // increase order:
-        // - long: executionPrice should be smaller than acceptablePrice
-        // - short: executionPrice should be larger than acceptablePrice
-        uint256 acceptablePrice = ethPrice * 1e4 * 101 / 100;
-
-        address[] memory swapPath = new address[](0);
-
-        return exchangeRouter.createOrder(
-            IBaseOrderUtils.CreateOrderParams({
-                addresses: IBaseOrderUtils.CreateOrderParamsAddresses({
-                    receiver: address(this),
-                    cancellationReceiver: address(0),
-                    callbackContract: address(0),
-                    uiFeeReceiver: address(0),
-                    market: GM_TOKEN_ETH_WETH_USDC,
-                    initialCollateralToken: WETH,
-                    swapPath: swapPath
-                }),
-                numbers: IBaseOrderUtils.CreateOrderParamsNumbers({
-                    sizeDeltaUsd: sizeDeltaUsd,
-                    initialCollateralDeltaAmount: 0,
-                    triggerPrice: 0,
-                    acceptablePrice: acceptablePrice,
-                    executionFee: executionFee,
-                    callbackGasLimit: 0,
-                    minOutputAmount: 0,
-                    validFromTime: 0
-                }),
-                orderType: Order.OrderType.MarketIncrease,
-                decreasePositionSwapType: Order.DecreasePositionSwapType.NoSwap,
-                isLong: true,
-                shouldUnwrapNativeToken: false,
-                autoCancel: false,
-                referralCode: bytes32(uint256(0))
-            })
-        );
     }
 
     // Task 3 - Get position key
-    function getPositionKey() public view returns (bytes32 key) {
-        return Position.getPositionKey({
-            account: address(this),
-            market: GM_TOKEN_ETH_WETH_USDC,
-            collateralToken: WETH,
-            isLong: true
-        });
-    }
+    function getPositionKey() public view returns (bytes32 key) {}
 
     // Task 4 - Get position
     function getPosition(bytes32 key)
         public
         view
         returns (Position.Props memory)
-    {
-        return reader.getPosition(address(dataStore), key);
-    }
+    {}
 
     // Task 5 - Get position profit and loss
     function getPositionPnlUsd(bytes32 key, uint256 ethPrice)
         external
         view
         returns (int256)
-    {
-        Position.Props memory position = getPosition(key);
-
-        MarketUtils.MarketPrices memory prices = MarketUtils.MarketPrices({
-            indexTokenPrice: Price.Props({
-                min: ethPrice * 1e30 / (1e8 * 1e18) * 99 / 100,
-                max: ethPrice * 1e30 / (1e8 * 1e18) * 101 / 100
-            }),
-            longTokenPrice: Price.Props({
-                min: ethPrice * 1e30 / (1e8 * 1e18) * 99 / 100,
-                max: ethPrice * 1e30 / (1e8 * 1e18) * 101 / 100
-            }),
-            shortTokenPrice: Price.Props({
-                min: 1 * 1e30 / 1e6 * 99 / 100,
-                max: 1 * 1e30 / 1e6 * 101 / 100
-            })
-        });
-
-        (int256 pnl, int256 uncappedPnl, uint256 sizeDeltaInTokens) = reader
-            .getPositionPnlUsd({
-            dataStore: address(dataStore),
-            market: Market.Props({
-                marketToken: GM_TOKEN_ETH_WETH_USDC,
-                indexToken: WETH,
-                longToken: WETH,
-                shortToken: USDC
-            }),
-            prices: prices,
-            positionKey: key,
-            sizeDeltaUsd: position.numbers.sizeInUsd
-        });
-
-        return pnl;
-    }
+    {}
 
     // Task 6 - Create order to close a long position
     function createCloseOrder() external payable returns (bytes32 key) {
         uint256 executionFee = 0.1 * 1e18;
 
-        Position.Props memory position = getPosition(getPositionKey());
-        require(position.numbers.sizeInUsd > 0, "position size = 0");
-
         // Send execution fee to order vault
-        exchangeRouter.sendWnt{value: executionFee}({
-            receiver: ORDER_VAULT,
-            amount: executionFee
-        });
-
         // Create order
-        // NOTE:
-        // decrease order:
-        // - long: executionPrice should be larger than acceptablePrice
-        // - short: executionPrice should be smaller than acceptablePrice
-        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD) * 1e4;
-        uint256 acceptablePrice = ethPrice * 99 / 100;
-
-        return exchangeRouter.createOrder(
-            IBaseOrderUtils.CreateOrderParams({
-                addresses: IBaseOrderUtils.CreateOrderParamsAddresses({
-                    receiver: address(this),
-                    cancellationReceiver: address(0),
-                    callbackContract: address(0),
-                    uiFeeReceiver: address(0),
-                    market: GM_TOKEN_ETH_WETH_USDC,
-                    initialCollateralToken: WETH,
-                    swapPath: new address[](0)
-                }),
-                numbers: IBaseOrderUtils.CreateOrderParamsNumbers({
-                    sizeDeltaUsd: position.numbers.sizeInUsd,
-                    initialCollateralDeltaAmount: position.numbers.collateralAmount,
-                    triggerPrice: 0,
-                    acceptablePrice: acceptablePrice,
-                    executionFee: executionFee,
-                    callbackGasLimit: 0,
-                    minOutputAmount: 0,
-                    validFromTime: 0
-                }),
-                orderType: Order.OrderType.MarketDecrease,
-                decreasePositionSwapType: Order.DecreasePositionSwapType.NoSwap,
-                isLong: true,
-                shouldUnwrapNativeToken: false,
-                autoCancel: false,
-                referralCode: bytes32(uint256(0))
-            })
-        );
     }
 }
