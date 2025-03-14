@@ -41,6 +41,7 @@ contract Long {
         // Send execution fee to order vault
         // Send WETH to order vault
         // Create order
+        // 1 USD = 1e8
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
     }
 

@@ -37,6 +37,7 @@ contract TakeProfitAndStopLoss {
         // Send execution fee to order vault
         // Send USDC to order vault
         // Create long order to long ETH with USDC collateral
+        // 1 USD = 1e8
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
 
         // Send execution fee to order vault

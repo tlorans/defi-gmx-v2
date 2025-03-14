@@ -54,6 +54,7 @@ contract Long {
         });
 
         // Create order
+        // 1 USD = 1e8
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
         // 1 USD = 1e30
         // WETH = 18 decimal

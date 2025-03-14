@@ -49,6 +49,7 @@ contract TakeProfitAndStopLoss {
         });
 
         // Create long order to long ETH with USDC collateral
+        // 1 USD = 1e8
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
         // 1 USD = 1e30
         uint256 sizeDeltaUsd = leverage * usdcAmount * 1e24;

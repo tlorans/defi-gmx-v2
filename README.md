@@ -15,7 +15,7 @@ forge build
 
 - [ ] Course intro
   - Prerequisites
-    - DAI, WETH, AMM, etc..
+    - DAI, WETH, USDC, WBTC, decimals, AMM, etc..
     - Advanced Foundry
       - multicall
       - library (delegatecall)

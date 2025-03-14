@@ -76,13 +76,18 @@ contract MarketLiquidityTest is Test {
     }
 
     function testMarketLiquidity() public {
-        uint256 marketTokenPrice = marketLiquidity.getMarketTokenPrice();
-        assertGt(marketTokenPrice, 0, "market token price = 0");
-
         uint256 executionFee = 0.1 * 1e18;
         uint256 usdcAmount = 1000 * 1e6;
         usdc.approve(address(marketLiquidity), usdcAmount);
 
+        // Test market token price
+        uint256 marketTokenPrice = marketLiquidity.getMarketTokenPriceUsd();
+        assertGt(marketTokenPrice, 0, "market token price = 0");
+
+        uint256 minMarketTokenAmount = usdcAmount * 1e24 * 1e18 / marketTokenPrice;
+        console.log("Min market token amount %e", minMarketTokenAmount);
+
+        // Create deposit order
         bytes32 depositKey =
             marketLiquidity.createDeposit{value: executionFee}(usdcAmount);
 
@@ -140,6 +145,12 @@ contract MarketLiquidityTest is Test {
             testHelper.get("GM token marketLiquidity after"),
             testHelper.get("GM token marketLiquidity before"),
             "GM token marketLiquidity"
+        );
+
+        assertGe(
+            testHelper.get("GM token marketLiquidity after"),
+            minMarketTokenAmount,
+            "Min GM token amount"
         );
 
         // Create withdrawal order

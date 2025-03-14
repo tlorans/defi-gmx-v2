@@ -51,6 +51,7 @@ contract Short {
         });
 
         // Create order to short ETH with USDC collateral
+        // 1 USD = 1e8
         uint256 usdcPrice = oracle.getPrice(CHAINLINK_USDC_USD);
         // 1 USD = 1e30
         uint256 sizeDeltaUsd = leverage * usdcAmount * usdcPrice * 1e16;
@@ -58,6 +59,7 @@ contract Short {
         // increase order:
         // - long: executionPrice should be smaller than acceptablePrice
         // - short: executionPrice should be larger than acceptablePrice
+        // 1 USD = 1e8
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD) * 1e4;
         uint256 acceptablePrice = ethPrice * 99 / 100;
 
