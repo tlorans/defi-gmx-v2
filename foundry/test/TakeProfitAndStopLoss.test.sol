@@ -68,10 +68,11 @@ contract TakeProfitAndStopLossTest is Test {
         returns (bytes32[] memory keys)
     {
         uint256 executionFee = 1e18;
+        uint256 leverage = 5;
         usdc.approve(address(tpsl), usdcAmount);
 
         keys = tpsl.createTakeProfitAndStopLossOrders{value: executionFee}(
-            usdcAmount
+            leverage, usdcAmount
         );
 
         assertEq(keys.length, 3, "keys length");

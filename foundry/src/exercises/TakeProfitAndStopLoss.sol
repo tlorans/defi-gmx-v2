@@ -1,11 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-// TODO: remove unused code
 import {console} from "forge-std/Test.sol";
 import {IERC20} from "../interfaces/IERC20.sol";
 import {IExchangeRouter} from "../interfaces/IExchangeRouter.sol";
-import {IOrderHandler} from "../interfaces/IOrderHandler.sol";
 import {Order} from "../types/Order.sol";
 import {IBaseOrderUtils} from "../types/IBaseOrderUtils.sol";
 import {Oracle} from "../lib/Oracle.sol";
@@ -21,31 +19,29 @@ contract TakeProfitAndStopLoss {
         oracle = Oracle(_oracle);
     }
 
+    // Task 1 - Receive execution fee refund from GMX
     receive() external payable {}
 
-    function createTakeProfitAndStopLossOrders(uint256 usdcAmount)
-        external
-        payable
-        returns (bytes32[] memory keys)
-    {
+    // Task 2 - Create orders to
+    // 1. Long ETH with USDC collateral
+    // 2. Stop loss for ETH price below 90% of current price
+    // 3. Take profit for ETH price above 110% of current price
+    function createTakeProfitAndStopLossOrders(
+        uint256 leverage,
+        uint256 usdcAmount
+    ) external payable returns (bytes32[] memory keys) {
         keys = new bytes32[](3);
         uint256 executionFee = 0.1 * 1e18;
 
         usdc.transferFrom(msg.sender, address(this), usdcAmount);
 
-        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
-        // TODO: how to calculate sizeDeltaUsd
-        // 1 USD = 1e30
-        uint256 sizeDeltaUsd = 3 * usdcAmount * 1e24;
-
-        // Send gas fee
-        // NOTE: gas fee must be sent 3 times, each before call to create a order.
+        // Send execution fee to order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee
         });
 
-        // Send token
+        // Send USDC to order vault
         usdc.approve(ROUTER, usdcAmount);
         exchangeRouter.sendTokens({
             token: USDC,
@@ -53,8 +49,11 @@ contract TakeProfitAndStopLoss {
             amount: usdcAmount
         });
 
-        // Create long order
-        address[] memory swapPath = new address[](0);
+        // Create long order to long ETH with USDC collateral
+        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
+        // 1 USD = 1e30
+        uint256 sizeDeltaUsd = leverage * usdcAmount * 1e24;
+        uint256 acceptablePrice = ethPrice * 1e4 * 101 / 100;
 
         keys[0] = exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({
@@ -65,13 +64,13 @@ contract TakeProfitAndStopLoss {
                     uiFeeReceiver: address(0),
                     market: GM_TOKEN_ETH_WETH_USDC,
                     initialCollateralToken: USDC,
-                    swapPath: swapPath
+                    swapPath: new address[](0)
                 }),
                 numbers: IBaseOrderUtils.CreateOrderParamsNumbers({
                     sizeDeltaUsd: sizeDeltaUsd,
                     initialCollateralDeltaAmount: 0,
                     triggerPrice: 0,
-                    acceptablePrice: ethPrice * 1e4 * 101 / 100,
+                    acceptablePrice: acceptablePrice,
                     executionFee: executionFee,
                     callbackGasLimit: 0,
                     minOutputAmount: 0,
@@ -86,13 +85,13 @@ contract TakeProfitAndStopLoss {
             })
         );
 
-        // Send gas fee
+        // Send execution fee to order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee
         });
 
-        // Create stop loss
+        // Create stop loss for 90% of current ETH price
         keys[1] = exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({
                 addresses: IBaseOrderUtils.CreateOrderParamsAddresses({
@@ -102,14 +101,11 @@ contract TakeProfitAndStopLoss {
                     uiFeeReceiver: address(0),
                     market: GM_TOKEN_ETH_WETH_USDC,
                     initialCollateralToken: USDC,
-                    swapPath: swapPath
+                    swapPath: new address[](0)
                 }),
                 numbers: IBaseOrderUtils.CreateOrderParamsNumbers({
-                    // sizeDeltaUsd: sizeDeltaUsd,
-                    sizeDeltaUsd: type(uint256).max,
-                    // TODO: how to calculate?
-                    // initialCollateralDeltaAmount: usdcAmount,
-                    initialCollateralDeltaAmount: type(uint256).max,
+                    sizeDeltaUsd: sizeDeltaUsd,
+                    initialCollateralDeltaAmount: usdcAmount,
                     triggerPrice: ethPrice * 1e4 * 90 / 100,
                     acceptablePrice: 0,
                     executionFee: executionFee,
@@ -121,19 +117,19 @@ contract TakeProfitAndStopLoss {
                 decreasePositionSwapType: Order.DecreasePositionSwapType.NoSwap,
                 isLong: true,
                 shouldUnwrapNativeToken: false,
-                // TODO: wat dis?
+                // NOTE: auto cancel this order when the position is closed
                 autoCancel: true,
                 referralCode: bytes32(uint256(0))
             })
         );
 
-        // Send gas fee
+        // Send execution fee to order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee
         });
 
-        // Create take profit
+        // Create order to take profit above 110% of current price
         keys[2] = exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({
                 addresses: IBaseOrderUtils.CreateOrderParamsAddresses({
@@ -143,14 +139,12 @@ contract TakeProfitAndStopLoss {
                     uiFeeReceiver: address(0),
                     market: GM_TOKEN_ETH_WETH_USDC,
                     initialCollateralToken: USDC,
-                    swapPath: swapPath
+                    swapPath: new address[](0)
                 }),
                 numbers: IBaseOrderUtils.CreateOrderParamsNumbers({
-                    // sizeDeltaUsd: sizeDeltaUsd,
-                    sizeDeltaUsd: type(uint256).max,
+                    sizeDeltaUsd: sizeDeltaUsd,
                     initialCollateralDeltaAmount: usdcAmount,
                     triggerPrice: ethPrice * 1e4 * 110 / 100,
-                    // TODO: wat dis?
                     acceptablePrice: ethPrice * 1e4 * 99 / 100,
                     executionFee: executionFee,
                     callbackGasLimit: 0,
@@ -163,6 +157,7 @@ contract TakeProfitAndStopLoss {
                     .SwapPnlTokenToCollateralToken,
                 isLong: true,
                 shouldUnwrapNativeToken: false,
+                // NOTE: auto cancel this order when the position is closed
                 autoCancel: true,
                 referralCode: bytes32(uint256(0))
             })

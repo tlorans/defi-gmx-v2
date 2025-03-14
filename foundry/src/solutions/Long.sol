@@ -4,7 +4,6 @@ pragma solidity 0.8.26;
 import {console} from "forge-std/Test.sol";
 import {IERC20} from "../interfaces/IERC20.sol";
 import {IExchangeRouter} from "../interfaces/IExchangeRouter.sol";
-import {IOrderHandler} from "../interfaces/IOrderHandler.sol";
 import {IDataStore} from "../interfaces/IDataStore.sol";
 import {IReader} from "../interfaces/IReader.sol";
 import {Order} from "../types/Order.sol";
@@ -68,8 +67,6 @@ contract Long {
         // - short: executionPrice should be larger than acceptablePrice
         uint256 acceptablePrice = ethPrice * 1e4 * 101 / 100;
 
-        address[] memory swapPath = new address[](0);
-
         return exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({
                 addresses: IBaseOrderUtils.CreateOrderParamsAddresses({
@@ -79,7 +76,7 @@ contract Long {
                     uiFeeReceiver: address(0),
                     market: GM_TOKEN_ETH_WETH_USDC,
                     initialCollateralToken: WETH,
-                    swapPath: swapPath
+                    swapPath: new address[](0)
                 }),
                 numbers: IBaseOrderUtils.CreateOrderParamsNumbers({
                     sizeDeltaUsd: sizeDeltaUsd,
