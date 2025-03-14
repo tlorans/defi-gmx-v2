@@ -74,7 +74,9 @@ contract ShortTest is Test {
         Order.Props memory shortOrder =
             reader.getOrder(DATA_STORE, shortOrderKey);
         assertEq(
-            shortOrder.addresses.receiver, address(short), "short order receiver"
+            shortOrder.addresses.receiver,
+            address(short),
+            "short order receiver"
         );
         assertEq(
             uint256(shortOrder.numbers.orderType),
@@ -161,7 +163,9 @@ contract ShortTest is Test {
         Order.Props memory closeOrder =
             reader.getOrder(DATA_STORE, closeOrderKey);
         assertEq(
-            closeOrder.addresses.receiver, address(short), "close order receiver"
+            closeOrder.addresses.receiver,
+            address(short),
+            "close order receiver"
         );
         assertEq(
             uint256(closeOrder.numbers.orderType),

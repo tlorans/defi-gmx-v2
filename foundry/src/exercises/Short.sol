@@ -4,7 +4,6 @@ pragma solidity 0.8.26;
 import {console} from "forge-std/Test.sol";
 import {IERC20} from "../interfaces/IERC20.sol";
 import {IExchangeRouter} from "../interfaces/IExchangeRouter.sol";
-import {IOrderHandler} from "../interfaces/IOrderHandler.sol";
 import {IDataStore} from "../interfaces/IDataStore.sol";
 import {IReader} from "../interfaces/IReader.sol";
 import {Order} from "../types/Order.sol";
@@ -43,8 +42,7 @@ contract Short {
     }
 
     // Task 3 - Get position key
-    function getPositionKey() public view returns (bytes32 key) {
-    }
+    function getPositionKey() public view returns (bytes32 key) {}
 
     // Task 4 - Get position
     function getPosition(bytes32 key)
