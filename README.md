@@ -102,16 +102,11 @@ forge build
           - Fees
         - Close
           - Profit and collateral can be swapped
-        - TP / SL TODO: move to later in the course
-          - Auto cancel
       - [Graph - example strategies](https://www.desmos.com/calculator/ieq40vs9ve)
         - Long ETH, ETH collateral
         - Long ETH, USDC collateral
         - Short ETH, ETH collateral
         - Short ETH, USDC collateral
-  - Managing positions
-    - Close, deposit, withdraw collateral
-    - Claims (funding fees)
 - [ ] UI liquidity
   - Difference between GLV and GM
   - GM (GMX market) pools
@@ -199,6 +194,7 @@ forge build
       - [How to updated borrowing fee](./notes/positions/borrowing_fee.md)
       - [Kink graph](https://www.desmos.com/calculator/9khv07nrfb)
     - Funding fees
+      - UI claim (funding fees)
       - [Math](./notes/positions/funding_fee.png)
       - [How to update and claim](./notes/position/funding_fee.md)
 - [ ] Order types
