@@ -62,36 +62,49 @@ forge build
     - Swap
       - 2 step tx
       - Market
+        - Market pools
+          - Swap only pools
         - swap fee on amount in
+        - execution fee
       - Limit
     - Market
       - Long
-        - 2 step tx
-        - Leverage
-        - profit in long asset
-        - swap pnl
-        - Profit and collateral can be swapped
-        - Pool fees
-          - open interest
-        - Liquidation price
-        - Price impact fee
-        - Fees
-        - TP / SL
-          - Auto cancel
-        - Deposit / withdraw collateral
+        - Open
+          - 2 step tx
+          - Pay, collateral
+          - Pool
+            - funding fee
+            - open interest
+          - Leverage
+            - Liquidation price
+          - price impact
+          - fees
+          - network fee
+        - Close
+          - profit in long asset
+          - swap pnl
+          - Profit and collateral can be swapped
+          - Pool fees
+            - open interest
+          - Liquidation price
+          - Price impact fee
+          - Fees
+          - Deposit / withdraw collateral
       - Short
-        - 2 step tx
-        - profit in stablecoin?
-        - Leverage
-        - Pool fees
-          - open interest
-        - Profit and collateral can be swapped
-        - Liquidation price
-        - Price impact fee
-        - Fees
-        - TP / SL
+        - Open
+          - 2 step tx
+          - profit in stablecoin?
+          - Leverage
+          - Pool fees
+            - open interest
+          - Liquidation price
+          - Price impact fee
+          - Fees
+        - Close
+          - Profit and collateral can be swapped
+        - TP / SL TODO: move to later in the course
           - Auto cancel
-      - Example strategies -> different liquidation price
+      - TODO: Example strategies -> different liquidation price
         - Long ETH, ETH collateral
         - Long ETH, USDC collateral
         - Short ETH, ETH collateral
@@ -100,15 +113,6 @@ forge build
         - Long SOL, USDC collateral
         - Short SOL, USDC collateral
         - Short SOL, USDC collateral
-    - Limit
-      - Long -> create long position above limit
-      - Short -> create short position below limit
-    - TP / SL
-      - Long
-      - Short
-    - Stop market
-      - Long
-      - Short
   - Managing positions
     - Close, deposit, withdraw collateral
     - Claims (funding fees)
@@ -218,6 +222,17 @@ forge build
     - [tx - Limit order swap 2.63 USDC to ETH at $2780 part 1](https://arbiscan.io/tx/0x5a55b926aadaa832a42c55a4a60b0008193c773767e7289cdeb7eca0e1433595)
     - [tx - Limit order swap 2.63 USDC to ETH at $2780 part 2](https://arbiscan.io/tx/0x2306c6c8300a10a4e59c6dcc04513c84c0d2469172beb5c8f9cf1820eba308d0)
   - Long (open / close / deposit / withdraw)
+    - UI limit, TP / SL, stop market
+      - Auto cancel
+      - Limit
+        - Long -> create long position above limit
+        - Short -> create short position below limit
+      - TP / SL
+        - Long
+        - Short
+      - Stop market
+        - Long
+        - Short
     - [Open](./notes/position/market_increase.md)
       - [tx - Long ETH 0.001 70x ~ $190 part 1](https://arbiscan.io/tx/0xcac1ce9014aafcd3d8ae89c27cfd4866de36ff010ded5344a65bd4034d358413)
         - `market`
@@ -243,6 +258,8 @@ forge build
     - [tx - Close short 0.01 ETH part 1](https://arbiscan.io/tx/0x3825aab5d7bbfac2b68f75c77c1ff55e684496844a8dd605dc43a1348efceb22)
     - [tx - Close short 0.01 ETH part 2](https://arbiscan.io/tx/0x8ade23d7ad7ee6fb589a0d04724ee8c64f20e92e32688739e0c049b510c690f0)
   - TP and SL
+    - UI limit, TP / SL, stop market TODO: move to later in the course
+      - Auto cancel
     - [tx - Short ETH 0.01 ~ TP $2200 SL $2260 part 1](https://arbiscan.io/tx/0xfb4a9ddd2b80a4e7f739c0281a3869d89ee3cb96fe796446511098eb917016a4)]
       - `StopLossDecrease`
       - `LimitDecrease`
