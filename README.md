@@ -167,6 +167,7 @@ forge build
       - refund execution fee
   - multicall
   - execution fee
+- [ ] Code organization
 
 ### Trading
 
