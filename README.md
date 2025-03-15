@@ -104,15 +104,11 @@ forge build
           - Profit and collateral can be swapped
         - TP / SL TODO: move to later in the course
           - Auto cancel
-      - TODO: Example strategies -> different liquidation price
+      - [Graph - example strategies](https://www.desmos.com/calculator/ieq40vs9ve)
         - Long ETH, ETH collateral
         - Long ETH, USDC collateral
         - Short ETH, ETH collateral
         - Short ETH, USDC collateral
-        - Long SOL, ETH collateral
-        - Long SOL, USDC collateral
-        - Short SOL, USDC collateral
-        - Short SOL, USDC collateral
   - Managing positions
     - Close, deposit, withdraw collateral
     - Claims (funding fees)
