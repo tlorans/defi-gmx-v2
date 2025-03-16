@@ -179,6 +179,7 @@ forge build
       - UI and transcations
     - Price impact
       - UI
+      - Purpose
       - [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
       - [Code - price impact](./notes/price_impact.md)
       - [Code - virtual inventory](./notes/virtual_inventory.md)
@@ -192,11 +193,13 @@ forge build
     - [Deposit and withdrawal fees](./notes/swap/swap_fees.md)
     - Price impact
     - Borrowing fees
+      - Purpose
       - [Math](./notes/position/borrowing_fee.png)
       - [How to updated borrowing fee](./notes/positions/borrowing_fee.md)
       - [Kink graph](https://www.desmos.com/calculator/9khv07nrfb)
     - Funding fees
       - UI claim (funding fees)
+      - Purpose
       - [Math](./notes/positions/funding_fee.png)
       - [How to update and claim](./notes/position/funding_fee.md)
 - [ ] Order types
