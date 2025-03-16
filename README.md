@@ -32,7 +32,7 @@ forge build
 - [ ] What is GMX?
   - Decentralized spot and perpetual exchange
   - Key features
-    - 2 step transactions
+    - 2 step transactions -> why?
     - 0 price impact?
     - Dynamic funding rate?
     - Isolated pools
