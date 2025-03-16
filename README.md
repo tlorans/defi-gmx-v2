@@ -52,6 +52,7 @@ forge build
   - [Liquidation](./notes/terms/liquidation.png)
     - Collateral
   - [Open interest](./notes/terms/open_interest.png)
+  - [Funding fee](./notes/terms/funding_fee.png)
 - [ ] UI trade
   - 2 steps transaciton process
   - Markets (ETH / USD, WBTC / USD, etc...)
