@@ -103,11 +103,6 @@ forge build
           - Fees
         - Close
           - Profit and collateral can be swapped
-      - [Graph - example strategies](https://www.desmos.com/calculator/ieq40vs9ve)
-        - Long ETH, ETH collateral
-        - Long ETH, USDC collateral
-        - Short ETH, ETH collateral
-        - Short ETH, USDC collateral
 - [ ] UI liquidity
   - Difference between GLV and GM
   - GM (GMX market) pools
@@ -172,6 +167,11 @@ forge build
 
 ### Trading
 
+- [Graph - example strategies](https://www.desmos.com/calculator/ieq40vs9ve)
+  - Long ETH, ETH collateral
+  - Long ETH, USDC collateral
+  - Short ETH, ETH collateral
+  - Short ETH, USDC collateral
 - [Code - profit and loss](./notes/position/pnl.md)
 - [ ] Fees
   - Common fees
