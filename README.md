@@ -29,7 +29,7 @@ forge build
 
 ### Foundation
 
-- [ ] What is GMX?
+- [ ] TODO: What is GMX?
   - Decentralized spot and perpetual exchange
   - Key features
     - 2 step transactions -> why?
@@ -161,7 +161,7 @@ forge build
       - refund execution fee
   - multicall
   - execution fee
-- [ ] Code organization
+- [?] TODO: Code organization
 
 ### Trading
 
@@ -178,9 +178,13 @@ forge build
     - Price impact
       - UI
       - Purpose
-      - swap -> fee / rebate
+      - swap
+        - positive -> + amount out
+        - negative -> - amount in
+        - TODO: [Virtual inventory](./notes/swap/virtual_inventory.md)
       - open position -> worse price
       - close position -> worse price / better price
+      - deposit liquidity
       - [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
       - [Code - price impact](./notes/price_impact.md)
       - [Code - virtual inventory](./notes/virtual_inventory.md)

@@ -14,17 +14,47 @@
 
 [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
 
-### Imbalance
+## Purpose
+
+If an action (swap, long, short, deposit liquidity)
+
+- Reduces imbalance = positive impact -> rebate
+- Increases imbalance = negative impact -> extra fee
+
+## Imbalance
 
 ```
-imbalance = swap = long tokens in pool USD - short tokens in pool USD
-          = long and short = long open interest - short open interes
+Imbalance for long and short = long open interest - short open interest
+Imbalance for deposit = ?
 ```
 
-If an action (swap, long, short, deposit)
+## Swap
 
-- Reduces imbalance = positive impact
-- Increases imbalance = negative impact
+```
+Imbalance for swap = long tokens in pool USD - short tokens in pool USD
+Positive impact -> bonus to amount out
+Negative impact -> fee to amount in
+```
+
+[`SwapUtils._swap`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/swap/SwapUtils.sol#L271-L337)
+
+[`SwapPricingUtils.getPriceImpactUsd`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/pricing/SwapPricingUtils.sol#L109-L166)
+
+## Long and short
+
+```
+Imbalance for long and short = long open interest - short open interest
+Positive impact -> ?
+Negative impact -> ?
+```
+
+[`PositionPricingUtil.getPriceImpactUsd`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/pricing/PositionPricingUtils.sol#L159-L182)
+[`PositionUtils.getExecutionPriceForIncrease`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/position/PositionUtils.sol#L621-L714)
+[`PositionUtils.getExecutionPriceForDecrease`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/position/PositionUtils.sol#L717-L790)
+
+## Deposit liquidity
+
+## Positions
 
 ### Impact pools
 
