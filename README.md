@@ -34,7 +34,7 @@ forge build
   - Key features
     - 2 step transactions -> why?
     - 0 price impact?
-    - Dynamic funding rate?
+    - Dynamic funding rate
     - Isolated pools
 - [x] Terminologies and examples
   - [Perpetual swap](./notes/terms/perp.png)
@@ -53,7 +53,7 @@ forge build
     - Collateral
   - [Open interest](./notes/terms/open_interest.png)
   - [Funding fee](./notes/terms/funding_fee.png)
-- [ ] UI trade
+- [x] UI trade
   - 2 steps transaciton process
   - Markets (ETH / USD, WBTC / USD, etc...)
     - Index, long and short tokens
@@ -103,7 +103,7 @@ forge build
           - Fees
         - Close
           - Profit and collateral can be swapped
-- [ ] UI liquidity
+- [x] UI liquidity
   - Difference between GLV and GM
   - GM (GMX market) pools
   - GLV (GMX liquidity vault) pools
@@ -119,14 +119,12 @@ forge build
       - Pair liquidity
       - Fees
       - Network fee
-    - Shift -> TODO: only possible within the same long / short?
+    - Shift
   - GLV
     - BTC-USDC and WETH-USDC
     - Composition
     - Buy
-      - Pool TODO: pool to send tokens to?
     - Sell
-      - Pool TODO: pool to remove tokens from?
 
 ### Contract architecture
 
@@ -167,14 +165,14 @@ forge build
 
 ### Trading
 
-- [Graph - example strategies](https://www.desmos.com/calculator/ieq40vs9ve)
+- [ ] [Code - profit and loss](./notes/position/pnl.md)
+- [x] [Graph - example strategies](https://www.desmos.com/calculator/ieq40vs9ve)
   - Long ETH, ETH collateral
   - Long ETH, USDC collateral
   - Short ETH, ETH collateral
   - Short ETH, USDC collateral
-- [Code - profit and loss](./notes/position/pnl.md)
-- [ ] Fees
-  - Common fees
+- Fees
+  - [ ] Common fees
     - Execution fee
       - UI and transcations
     - Price impact
@@ -187,7 +185,7 @@ forge build
     - UI
       - Swap fee on amount in
       - Price impact
-    - [Code](./notes/swap/swap_fees.md)
+      - [Code](./notes/swap/swap_fees.md)
   - [Position](./notes/position/position_fees.md)
     - UI
     - [Deposit and withdrawal fees](./notes/swap/swap_fees.md)
@@ -211,13 +209,14 @@ forge build
   - Limit decrease
   - Stop loss decrease
 - [ ] Contract calls (2 step tx - create order + execute order)
-  - [Swap](./notes/swap/swap.md)
-    - [Token flow](./notes/execute_swap.png)
-    - [tx - Swap DAI to ETH part 1](https://arbiscan.io/tx/0x747665f80ccd64918af4f4cd2d3c7e7c077d061d61bc47fc99f644d1eb4d18f4)
-    - [tx - Swap DAI to ETH part 2](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
-  - Limit
-    - [tx - Limit order swap 2.63 USDC to ETH at $2780 part 1](https://arbiscan.io/tx/0x5a55b926aadaa832a42c55a4a60b0008193c773767e7289cdeb7eca0e1433595)
-    - [tx - Limit order swap 2.63 USDC to ETH at $2780 part 2](https://arbiscan.io/tx/0x2306c6c8300a10a4e59c6dcc04513c84c0d2469172beb5c8f9cf1820eba308d0)
+  - Swap
+    - [Market swap](./notes/swap/swap.md)
+      - [Token flow](./notes/execute_swap.png)
+      - [tx - Swap DAI to ETH part 1](https://arbiscan.io/tx/0x747665f80ccd64918af4f4cd2d3c7e7c077d061d61bc47fc99f644d1eb4d18f4)
+      - [tx - Swap DAI to ETH part 2](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
+    - Limit swap
+      - [tx - Limit order swap 2.63 USDC to ETH at $2780 part 1](https://arbiscan.io/tx/0x5a55b926aadaa832a42c55a4a60b0008193c773767e7289cdeb7eca0e1433595)
+      - [tx - Limit order swap 2.63 USDC to ETH at $2780 part 2](https://arbiscan.io/tx/0x2306c6c8300a10a4e59c6dcc04513c84c0d2469172beb5c8f9cf1820eba308d0)
   - Long (open / close / deposit / withdraw)
     - UI limit, TP / SL, stop market
       - Auto cancel
