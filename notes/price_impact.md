@@ -7,13 +7,6 @@ If an action (swap, long, short, deposit liquidity)
 - Reduces imbalance = positive impact -> rebate
 - Increases imbalance = negative impact -> extra fee
 
-## Imbalance
-
-```
-Imbalance for long and short = long open interest - short open interest
-Imbalance for deposit = ?
-```
-
 ## Swap
 
 ```
@@ -59,7 +52,7 @@ Negative impact -> fees deducted from deposit amounts
 
 [`ExecuteDepositUtils._executeDeposit`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/deposit/ExecuteDepositUtils.sol#L399-L486)
 
-### Impact pools
+## Impact pools
 
 - Swap impact pool
   - Pay positive impact to user
@@ -77,7 +70,7 @@ Negative impact -> fees deducted from deposit amounts
 
 [`MarketUtils.distributePositionImpactPool`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/market/MarketUtils.sol#L2473-L2497)
 
-### Same side
+## Same side
 
 ```
 same side = long < short and next long < next short
@@ -85,26 +78,26 @@ same side = long < short and next long < next short
             long >= short and next long >= next short
 ```
 
-### Cross over
+## Cross over
 
 ```
 cross over = not same side
 ```
 
-### Price impact
+## Price impact
 
 [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
 
 ```
-d0 = initial imbalance
-d1 = next imbalance
+d0 = initial imbalance USD
+d1 = next imbalance USD
 e = exponent factor
 
-# same side
-f = impact factor
+# Same side
+f = impact factor depends on positive or negative impact
 same side price impact = d0 ^ e * f - d1 ^ e * f
 
-# cross over
+# Cross over
 p = positive impact factor
 n = negative impact factor
 
@@ -113,10 +106,10 @@ p <= n
 cross over price impact = d0 ^ e * p - d1 ^ e * n
 ```
 
-[SwapPricingUtils.getPriceImpactUsd](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/pricing/SwapPricingUtils.sol#L109-L166)
+[`SwapPricingUtils.getPriceImpactUsd`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/pricing/SwapPricingUtils.sol#L109-L166)
 
-[PositionPricingUtils.getPriceImpactUsd](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/pricing/PositionPricingUtils.sol#L159-L182)
+[`PositionPricingUtils.getPriceImpactUsd`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/pricing/PositionPricingUtils.sol#L159-L182)
 
-[PricingUtils.getPriceImpactUsdForSameSideRebalance](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/pricing/PricingUtils.sol#L61-L77)
+[`PricingUtils.getPriceImpactUsdForSameSideRebalance`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/pricing/PricingUtils.sol#L61-L77)
 
-[PricingUtils.getPriceImpactUsdForCrossoverRebalance](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/pricing/PricingUtils.sol#L88-L102)
+[`PricingUtils.getPriceImpactUsdForCrossoverRebalance`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/pricing/PricingUtils.sol#L88-L102)
