@@ -165,7 +165,7 @@ forge build
 
 ### Trading
 
-- [ ] [Code - profit and loss](./notes/position/pnl.md)
+- [?] [Code - profit and loss](./notes/position/pnl.md)
 - [x] [Graph - example strategies](https://www.desmos.com/calculator/ieq40vs9ve)
   - Long ETH, ETH collateral
   - Long ETH, USDC collateral
@@ -178,6 +178,9 @@ forge build
     - Price impact
       - UI
       - Purpose
+      - swap -> fee / rebate
+      - open position -> worse price
+      - close position -> worse price / better price
       - [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
       - [Code - price impact](./notes/price_impact.md)
       - [Code - virtual inventory](./notes/virtual_inventory.md)
