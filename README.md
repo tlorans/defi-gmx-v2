@@ -175,7 +175,7 @@ forge build
   - [ ] Common fees
     - Execution fee
       - UI and transcations
-    - Price impact
+    - [Price impact](./notes/price_impact.md)
       - UI
       - Purpose
       - swap
@@ -185,8 +185,11 @@ forge build
       - impact pool
       - same side
       - cross over
-      - TODO: [Virtual inventory](./notes/swap/virtual_inventory.md)
       - [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
+        - same side
+        - positive / negative price impact
+        - price impact negative -> rapid increase in fees
+        - area of same side pos price impact >= area of cross over pos price impact
       - [Code - price impact](./notes/price_impact.md)
       - [Code - virtual inventory](./notes/virtual_inventory.md)
   - Swap

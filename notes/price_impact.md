@@ -120,28 +120,3 @@ cross over price impact = d0 ^ e * p - d1 ^ e * n
 [PricingUtils.getPriceImpactUsdForSameSideRebalance](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/pricing/PricingUtils.sol#L61-L77)
 
 [PricingUtils.getPriceImpactUsdForCrossoverRebalance](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/pricing/PricingUtils.sol#L88-L102)
-
-> Why exponents?
-
-Makes price manipulation rapidly expensive
-
-> Why positive impact factor must be <= negative impact factor
-
-`MarketUtils.getAdjustedSwapImpactFactors`
-
-If the positive impact factor is more than the negative impact factor, positions could be opened
-and closed immediately for a profit if the difference is sufficient to cover the position fees
-
-```
-Example from graph
-
-f_p = 0.3 > f_n = 0.1
-x0 = 2, x1 = 1, -> p = 0.9
-x0 = 1, x1 = 2  -> p = -0.3
-0.9 - 0.3 = 0.6
-
-f_p = 0.3 < f_n = 2
-x0 = 2, x1 = 1, -> p = 0.9
-x0 = 1, x1 = 2  -> p = -6
-0.9 - 6 = -5.1
-```
