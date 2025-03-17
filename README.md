@@ -183,6 +183,8 @@ forge build
       - close position
       - deposit liquidity
       - impact pool
+      - same side
+      - cross over
       - TODO: [Virtual inventory](./notes/swap/virtual_inventory.md)
       - [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
       - [Code - price impact](./notes/price_impact.md)

@@ -1,19 +1,5 @@
 # Price impact
 
-`SwapPricingUtils.getPriceImpactUsd`
-
-`PricingUtils.getPriceImpactUsdForSameSideRebalance`
-
-`PricingUtils.getPriceImpactUsdForCrossoverRebalance`
-
-`MarketUtils.getPositionImpactPoolAmount`
-
-`MarketUtils.getSwapImpactPoolAmount`
-
-`MarketUtils.getPoolValueInfo`
-
-[Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
-
 ## Purpose
 
 If an action (swap, long, short, deposit liquidity)
@@ -107,6 +93,8 @@ cross over = not same side
 
 ### Price impact
 
+[Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
+
 ```
 d0 = initial imbalance
 d1 = next imbalance
@@ -124,6 +112,14 @@ p <= n
 
 cross over price impact = d0 ^ e * p - d1 ^ e * n
 ```
+
+[SwapPricingUtils.getPriceImpactUsd](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/pricing/SwapPricingUtils.sol#L109-L166)
+
+[PositionPricingUtils.getPriceImpactUsd](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/pricing/PositionPricingUtils.sol#L159-L182)
+
+[PricingUtils.getPriceImpactUsdForSameSideRebalance](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/pricing/PricingUtils.sol#L61-L77)
+
+[PricingUtils.getPriceImpactUsdForCrossoverRebalance](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/pricing/PricingUtils.sol#L88-L102)
 
 > Why exponents?
 
