@@ -179,12 +179,11 @@ forge build
       - UI
       - Purpose
       - swap
-        - positive -> + amount out
-        - negative -> - amount in
-        - TODO: [Virtual inventory](./notes/swap/virtual_inventory.md)
-      - open position -> worse price
-      - close position -> worse price / better price
+      - open position
+      - close position
       - deposit liquidity
+      - impact pool
+      - TODO: [Virtual inventory](./notes/swap/virtual_inventory.md)
       - [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
       - [Code - price impact](./notes/price_impact.md)
       - [Code - virtual inventory](./notes/virtual_inventory.md)

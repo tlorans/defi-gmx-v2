@@ -44,17 +44,34 @@ Negative impact -> fee to amount in
 
 ```
 Imbalance for long and short = long open interest - short open interest
-Positive impact -> ?
-Negative impact -> ?
 ```
 
 [`PositionPricingUtil.getPriceImpactUsd`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/pricing/PositionPricingUtils.sol#L159-L182)
+
+```
+Long
+  Positive impact -> lower entry price
+  Negative impact -> higher entry price
+Short
+  Positive impact -> higher entry price
+  Negative impact -> lower entry price
+```
+
 [`PositionUtils.getExecutionPriceForIncrease`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/position/PositionUtils.sol#L621-L714)
+
 [`PositionUtils.getExecutionPriceForDecrease`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/position/PositionUtils.sol#L717-L790)
+
+[`BaseOrderUtils.getExecutionPriceForDecrease`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/order/BaseOrderUtils.sol#L374-L389)
 
 ## Deposit liquidity
 
-## Positions
+```
+Imbalance for swap = long tokens in pool USD - short tokens in pool USD
+Positive impact -> mint additional market token
+Negative impact -> fees deducted from deposit amounts
+```
+
+[`ExecuteDepositUtils._executeDeposit`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/deposit/ExecuteDepositUtils.sol#L399-L486)
 
 ### Impact pools
 
@@ -65,6 +82,14 @@ Negative impact -> ?
   - Pay positive impact to user
   - Store negative impact from user
   - Slowly released back to pool for LP to claim
+
+[`MarketUtils.getSwapImpactPoolAmount`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/market/MarketUtils.sol#L843-L845)
+
+[`MarketUtils.getPositionImpactPoolAmount`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/market/MarketUtils.sol#L834-L836)
+
+[`MarketUtils.getPendingPositionImpactPoolDistributionAmount`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/market/MarketUtils.sol#L2509-L2532)
+
+[`MarketUtils.distributePositionImpactPool`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/market/MarketUtils.sol#L2473-L2497)
 
 ### Same side
 
