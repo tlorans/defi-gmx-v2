@@ -5,7 +5,7 @@
 
 > How is borrowing fee rate calculated?
 
-`MarketUtils.updateCumulativeBorrowingFactor`
+[`MarketUtils.updateCumulativeBorrowingFactor`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/market/MarketUtils.sol#L1417-L1440)
 
 ```
 PositionUtils.updateFundingAndBorrowingState
@@ -23,7 +23,7 @@ PositionUtils.updateFundingAndBorrowingState
     └ incrementCumulativeBorrowingFactor
 ```
 
-`MarketUtils.getBorrowingFactorPerSecond`
+[`MarketUtils.getBorrowingFactorPerSecond`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/market/MarketUtils.sol#L2368-L2430)
 
 ```
 if optimal usage factor = 0
@@ -34,7 +34,7 @@ if optimal usage factor = 0
     r^e / P * b
 ```
 
-`MarketUtils.getUsageFactor`
+[`MarketUtils.getUsageFactor`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/market/MarketUtils.sol#L498-L518)
 
 ```
 usage factor = max(reserve usage factor, open interest usage factor)
@@ -43,7 +43,7 @@ max reserve = reserve factor * pool usd
 open interest usage factor = open interest / max open interest
 ```
 
-`MarketUtils.getKinkBorrowingFactor`
+[`MarketUtils.getKinkBorrowingFactor`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/market/MarketUtils.sol#L2432-L2471)
 
 ```
 u = usage factor
@@ -59,11 +59,7 @@ if u > u_o
 
 > How is borrowing fee calculated for trader?
 
-`MarketUtils.getBorrowingFees`
-
-`MarketUtils.getNextBorrowingFees`
-
-`MarketUtils.getTotalPendingBorrowingFees`
+[`MarketUtils.getBorrowingFees`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/market/MarketUtils.sol#L1708-L1715)
 
 > How is borrowing fee updated for trader?
 

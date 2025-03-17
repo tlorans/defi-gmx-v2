@@ -176,7 +176,6 @@ forge build
     - Execution fee
       - UI and transcations
     - [Price impact](./notes/price_impact.md)
-      - UI
       - Purpose
       - swap
       - open position
