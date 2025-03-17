@@ -186,7 +186,7 @@ forge build
       - same side
       - cross over
       - [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
-        - same side
+        - same side (long >= short)
         - positive / negative price impact
         - price impact negative -> rapid increase in fees
         - area of same side pos price impact >= area of cross over pos price impact
