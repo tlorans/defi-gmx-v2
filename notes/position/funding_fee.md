@@ -1,11 +1,13 @@
 # Funding fee
 
+## Purpose
+
 - Incentivise the balancing of long and short positions,
 - Side with larger open interest pays a funding fee to the side with the smaller open interest
 - Balances long and short demands
   - Traders pay each other instead of LPs directly covering trader profits
 
-> How is funding fee rate calculated?
+## How is funding fee rate calculated?
 
 `MarketUtils.getNextFundingAmountPerSize`
 
@@ -69,7 +71,7 @@ F = s * min(|F|, F_max)
 F = s * max(|F|, F_min)
 ```
 
-> How is funding fee updated for trader?
+## How is funding fee updated for trader?
 
 ```
 MarketUtils.updateFundingState
@@ -127,7 +129,7 @@ ExecuteOrderUtils.executeOrder
          └─ position.setShortTokenClaimableFundingAmountPerSize
 ```
 
-> How is funding fee claimed by LP?
+## How is funding fee claimed by LP?
 
 Claim fees from increased pool amount
 

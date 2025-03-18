@@ -80,7 +80,7 @@ if optimal usage factor = 0
 
 ```
 usage factor = max(reserve usage factor, open interest usage factor)
-reserve usage factor = reserve usage / max reserve
+reserve usage factor = reserved USD / max reserve
 max reserve = reserve factor * pool usd
 open interest usage factor = open interest / max open interest
 ```
