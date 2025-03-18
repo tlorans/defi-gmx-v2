@@ -165,50 +165,55 @@ forge build
 
 ### Trading
 
-- [?] [Code - profit and loss](./notes/position/pnl.md)
 - [x] [Graph - example strategies](https://www.desmos.com/calculator/ieq40vs9ve)
   - Long ETH, ETH collateral
   - Long ETH, USDC collateral
   - Short ETH, ETH collateral
   - Short ETH, USDC collateral
 - Fees
-  - [ ] Common fees
+  - [ ] 2 - TODO: Common fees
     - Execution fee
       - UI and transcations
     - [Price impact](./notes/price_impact.md)
-      - Purpose
-      - swap
-      - open position
-      - close position
-      - deposit liquidity
-      - impact pool
-      - same side
-      - cross over
-      - [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
+      - 3 - Purpose
+      - 4 - swap
+        - open position
+        - close position
+        - deposit liquidity
+      - [x] 5 formula
+        - same side
+        - cross over
+      - [x] 6 [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
         - same side (long >= short)
         - positive / negative price impact
         - price impact negative -> rapid increase in fees
         - area of same side pos price impact >= area of cross over pos price impact
-      - [Code - virtual inventory](./notes/virtual_inventory.md)
+      - [x] 7 [Code - virtual inventory](./notes/virtual_inventory.md)
   - Swap
-    - UI
+    - 8 TODO: UI
       - Swap fee on amount in
       - Price impact
       - [Code](./notes/swap/swap_fees.md)
   - [Position](./notes/position/position_fees.md)
-    - UI
-    - [Deposit and withdrawal fees](./notes/swap/swap_fees.md)
+    - 9 - TODO: UI
     - Price impact
+    - deposit / withdrawal fee
+    - ui fee
+    - execution fee
     - Borrowing fees
-      - Purpose
-      - [Math](./notes/position/borrowing_fee.png)
-      - [How to updated borrowing fee](./notes/position/borrowing_fee.md)
-      - [Kink graph](https://www.desmos.com/calculator/9khv07nrfb)
+      - 10 - [Math](./notes/position/borrowing_fee.png)
+        - Purpose
+      - 11 - How borrowing fee is calculated in code
+      - 12 - [How to update borrowing fee](./notes/position/borrowing_fee.md)
+      - 13 - get next cumulative borrowing factor
+      - 14 - Borrowing factor per second
+        - TODO: getReservedUsd
+      - 15 - [Graph kink borrowing factor](https://www.desmos.com/calculator/9khv07nrfb)
     - Funding fees
-      - UI claim (funding fees)
-      - Purpose
-      - [Math](./notes/positions/funding_fee.png)
-      - [How to update and claim](./notes/position/funding_fee.md)
+      - 16 - Purpose
+      - 17 - [Math](./notes/positions/funding_fee.png)
+      - 18? - [How to update and claim](./notes/position/funding_fee.md)
+      - 19 - UI claim (funding fees)
 - [ ] Order types
   - Market swaps
   - Limit swaps
