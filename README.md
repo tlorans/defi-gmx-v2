@@ -202,7 +202,7 @@ forge build
     - Borrowing fees
       - Purpose
       - [Math](./notes/position/borrowing_fee.png)
-      - [How to updated borrowing fee](./notes/positions/borrowing_fee.md)
+      - [How to updated borrowing fee](./notes/position/borrowing_fee.md)
       - [Kink graph](https://www.desmos.com/calculator/9khv07nrfb)
     - Funding fees
       - UI claim (funding fees)
