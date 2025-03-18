@@ -45,30 +45,12 @@ Short
 ## Deposit liquidity
 
 ```
-Imbalance for swap = long tokens in pool USD - short tokens in pool USD
+Imbalance for deposit liquidity = long tokens in pool USD - short tokens in pool USD
 Positive impact -> mint additional market token
 Negative impact -> fees deducted from deposit amounts
 ```
 
 [`ExecuteDepositUtils._executeDeposit`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/deposit/ExecuteDepositUtils.sol#L399-L486)
-
-## Impact pools
-
-- Swap impact pool
-  - Pay positive impact to user
-  - Store negative impact from user
-- Position impact pool
-  - Pay positive impact to user
-  - Store negative impact from user
-  - Slowly released back to pool for LP to claim
-
-[`MarketUtils.getSwapImpactPoolAmount`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/market/MarketUtils.sol#L843-L845)
-
-[`MarketUtils.getPositionImpactPoolAmount`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/market/MarketUtils.sol#L834-L836)
-
-[`MarketUtils.getPendingPositionImpactPoolDistributionAmount`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/market/MarketUtils.sol#L2509-L2532)
-
-[`MarketUtils.distributePositionImpactPool`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/market/MarketUtils.sol#L2473-L2497)
 
 ## Same side
 
