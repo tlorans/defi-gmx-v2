@@ -2,14 +2,14 @@
 
 ## Purpose
 
-- Incentivise the balancing of long and short positions,
+- Incentivise the balancing of long and short positions
 - Side with larger open interest pays a funding fee to the side with the smaller open interest
 - Balances long and short demands
   - Traders pay each other instead of LPs directly covering trader profits
 
 ## How is funding fee rate calculated?
 
-`MarketUtils.getNextFundingAmountPerSize`
+[`MarketUtils.getNextFundingAmountPerSize`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/market/MarketUtils.sol#L1091-L1251)
 
 Funding fee in USD per size
 
@@ -21,7 +21,7 @@ divisor = Long token  = short token -> 2
 funding fee in USD per size = f * dt * size of larger side / size of smaller side / divisor
 ```
 
-`MarketUtils.getNextFundingFactorPerSecond`
+[`MarketUtils.getNextFundingFactorPerSecond`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/market/MarketUtils.sol#L1261-L1385)
 
 Funding factor per second
 
