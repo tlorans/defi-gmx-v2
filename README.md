@@ -173,8 +173,9 @@ forge build
 - Fees
   - [ ] 2 - TODO: Common fees
     - UI
-    - Execution fee
-    - Price impact
+      - Execution fee
+      - Price impact
+      - UI
   - Price impact
     - 3 - TODO: [Purpose](./notes/price_impact.md)
     - 4 - TODO: [swap](./notes/price_impact.md)

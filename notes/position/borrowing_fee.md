@@ -76,6 +76,8 @@ if optimal usage factor = 0
     r^e / P * b
 ```
 
+[`MarketUtils.getReservedUsd`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/market/MarketUtils.sol#L1742-L1766)
+
 [`MarketUtils.getUsageFactor`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/market/MarketUtils.sol#L498-L518)
 
 ```
