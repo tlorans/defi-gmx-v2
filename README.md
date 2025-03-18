@@ -172,34 +172,36 @@ forge build
   - Short ETH, USDC collateral
 - Fees
   - [ ] 2 - TODO: Common fees
+    - UI
     - Execution fee
-      - UI and transcations
-    - [Price impact](./notes/price_impact.md)
-      - 3 - Purpose
-      - 4 - swap
-        - open position
-        - close position
-        - deposit liquidity
-      - [x] 5 formula
-        - same side
-        - cross over
-      - [x] 6 [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
-        - same side (long >= short)
-        - positive / negative price impact
-        - price impact negative -> rapid increase in fees
-        - area of same side pos price impact >= area of cross over pos price impact
-      - [x] 7 [Code - virtual inventory](./notes/virtual_inventory.md)
+    - Price impact
+  - Price impact
+    - 3 - TODO: [Purpose](./notes/price_impact.md)
+    - 4 - TODO: [swap](./notes/price_impact.md)
+      - open position
+      - close position
+      - deposit liquidity
+    - [x] 5 [formula](./notes/price_impact.md)
+      - same side
+      - cross over
+    - [x] 6 [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
+      - same side (long >= short)
+      - positive / negative price impact
+      - price impact negative -> rapid increase in fees
+      - area of same side pos price impact >= area of cross over pos price impact
+    - [x] 7 [Code - virtual inventory](./notes/virtual_inventory.md)
   - Swap
     - 8 TODO: UI
-      - Swap fee on amount in
+      - [Swap fee on amount in](./notes/swap/swap_fees.md)
       - Price impact
-      - [Code](./notes/swap/swap_fees.md)
   - [Position](./notes/position/position_fees.md)
     - 9 - TODO: UI
-    - Price impact
-    - deposit / withdrawal fee
-    - ui fee
-    - execution fee
+      - Price impact
+      - deposit / withdrawal fee
+      - ui fee
+      - execution fee
+      - borrowing fee
+      - funding fee
     - Borrowing fees
       - 10 - [Math](./notes/position/borrowing_fee.png)
         - Purpose
@@ -211,9 +213,10 @@ forge build
       - 15 - [Graph kink borrowing factor](https://www.desmos.com/calculator/9khv07nrfb)
     - Funding fees
       - 16 - Purpose
-      - 17 - [Math](./notes/positions/funding_fee.png)
-      - 18? - [How to update and claim](./notes/position/funding_fee.md)
-      - 19 - UI claim (funding fees)
+      - 17 - TODO: UI claim (funding fees)
+      - 18 - [Math](./notes/positions/funding_fee.png)
+      - 19 TODO: - [How funding fee is updated](./notes/position/funding_fee.md)
+      - 20 TODO: - [How funding fee factor is calculated](./notes/position/funding_fee.md)
 - [ ] Order types
   - Market swaps
   - Limit swaps
