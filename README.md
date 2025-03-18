@@ -189,7 +189,6 @@ forge build
         - positive / negative price impact
         - price impact negative -> rapid increase in fees
         - area of same side pos price impact >= area of cross over pos price impact
-      - [Code - price impact](./notes/price_impact.md)
       - [Code - virtual inventory](./notes/virtual_inventory.md)
   - Swap
     - UI
