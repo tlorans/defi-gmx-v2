@@ -31,7 +31,7 @@ L = Long open interest
 S = Short open interest
 e = Funding exponent factor
 
-f = |L - S| ^ e / (L  + S)
+f = |L - S| ^ e / (L + S)
 
 Fi = Funding increase factor per sec
 Fd = Funding decrease factor per sec

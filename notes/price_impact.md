@@ -10,7 +10,7 @@ If an action (swap, long, short, deposit liquidity)
 ## Swap
 
 ```
-Imbalance for swap = long tokens in pool USD - short tokens in pool USD
+Imbalance for swap = |long tokens in pool USD - short tokens in pool USD|
 Positive impact -> bonus to amount out
 Negative impact -> fee to amount in
 ```
@@ -22,18 +22,18 @@ Negative impact -> fee to amount in
 ## Long and short
 
 ```
-Imbalance for long and short = long open interest - short open interest
+Imbalance for long and short = |long open interest - short open interest|
 ```
 
 [`PositionPricingUtil.getPriceImpactUsd`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/pricing/PositionPricingUtils.sol#L159-L182)
 
 ```
 Long
-  Positive impact -> lower entry price
-  Negative impact -> higher entry price
+  Positive impact -> lower execution price
+  Negative impact -> higher execution price
 Short
-  Positive impact -> higher entry price
-  Negative impact -> lower entry price
+  Positive impact -> higher execution price
+  Negative impact -> lower execution price
 ```
 
 [`PositionUtils.getExecutionPriceForIncrease`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/position/PositionUtils.sol#L621-L714)
@@ -45,7 +45,7 @@ Short
 ## Deposit liquidity
 
 ```
-Imbalance for deposit liquidity = long tokens in pool USD - short tokens in pool USD
+Imbalance for deposit liquidity = |long tokens in pool USD - short tokens in pool USD|
 Positive impact -> mint additional market token
 Negative impact -> fees deducted from deposit amounts
 ```
