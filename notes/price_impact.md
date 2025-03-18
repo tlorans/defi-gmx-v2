@@ -28,21 +28,25 @@ Imbalance for long and short = |long open interest - short open interest|
 [`PositionPricingUtil.getPriceImpactUsd`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/pricing/PositionPricingUtils.sol#L159-L182)
 
 ```
-Long
-  Positive impact -> lower execution price
-  Negative impact -> higher execution price
-Short
-  Positive impact -> higher execution price
-  Negative impact -> lower execution price
+Open
+  Long
+    Positive impact -> increase size delta in tokens -> lower execution price
+    Negative impact -> decrease size delta in tokens -> higher execution price
+  Short
+    Positive impact -> decrease size delta in tokens -> higher execution price
+    Negative impact -> increase size delta in tokens -> lower execution price
+Close
+  Positive impact -> receive token
+  Negative impact -> pay from collateral
 ```
 
 [`PositionUtils.getExecutionPriceForIncrease`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/position/PositionUtils.sol#L621-L714)
 
 [`PositionUtils.getPositionPnlUsd`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/position/PositionUtils.sol#L176-L233)
 
-[`PositionUtils.getExecutionPriceForDecrease`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/position/PositionUtils.sol#L717-L790)
+[`DecreasePositionCollateralUtils.processCollateral`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/position/DecreasePositionCollateralUtils.sol#L139-L173)
 
-[`BaseOrderUtils.getExecutionPriceForDecrease`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/order/BaseOrderUtils.sol#L374-L389)
+[`DecreasePositionCollateralUtils.processCollateral`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/position/DecreasePositionCollateralUtils.sol#L379-L386)
 
 ## Deposit liquidity
 
