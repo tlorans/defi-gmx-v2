@@ -217,8 +217,8 @@ forge build
       - 16 - Purpose
       - 17 - UI claim (funding fees)
       - 18 - [Math](./notes/positions/funding_fee.png)
-      - 19 TODO: - [How funding fee is updated](./notes/position/funding_fee.md)
-      - 20 TODO: - [How funding fee factor is calculated](./notes/position/funding_fee.md)
+      - 19 TODO: - [How is funding fee updated](./notes/position/funding_fee.md)
+      - 20 TODO: - [How is funding factor per second calculated](./notes/position/funding_fee.md)
 - [ ] Order types
   - Market swaps
   - Limit swaps

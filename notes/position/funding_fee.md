@@ -9,18 +9,6 @@
 
 ## How is funding fee rate calculated?
 
-[`MarketUtils.getNextFundingAmountPerSize`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/market/MarketUtils.sol#L1091-L1251)
-
-Funding fee in USD per size
-
-```
-f = Funding fee factor per second
-dt = Time elapsed since last update
-divisor = Long token  = short token -> 2
-        = Long token != short token -> 1
-funding fee in USD per size = f * dt * size of larger side / size of smaller side / divisor
-```
-
 [`MarketUtils.getNextFundingFactorPerSecond`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/market/MarketUtils.sol#L1261-L1385)
 
 Funding factor per second
@@ -31,13 +19,13 @@ L = Long open interest
 S = Short open interest
 e = Funding exponent factor
 
-f = |L - S| ^ e / (L + S)
-
 Fi = Funding increase factor per sec
 Fd = Funding decrease factor per sec
 F_min = min funding factor per sec
 F_max = max funding factor per sec
 F_market = Funding factor for this market
+
+f = |L - S| ^ e / (L + S)
 
 if Fi = 0
    F = min(f * F_market, F_max)
