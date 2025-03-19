@@ -171,14 +171,15 @@ forge build
   - Short ETH, ETH collateral
   - Short ETH, USDC collateral
 - Fees
-  - [ ] 2 - TODO: Common fees
+  - [ ] 2 - Common fees
     - UI
       - Execution fee
-      - Price impact
       - UI
+      - Price impact
   - Price impact
-    - 3 - TODO: [Purpose](./notes/price_impact.md)
-    - 4 - TODO: [swap](./notes/price_impact.md)
+    - 3 - [Purpose](./notes/price_impact.md)
+    - 4 - [swap](./notes/price_impact.md)
+      - swap
       - open position
       - close position
       - deposit liquidity
@@ -192,11 +193,11 @@ forge build
       - area of same side pos price impact >= area of cross over pos price impact
     - [x] 7 [Code - virtual inventory](./notes/virtual_inventory.md)
   - Swap
-    - 8 TODO: UI
+    - 8 UI
       - [Swap fee on amount in](./notes/swap/swap_fees.md)
       - Price impact
   - [Position](./notes/position/position_fees.md)
-    - 9 - TODO: UI
+    - 9 - UI
       - Price impact
       - deposit / withdrawal fee
       - ui fee
@@ -210,11 +211,11 @@ forge build
       - 12 - [How to update borrowing fee](./notes/position/borrowing_fee.md)
       - 13 - get next cumulative borrowing factor
       - 14 - Borrowing factor per second
-        - TODO: getReservedUsd
+        - getReservedUsd
       - 15 - [Graph kink borrowing factor](https://www.desmos.com/calculator/9khv07nrfb)
     - Funding fees
       - 16 - Purpose
-      - 17 - TODO: UI claim (funding fees)
+      - 17 - UI claim (funding fees)
       - 18 - [Math](./notes/positions/funding_fee.png)
       - 19 TODO: - [How funding fee is updated](./notes/position/funding_fee.md)
       - 20 TODO: - [How funding fee factor is calculated](./notes/position/funding_fee.md)

@@ -74,22 +74,6 @@ F = s * max(|F|, F_min)
 ## How is funding fee updated for trader?
 
 ```
-MarketUtils.updateFundingState
-├─ getNextFundingAmountPerSize
-│  ├─ getOpenInterest
-│  ├─ getOpenInterest
-│  ├─ getOpenInterest
-│  ├─ getOpenInterest
-│  ├─ getSecondsSinceFundingUpdated
-│  ├─ getNextFundingFactorPerSecond
-│  ├─ getFundingAmountPerSizeDelta
-│  ├─ getFundingAmountPerSizeDelta
-│  ├─ getFundingAmountPerSizeDelta
-│  └─ getFundingAmountPerSizeDelta
-├─ applyDeltaToFundingFeeAmountPerSize
-├─ applyDeltaToClaimableFundingAmountPerSize
-└─ setSavedFundingFactorPerSecond
-
 ExecuteOrderUtils.executeOrder
 ├─ PositionUtils.updateFundingAndBorrowingState (update funding fee)
 │  └─ MarketUtils.updateFundingState
@@ -109,6 +93,7 @@ ExecuteOrderUtils.executeOrder
          │         ├─ MarketUtils.getFundingAmount
          │         ├─ MarketUtils.getFundingAmount
          │         └─ MarketUtils.getFundingAmount
+         ├─ position.setCollateralAmount
          ├─ PositionUtils.incrementClaimableFundingAmount (store claimable funding fees)
          │   └─ MarketUtils.incrementClaimableFundingAmount
          ├─ position.setFundingFeeAmountPerSize (update funding fees to latest)
@@ -123,10 +108,28 @@ ExecuteOrderUtils.executeOrder
       └─ DecreasePositionUtils.decreasePosition
          ├─ DecreasePositionCollateralUtils.processCollateral
          │   └─ PositionPricingUtils.getPositionFees
+         ├─ position.setCollateralAmount
          ├─ PositionUtils.incrementClaimableFundingAmount
          ├─ position.setFundingFeeAmountPerSize
          ├─ position.setLongTokenClaimableFundingAmountPerSize
          └─ position.setShortTokenClaimableFundingAmountPerSize
+
+MarketUtils.updateFundingState
+├─ getNextFundingAmountPerSize
+│  ├─ getOpenInterest
+│  ├─ getOpenInterest
+│  ├─ getOpenInterest
+│  ├─ getOpenInterest
+│  ├─ getSecondsSinceFundingUpdated
+│  ├─ getNextFundingFactorPerSecond
+│  ├─ getFundingAmountPerSizeDelta
+│  ├─ getFundingAmountPerSizeDelta
+│  ├─ getFundingAmountPerSizeDelta
+│  └─ getFundingAmountPerSizeDelta
+├─ applyDeltaToFundingFeeAmountPerSize
+├─ applyDeltaToClaimableFundingAmountPerSize
+└─ setSavedFundingFactorPerSecond
+
 ```
 
 ## How is funding fee claimed by LP?

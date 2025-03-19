@@ -2,6 +2,8 @@
 
 ## Purpose
 
+Keep the pools balanced between long and short.
+
 If an action (swap, long, short, deposit liquidity)
 
 - Reduces imbalance = positive impact -> rebate
