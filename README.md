@@ -165,7 +165,7 @@ forge build
 
 ### Trading
 
-- [x] [Graph - example strategies](https://www.desmos.com/calculator/ieq40vs9ve)
+- [x] 1 - [Graph - example strategies](https://www.desmos.com/calculator/ieq40vs9ve)
   - Long ETH, ETH collateral
   - Long ETH, USDC collateral
   - Short ETH, ETH collateral
@@ -217,16 +217,18 @@ forge build
       - 16 - Purpose
       - 17 - UI claim (funding fees)
       - 18 - [Math](./notes/positions/funding_fee.png)
-      - 19 TODO: - [How is funding fee updated](./notes/position/funding_fee.md)
-      - 20 TODO: - [How is funding factor per second calculated](./notes/position/funding_fee.md)
-- [ ] Order types
-  - Market swaps
-  - Limit swaps
-  - Market increase
-  - Limit increase
-  - Market decrease
-  - Limit decrease
-  - Stop loss decrease
+      - 19 - [How is funding fee updated](./notes/position/funding_fee.md)
+      - 20 - [How is funding factor per second calculated](./notes/position/funding_fee.md)
+- Order types
+  - UI
+    - Market swaps
+    - Limit swaps
+    - Market increase
+    - Limit increase
+    - Market decrease
+    - Limit decrease
+    - Stop loss decrease
+    - code - Order types
 - [ ] Contract calls (2 step tx - create order + execute order)
   - Swap
     - [Market swap](./notes/swap/swap.md)
