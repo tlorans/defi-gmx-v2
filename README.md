@@ -177,13 +177,13 @@ forge build
       - UI
       - Price impact
   - Price impact
-    - 3 - [Purpose](./notes/price_impact.md)
-    - 4 - [swap](./notes/price_impact.md)
+    - 3 - [Purpose of price impact](./notes/price_impact.md)
+    - 4 - [Price impacts for swap, positions and liquidity](./notes/price_impact.md)
       - swap
       - open position
       - close position
       - deposit liquidity
-    - [x] 5 [formula](./notes/price_impact.md)
+    - [x] 5 [Price impact formula](./notes/price_impact.md)
       - same side
       - cross over
     - [x] 6 [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
@@ -219,56 +219,57 @@ forge build
       - 18 - [Math](./notes/positions/funding_fee.png)
       - 19 - [How is funding fee updated](./notes/position/funding_fee.md)
       - 20 - [How is funding factor per second calculated](./notes/position/funding_fee.md)
-- Order types
-  - UI
-    - Market swaps
-    - Limit swaps
-    - Market increase
-    - Limit increase
-    - Market decrease
-    - Limit decrease
-    - Stop loss decrease
-    - code - Order types
+- 21 - UI take profit and stop loss
+- [Order types](./notes/order_types.md)
+  - 22 - UI
+    - swap
+      - market
+      - limit
+    - Long and short
+      - market
+      - limit
+        - long -> limit price =< mark price
+        - short -> limit price >= mark price
+      - tp / sl
+        - long
+          -> trigger price > mark -> take profit
+          -> trigger price < mark -> stop loss
+        - short
+          -> trigger price > mark -> stop loss
+          -> trigger price < mark -> take profit
+        - Auto cancel
+      - stop market
+        - long -> stop price > mark (create order above current price)
+        - short -> stop price < mark
 - [ ] Contract calls (2 step tx - create order + execute order)
   - Swap
     - [Market swap](./notes/swap/swap.md)
-      - [Token flow](./notes/execute_swap.png)
-      - [tx - Swap DAI to ETH part 1](https://arbiscan.io/tx/0x747665f80ccd64918af4f4cd2d3c7e7c077d061d61bc47fc99f644d1eb4d18f4)
-      - [tx - Swap DAI to ETH part 2](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
+      - 23 - [Token flow](./notes/execute_swap.png)
+      - 24 - [tx - Swap DAI to ETH part 1](https://arbiscan.io/tx/0x747665f80ccd64918af4f4cd2d3c7e7c077d061d61bc47fc99f644d1eb4d18f4)
+      - 25 - [tx - Swap DAI to ETH part 2](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
     - Limit swap
       - [tx - Limit order swap 2.63 USDC to ETH at $2780 part 1](https://arbiscan.io/tx/0x5a55b926aadaa832a42c55a4a60b0008193c773767e7289cdeb7eca0e1433595)
       - [tx - Limit order swap 2.63 USDC to ETH at $2780 part 2](https://arbiscan.io/tx/0x2306c6c8300a10a4e59c6dcc04513c84c0d2469172beb5c8f9cf1820eba308d0)
   - Long (open / close / deposit / withdraw)
-    - UI limit, TP / SL, stop market
-      - Auto cancel
-      - Limit
-        - Long -> create long position above limit
-        - Short -> create short position below limit
-      - TP / SL
-        - Long
-        - Short
-      - Stop market
-        - Long
-        - Short
     - [Open](./notes/position/market_increase.md)
-      - [tx - Long ETH 0.001 70x ~ $190 part 1](https://arbiscan.io/tx/0xcac1ce9014aafcd3d8ae89c27cfd4866de36ff010ded5344a65bd4034d358413)
+      - 26 - [tx - Long ETH 0.001 70x ~ $190 part 1](https://arbiscan.io/tx/0xcac1ce9014aafcd3d8ae89c27cfd4866de36ff010ded5344a65bd4034d358413)
         - `market`
         - `initialCollateralToken`
         - `swapPath`
         - `sizeDeltaUsd`
         - `executionFee`
         - `orderType`
-      - [tx - Long ETH 0.001 70x ~ $190 part 2](https://arbiscan.io/tx/0x29d95557ef789fd6d9031c739a29dd5adc112f3ff8aab0524cd6aa9ddfc4e278)
+      - 27 - [tx - Long ETH 0.001 70x ~ $190 part 2](https://arbiscan.io/tx/0x29d95557ef789fd6d9031c739a29dd5adc112f3ff8aab0524cd6aa9ddfc4e278)
         - `leverage = position size USD / collateral amount USD`
         - `initialCollateralDeltaAmount`
         - `swapPath`
     - [Close](./notes/position/market_decrease.md)
-      - [tx - Close long ETH 0.001 70x ~ $190 part 1](https://arbiscan.io/tx/0x13cdef0acc7d4017f82df308f0f628996b707396182fc2a2042e78b0ebc4657d)
+      - 28 - [tx - Close long ETH 0.001 70x ~ $190 part 1](https://arbiscan.io/tx/0x13cdef0acc7d4017f82df308f0f628996b707396182fc2a2042e78b0ebc4657d)
         - `sizeDeltaUsd`
         - `initialCollateralDeltaAmount`
         - `decreasePositionSwapType`
         - Default profit paid in long pos -> long token, short pos -> short token
-      - [tx - Close long ETH 0.001 70x ~ $190 part 2](https://arbiscan.io/tx/0xf5f5d293ef7bdc6893941cda6a6fd57d67a20876a175aa1e424af9442868bb47)
+      - 29 - [tx - Close long ETH 0.001 70x ~ $190 part 2](https://arbiscan.io/tx/0xf5f5d293ef7bdc6893941cda6a6fd57d67a20876a175aa1e424af9442868bb47)
   - Short (open / close / deposit / withdraw)
     - [tx - Short 0.01 ETH part 1](https://arbiscan.io/tx/0x15f4bb54997d8efbf0816313e64120fe5bf89ab31fe78f4a647f47b61b629eea)
     - [tx - Short 0.01 ETH part 2](https://arbiscan.io/tx/0x7039c81c3f14f54fbfb45c337fb13e4513b8e795a2d9237b66b2b191e717121e)
