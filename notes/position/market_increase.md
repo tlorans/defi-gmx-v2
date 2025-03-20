@@ -30,14 +30,14 @@ OrderHandler.executeOrder
 │     ├─ processOrder
 │     │  └─ IncreaseOrderUtils.processOrder
 │     │     ├─ SwapUtils.swap
-│     │     ├─ PositionStoeUtils.get
+│     │     ├─ PositionStoreUtils.get
 │     │     └─ IncreasePositionUtils.increasePosition
 │     │        ├─ processCollateral
 │     │        │  ├─ PositionPricingUtils.getPositionFees
 │     │        │  ├─ MarketUtils.applyDeltaToCollateralSum
 │     │        │  └─ MarketUtils.applyDeltaToPoolAmount
 │     │        ├─ MarketUtils.updateTotalBorrowing
-│     │        ├─ PositionStoeUtils.set
+│     │        ├─ PositionStoreUtils.set
 │     │        └─ PositionUtils.updateOpenInterest
 │     └─ GasUtils.payExecutionFee
 └─ OracleModule.withOraclePrices

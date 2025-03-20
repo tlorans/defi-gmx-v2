@@ -251,6 +251,7 @@ forge build
         - bytes32 key output
       - 25 - [tx - Swap DAI to ETH part 2](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
         - setPrices and clearAllPrices
+  - TODO?: distributePositionImpactPool
     - Limit swap
       - [tx - Limit order swap 2.63 USDC to ETH at $2780 part 1](https://arbiscan.io/tx/0x5a55b926aadaa832a42c55a4a60b0008193c773767e7289cdeb7eca0e1433595)
       - [tx - Limit order swap 2.63 USDC to ETH at $2780 part 2](https://arbiscan.io/tx/0x2306c6c8300a10a4e59c6dcc04513c84c0d2469172beb5c8f9cf1820eba308d0)
@@ -288,6 +289,7 @@ forge build
       - `BaseOrderUtils.validateOrderTriggerPrice`
       - ` OrderUtils.clearAutoCancelOrders`
       - Auto cancel
+  - TODO: multicall
   - 31 - [Claim funding fees](./notes/position/claim_funding_fees.md)
     - [tx - Claim funding fees](https://arbiscan.io/tx/0x4415830b1a12882409df17e80be26da8c20e4cc929f1764046ca3aae3ca8339e)
 - [ ] Foundry exercises

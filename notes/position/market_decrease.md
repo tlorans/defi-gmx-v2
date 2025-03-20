@@ -28,7 +28,7 @@ OrderHandler.executeOrder
 │     ├─ PositionUtils.updateFundingAndBorrowingState
 │     ├─ processOrder
 │     │  └─ DecreaseOrderUtils.processOrder
-│     │     ├─ PositionStoeUtils.get
+│     │     ├─ PositionStoreUtils.get
 │     │     ├─ DecreasePositionUtils.decreasePosition
 │     │     │  ├─ DecreasePositionCollateralUtils.processCollateral
 │     │     │  │  ├─ PositionUtils.getPositionPnlUsd
