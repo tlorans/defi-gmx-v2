@@ -171,7 +171,7 @@ forge build
   - Short ETH, ETH collateral
   - Short ETH, USDC collateral
 - Fees
-  - [ ] 2 - Common fees
+  - 2 - Common fees
     - UI
       - Execution fee
       - UI
@@ -220,6 +220,7 @@ forge build
       - 19 - [How is funding fee updated](./notes/position/funding_fee.md)
       - 20 - [How is funding factor per second calculated](./notes/position/funding_fee.md)
 - 21 - UI take profit and stop loss
+  - auto cancel
 - [Order types](./notes/order_types.md)
   - 22 - UI
     - swap
@@ -237,7 +238,6 @@ forge build
         - short
           -> trigger price > mark -> stop loss
           -> trigger price < mark -> take profit
-        - Auto cancel
       - stop market
         - long -> stop price > mark (create order above current price)
         - short -> stop price < mark
@@ -246,7 +246,11 @@ forge build
     - [Market swap](./notes/swap/swap.md)
       - 23 - [Token flow](./notes/execute_swap.png)
       - 24 - [tx - Swap DAI to ETH part 1](https://arbiscan.io/tx/0x747665f80ccd64918af4f4cd2d3c7e7c077d061d61bc47fc99f644d1eb4d18f4)
+        - `multicall`
+        - order input
+        - bytes32 key output
       - 25 - [tx - Swap DAI to ETH part 2](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
+        - setPrices and clearAllPrices
     - Limit swap
       - [tx - Limit order swap 2.63 USDC to ETH at $2780 part 1](https://arbiscan.io/tx/0x5a55b926aadaa832a42c55a4a60b0008193c773767e7289cdeb7eca0e1433595)
       - [tx - Limit order swap 2.63 USDC to ETH at $2780 part 2](https://arbiscan.io/tx/0x2306c6c8300a10a4e59c6dcc04513c84c0d2469172beb5c8f9cf1820eba308d0)
@@ -276,17 +280,15 @@ forge build
     - [tx - Close short 0.01 ETH part 1](https://arbiscan.io/tx/0x3825aab5d7bbfac2b68f75c77c1ff55e684496844a8dd605dc43a1348efceb22)
     - [tx - Close short 0.01 ETH part 2](https://arbiscan.io/tx/0x8ade23d7ad7ee6fb589a0d04724ee8c64f20e92e32688739e0c049b510c690f0)
   - TP and SL
-    - UI limit, TP / SL, stop market TODO: move to later in the course
-      - Auto cancel
     - [tx - Short ETH 0.01 ~ TP $2200 SL $2260 part 1](https://arbiscan.io/tx/0xfb4a9ddd2b80a4e7f739c0281a3869d89ee3cb96fe796446511098eb917016a4)]
       - `StopLossDecrease`
       - `LimitDecrease`
-    - [tx - Short ETH 0.01 ~ TP $2200 SL $2260 part 2](https://arbiscan.io/tx/0x9a32d9750bc14d77756ab9ebae1141c2b4845f44cdf2091fc74b7df174b32887)
+    - 30 - [tx - Short ETH 0.01 ~ TP $2200 SL $2260 part 2](https://arbiscan.io/tx/0x9a32d9750bc14d77756ab9ebae1141c2b4845f44cdf2091fc74b7df174b32887)
     - [tx - Take profit short ETH 0.01 ~ TP $2200 SL $2260](https://arbiscan.io/tx/0x612165df3da2fd87dc0b6c86e76b7d69a5900208da025a80ad275c1319a012c2)
       - `BaseOrderUtils.validateOrderTriggerPrice`
       - ` OrderUtils.clearAutoCancelOrders`
       - Auto cancel
-  - [Claim funding fees](./notes/position/claim_funding_fees.md)
+  - 31 - [Claim funding fees](./notes/position/claim_funding_fees.md)
     - [tx - Claim funding fees](https://arbiscan.io/tx/0x4415830b1a12882409df17e80be26da8c20e4cc929f1764046ca3aae3ca8339e)
 - [ ] Foundry exercises
   - Market swap
@@ -485,3 +487,15 @@ Stake
 - DecreasePositionCollateralUtils.processCollateral
 - ExchangeRouter.claimCollateral
 - what is an atomic provider?
+
+Application ideas
+
+```
+1. Any integration that can help grow trading volume.
+
+2. A delta-neutral funding fee vault, allowing a user to earn GMX funding fees automatically with a delta-neutral position (e.g. holding ETH and shorting ETH when funding is paying shorts).
+
+3. Or, alternatively, an unhedged version of the above instrument. Where a user just takes a position on the side that pays funding fees, counter-trading the existing traders on GMX.
+
+4. A price impact vault, which capitalises on this opportunity on GMX by automatically capturing the value from positive price impact when it becomes available.
+```
