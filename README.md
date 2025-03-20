@@ -286,11 +286,8 @@ forge build
       - `LimitDecrease`
     - 30 - [tx - Short ETH 0.01 ~ TP $2200 SL $2260 part 2](https://arbiscan.io/tx/0x9a32d9750bc14d77756ab9ebae1141c2b4845f44cdf2091fc74b7df174b32887)
     - [tx - Take profit short ETH 0.01 ~ TP $2200 SL $2260](https://arbiscan.io/tx/0x612165df3da2fd87dc0b6c86e76b7d69a5900208da025a80ad275c1319a012c2)
-      - `BaseOrderUtils.validateOrderTriggerPrice`
-      - ` OrderUtils.clearAutoCancelOrders`
-      - Auto cancel
-  - TODO: multicall
-  - 31 - [Claim funding fees](./notes/position/claim_funding_fees.md)
+  - 31 - TODO: multicall
+  - 32 - [Claim funding fees](./notes/position/claim_funding_fees.md)
     - [tx - Claim funding fees](https://arbiscan.io/tx/0x4415830b1a12882409df17e80be26da8c20e4cc929f1764046ca3aae3ca8339e)
 - [ ] Foundry exercises
   - Market swap
@@ -303,13 +300,12 @@ forge build
 
 ### Liquidation
 
-- [ ] UI
-  - leverage + liquidation price
-- [ ] [When executed?](./notes/liquidation.md)
-- Fees
-- [ ] [Math - liquidation price](./notes/liq_price_approx.png)
+- [ ] 1 [When executed?](./notes/liquidation/liquidation.md)
+  - UI leverage + liquidation price
+  - Fees
+- [ ] 2 [Contract calls](./notes/liquidation/liquidation.md)
+- [ ] 3 [Math - liquidation price](./notes/liquidation/liq_price_approx.png)
   - UI demo
-- [ ] [Contract calls](./notes/liquidation.md)
 - [x] Foundry exercises? -> Not public function -> no exercise
 - [ ] ADL
 

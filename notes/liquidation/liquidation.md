@@ -11,14 +11,14 @@ LiquidationHandler.executeLiquidation
       └─ DecreaseOrderUtils.processOrder
          ├─ PositionStoreUtils.get
          ├─ DecreasePositionUtils.decreasePosition
-         │  ├─ PositionUtils.isPositionLiquidatable TODO
-         │  └─ DecreasePositionCollateralUtils.processCollateral TODO
-         └─ MarketToken.transferOut TODO
+         │  ├─ PositionUtils.isPositionLiquidatable
+         │  └─ DecreasePositionCollateralUtils.processCollateral
+         └─ MarketToken.transferOut
 ```
 
 Is position liquidatable?
 
-`PositionUtils.isPositionLiquidatable`
+[`PositionUtils.isPositionLiquidatable`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/position/PositionUtils.sol#L308-L425)
 
 ```
 liquidatable if
@@ -43,5 +43,4 @@ borrowing fee = depends on market and time in position
 liquidation fee = position size x liquidation fee factor
 ui fee = position size x UI fee factor
 discount = pro tier, referral discounts
-funding fee = TODO
 ```
