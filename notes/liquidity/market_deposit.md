@@ -2,6 +2,8 @@
 
 ### Create deposit
 
+[`ExchangeRouter.createDeposit`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/router/ExchangeRouter.sol#L126-L135)
+
 ```
 1. Send long and or short tokens to deposit vault
 2. Send execution fee to deposit vault
@@ -16,6 +18,8 @@ ExchangeRouter.createDeposit
 ```
 
 ### Execute deposit
+
+[`DepositHandler.executeDeposit`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/exchange/DepositHandler.sol#L81-L109)
 
 ```
 DepositHandler.executeDeposit

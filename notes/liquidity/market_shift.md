@@ -2,6 +2,8 @@
 
 ### Create shift
 
+[`ExchangeRouter.createShift`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/router/ExchangeRouter.sol#L213-L222)
+
 ```
 1. Send GM token to shift vault
 2. Send execution fee to shift vault
@@ -16,6 +18,8 @@ ExchangeRouter.createShift
 ```
 
 ### Execute shift
+
+[`ShiftHandler.executeShift`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/exchange/ShiftHandler.sol#L66-L94)
 
 ```
 ShiftHandler.executeShift

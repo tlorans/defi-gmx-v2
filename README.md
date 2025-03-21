@@ -24,6 +24,7 @@ forge build
   - transaction links
   - exercises
     - types and library functions copied from gmx code
+  - notes
 - [ ] UI - Quick guide on how to bridge ETH?
   - [ ] Transactions
 
@@ -232,12 +233,8 @@ forge build
         - long -> limit price =< mark price
         - short -> limit price >= mark price
       - tp / sl
-        - long
-          -> trigger price > mark -> take profit
-          -> trigger price < mark -> stop loss
-        - short
-          -> trigger price > mark -> stop loss
-          -> trigger price < mark -> take profit
+        - long -> trigger price > mark -> take profit -> trigger price < mark -> stop loss
+        - short -> trigger price > mark -> stop loss -> trigger price < mark -> take profit
       - stop market
         - long -> stop price > mark (create order above current price)
         - short -> stop price < mark
@@ -316,6 +313,8 @@ forge build
   - 2 [Fees](./notes/market_liquidity_fees.md)
   - 3 [Mint](./notes/liquidity/market_deposit.md)
     - [tx - Buy GM ETH/USD part 1](https://arbiscan.io/tx/0x6021800ad3d31003082fa6dc7fb5b6b8ff83208cadfcca98ffaa0774d6f652b8)
+      - deposit vault
+      - market
     - [tx - Buy GM ETH/USD part 2](https://arbiscan.io/tx/0x719b63dbef8d38006918c0e787b98a8373606b6147b77ae84a91fe2338132f4a)
   - 4 [Burn](./notes/liquidity/market_withdraw.md)
     - [tx - Sell GM ETH/USD part 1](https://arbiscan.io/tx/0xda4bc1d39be6ea85f8323875cbc4920aa33d0af38d7af2eb3f3dd03d174ae98e)
@@ -330,7 +329,8 @@ forge build
     - [tx - Buy GLV part 1](https://arbiscan.io/tx/0x8d7d6e6b99fbeb095aeee4e495c528e4187bbabd0a3f728ef874f6b31bf73405)
     - [tx - Buy GLV part 2](https://arbiscan.io/tx/0x3cfcd9e1bdcc57a727dd66d6ed38afe78bbf3430015072078876240d183129f3)
   - 8 [Burn](./notes/liquidity/glv_withdraw.md)
-    - [tx - Sell GLV part 1](https://arbiscan.io/tx/0xb60ed4fa2252dae32f8252f5702c3caf0cd2f074a9e9b41eaaaae2cea3f760c6) - [tx - Sell GLV part 2](https://arbiscan.io/tx/0x5120cf011c75d9b67bdffa99c4e3c6fffb5e8bb428f0080fc7ccded361bf98e6)
+    - [tx - Sell GLV part 1](https://arbiscan.io/tx/0xb60ed4fa2252dae32f8252f5702c3caf0cd2f074a9e9b41eaaaae2cea3f760c6)
+    - [tx - Sell GLV part 2](https://arbiscan.io/tx/0x5120cf011c75d9b67bdffa99c4e3c6fffb5e8bb428f0080fc7ccded361bf98e6)
 - [ ] Foundry exercises
   - GM - Buy, sell, shift
   - GLV - Buy, sell
