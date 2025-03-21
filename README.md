@@ -340,27 +340,27 @@ forge build
 Explain utilities, acquistion methods, differences and staking processes.
 
 - [ ] GMX
-  - Utilities
-  - Emissions
-  - Governance
-  - Benefits
-    - Protocol revenue
-    - Rewards
-    - Voting power
-  - Buy back mechanism
-  - [ ] UI
-    - Buy, stake GMX
-    - Claim rewards
-    - Where are the yield and rewards coming from?
-    - [ ] Transactions
-  - [ ] Foundry exercises
+
+  - Utility and governance
+  - Buy
+  - Staked GMX earns rewards in GMX tokens
+    - trading fees -> buy back GMX
+  - Tally
+
+    - Delegate
+    - Vote
+
+  - TODO: what is `_shouldStakeMultiplierPoints`?
+
+  - [ ] TODO: Foundry exercises
     - Buy -> DEX, no exercise
     - stake, delegate, unstake, claim rewards
-- [ ] esGMX -> has historically been awarded as an incentive for GMX Staking -> TODO: skip?
+
+- [ ] TODO: remove? esGMX -> has historically been awarded as an incentive for GMX Staking -> TODO: skip?
   - [ ] UI?
     - Vest to convert esGMX to GMX
   - [ ] Foundry exercises?
-- [ ] GLP (V1)
+- [ ] TODO: GLP (V1)
   - Quick explanation
 
 ### Application
@@ -457,7 +457,8 @@ Stake
 - [GMX](https://gmx.io/)
 - [GMX app](https://app.gmx.io/)
 - [GMX doc](https://docs.gmx.io/docs/intro/)
-- [GMX GitHub synthetics](https://github.com/gmx-io/gmx-synthetics)
+- [GMX GitHub gmx-synthetics](https://github.com/gmx-io/gmx-synthetics)
+- [GMX GitHub gmx-contracts](https://github.com/gmx-io/gmx-contracts)
 - [GMX GitHub interface](https://github.com/gmx-io/gmx-interface/)
 - [GMX delegatees](https://www.tally.xyz/gov/gmx/delegates)
 - [Tenderly](https://tenderly.co)
