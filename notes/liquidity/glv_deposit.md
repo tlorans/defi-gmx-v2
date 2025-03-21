@@ -2,6 +2,8 @@
 
 ### Create deposit
 
+[`GlvRouter.createglvDeposit`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/router/GlvRouter.sol#L35-L41)
+
 ```
 1. Send tokens to deposit GLV vault
 2. Send execution fee to GLV vault
@@ -17,6 +19,8 @@ GlvRouter.createGlvDeposit
 ```
 
 ### Execute deposit
+
+[`GlvHandler.executeGlvDeposit`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/exchange/GlvHandler.sol#L44-L64)
 
 ```
 GlvHandler
