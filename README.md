@@ -297,13 +297,11 @@ forge build
 
 ### Liquidation
 
-- [ ] 1 [When executed?](./notes/liquidation/liquidation.md)
+- [x] 1 [When executed?](./notes/liquidation/liquidation.md)
   - UI leverage + liquidation price
   - Fees
-- [ ] 2 [Contract calls](./notes/liquidation/liquidation.md)
-- [ ] 3 [Math - liquidation price](./notes/liquidation/liq_price_approx.png)
-  - UI demo
-- [ ] TODO: ADL
+- [x] 2 [Math - liquidation price](./notes/liquidation/liq_price_approx.png)
+- [x] 3 ADL
 - [x] Foundry exercises? -> Not public function -> no exercise
 
 ### Liquidity
@@ -339,7 +337,7 @@ forge build
 
 Explain utilities, acquistion methods, differences and staking processes.
 
-- [ ] GMX
+- [ ] [GMX](./notes/gmx_token.md)
 
   - Utility and governance
   - Buy
