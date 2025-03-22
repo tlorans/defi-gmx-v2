@@ -15,7 +15,7 @@ forge build
 
 - [ ] Course intro
   - Prerequisites
-    - DAI, WETH, USDC, WBTC, decimals, AMM, etc..
+    - DAI, WETH, USDC, WBTC, decimals, AMM, Arbitrum, etc..
     - Advanced Foundry
       - multicall
       - library (delegatecall)
@@ -25,7 +25,7 @@ forge build
   - exercises
     - types and library functions copied from gmx code
   - notes
-- [ ] UI - Quick guide on how to bridge ETH?
+- [ ] TODO: UI - Quick guide on how to bridge ETH?
   - [ ] Transactions
 
 ### Foundation
@@ -34,7 +34,7 @@ forge build
   - Decentralized spot and perpetual exchange
   - Key features
     - 2 step transactions -> why?
-    - 0 price impact?
+    - No AMM -> 0 price impact?
     - Dynamic funding rate
     - Isolated pools
 - [x] Terminologies and examples
@@ -129,7 +129,7 @@ forge build
 
 ### Contract architecture
 
-- [ ] TODO: excalidraw - How the protocol works
+- [ ] TODO: [How the protocol works](./notes/gmx_v2.png)
   - Users (traders, LP (GM / GLV holders) and GMX holders, keepers)
   - Funding fees
   - Borrowing fees
