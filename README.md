@@ -25,18 +25,26 @@ forge build
   - exercises
     - types and library functions copied from gmx code
   - notes
-- [ ] TODO: UI - Quick guide on how to bridge ETH?
+- [ ] UI - Quick guide on how to bridge ETH?
   - [ ] Transactions
 
 ### Foundation
 
-- [ ] TODO: What is GMX?
+- [x] What is GMX?
   - Decentralized spot and perpetual exchange
   - Key features
     - 2 step transactions -> why?
     - No AMM -> 0 price impact?
     - Dynamic funding rate
     - Isolated pools
+- [x] [How the protocol works](./notes/gmx_v2.png)
+  - Users (traders, LP (GM / GLV holders) and GMX holders, keepers)
+  - Funding fees
+  - Borrowing fees
+  - Price impact
+  - Where does profit / loss come from?
+    - Default profit paid in long pos -> long token, short pos -> short token
+  - Fee distribution
 - [x] Terminologies and examples
   - [Perpetual swap](./notes/terms/perp.png)
     - Long
@@ -129,14 +137,6 @@ forge build
 
 ### Contract architecture
 
-- [ ] TODO: [How the protocol works](./notes/gmx_v2.png)
-  - Users (traders, LP (GM / GLV holders) and GMX holders, keepers)
-  - Funding fees
-  - Borrowing fees
-  - Price impact
-  - Where does profit / loss come from?
-    - Default profit paid in long pos -> long token, short pos -> short token
-  - Fee distribution
 - [ ] TODO: excalidraw - Contract architecture
   - data store
   - bank / vault
