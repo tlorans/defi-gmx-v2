@@ -12,6 +12,24 @@ Enable this contract to receive ETH.
 
 ## Task 2: Implement the `createOrder` function
 
+```solidity
+// Task 2 - Create an order to swap WETH to DAI
+function createOrder(uint256 wethAmount)
+    external
+    payable
+    returns (bytes32 key)
+{
+    uint256 executionFee = 0.1 * 1e18;
+    weth.transferFrom(msg.sender, address(this), wethAmount);
+
+    // Task 2.1 - Send execution fee to the order vault
+
+    // Task 2.2 - Send WETH to the order vault
+
+    // Task 2.3 - Create an order to swap WETH to DAI
+}
+```
+
 This function should:
 
 1. Accept WETH from the caller
@@ -38,6 +56,11 @@ The function is partially implemented. You need to complete tasks 2.1, 2.2, and 
 3. Return the key (order ID) that is generated
 
 ## Task 3: Implement the `getOrder` function
+
+```solidity
+// Task 3 - Get order
+function getOrder(bytes32 key) external view returns (Order.Props memory) {}
+```
 
 This function should retrieve order details from the GMX reader contract:
 

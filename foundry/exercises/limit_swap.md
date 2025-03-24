@@ -10,6 +10,24 @@ GMX will refund any unused execution fees to your contract, so you need to imple
 
 ## Task 2: Implement the `createLimitOrder` function
 
+```solidity
+// Task 2 - Create a limit order to swap USDC to WETH
+function createLimitOrder(uint256 usdcAmount, uint256 maxEthPrice)
+    external
+    payable
+    returns (bytes32 key)
+{
+    uint256 executionFee = 0.1 * 1e18;
+    usdc.transferFrom(msg.sender, address(this), usdcAmount);
+
+    // Task 2.1 - Send execution fee to the order vault
+
+    // Task 2.2 - Send USDC to the order vault
+
+    // Task 2.3 - Create an order to swap USDC to WETH
+}
+```
+
 This function already has the initial setup where it:
 
 - Takes in a USDC amount and maximum ETH price

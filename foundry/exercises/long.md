@@ -19,6 +19,24 @@ Implement the `receive` function to accept ETH refunds from GMX.
 
 ## Task 2: Create a long position
 
+```solidity
+// Task 2 - Create an order to long ETH with WETH collateral
+function createLongOrder(uint256 leverage, uint256 wethAmount)
+    external
+    payable
+    returns (bytes32 key)
+{
+    uint256 executionFee = 0.1 * 1e18;
+    weth.transferFrom(msg.sender, address(this), wethAmount);
+
+    // Task 2.1 - Send execution fee to the order vault
+
+    // Task 2.2 - Send WETH to the order vault
+
+    // Task 2.3 - Create an order
+}
+```
+
 Implement the `createLongOrder` function, which allows a user to open a leveraged long position on ETH using WETH as collateral
 
 This function is broken down into three subtasks:
@@ -50,17 +68,40 @@ Create a market increase order with the following requirements:
 
 ## Task 3: Get position key
 
+```solidity
+// Task 3 - Get position key
+function getPositionKey() public view returns (bytes32 key) {}
+```
+
 Implement the `getPositionKey` function to calculate the unique key for the position.
 
 > Hint - Look for the function `Position.getPositionKey` inside [gmx-synthetics](https://github.com/gmx-io/gmx-synthetics)
 
 ## Task 4: Get position details
 
+```solidity
+// Task 4 - Get position
+function getPosition(bytes32 key)
+    public
+    view
+    returns (Position.Props memory)
+{}
+```
+
 Implement the `getPosition` function to fetch the position details using the position key.
 
 > Hint - Call the `reader` contract
 
 ## Task 5: Calculate position profit and loss
+
+```solidity
+// Task 5 - Get position profit and loss
+function getPositionPnlUsd(bytes32 key, uint256 ethPrice)
+    external
+    view
+    returns (int256)
+{}
+```
 
 Implement the `getPositionPnlUsd` function to calculate the profit or loss of the position in USD
 
@@ -79,6 +120,19 @@ Implement the `getPositionPnlUsd` function to calculate the profit or loss of th
 > - Assume 1 USDC = 1 USD
 
 ## Task 6: Close the long position
+
+```solidity
+// Task 6 - Create an order to close the long position created by this contract
+function createCloseOrder() external payable returns (bytes32 key) {
+    uint256 executionFee = 0.1 * 1e18;
+
+    // Task 6.1 - Get position
+
+    // Task 6.2 - Send execution fee to the order vault
+
+    // Task 6.3 - Create an order
+}
+```
 
 Implement the `createCloseOrder` function to close an existing long position.
 
