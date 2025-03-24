@@ -47,7 +47,7 @@ Send the execution fee (0.1 ETH) to the order vault.
 
 ### Task 2.2: Send WETH to the order vault
 
-Approve and send WETH to the order vault.
+Approve the `ROUTER` contract and send WETH to the order vault.
 
 ### Task 2.3: Create a long order
 
@@ -58,13 +58,14 @@ Create a market increase order with the following requirements:
   >
   > - Get the current price of ETH from `oracle.getPrice(CHAINLINK_ETH_USD)`
   > - ETH price returned from this oracle has 8 decimals (1e8 = 1 USD)
-  > - `sizeDeltaUsd` has 30 decimals (1e30 = 1 USD)
+  > - `sizeDeltaUsd` must have 30 decimals (1e30 = 1 USD)
 - Set `acceptablePrice` at 1% above current price of ETH
   > Hints:
   >
   > - When opening a long: set `acceptablePrice` higher than execution price
   > - When closing a long: set `acceptablePrice` lower than execution price
-- Configure the order as a long position
+  > - `acceptablePrice` has 12 decimals (1e12 = 1 USD)
+- Set the correct order type (`MarketIncrease` for opening positions)
 
 ## Task 3: Get position key
 
@@ -158,6 +159,8 @@ Create a market decrease order to close the position with:
   > - Get the current price of ETH from `oracle.getPrice(CHAINLINK_ETH_USD)`
   > - When opening a long: set `acceptablePrice` higher than execution price
   > - When closing a long: set `acceptablePrice` lower than execution price
+  > - `acceptablePrice` has 12 decimals (1e12 = 1 USD)
+- Set the correct order type (`MarketDecrease` for closing positions)
 
 ## Price calculations and decimals
 
