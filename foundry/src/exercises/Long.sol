@@ -38,11 +38,11 @@ contract Long {
         uint256 executionFee = 0.1 * 1e18;
         weth.transferFrom(msg.sender, address(this), wethAmount);
 
-        // Send execution fee to order vault
-        // Send WETH to order vault
-        // Create order
-        // 1 USD = 1e8
-        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
+        // Task 2.1 - Send execution fee to order vault
+
+        // Task 2.2 - Send WETH to order vault
+
+        // Task 2.3 - Create order
     }
 
     // Task 3 - Get position key
@@ -66,7 +66,10 @@ contract Long {
     function createCloseOrder() external payable returns (bytes32 key) {
         uint256 executionFee = 0.1 * 1e18;
 
-        // Send execution fee to order vault
-        // Create order
+        // Task 6.1 - Get position
+
+        // Task 6.2 - Send execution fee to order vault
+
+        // Task 6.3 - Create order
     }
 }

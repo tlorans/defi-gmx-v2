@@ -39,13 +39,13 @@ contract Long {
         uint256 executionFee = 0.1 * 1e18;
         weth.transferFrom(msg.sender, address(this), wethAmount);
 
-        // Send execution fee to order vault
+        // Task 2.1 - Send execution fee to order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee
         });
 
-        // Send WETH to order vault
+        // Task 2.2 - Send WETH to order vault
         weth.approve(ROUTER, wethAmount);
         exchangeRouter.sendTokens({
             token: WETH,
@@ -53,7 +53,7 @@ contract Long {
             amount: wethAmount
         });
 
-        // Create order
+        // Task 2.3 - Create order
         // 1 USD = 1e8
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
         // 1 USD = 1e30
@@ -61,7 +61,6 @@ contract Long {
         // ETH price = 8 decimals
         // 18 + 8 + 4 = 30
         uint256 sizeDeltaUsd = leverage * wethAmount * ethPrice * 1e4;
-        // NOTE:
         // increase order:
         // - long: executionPrice should be smaller than acceptablePrice
         // - short: executionPrice should be larger than acceptablePrice
@@ -161,17 +160,17 @@ contract Long {
     function createCloseOrder() external payable returns (bytes32 key) {
         uint256 executionFee = 0.1 * 1e18;
 
+        // Task 6.1 - Get position
         Position.Props memory position = getPosition(getPositionKey());
         require(position.numbers.sizeInUsd > 0, "position size = 0");
 
-        // Send execution fee to order vault
+        // Task 6.2 - Send execution fee to order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee
         });
 
-        // Create order
-        // NOTE:
+        // Task 6.3 - Create order
         // decrease order:
         // - long: executionPrice should be larger than acceptablePrice
         // - short: executionPrice should be smaller than acceptablePrice

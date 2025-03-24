@@ -36,13 +36,13 @@ contract Short {
         uint256 executionFee = 0.1 * 1e18;
         usdc.transferFrom(msg.sender, address(this), usdcAmount);
 
-        // Send gas fee to order vault
+        // Task 2.1 - Send gas fee to order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee
         });
 
-        // Send USDC to order vault
+        // Task 2.2 - Send USDC to order vault
         usdc.approve(ROUTER, usdcAmount);
         exchangeRouter.sendTokens({
             token: USDC,
@@ -50,12 +50,11 @@ contract Short {
             amount: usdcAmount
         });
 
-        // Create order to short ETH with USDC collateral
+        // Task 2.3 - Create order to short ETH with USDC collateral
         // 1 USD = 1e8
         uint256 usdcPrice = oracle.getPrice(CHAINLINK_USDC_USD);
         // 1 USD = 1e30
         uint256 sizeDeltaUsd = leverage * usdcAmount * usdcPrice * 1e16;
-        // NOTE:
         // increase order:
         // - long: executionPrice should be smaller than acceptablePrice
         // - short: executionPrice should be larger than acceptablePrice
@@ -117,17 +116,16 @@ contract Short {
     function createCloseOrder() external payable returns (bytes32 key) {
         uint256 executionFee = 0.1 * 1e18;
 
-        // Send gas fee to order vault
+        // Task 3.1 - Send gas fee to order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee
         });
 
-        // Create order to close the short position
+        // Task 3.2 - Create order to close the short position
         Position.Props memory position = getPosition(getPositionKey());
         require(position.numbers.sizeInUsd > 0, "position size = 0");
 
-        // NOTE:
         // decrease order:
         // - long: executionPrice should be larger than acceptablePrice
         // - short: executionPrice should be smaller than acceptablePrice
