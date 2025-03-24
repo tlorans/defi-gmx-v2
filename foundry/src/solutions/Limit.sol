@@ -26,13 +26,13 @@ contract Limit {
         uint256 executionFee = 0.1 * 1e18;
         usdc.transferFrom(msg.sender, address(this), usdcAmount);
 
-        // Send execution fee to order vault
+        // Task 2.1 - Send execution fee to order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee
         });
 
-        // Send USDC to order vault
+        // Task 2.2 - Send USDC to order vault
         usdc.approve(ROUTER, usdcAmount);
         exchangeRouter.sendTokens({
             token: USDC,
@@ -40,7 +40,7 @@ contract Limit {
             amount: usdcAmount
         });
 
-        // Create order to swap USDC to WETH
+        // Task 2.3 - Create order to swap USDC to WETH
         // usdcAmount = 1e6
         // maxEthPrice = 1e8
         // ETH amount = 1e18
