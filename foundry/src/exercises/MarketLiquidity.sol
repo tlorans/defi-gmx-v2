@@ -47,7 +47,7 @@ contract MarketLiquidity {
         uint256 executionFee = 0.1 * 1e18;
         usdc.transferFrom(msg.sender, address(this), usdcAmount);
 
-        // Task 3.1 - Send execution fee to deposit vault
+        // Task 3.1 - Send execution fee to the deposit vault
 
         // Task 3.2 - Send USDC to deposit vault
 
@@ -61,7 +61,7 @@ contract MarketLiquidity {
     function createWithdrawal() external payable returns (bytes32 key) {
         uint256 executionFee = 0.1 * 1e18;
 
-        // Task 4.1 - Send execution fee to withdrawal vault
+        // Task 4.1 - Send execution fee to the withdrawal vault
 
         // Task 4.2 - Send GM_TOKEN_BTC_WBTC_USDC to withdrawal vault
 

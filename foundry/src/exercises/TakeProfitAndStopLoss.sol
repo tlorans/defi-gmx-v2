@@ -32,17 +32,17 @@ contract TakeProfitAndStopLoss {
         uint256 executionFee = 0.1 * 1e18;
         usdc.transferFrom(msg.sender, address(this), usdcAmount);
 
-        // Task 2.1 - Send execution fee to order vault
+        // Task 2.1 - Send execution fee to the order vault
 
         // Task 2.2 - Send USDC to order vault
 
         // Task 2.3 - Create a long order to long ETH with USDC collateral
 
-        // Task 2.4 - Send execution fee to order vault
+        // Task 2.4 - Send execution fee to the order vault
 
         // Task 2.5 - Create a stop loss for 90% of current ETH price
 
-        // Task 2.6 - Send execution fee to order vault
+        // Task 2.6 - Send execution fee to the order vault
 
         // Task 2.7 - Create an order to take profit above 110% of current price
     }

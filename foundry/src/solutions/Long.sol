@@ -39,7 +39,7 @@ contract Long {
         uint256 executionFee = 0.1 * 1e18;
         weth.transferFrom(msg.sender, address(this), wethAmount);
 
-        // Task 2.1 - Send execution fee to order vault
+        // Task 2.1 - Send execution fee to the order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee
@@ -164,7 +164,7 @@ contract Long {
         Position.Props memory position = getPosition(getPositionKey());
         require(position.numbers.sizeInUsd > 0, "position size = 0");
 
-        // Task 6.2 - Send execution fee to order vault
+        // Task 6.2 - Send execution fee to the order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee

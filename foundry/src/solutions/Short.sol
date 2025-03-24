@@ -36,7 +36,7 @@ contract Short {
         uint256 executionFee = 0.1 * 1e18;
         usdc.transferFrom(msg.sender, address(this), usdcAmount);
 
-        // Task 2.1 - Send execution fee to order vault
+        // Task 2.1 - Send execution fee to the order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee
@@ -116,7 +116,7 @@ contract Short {
     function createCloseOrder() external payable returns (bytes32 key) {
         uint256 executionFee = 0.1 * 1e18;
 
-        // Task 3.1 - Send execution fee to order vault
+        // Task 3.1 - Send execution fee to the order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee

@@ -34,7 +34,7 @@ contract TakeProfitAndStopLoss {
         usdc.transferFrom(msg.sender, address(this), usdcAmount);
         keys = new bytes32[](3);
 
-        // Task 2.1 - Send execution fee to order vault
+        // Task 2.1 - Send execution fee to the order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee
@@ -84,7 +84,7 @@ contract TakeProfitAndStopLoss {
             })
         );
 
-        // Task 2.4 - Send execution fee to order vault
+        // Task 2.4 - Send execution fee to the order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee
@@ -121,7 +121,7 @@ contract TakeProfitAndStopLoss {
             })
         );
 
-        // Task 2.6 - Send execution fee to order vault
+        // Task 2.6 - Send execution fee to the order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee

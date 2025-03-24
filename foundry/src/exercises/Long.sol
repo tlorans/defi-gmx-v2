@@ -38,7 +38,7 @@ contract Long {
         uint256 executionFee = 0.1 * 1e18;
         weth.transferFrom(msg.sender, address(this), wethAmount);
 
-        // Task 2.1 - Send execution fee to order vault
+        // Task 2.1 - Send execution fee to the order vault
 
         // Task 2.2 - Send WETH to order vault
 
@@ -68,7 +68,7 @@ contract Long {
 
         // Task 6.1 - Get position
 
-        // Task 6.2 - Send execution fee to order vault
+        // Task 6.2 - Send execution fee to the order vault
 
         // Task 6.3 - Create an order
     }

@@ -29,7 +29,7 @@ contract MarketSwap {
         uint256 executionFee = 0.1 * 1e18;
         weth.transferFrom(msg.sender, address(this), wethAmount);
 
-        // Task 2.1 - Send execution fee to order vault
+        // Task 2.1 - Send execution fee to the order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee
@@ -72,7 +72,7 @@ contract MarketSwap {
                 orderType: Order.OrderType.MarketSwap,
                 decreasePositionSwapType: Order.DecreasePositionSwapType.NoSwap,
                 isLong: false,
-                shouldUnwrapNativeToken: true,
+                shouldUnwrapNativeToken: false,
                 autoCancel: false,
                 referralCode: bytes32(uint256(0))
             })
