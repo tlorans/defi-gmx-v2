@@ -28,8 +28,14 @@ contract Base is Test {
 }
 
 contract Key is Base {
-    function getMaxPnlFactor(bytes32 pnlFactorType, address market, bool isLong) internal view returns (uint256) {
-        return dataStore.getUint(Keys.maxPnlFactorKey(pnlFactorType, market, isLong));
+    function getMaxPnlFactor(bytes32 pnlFactorType, address market, bool isLong)
+        internal
+        view
+        returns (uint256)
+    {
+        return dataStore.getUint(
+            Keys.maxPnlFactorKey(pnlFactorType, market, isLong)
+        );
     }
 
     function test() public {
@@ -38,7 +44,6 @@ contract Key is Base {
         console.log("f %e", f);
     }
 }
-
 
 /*
 contract GlvDev is Base {

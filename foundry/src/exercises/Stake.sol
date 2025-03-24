@@ -15,35 +15,23 @@ contract Stake {
     IRewardTracker constant rewardTracker = IRewardTracker(REWARD_TRACKER);
 
     function stake(uint256 gmxAmount) external {
-        gmx.transferFrom(msg.sender, address(this), gmxAmount);
-        gmx.approve(REWARD_TRACKER, gmxAmount);
-        rewardRouter.stakeGmx(gmxAmount);
+        // Write your code here
     }
 
     function unstake(uint256 gmxAmount) external {
-        rewardRouter.unstakeGmx(gmxAmount);
+        // Write your code here
     }
 
     function claimRewards() external {
-        gmx.approve(address(rewardTracker), type(uint256).max);
-
-        rewardRouter.handleRewards({
-            shouldClaimGmx: true,
-            shouldStakeGmx: true,
-            shouldClaimEsGmx: false,
-            shouldStakeEsGmx: false,
-            // TODO: wat dis?
-            shouldStakeMultiplierPoints: true,
-            shouldClaimWeth: true,
-            shouldConvertWethToEth: false
-        });
+        // Write your code here
     }
 
     function getStakedAmount() external view returns (uint256) {
+        // Write your code here
         return rewardTracker.stakedAmounts(address(this));
     }
 
     function delegate(address delegatee) external {
-        gmxDao.delegate(delegatee);
+        // Write your code here
     }
 }

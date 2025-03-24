@@ -34,12 +34,12 @@ contract MarketLiquidity {
     receive() external payable {}
 
     // Task 2 - Get market token price
-    // 1 USD = 1e30
     function getMarketTokenPriceUsd() public view returns (uint256) {
         // 1 USD = 1e8
         uint256 btcPrice = oracle.getPrice(CHAINLINK_BTC_USD);
 
-        (int256 price, MarketPoolValueInfo.Props memory info) = reader.getMarketTokenPrice({
+        (int256 price, MarketPoolValueInfo.Props memory info) = reader
+            .getMarketTokenPrice({
             dataStore: address(dataStore),
             market: Market.Props({
                 marketToken: GM_TOKEN_BTC_WBTC_USDC,
@@ -77,13 +77,13 @@ contract MarketLiquidity {
         uint256 executionFee = 0.1 * 1e18;
         usdc.transferFrom(msg.sender, address(this), usdcAmount);
 
-        // Send execution fee to deposit vault
+        // Task 3.1 - Send execution fee to deposit vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: DEPOSIT_VAULT,
             amount: executionFee
         });
 
-        // Send USDC to deposit vault
+        // Task 3.2 - Send USDC to deposit vault
         usdc.approve(ROUTER, usdcAmount);
         exchangeRouter.sendTokens({
             token: USDC,
@@ -91,11 +91,11 @@ contract MarketLiquidity {
             amount: usdcAmount
         });
 
-        // Create an order to deposit USDC into GM_TOKEN_BTC_WBTC_USDC
-        uint256 marketTokenPrice = getMarketTokenPriceUsd();
+        // Task 3.3 - Create an order to deposit USDC into GM_TOKEN_BTC_WBTC_USDC
         // Assume 1 USDC = 1 USD
         // USDC has 6 decimals
         // Market token has 18 decimals
+        uint256 marketTokenPrice = getMarketTokenPriceUsd();
         uint256 minMarketTokens = usdcAmount * 1e24 * 1e18 / marketTokenPrice;
 
         return exchangeRouter.createDeposit(
@@ -116,17 +116,17 @@ contract MarketLiquidity {
         );
     }
 
-    // Task 4 - Create a order to withdraw GM_TOKEN_BTC_WBTC_USDC
+    // Task 4 - Create an order to withdraw GM_TOKEN_BTC_WBTC_USDC
     function createWithdrawal() external payable returns (bytes32 key) {
         uint256 executionFee = 0.1 * 1e18;
 
-        // Send execution fee to withdrawal vault
+        // Task 4.1 - Send execution fee to withdrawal vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: WITHDRAWAL_VAULT,
             amount: executionFee
         });
 
-        // Send GM_TOKEN_BTC_WBTC_USDC to withdrawal vault
+        // Task 4.2 - Send GM_TOKEN_BTC_WBTC_USDC to withdrawal vault
         uint256 gmTokenAmount = gmToken.balanceOf(address(this));
         gmToken.approve(ROUTER, gmTokenAmount);
         exchangeRouter.sendTokens({
@@ -135,17 +135,14 @@ contract MarketLiquidity {
             amount: gmTokenAmount
         });
 
-        // Create an order to withdraw WBTC and USDC from GM_TOKEN_BTC_WBTC_USDC
+        // Task 4.3 - Create an order to withdraw WBTC and USDC from GM_TOKEN_BTC_WBTC_USDC
+        // Assume 1 USD = 1 USDC
         uint256 marketTokenPrice = getMarketTokenPriceUsd();
         uint256 btcPrice = oracle.getPrice(CHAINLINK_BTC_USD);
         // 1e30 / (1e8 * 1e14) = 1e8 = 1 WBTC
         uint256 minLongTokenAmount = (marketTokenPrice / 2) / (btcPrice * 1e14);
         // 1e30 / 1e24 = 1e6 = 1 USDC
-        // Assume 1 USD = 1 USDC
         uint256 minShortTokenAmount = (marketTokenPrice / 2) / 1e24;
-
-        console.log("min WBTC %e", minLongTokenAmount);
-        console.log("min USDC %e", minShortTokenAmount);
 
         return exchangeRouter.createWithdrawal(
             WithdrawalUtils.CreateWithdrawalParams({

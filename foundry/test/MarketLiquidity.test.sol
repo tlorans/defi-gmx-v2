@@ -84,7 +84,8 @@ contract MarketLiquidityTest is Test {
         uint256 marketTokenPrice = marketLiquidity.getMarketTokenPriceUsd();
         assertGt(marketTokenPrice, 0, "market token price = 0");
 
-        uint256 minMarketTokenAmount = usdcAmount * 1e24 * 1e18 / marketTokenPrice;
+        uint256 minMarketTokenAmount =
+            usdcAmount * 1e24 * 1e18 / marketTokenPrice;
         console.log("Min market token amount %e", minMarketTokenAmount);
 
         // Create deposit order

@@ -30,7 +30,7 @@ contract Long {
     // Task 1 - Receive execution fee refund from GMX
     receive() external payable {}
 
-    // Task 2 - Create a order to long ETH with WETH collateral
+    // Task 2 - Create an order to long ETH with WETH collateral
     function createLongOrder(uint256 leverage, uint256 wethAmount)
         external
         payable
@@ -157,7 +157,7 @@ contract Long {
         return pnl;
     }
 
-    // Task 6 - Create a order to close the long position created by this contract
+    // Task 6 - Create an order to close the long position created by this contract
     function createCloseOrder() external payable returns (bytes32 key) {
         uint256 executionFee = 0.1 * 1e18;
 
