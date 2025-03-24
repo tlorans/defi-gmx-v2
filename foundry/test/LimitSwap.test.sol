@@ -12,9 +12,9 @@ import {Position} from "../src/types/Position.sol";
 import "../src/Constants.sol";
 import {Role} from "../src/lib/Role.sol";
 import {Oracle} from "../src/lib/Oracle.sol";
-import {Limit} from "@exercises/Limit.sol";
+import {LimitSwap} from "@exercises/LimitSwap.sol";
 
-contract LongTest is Test {
+contract LimitSwapTest is Test {
     IERC20 constant weth = IERC20(WETH);
     IERC20 constant usdc = IERC20(USDC);
     IOrderHandler constant orderHandler = IOrderHandler(ORDER_HANDLER);
@@ -22,7 +22,7 @@ contract LongTest is Test {
 
     TestHelper testHelper;
     Oracle oracle;
-    Limit limit;
+    LimitSwap limit;
     address keeper;
 
     // Oracle params
@@ -35,7 +35,7 @@ contract LongTest is Test {
         testHelper = new TestHelper();
         keeper = testHelper.getRoleMember(Role.ORDER_KEEPER);
         oracle = new Oracle();
-        limit = new Limit();
+        limit = new LimitSwap();
         deal(USDC, address(this), 1000 * 1e6);
 
         tokens = new address[](2);

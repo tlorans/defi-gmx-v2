@@ -9,7 +9,7 @@ import {Order} from "../types/Order.sol";
 import {IBaseOrderUtils} from "../types/IBaseOrderUtils.sol";
 import "../Constants.sol";
 
-contract Limit {
+contract LimitSwap {
     IERC20 constant weth = IERC20(WETH);
     IERC20 constant usdc = IERC20(USDC);
     IExchangeRouter constant exchangeRouter = IExchangeRouter(EXCHANGE_ROUTER);

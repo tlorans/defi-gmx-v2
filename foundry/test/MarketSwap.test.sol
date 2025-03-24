@@ -10,16 +10,16 @@ import {OracleUtils} from "../src/types/OracleUtils.sol";
 import {Order} from "../src/types/Order.sol";
 import "../src/Constants.sol";
 import {Role} from "../src/lib/Role.sol";
-import {Swap} from "@exercises/Swap.sol";
+import {MarketSwap} from "@exercises/MarketSwap.sol";
 
-contract SwapTest is Test {
+contract MarketSwapTest is Test {
     IERC20 constant weth = IERC20(WETH);
     IERC20 constant dai = IERC20(DAI);
     IOrderHandler constant orderHandler = IOrderHandler(ORDER_HANDLER);
     IReader constant reader = IReader(READER);
 
     TestHelper testHelper;
-    Swap swap;
+    MarketSwap swap;
     address keeper;
 
     // Oracle params
@@ -32,7 +32,7 @@ contract SwapTest is Test {
         testHelper = new TestHelper();
         keeper = testHelper.getRoleMember(Role.ORDER_KEEPER);
 
-        swap = new Swap();
+        swap = new MarketSwap();
         deal(WETH, address(this), 1000 * 1e18);
 
         tokens = new address[](3);
