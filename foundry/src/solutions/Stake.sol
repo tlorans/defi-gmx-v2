@@ -35,7 +35,6 @@ contract Stake {
             shouldStakeGmx: true,
             shouldClaimEsGmx: false,
             shouldStakeEsGmx: false,
-            // TODO: wat dis?
             shouldStakeMultiplierPoints: true,
             shouldClaimWeth: true,
             shouldConvertWethToEth: false
@@ -47,7 +46,7 @@ contract Stake {
         return rewardTracker.stakedAmounts(address(this));
     }
 
-    // Task 5 - Delegate
+    // Task 5 - Get staked amount
     function delegate(address delegatee) external {
         gmxDao.delegate(delegatee);
     }

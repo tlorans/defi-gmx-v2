@@ -35,7 +35,6 @@ contract Stake {
             shouldStakeGmx: true,
             shouldClaimEsGmx: false,
             shouldStakeEsGmx: false,
-            // TODO: wat dis?
             shouldStakeMultiplierPoints: true,
             shouldClaimWeth: true,
             shouldConvertWethToEth: false
