@@ -83,7 +83,7 @@ contract MarketLiquidity {
             amount: executionFee
         });
 
-        // Task 3.2 - Send USDC to deposit vault
+        // Task 3.2 - Send USDC to the deposit vault
         usdc.approve(ROUTER, usdcAmount);
         exchangeRouter.sendTokens({
             token: USDC,
@@ -126,7 +126,7 @@ contract MarketLiquidity {
             amount: executionFee
         });
 
-        // Task 4.2 - Send GM_TOKEN_BTC_WBTC_USDC to withdrawal vault
+        // Task 4.2 - Send GM_TOKEN_BTC_WBTC_USDC to the withdrawal vault
         uint256 gmTokenAmount = gmToken.balanceOf(address(this));
         gmToken.approve(ROUTER, gmTokenAmount);
         exchangeRouter.sendTokens({

@@ -40,7 +40,7 @@ contract TakeProfitAndStopLoss {
             amount: executionFee
         });
 
-        // Task 2.2 - Send USDC to order vault
+        // Task 2.2 - Send USDC to the order vault
         usdc.approve(ROUTER, usdcAmount);
         exchangeRouter.sendTokens({
             token: USDC,

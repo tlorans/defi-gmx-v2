@@ -40,7 +40,7 @@ contract Long {
 
         // Task 2.1 - Send execution fee to the order vault
 
-        // Task 2.2 - Send WETH to order vault
+        // Task 2.2 - Send WETH to the order vault
 
         // Task 2.3 - Create an order
     }

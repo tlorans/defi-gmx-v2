@@ -1,18 +1,16 @@
-# GMX Market Swap Exercises
+# Market Swap Exercises
 
 In this exercise, you'll implement a smart contract that interacts with GMX V2 to create a market swap order converting WETH to DAI.
 
-### Task 1: Implement the `receive` function
+You need to complete the implementation of the `MarketSwap.sol` contract.
+
+## Task 1: Implement the `receive` function
 
 The contract needs to be able to receive ETH when GMX refunds execution fees.
 
 Enable this contract to receive ETH.
 
-```solidity
-// Task 1 - Receive execution fee refund from GMX
-```
-
-### Task 2: Implement the `createOrder` function
+## Task 2: Implement the `createOrder` function
 
 This function should:
 
@@ -22,26 +20,6 @@ This function should:
 4. Create a market swap order to convert WETH to DAI
 
 The function is partially implemented. You need to complete tasks 2.1, 2.2, and 2.3:
-
-```solidity
-function createOrder(uint256 wethAmount)
-    external
-    payable
-    returns (bytes32 key)
-{
-    uint256 executionFee = 0.1 * 1e18;
-    weth.transferFrom(msg.sender, address(this), wethAmount);
-
-    // Task 2.1 - Send execution fee to order vault
-    // Your code here
-
-    // Task 2.2 - Send WETH to order vault
-    // Your code here
-
-    // Task 2.3 - Create an order to swap WETH to DAI
-    // Your code here
-}
-```
 
 ### Task 2.1: Send execution fee to order vault
 
@@ -59,15 +37,9 @@ function createOrder(uint256 wethAmount)
 2. Call `exchangeRouter.createOrder` with the appropriate parameters
 3. Return the key (order ID) that is generated
 
-### Task 3: Implement the `getOrder` function
+## Task 3: Implement the `getOrder` function
 
 This function should retrieve order details from the GMX reader contract:
-
-```solidity
-function getOrder(bytes32 key) external view returns (Order.Props memory) {
-    // Your code here
-}
-```
 
 ## Test
 

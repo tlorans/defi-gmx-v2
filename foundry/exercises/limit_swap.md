@@ -1,0 +1,48 @@
+# Limit Swap Exercises
+
+In this exercise, you'll implement a smart contract that interacts with GMX V2 to create a limit swap order.
+
+You need to complete the implementation of the `LimitSwap.sol` contract.
+
+## Task 1: Implement the `receive` function
+
+GMX will refund any unused execution fees to your contract, so you need to implement a `receive()` function to accept these ETH refunds.
+
+## Task 2: Implement the `createLimitOrder` function
+
+This function already has the initial setup where it:
+
+- Takes in a USDC amount and maximum ETH price
+- Sets the execution fee to 0.1 ETH
+- Transfers USDC from the caller to the contract
+
+You need to implement the following subtasks:
+
+### Task 2.1: Send execution fee to the order vault
+
+GMX requires an execution fee to be sent to the order vault. This fee is used to pay keepers who execute orders in the GMX system.
+
+### Task 2.2: Send USDC to the order vault
+
+The USDC tokens need to be approved for transfer and then sent to the order vault.
+
+### Task 2.3: Create a limit order to swap USDC to WETH
+
+Use the GMX exchange router to create a limit swap order that:
+
+- Uses the USDC in the order vault to buy WETH
+- Swap path can be any GM token that has WETH and USDC
+- Calculates the appropriate `minOutputAmount` based on the price limit `maxEthPrice`
+  > Hints
+  >
+  > - `maxEthPrice` has 8 decimals (1e8 = 1 USD)
+  > - USDC has 6 decimals
+  > - Assume 1 USDC = 1 USD
+  > - WETH has 18 decimals Use the hints above to calculate `minOutputAmount`
+- Returns the order key (ID) for future reference
+
+## Test
+
+```shell
+forge test --fork-url $FORK_URL --match-path test/LimitSwap.test.sol -vvv
+```

@@ -49,7 +49,7 @@ contract MarketLiquidity {
 
         // Task 3.1 - Send execution fee to the deposit vault
 
-        // Task 3.2 - Send USDC to deposit vault
+        // Task 3.2 - Send USDC to the deposit vault
 
         // Task 3.3 - Create an order to deposit USDC into GM_TOKEN_BTC_WBTC_USDC
         // Assume 1 USDC = 1 USD
@@ -63,7 +63,7 @@ contract MarketLiquidity {
 
         // Task 4.1 - Send execution fee to the withdrawal vault
 
-        // Task 4.2 - Send GM_TOKEN_BTC_WBTC_USDC to withdrawal vault
+        // Task 4.2 - Send GM_TOKEN_BTC_WBTC_USDC to the withdrawal vault
 
         // Task 4.3 - Create an order to withdraw WBTC and USDC from GM_TOKEN_BTC_WBTC_USDC
         // Assume 1 USD = 1 USDC

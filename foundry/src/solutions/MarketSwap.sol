@@ -35,7 +35,7 @@ contract MarketSwap {
             amount: executionFee
         });
 
-        // Task 2.2 - Send WETH to order vault
+        // Task 2.2 - Send WETH to the order vault
         weth.approve(ROUTER, wethAmount);
         exchangeRouter.sendTokens({
             token: WETH,

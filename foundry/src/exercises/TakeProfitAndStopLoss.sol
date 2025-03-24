@@ -34,7 +34,7 @@ contract TakeProfitAndStopLoss {
 
         // Task 2.1 - Send execution fee to the order vault
 
-        // Task 2.2 - Send USDC to order vault
+        // Task 2.2 - Send USDC to the order vault
 
         // Task 2.3 - Create a long order to long ETH with USDC collateral
 
