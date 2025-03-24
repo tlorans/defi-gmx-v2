@@ -43,7 +43,7 @@ contract GlvLiquidity {
             amount: usdcAmount
         });
 
-        // create an order
+        // Create an order
         address[] memory longTokenSwapPath = new address[](0);
         address[] memory shortTokenSwapPath = new address[](0);
 
@@ -87,7 +87,7 @@ contract GlvLiquidity {
             amount: glvTokenAmount
         });
 
-        // create an order
+        // Create an order
         address[] memory longTokenSwapPath = new address[](0);
         address[] memory shortTokenSwapPath = new address[](0);
 

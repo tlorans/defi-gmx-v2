@@ -14,11 +14,10 @@ contract GlvLiquidity {
     IERC20 constant glvToken = IERC20(GLV_TOKEN_WETH_USDC);
     IGlvRouter constant glvRouter = IGlvRouter(GLV_ROUTER);
 
-    // Receive execution fee refund from GMX
+    // Task 1 - Receive execution fee refund from GMX
     receive() external payable {}
 
-    // TODO: get deposit and withdrawal order
-
+    // Task 2 - Create an order to deposit USDC into GM_TOKEN_BTC_WBTC_USDC
     function createGlvDeposit(uint256 usdcAmount)
         external
         payable
@@ -43,7 +42,7 @@ contract GlvLiquidity {
             amount: usdcAmount
         });
 
-        // create an order
+        // Create an order
         address[] memory longTokenSwapPath = new address[](0);
         address[] memory shortTokenSwapPath = new address[](0);
 
@@ -87,7 +86,7 @@ contract GlvLiquidity {
             amount: glvTokenAmount
         });
 
-        // create an order
+        // Create an order
         address[] memory longTokenSwapPath = new address[](0);
         address[] memory shortTokenSwapPath = new address[](0);
 

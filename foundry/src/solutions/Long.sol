@@ -53,7 +53,7 @@ contract Long {
             amount: wethAmount
         });
 
-        // Task 2.3 - create an order
+        // Task 2.3 - Create an order
         // 1 USD = 1e8
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
         // 1 USD = 1e30
@@ -170,7 +170,7 @@ contract Long {
             amount: executionFee
         });
 
-        // Task 6.3 - create an order
+        // Task 6.3 - Create an order
         // decrease order:
         // - long: executionPrice should be larger than acceptablePrice
         // - short: executionPrice should be smaller than acceptablePrice

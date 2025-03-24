@@ -26,7 +26,7 @@ contract Short {
 
     // Task 1 - Receive execution fee refund from GMX
 
-    // Task 2 - create an order to short ETH with USDC collateral
+    // Task 2 - Create an order to short ETH with USDC collateral
     function createShortOrder(uint256 leverage, uint256 usdcAmount)
         external
         payable
@@ -39,7 +39,7 @@ contract Short {
 
         // Task 2.2 - Send USDC to order vault
 
-        // Task 2.3 - create an order to short ETH with USDC collateral
+        // Task 2.3 - Create an order to short ETH with USDC collateral
     }
 
     // Task 3 - Get position key
@@ -52,12 +52,12 @@ contract Short {
         returns (Position.Props memory)
     {}
 
-    // Task 3 - create an order to close the short position created by this contract
+    // Task 3 - Create an order to close the short position created by this contract
     function createCloseOrder() external payable returns (bytes32 key) {
         uint256 executionFee = 0.1 * 1e18;
 
         // Task 3.1 - Send gas fee to order vault
 
-        // Task 3.2 - create an order to close the short position
+        // Task 3.2 - Create an order to close the short position
     }
 }

@@ -43,7 +43,7 @@ contract Swap {
             amount: wethAmount
         });
 
-        // Task 2.3 - create an order to swap WETH to DAI
+        // Task 2.3 - Create an order to swap WETH to DAI
         address[] memory swapPath = new address[](2);
         swapPath[0] = GM_TOKEN_ETH_WETH_USDC;
         swapPath[1] = GM_TOKEN_SWAP_ONLY_USDC_DAI;

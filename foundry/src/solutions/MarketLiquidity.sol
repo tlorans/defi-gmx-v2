@@ -68,7 +68,7 @@ contract MarketLiquidity {
         return uint256(price);
     }
 
-    // Task 3 - create an order to deposit USDC into GM_TOKEN_BTC_WBTC_USDC
+    // Task 3 - Create an order to deposit USDC into GM_TOKEN_BTC_WBTC_USDC
     function createDeposit(uint256 usdcAmount)
         external
         payable

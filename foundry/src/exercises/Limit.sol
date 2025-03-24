@@ -29,6 +29,6 @@ contract Limit {
 
         // Task 2.2 - Send USDC to order vault
 
-        // Task 2.3 - create an order to swap USDC to WETH
+        // Task 2.3 - Create an order to swap USDC to WETH
     }
 }
