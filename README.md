@@ -137,7 +137,7 @@ forge build
 
 ### Contract architecture
 
-- [ ] TODO: excalidraw - Contract architecture
+- [ ] TODO: [Contract architecture](./notes/gmx_v2_contracts.png)
   - data store
   - bank / vault
   - router
@@ -162,7 +162,6 @@ forge build
       - refund execution fee
   - multicall
   - execution fee
-- [?] TODO: Code organization
 
 ### Trading
 
@@ -473,13 +472,6 @@ Stake
 ##### TODO
 
 - remove / clean notes
-
-- How is GLV rebalanced?
-
-- DecreasePositionUtils
-- DecreasePositionCollateralUtils.processCollateral
-- ExchangeRouter.claimCollateral
-- what is an atomic provider?
 
 Application ideas
 
