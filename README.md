@@ -24,8 +24,10 @@ forge build
   - transaction links
   - exercises
     - types and library functions copied from gmx code
+    - solutions
+    - markdown instructions
   - notes
-- [ ] TODO: UI - Quick guide on how to bridge ETH?
+- [ ] TODO: fix UI - Quick guide on how to bridge ETH?
   - [ ] Transactions
 
 ### Foundation
@@ -336,7 +338,7 @@ forge build
 
 Explain utilities, acquistion methods, differences and staking processes.
 
-- [ ] [GMX](./notes/gmx_token.md)
+- [ ] UI - [GMX](./notes/gmx_token.md)
 
   - Utility and governance
   - Buy
@@ -346,6 +348,13 @@ Explain utilities, acquistion methods, differences and staking processes.
 
     - Delegate
     - Vote
+
+  - transactions
+
+    - [ ] [Stake GMX](https://arbiscan.io/tx/0x0ed2a66323713c2e78dd53750612f3e9bcc97f2f8c02633a433a413889142067)
+    - [ ] [Unstake GMX](https://arbiscan.io/tx/0x2bbfefc59c295349405a86b08f9bd68b020e49836e9775de74e442908732678f)
+    - [ ] [Claim rewards](https://arbiscan.io/tx/0x23f1f338dc2456cf476692f34ea00838a1e621f8fd2aff330927edf256de8b1d)
+    - [ ] [Delegate](https://arbiscan.io/tx/0x245404338a81a8faccddf6ad8e944928bac6b687db8d7e217e47fdde94abd84f)
 
   - TODO: what is `_shouldStakeMultiplierPoints`?
 
