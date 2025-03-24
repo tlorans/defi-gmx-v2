@@ -34,13 +34,13 @@ contract TakeProfitAndStopLoss {
         usdc.transferFrom(msg.sender, address(this), usdcAmount);
         keys = new bytes32[](3);
 
-        // Send execution fee to order vault
+        // Task 2.1 - Send execution fee to order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee
         });
 
-        // Send USDC to order vault
+        // Task 2.2 - Send USDC to order vault
         usdc.approve(ROUTER, usdcAmount);
         exchangeRouter.sendTokens({
             token: USDC,
@@ -48,7 +48,7 @@ contract TakeProfitAndStopLoss {
             amount: usdcAmount
         });
 
-        // Create long order to long ETH with USDC collateral
+        // Task 2.3 - Create a long order to long ETH with USDC collateral
         // 1 USD = 1e8
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
         // 1 USD = 1e30
@@ -84,13 +84,13 @@ contract TakeProfitAndStopLoss {
             })
         );
 
-        // Send execution fee to order vault
+        // Task 2.4 - Send execution fee to order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee
         });
 
-        // Create stop loss for 90% of current ETH price
+        // Task 2.5 - Create a stop loss for 90% of current ETH price
         keys[1] = exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({
                 addresses: IBaseOrderUtils.CreateOrderParamsAddresses({
@@ -116,19 +116,18 @@ contract TakeProfitAndStopLoss {
                 decreasePositionSwapType: Order.DecreasePositionSwapType.NoSwap,
                 isLong: true,
                 shouldUnwrapNativeToken: false,
-                // NOTE: auto cancel this order when the position is closed
                 autoCancel: true,
                 referralCode: bytes32(uint256(0))
             })
         );
 
-        // Send execution fee to order vault
+        // Task 2.6 - Send execution fee to order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee
         });
 
-        // Create order to take profit above 110% of current price
+        // Task 2.7 - Create an order to take profit above 110% of current price
         keys[2] = exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({
                 addresses: IBaseOrderUtils.CreateOrderParamsAddresses({
@@ -156,7 +155,6 @@ contract TakeProfitAndStopLoss {
                     .SwapPnlTokenToCollateralToken,
                 isLong: true,
                 shouldUnwrapNativeToken: false,
-                // NOTE: auto cancel this order when the position is closed
                 autoCancel: true,
                 referralCode: bytes32(uint256(0))
             })

@@ -20,7 +20,6 @@ contract TakeProfitAndStopLoss {
     }
 
     // Task 1 - Receive execution fee refund from GMX
-    receive() external payable {}
 
     // Task 2 - Create orders to
     // 1. Long ETH with USDC collateral
@@ -32,18 +31,19 @@ contract TakeProfitAndStopLoss {
     ) external payable returns (bytes32[] memory keys) {
         uint256 executionFee = 0.1 * 1e18;
         usdc.transferFrom(msg.sender, address(this), usdcAmount);
-        keys = new bytes32[](3);
 
-        // Send execution fee to order vault
-        // Send USDC to order vault
-        // Create long order to long ETH with USDC collateral
-        // 1 USD = 1e8
-        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
+        // Task 2.1 - Send execution fee to order vault
 
-        // Send execution fee to order vault
-        // Create stop loss for 90% of current ETH price
+        // Task 2.2 - Send USDC to order vault
 
-        // Send execution fee to order vault
-        // Create order to take profit above 110% of current price
+        // Task 2.3 - Create a long order to long ETH with USDC collateral
+
+        // Task 2.4 - Send execution fee to order vault
+
+        // Task 2.5 - Create a stop loss for 90% of current ETH price
+
+        // Task 2.6 - Send execution fee to order vault
+
+        // Task 2.7 - Create an order to take profit above 110% of current price
     }
 }
