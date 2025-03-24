@@ -18,6 +18,7 @@ contract Swap {
     IReader constant reader = IReader(READER);
 
     // Task 1 - Receive execution fee refund from GMX
+    receive() external payable {}
 
     // Task 2 - Create an order to swap WETH to DAI
     function createOrder(uint256 wethAmount)
@@ -28,9 +29,11 @@ contract Swap {
         uint256 executionFee = 0.1 * 1e18;
         weth.transferFrom(msg.sender, address(this), wethAmount);
 
-        // Send execution fee to order vault
-        // Send WETH to order vault
-        // Create order to swap WETH to DAI
+        // Task 2.1 - Send execution fee to order vault
+
+        // Task 2.2 - Send WETH to order vault
+
+        // Task 2.3 - Create order to swap WETH to DAI
     }
 
     // Task 3 - Get order

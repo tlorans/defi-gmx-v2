@@ -29,13 +29,13 @@ contract Swap {
         uint256 executionFee = 0.1 * 1e18;
         weth.transferFrom(msg.sender, address(this), wethAmount);
 
-        // Send execution fee to order vault
+        // Task 2.1 - Send execution fee to order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee
         });
 
-        // Send WETH to order vault
+        // Task 2.2 - Send WETH to order vault
         weth.approve(ROUTER, wethAmount);
         exchangeRouter.sendTokens({
             token: WETH,
@@ -43,7 +43,7 @@ contract Swap {
             amount: wethAmount
         });
 
-        // Create order to swap WETH to DAI
+        // Task 2.3 - Create order to swap WETH to DAI
         address[] memory swapPath = new address[](2);
         swapPath[0] = GM_TOKEN_ETH_WETH_USDC;
         swapPath[1] = GM_TOKEN_SWAP_ONLY_USDC_DAI;
