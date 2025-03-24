@@ -81,8 +81,11 @@ contract GlvLiquidityTest is Test {
         uint256 usdcAmount = 1000 * 1e6;
         usdc.approve(address(glvLiquidity), usdcAmount);
 
-        bytes32 depositKey =
-            glvLiquidity.createGlvDeposit{value: executionFee}(usdcAmount);
+        uint256 minGlvAmount = 1;
+
+        bytes32 depositKey = glvLiquidity.createGlvDeposit{value: executionFee}(
+            usdcAmount, minGlvAmount
+        );
 
         GlvDeposit.Props memory deposit =
             glvReader.getGlvDeposit(DATA_STORE, depositKey);
@@ -138,8 +141,12 @@ contract GlvLiquidityTest is Test {
 
         testHelper.set("GLV before", glvToken.balanceOf(address(glvLiquidity)));
 
-        bytes32 withdrawalKey =
-            glvLiquidity.createGlvWithdrawal{value: executionFee}();
+        uint256 minWethAmount = 1;
+        uint256 minUsdcAmount = 1;
+
+        bytes32 withdrawalKey = glvLiquidity.createGlvWithdrawal{
+            value: executionFee
+        }(minWethAmount, minUsdcAmount);
 
         testHelper.set("GLV after", glvToken.balanceOf(address(glvLiquidity)));
 

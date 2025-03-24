@@ -105,7 +105,7 @@ contract MarketLiquidity {
                 uiFeeReceiver: address(0),
                 market: GM_TOKEN_BTC_WBTC_USDC,
                 initialLongToken: WBTC,
-               initialShortToken: USDC,
+                initialShortToken: USDC,
                 longTokenSwapPath: new address[](0),
                 shortTokenSwapPath: new address[](0),
                 minMarketTokens: minMarketTokens,
@@ -116,7 +116,7 @@ contract MarketLiquidity {
         );
     }
 
-    // Task 4 - Create an order to withdraw GM_TOKEN_BTC_WBTC_USDC
+    // Task 4 - Create an order to withdraw liquidity from GM_TOKEN_BTC_WBTC_USDC
     function createWithdrawal() external payable returns (bytes32 key) {
         uint256 executionFee = 0.1 * 1e18;
 

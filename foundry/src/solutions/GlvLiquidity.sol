@@ -17,24 +17,22 @@ contract GlvLiquidity {
     // Task 1 - Receive execution fee refund from GMX
     receive() external payable {}
 
-    // Task 2 - Create an order to deposit USDC into GM_TOKEN_BTC_WBTC_USDC
-    function createGlvDeposit(uint256 usdcAmount)
+    // Task 2 - Create an order to deposit USDC into GLV vault
+    function createGlvDeposit(uint256 usdcAmount, uint256 minGlvAmount)
         external
         payable
         returns (bytes32 key)
     {
         uint256 executionFee = 0.1 * 1e18;
-
         usdc.transferFrom(msg.sender, address(this), usdcAmount);
 
-        // Send gas fee
+        // Task 2.1 - Send execution fee to GLV vault
         glvRouter.sendWnt{value: executionFee}({
             receiver: GLV_VAULT,
             amount: executionFee
         });
 
-        // TODO: pair liquidity?
-        // Send token
+        // Task 2.2 - Send USDC to GLV vault
         usdc.approve(ROUTER, usdcAmount);
         glvRouter.sendTokens({
             token: USDC,
@@ -42,7 +40,7 @@ contract GlvLiquidity {
             amount: usdcAmount
         });
 
-        // Create an order
+        // Task 2.3 - Create an order to deposit USDC
         address[] memory longTokenSwapPath = new address[](0);
         address[] memory shortTokenSwapPath = new address[](0);
 
@@ -57,9 +55,7 @@ contract GlvLiquidity {
                 initialShortToken: USDC,
                 longTokenSwapPath: longTokenSwapPath,
                 shortTokenSwapPath: shortTokenSwapPath,
-                // TODO: how to calculate?
-                // minGlvTokens: 6788938029399432758
-                minGlvTokens: 1,
+                minGlvTokens: minGlvAmount,
                 executionFee: executionFee,
                 callbackGasLimit: 0,
                 shouldUnwrapNativeToken: false,
@@ -68,17 +64,22 @@ contract GlvLiquidity {
         );
     }
 
-    function createGlvWithdrawal() external payable returns (bytes32 key) {
+    // Task 3 - Create an order to withdraw liquidity
+    function createGlvWithdrawal(uint256 minWethAmount, uint256 minUsdcAmount)
+        external
+        payable
+        returns (bytes32 key)
+    {
         uint256 executionFee = 0.1 * 1e18;
         uint256 glvTokenAmount = glvToken.balanceOf(address(this));
 
-        // Send gas fee
+        // 3.1 Send execution fee to GLV vault
         glvRouter.sendWnt{value: executionFee}({
             receiver: GLV_VAULT,
             amount: executionFee
         });
 
-        // Send token
+        // 3.2 - Send USDC to GLV vault
         glvToken.approve(ROUTER, glvTokenAmount);
         glvRouter.sendTokens({
             token: address(glvToken),
@@ -86,7 +87,7 @@ contract GlvLiquidity {
             amount: glvTokenAmount
         });
 
-        // Create an order
+        // 3.3 Create an order to withdraw liquidity
         address[] memory longTokenSwapPath = new address[](0);
         address[] memory shortTokenSwapPath = new address[](0);
 
@@ -99,10 +100,8 @@ contract GlvLiquidity {
                 glv: address(glvToken),
                 longTokenSwapPath: longTokenSwapPath,
                 shortTokenSwapPath: shortTokenSwapPath,
-                // TODO: how to calculate this
-                minLongTokenAmount: 1,
-                // TODO: how to calculate this
-                minShortTokenAmount: 1,
+                minLongTokenAmount: minWethAmount,
+                minShortTokenAmount: minUsdcAmount,
                 shouldUnwrapNativeToken: false,
                 executionFee: executionFee,
                 callbackGasLimit: 0

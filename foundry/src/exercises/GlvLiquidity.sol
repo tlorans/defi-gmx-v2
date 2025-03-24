@@ -14,100 +14,36 @@ contract GlvLiquidity {
     IERC20 constant glvToken = IERC20(GLV_TOKEN_WETH_USDC);
     IGlvRouter constant glvRouter = IGlvRouter(GLV_ROUTER);
 
-    // Receive execution fee refund from GMX
-    receive() external payable {}
+    // Task 1 - Receive execution fee refund from GMX
 
-    // TODO: get deposit and withdrawal order
+    // Task 2 - Create an order to deposit USDC into GLV vault
+    function createGlvDeposit(uint256 usdcAmount, uint256 minGlvAmount)
+        external
+        payable
+        returns (bytes32 key)
+    {
+        uint256 executionFee = 0.1 * 1e18;
+        usdc.transferFrom(msg.sender, address(this), usdcAmount);
 
-    function createGlvDeposit(uint256 usdcAmount)
+        // Task 2.1 - Send execution fee to GLV vault
+
+        // Task 2.2 - Send USDC to GLV vault
+
+        // Task 2.3 - Create an order to deposit USDC
+    }
+
+    // Task 3 - Create an order to withdraw liquidity
+    function createGlvWithdrawal(uint256 minWethAmount, uint256 minUsdcAmount)
         external
         payable
         returns (bytes32 key)
     {
         uint256 executionFee = 0.1 * 1e18;
 
-        usdc.transferFrom(msg.sender, address(this), usdcAmount);
+        // 3.1 Send execution fee to GLV vault
 
-        // Send gas fee
-        glvRouter.sendWnt{value: executionFee}({
-            receiver: GLV_VAULT,
-            amount: executionFee
-        });
+        // 3.2 - Send USDC to GLV vault
 
-        // TODO: pair liquidity?
-        // Send token
-        usdc.approve(ROUTER, usdcAmount);
-        glvRouter.sendTokens({
-            token: USDC,
-            receiver: GLV_VAULT,
-            amount: usdcAmount
-        });
-
-        // Create an order
-        address[] memory longTokenSwapPath = new address[](0);
-        address[] memory shortTokenSwapPath = new address[](0);
-
-        return glvRouter.createGlvDeposit(
-            GlvDepositUtils.CreateGlvDepositParams({
-                glv: address(glvToken),
-                market: GM_TOKEN_ETH_WETH_USDC,
-                receiver: address(this),
-                callbackContract: address(0),
-                uiFeeReceiver: address(0),
-                initialLongToken: WETH,
-                initialShortToken: USDC,
-                longTokenSwapPath: longTokenSwapPath,
-                shortTokenSwapPath: shortTokenSwapPath,
-                // TODO: how to calculate?
-                // minGlvTokens: 6788938029399432758
-                minGlvTokens: 1,
-                executionFee: executionFee,
-                callbackGasLimit: 0,
-                shouldUnwrapNativeToken: false,
-                isMarketTokenDeposit: false
-            })
-        );
-    }
-
-    function createGlvWithdrawal() external payable returns (bytes32 key) {
-        uint256 executionFee = 0.1 * 1e18;
-        uint256 glvTokenAmount = glvToken.balanceOf(address(this));
-
-        // Send gas fee
-        glvRouter.sendWnt{value: executionFee}({
-            receiver: GLV_VAULT,
-            amount: executionFee
-        });
-
-        // Send token
-        glvToken.approve(ROUTER, glvTokenAmount);
-        glvRouter.sendTokens({
-            token: address(glvToken),
-            receiver: GLV_VAULT,
-            amount: glvTokenAmount
-        });
-
-        // Create an order
-        address[] memory longTokenSwapPath = new address[](0);
-        address[] memory shortTokenSwapPath = new address[](0);
-
-        return glvRouter.createGlvWithdrawal(
-            GlvWithdrawalUtils.CreateGlvWithdrawalParams({
-                receiver: address(this),
-                callbackContract: address(0),
-                uiFeeReceiver: address(0),
-                market: GM_TOKEN_ETH_WETH_USDC,
-                glv: address(glvToken),
-                longTokenSwapPath: longTokenSwapPath,
-                shortTokenSwapPath: shortTokenSwapPath,
-                // TODO: how to calculate this
-                minLongTokenAmount: 1,
-                // TODO: how to calculate this
-                minShortTokenAmount: 1,
-                shouldUnwrapNativeToken: false,
-                executionFee: executionFee,
-                callbackGasLimit: 0
-            })
-        );
+        // 3.3 Create an order to withdraw liquidity
     }
 }

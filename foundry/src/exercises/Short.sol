@@ -35,7 +35,7 @@ contract Short {
         uint256 executionFee = 0.1 * 1e18;
         usdc.transferFrom(msg.sender, address(this), usdcAmount);
 
-        // Task 2.1 - Send gas fee to order vault
+        // Task 2.1 - Send execution fee to order vault
 
         // Task 2.2 - Send USDC to order vault
 
@@ -56,7 +56,7 @@ contract Short {
     function createCloseOrder() external payable returns (bytes32 key) {
         uint256 executionFee = 0.1 * 1e18;
 
-        // Task 3.1 - Send gas fee to order vault
+        // Task 3.1 - Send execution fee to order vault
 
         // Task 3.2 - Create an order to close the short position
     }
