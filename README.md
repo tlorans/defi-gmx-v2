@@ -13,19 +13,19 @@ forge build
 
 ### Introduction
 
-- [ ] Course intro
+- [ ] TODO: Course intro
   - Prerequisites
     - DAI, WETH, USDC, WBTC, decimals, AMM, Arbitrum, etc..
     - Advanced Foundry
       - multicall
       - library (delegatecall)
   - Goals and expected outcomes
-- [ ] Project setup
+- [ ] TODO: Project setup
   - transaction links
   - exercises
     - types and library functions copied from gmx code
   - notes
-- [ ] UI - Quick guide on how to bridge ETH?
+- [ ] TODO: UI - Quick guide on how to bridge ETH?
   - [ ] Transactions
 
 ### Foundation
@@ -285,7 +285,7 @@ forge build
   - 31 - multicall
   - 32 - [Claim funding fees](./notes/position/claim_funding_fees.md)
     - [tx - Claim funding fees](https://arbiscan.io/tx/0x4415830b1a12882409df17e80be26da8c20e4cc929f1764046ca3aae3ca8339e)
-- [ ] Foundry exercises
+- [ ] TODO: Foundry exercises
   - Market swap
   - Limit swap
   - Long - open, close, deposit, withdraw
@@ -328,11 +328,11 @@ forge build
   - 8 [Burn](./notes/liquidity/glv_withdraw.md)
     - [tx - Sell GLV part 1](https://arbiscan.io/tx/0xb60ed4fa2252dae32f8252f5702c3caf0cd2f074a9e9b41eaaaae2cea3f760c6)
     - [tx - Sell GLV part 2](https://arbiscan.io/tx/0x5120cf011c75d9b67bdffa99c4e3c6fffb5e8bb428f0080fc7ccded361bf98e6)
-- [ ] Foundry exercises
+- [ ] TODO: Foundry exercises
   - GM - Buy, sell, shift
   - GLV - Buy, sell
 
-### Tokenomics
+### GMX token
 
 Explain utilities, acquistion methods, differences and staking processes.
 
@@ -471,7 +471,9 @@ Stake
 
 ##### TODO
 
+- README
 - remove / clean notes
+- application
 
 Application ideas
 
