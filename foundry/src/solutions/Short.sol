@@ -27,7 +27,7 @@ contract Short {
     // Task 1 - Receive execution fee refund from GMX
     receive() external payable {}
 
-    // Task 2 - Create order to short ETH with USDC collateral
+    // Task 2 - create an order to short ETH with USDC collateral
     function createShortOrder(uint256 leverage, uint256 usdcAmount)
         external
         payable
@@ -50,7 +50,7 @@ contract Short {
             amount: usdcAmount
         });
 
-        // Task 2.3 - Create order to short ETH with USDC collateral
+        // Task 2.3 - create an order to short ETH with USDC collateral
         // 1 USD = 1e8
         uint256 usdcPrice = oracle.getPrice(CHAINLINK_USDC_USD);
         // 1 USD = 1e30
@@ -112,7 +112,7 @@ contract Short {
         return reader.getPosition(address(dataStore), key);
     }
 
-    // Task 3 - Create order to close the short position created by this contract
+    // Task 3 - create an order to close the short position created by this contract
     function createCloseOrder() external payable returns (bytes32 key) {
         uint256 executionFee = 0.1 * 1e18;
 
@@ -122,7 +122,7 @@ contract Short {
             amount: executionFee
         });
 
-        // Task 3.2 - Create order to close the short position
+        // Task 3.2 - create an order to close the short position
         Position.Props memory position = getPosition(getPositionKey());
         require(position.numbers.sizeInUsd > 0, "position size = 0");
 

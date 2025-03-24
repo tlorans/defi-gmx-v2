@@ -42,7 +42,7 @@ contract Long {
 
         // Task 2.2 - Send WETH to order vault
 
-        // Task 2.3 - Create order
+        // Task 2.3 - create an order
     }
 
     // Task 3 - Get position key
@@ -70,6 +70,6 @@ contract Long {
 
         // Task 6.2 - Send execution fee to order vault
 
-        // Task 6.3 - Create order
+        // Task 6.3 - create an order
     }
 }

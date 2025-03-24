@@ -38,7 +38,7 @@ contract MarketLiquidity {
         uint256 btcPrice = oracle.getPrice(CHAINLINK_BTC_USD);
     }
 
-    // Task 3 - Create order to deposit USDC into GM_TOKEN_BTC_WBTC_USDC
+    // Task 3 - create an order to deposit USDC into GM_TOKEN_BTC_WBTC_USDC
     function createDeposit(uint256 usdcAmount)
         external
         payable

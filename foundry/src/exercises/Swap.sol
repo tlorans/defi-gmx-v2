@@ -33,7 +33,7 @@ contract Swap {
 
         // Task 2.2 - Send WETH to order vault
 
-        // Task 2.3 - Create order to swap WETH to DAI
+        // Task 2.3 - create an order to swap WETH to DAI
     }
 
     // Task 3 - Get order

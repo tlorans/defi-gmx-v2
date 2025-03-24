@@ -40,7 +40,7 @@ contract Limit {
             amount: usdcAmount
         });
 
-        // Task 2.3 - Create order to swap USDC to WETH
+        // Task 2.3 - create an order to swap USDC to WETH
         // usdcAmount = 1e6
         // maxEthPrice = 1e8
         // ETH amount = 1e18
