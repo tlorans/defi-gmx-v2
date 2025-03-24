@@ -53,6 +53,7 @@ Approve the `ROUTER` contract and send WETH to the order vault.
 
 Create a market increase order with the following requirements:
 
+- Set `market` to `GM_TOKEN_ETH_WETH_USDC`
 - Calculate the position size based on the leverage and WETH amount
   > Hints:
   >

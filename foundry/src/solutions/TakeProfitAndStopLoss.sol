@@ -50,9 +50,10 @@ contract TakeProfitAndStopLoss {
 
         // Task 2.3 - Create a long order to long ETH with USDC collateral
         // 1 USD = 1e8
+        uint256 usdcPrice = oracle.getPrice(CHAINLINK_USDC_USD);
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
         // 1 USD = 1e30
-        uint256 sizeDeltaUsd = leverage * usdcAmount * 1e24;
+        uint256 sizeDeltaUsd = leverage * usdcAmount * usdcPrice * 1e16;
 
         keys[0] = exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({

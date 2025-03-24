@@ -47,6 +47,7 @@ Approve the `ROUTER` contract and send USDC to the order vault.
 
 Call the `exchangeRouter.createOrder` function with the appropriate parameters to create a short position. Pay attention to:
 
+- Setting `market` to `GM_TOKEN_ETH_WETH_USDC`
 - Setting the correct `sizeDeltaUsd` based on leverage
   > Hints:
   >
