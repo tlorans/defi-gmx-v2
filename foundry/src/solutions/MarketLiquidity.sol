@@ -138,11 +138,12 @@ contract MarketLiquidity {
         // Task 4.3 - Create an order to withdraw WBTC and USDC from GM_TOKEN_BTC_WBTC_USDC
         // Assume 1 USD = 1 USDC
         uint256 marketTokenPrice = getMarketTokenPriceUsd();
+        uint256 marketTokenValue = marketTokenPrice * gmTokenAmount;
         uint256 btcPrice = oracle.getPrice(CHAINLINK_BTC_USD);
-        // 1e30 / (1e8 * 1e14) = 1e8 = 1 WBTC
-        uint256 minLongTokenAmount = (marketTokenPrice / 2) / (btcPrice * 1e14);
-        // 1e30 / 1e24 = 1e6 = 1 USDC
-        uint256 minShortTokenAmount = (marketTokenPrice / 2) / 1e24;
+        // 1e30 * 1e18 / (1e8 * 1e32) = 1e8 = 1 WBTC
+        uint256 minLongTokenAmount =  marketTokenValue / 2 * 90 / 100 / (btcPrice * 1e32);
+        // 1e30 * 1e18 / 1e42 = 1e6 = 1 USDC
+        uint256 minShortTokenAmount = marketTokenValue / 2 * 90 / 100 / 1e42;
 
         return exchangeRouter.createWithdrawal(
             WithdrawalUtils.CreateWithdrawalParams({
