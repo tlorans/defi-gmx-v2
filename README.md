@@ -286,7 +286,7 @@ forge build
   - 31 - multicall
   - 32 - [Claim funding fees](./notes/position/claim_funding_fees.md)
     - [tx - Claim funding fees](https://arbiscan.io/tx/0x4415830b1a12882409df17e80be26da8c20e4cc929f1764046ca3aae3ca8339e)
-- [ ] TODO: Foundry exercises
+- [ ] Foundry exercises
   - Market swap
   - Limit swap
   - Long - open, close, deposit, withdraw
@@ -329,7 +329,7 @@ forge build
   - 8 [Burn](./notes/liquidity/glv_withdraw.md)
     - [tx - Sell GLV part 1](https://arbiscan.io/tx/0xb60ed4fa2252dae32f8252f5702c3caf0cd2f074a9e9b41eaaaae2cea3f760c6)
     - [tx - Sell GLV part 2](https://arbiscan.io/tx/0x5120cf011c75d9b67bdffa99c4e3c6fffb5e8bb428f0080fc7ccded361bf98e6)
-- [ ] TODO: Foundry exercises
+- [ ] Foundry exercises
   - GM - Buy, sell, shift
   - GLV - Buy, sell
 
@@ -357,7 +357,7 @@ Explain utilities, acquistion methods, differences and staking processes.
 
   - TODO: what is `_shouldStakeMultiplierPoints`?
 
-  - [ ] TODO: Foundry exercises
+  - [ ] Foundry exercises
     - Buy -> DEX, no exercise
     - stake, delegate, unstake, claim rewards
 
@@ -370,7 +370,7 @@ Explain utilities, acquistion methods, differences and staking processes.
 
 ### Application
 
-- TODO: application
+- Short ETH 0.01 1x $20.40 0.0099940 WETH collateral part 1
 
 ### Footnote
 
