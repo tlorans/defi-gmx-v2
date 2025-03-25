@@ -2,7 +2,7 @@
 
 This contract interacts with GMX market pools, allowing users to deposit and withdraw tokens.
 
-You'll complete four main tasks in the `MarketLiquidity.sol` contract:
+You'll complete 4 main tasks in the `MarketLiquidity.sol` contract:
 
 1. Implement a function to receive execution fee refunds from GMX
 2. Complete the market token price calculation function

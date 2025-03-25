@@ -41,9 +41,6 @@ contract GlvLiquidity {
         });
 
         // Task 2.3 - Create an order to deposit USDC
-        address[] memory longTokenSwapPath = new address[](0);
-        address[] memory shortTokenSwapPath = new address[](0);
-
         return glvRouter.createGlvDeposit(
             GlvDepositUtils.CreateGlvDepositParams({
                 glv: address(glvToken),
@@ -53,8 +50,8 @@ contract GlvLiquidity {
                 uiFeeReceiver: address(0),
                 initialLongToken: WETH,
                 initialShortToken: USDC,
-                longTokenSwapPath: longTokenSwapPath,
-                shortTokenSwapPath: shortTokenSwapPath,
+                longTokenSwapPath: new address[](0),
+                shortTokenSwapPath: new address[](0),
                 minGlvTokens: minGlvAmount,
                 executionFee: executionFee,
                 callbackGasLimit: 0,
@@ -88,9 +85,6 @@ contract GlvLiquidity {
         });
 
         // 3.3 Create an order to withdraw liquidity
-        address[] memory longTokenSwapPath = new address[](0);
-        address[] memory shortTokenSwapPath = new address[](0);
-
         return glvRouter.createGlvWithdrawal(
             GlvWithdrawalUtils.CreateGlvWithdrawalParams({
                 receiver: address(this),
@@ -98,8 +92,8 @@ contract GlvLiquidity {
                 uiFeeReceiver: address(0),
                 market: GM_TOKEN_ETH_WETH_USDC,
                 glv: address(glvToken),
-                longTokenSwapPath: longTokenSwapPath,
-                shortTokenSwapPath: shortTokenSwapPath,
+                longTokenSwapPath: new address[](0),
+                shortTokenSwapPath: new address[](0),
                 minLongTokenAmount: minWethAmount,
                 minShortTokenAmount: minUsdcAmount,
                 shouldUnwrapNativeToken: false,
