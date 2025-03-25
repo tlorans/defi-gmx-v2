@@ -27,7 +27,7 @@ forge build
     - solutions
     - markdown instructions
   - notes
-- [ ] TODO: fix UI - Quick guide on how to bridge ETH?
+- [x] Quick guide on how to bridge ETH?
   - [ ] Transactions
 
 ### Foundation
@@ -139,7 +139,7 @@ forge build
 
 ### Contract architecture
 
-- [ ] TODO: [Contract architecture](./notes/gmx_v2_contracts.png)
+- [x] [Contract architecture](./notes/gmx_v2_contracts.png)
   - data store
   - bank / vault
   - router
@@ -337,36 +337,27 @@ forge build
 
 Explain utilities, acquistion methods, differences and staking processes.
 
-- [ ] UI - [GMX](./notes/gmx_token.md)
-
+- [x] UI - [GMX](./notes/gmx_token.md)
   - Utility and governance
   - Buy
   - Staked GMX earns rewards in GMX tokens
     - trading fees -> buy back GMX
   - Tally
-
     - Delegate
     - Vote
-
   - transactions
-
     - [ ] [Stake GMX](https://arbiscan.io/tx/0x0ed2a66323713c2e78dd53750612f3e9bcc97f2f8c02633a433a413889142067)
     - [ ] [Unstake GMX](https://arbiscan.io/tx/0x2bbfefc59c295349405a86b08f9bd68b020e49836e9775de74e442908732678f)
     - [ ] [Claim rewards](https://arbiscan.io/tx/0x23f1f338dc2456cf476692f34ea00838a1e621f8fd2aff330927edf256de8b1d)
     - [ ] [Delegate](https://arbiscan.io/tx/0x245404338a81a8faccddf6ad8e944928bac6b687db8d7e217e47fdde94abd84f)
-
-  - TODO: what is `_shouldStakeMultiplierPoints`?
-
   - [ ] Foundry exercises
     - Buy -> DEX, no exercise
     - stake, delegate, unstake, claim rewards
-
 - [ ] TODO: remove? esGMX -> has historically been awarded as an incentive for GMX Staking -> TODO: skip?
   - [ ] UI?
     - Vest to convert esGMX to GMX
   - [ ] Foundry exercises?
-- [ ] TODO: GLP (V1)
-  - Quick explanation
+- [x] GLP (V1)
 
 ### Application
 
@@ -374,7 +365,7 @@ Explain utilities, acquistion methods, differences and staking processes.
 
 ### Footnote
 
-- 63 / 64 gas
+- TODO: 63 / 64 gas
 
 ### Transactions
 
