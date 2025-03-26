@@ -13,9 +13,9 @@ import {Withdrawal} from "../src/types/Withdrawal.sol";
 import "../src/Constants.sol";
 import {Role} from "../src/lib/Role.sol";
 import {Oracle} from "../src/lib/Oracle.sol";
-import {MarketLiquidity} from "@exercises/MarketLiquidity.sol";
+import {GmLiquidity} from "@exercises/GmLiquidity.sol";
 
-contract MarketLiquidityTest is Test {
+contract GmLiquidityTest is Test {
     IERC20 constant wbtc = IERC20(WBTC);
     IERC20 constant usdc = IERC20(USDC);
     IERC20 constant gmToken = IERC20(GM_TOKEN_BTC_WBTC_USDC);
@@ -26,7 +26,7 @@ contract MarketLiquidityTest is Test {
 
     TestHelper testHelper;
     Oracle oracle;
-    MarketLiquidity marketLiquidity;
+    GmLiquidity gmLiquidity;
     address keeper;
 
     // Oracle params
@@ -40,7 +40,7 @@ contract MarketLiquidityTest is Test {
         keeper = testHelper.getRoleMember(Role.ORDER_KEEPER);
         oracle = new Oracle();
 
-        marketLiquidity = new MarketLiquidity(address(oracle));
+        gmLiquidity = new GmLiquidity(address(oracle));
         deal(USDC, address(this), 1000 * 1e6);
 
         tokens = new address[](3);
@@ -78,10 +78,10 @@ contract MarketLiquidityTest is Test {
     function testMarketLiquidity() public {
         uint256 executionFee = 0.1 * 1e18;
         uint256 usdcAmount = 1000 * 1e6;
-        usdc.approve(address(marketLiquidity), usdcAmount);
+        usdc.approve(address(gmLiquidity), usdcAmount);
 
         // Test market token price
-        uint256 marketTokenPrice = marketLiquidity.getMarketTokenPriceUsd();
+        uint256 marketTokenPrice = gmLiquidity.getMarketTokenPriceUsd();
         assertGt(marketTokenPrice, 0, "market token price = 0");
 
         uint256 minMarketTokenAmount =
@@ -90,13 +90,11 @@ contract MarketLiquidityTest is Test {
 
         // Create deposit order
         bytes32 depositKey =
-            marketLiquidity.createDeposit{value: executionFee}(usdcAmount);
+            gmLiquidity.createDeposit{value: executionFee}(usdcAmount);
 
         Deposit.Props memory deposit = reader.getDeposit(DATA_STORE, depositKey);
         assertEq(
-            deposit.addresses.receiver,
-            address(marketLiquidity),
-            "deposit receiver"
+            deposit.addresses.receiver, address(gmLiquidity), "deposit receiver"
         );
         assertEq(
             deposit.addresses.market, GM_TOKEN_BTC_WBTC_USDC, "deposit market"
@@ -118,8 +116,8 @@ contract MarketLiquidityTest is Test {
         });
 
         testHelper.set(
-            "GM token marketLiquidity before",
-            gmToken.balanceOf(address(marketLiquidity))
+            "GM token gmLiquidity before",
+            gmToken.balanceOf(address(gmLiquidity))
         );
 
         vm.prank(keeper);
@@ -133,23 +131,23 @@ contract MarketLiquidityTest is Test {
         );
 
         testHelper.set(
-            "GM token marketLiquidity after",
-            gmToken.balanceOf(address(marketLiquidity))
+            "GM token gmLiquidity after",
+            gmToken.balanceOf(address(gmLiquidity))
         );
 
         console.log(
-            "GM token marketLiquidity: %e",
-            testHelper.get("GM token marketLiquidity after")
+            "GM token gmLiquidity: %e",
+            testHelper.get("GM token gmLiquidity after")
         );
 
         assertGt(
-            testHelper.get("GM token marketLiquidity after"),
-            testHelper.get("GM token marketLiquidity before"),
-            "GM token marketLiquidity"
+            testHelper.get("GM token gmLiquidity after"),
+            testHelper.get("GM token gmLiquidity before"),
+            "GM token gmLiquidity"
         );
 
         assertGe(
-            testHelper.get("GM token marketLiquidity after"),
+            testHelper.get("GM token gmLiquidity after"),
             minMarketTokenAmount,
             "Min GM token amount"
         );
@@ -158,23 +156,23 @@ contract MarketLiquidityTest is Test {
         skip(1);
 
         testHelper.set(
-            "GM token marketLiquidity before",
-            gmToken.balanceOf(address(marketLiquidity))
+            "GM token gmLiquidity before",
+            gmToken.balanceOf(address(gmLiquidity))
         );
 
         bytes32 withdrawalKey =
-            marketLiquidity.createWithdrawal{value: executionFee}();
+            gmLiquidity.createWithdrawal{value: executionFee}();
 
         testHelper.set(
-            "GM token marketLiquidity after",
-            gmToken.balanceOf(address(marketLiquidity))
+            "GM token gmLiquidity after",
+            gmToken.balanceOf(address(gmLiquidity))
         );
 
         Withdrawal.Props memory withdrawal =
             reader.getWithdrawal(DATA_STORE, withdrawalKey);
         assertEq(
             withdrawal.addresses.receiver,
-            address(marketLiquidity),
+            address(gmLiquidity),
             "withdrawal receiver"
         );
         assertEq(
@@ -189,25 +187,23 @@ contract MarketLiquidityTest is Test {
         );
 
         assertEq(
-            testHelper.get("GM token marketLiquidity after"),
+            testHelper.get("GM token gmLiquidity after"),
             0,
-            "GM token marketLiquidity"
+            "GM token gmLiquidity"
         );
 
         // Execute withdrawal
         skip(1);
 
         testHelper.set(
-            "WBTC marketLiquidity before",
-            wbtc.balanceOf(address(marketLiquidity))
+            "WBTC gmLiquidity before", wbtc.balanceOf(address(gmLiquidity))
         );
         testHelper.set(
-            "USDC marketLiquidity before",
-            usdc.balanceOf(address(marketLiquidity))
+            "USDC gmLiquidity before", usdc.balanceOf(address(gmLiquidity))
         );
         testHelper.set(
-            "GM token marketLiquidity before",
-            gmToken.balanceOf(address(marketLiquidity))
+            "GM token gmLiquidity before",
+            gmToken.balanceOf(address(gmLiquidity))
         );
 
         testHelper.mockOraclePrices({
@@ -228,41 +224,37 @@ contract MarketLiquidityTest is Test {
         );
 
         testHelper.set(
-            "WBTC marketLiquidity after",
-            wbtc.balanceOf(address(marketLiquidity))
+            "WBTC gmLiquidity after", wbtc.balanceOf(address(gmLiquidity))
         );
         testHelper.set(
-            "USDC marketLiquidity after",
-            usdc.balanceOf(address(marketLiquidity))
+            "USDC gmLiquidity after", usdc.balanceOf(address(gmLiquidity))
         );
         testHelper.set(
-            "GM token marketLiquidity after",
-            gmToken.balanceOf(address(marketLiquidity))
+            "GM token gmLiquidity after",
+            gmToken.balanceOf(address(gmLiquidity))
         );
 
         console.log(
-            "WBTC marketLiquidity: %e",
-            testHelper.get("WBTC marketLiquidity after")
+            "WBTC gmLiquidity: %e", testHelper.get("WBTC gmLiquidity after")
         );
         console.log(
-            "USDC marketLiquidity: %e",
-            testHelper.get("USDC marketLiquidity after")
+            "USDC gmLiquidity: %e", testHelper.get("USDC gmLiquidity after")
         );
 
         assertGt(
-            testHelper.get("WBTC marketLiquidity after"),
-            testHelper.get("WBTC marketLiquidity before"),
-            "WBTC marketLiquidity"
+            testHelper.get("WBTC gmLiquidity after"),
+            testHelper.get("WBTC gmLiquidity before"),
+            "WBTC gmLiquidity"
         );
         assertGt(
-            testHelper.get("USDC marketLiquidity after"),
-            testHelper.get("USDC marketLiquidity before"),
-            "USDC marketLiquidity"
+            testHelper.get("USDC gmLiquidity after"),
+            testHelper.get("USDC gmLiquidity before"),
+            "USDC gmLiquidity"
         );
         assertGe(
-            testHelper.get("GM token marketLiquidity after"),
+            testHelper.get("GM token gmLiquidity after"),
             0,
-            "GM token marketLiquidity"
+            "GM token gmLiquidity"
         );
     }
 }

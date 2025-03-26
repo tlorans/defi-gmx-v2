@@ -16,7 +16,7 @@ import {Keys} from "../lib/Keys.sol";
 import {Oracle} from "../lib/Oracle.sol";
 import "../Constants.sol";
 
-contract MarketLiquidity {
+contract GmLiquidity {
     IERC20 constant weth = IERC20(WETH);
     IERC20 constant usdc = IERC20(USDC);
     IERC20 constant gmToken = IERC20(GM_TOKEN_BTC_WBTC_USDC);
@@ -141,7 +141,8 @@ contract MarketLiquidity {
         uint256 marketTokenValue = marketTokenPrice * gmTokenAmount;
         uint256 btcPrice = oracle.getPrice(CHAINLINK_BTC_USD);
         // 1e30 * 1e18 / (1e8 * 1e32) = 1e8 = 1 WBTC
-        uint256 minLongTokenAmount =  marketTokenValue / 2 * 90 / 100 / (btcPrice * 1e32);
+        uint256 minLongTokenAmount =
+            marketTokenValue / 2 * 90 / 100 / (btcPrice * 1e32);
         // 1e30 * 1e18 / 1e42 = 1e6 = 1 USDC
         uint256 minShortTokenAmount = marketTokenValue / 2 * 90 / 100 / 1e42;
 

@@ -15,22 +15,17 @@ contract Stake {
     IRewardTracker constant rewardTracker = IRewardTracker(REWARD_TRACKER);
 
     // Task 1 - Stake GMX
-    function stake(uint256 gmxAmount) external {
-    }
+    function stake(uint256 gmxAmount) external {}
 
     // Task 2 - Unstake GMX
-    function unstake(uint256 gmxAmount) external {
-    }
+    function unstake(uint256 gmxAmount) external {}
 
     // Task 3 - Claim rewards
-    function claimRewards() external {
-    }
+    function claimRewards() external {}
 
     // Task 4 - Get staked amount
-    function getStakedAmount() external view returns (uint256) {
-    }
+    function getStakedAmount() external view returns (uint256) {}
 
     // Task 5 - Delegate
-    function delegate(address delegatee) external {
-    }
+    function delegate(address delegatee) external {}
 }

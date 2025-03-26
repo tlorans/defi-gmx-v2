@@ -16,7 +16,7 @@ import {Keys} from "../lib/Keys.sol";
 import {Oracle} from "../lib/Oracle.sol";
 import "../Constants.sol";
 
-contract MarketLiquidity {
+contract GmLiquidity {
     IERC20 constant weth = IERC20(WETH);
     IERC20 constant usdc = IERC20(USDC);
     IERC20 constant gmToken = IERC20(GM_TOKEN_BTC_WBTC_USDC);
