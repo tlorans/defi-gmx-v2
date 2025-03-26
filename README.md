@@ -1,6 +1,6 @@
 # GMX V2
 
-## Course intro
+## Course Intro
 
 ## Project Setup
 
@@ -135,9 +135,6 @@ See [here](./foundry/README.md)
     - Composition
     - Buy
     - Sell
-
-### Contract architecture
-
 - [x] [Contract architecture](./notes/gmx_v2_contracts.png)
   - data store
   - bank / vault
@@ -247,7 +244,6 @@ See [here](./foundry/README.md)
         - bytes32 key output
       - 25 - [tx - Swap DAI to ETH part 2](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
         - setPrices and clearAllPrices
-  - TODO?: distributePositionImpactPool
     - Limit swap
       - [tx - Limit order swap 2.63 USDC to ETH at $2780 part 1](https://arbiscan.io/tx/0x5a55b926aadaa832a42c55a4a60b0008193c773767e7289cdeb7eca0e1433595)
       - [tx - Limit order swap 2.63 USDC to ETH at $2780 part 2](https://arbiscan.io/tx/0x2306c6c8300a10a4e59c6dcc04513c84c0d2469172beb5c8f9cf1820eba308d0)
@@ -370,6 +366,8 @@ Explain utilities, acquistion methods, differences and staking processes.
 
 - TODO?: 63 / 64 gas
 
+## Resources
+
 ### Transactions
 
 Market swaps
@@ -396,28 +394,11 @@ Trades
 - [Close short 0.01 ETH part 1](https://arbiscan.io/tx/0x3825aab5d7bbfac2b68f75c77c1ff55e684496844a8dd605dc43a1348efceb22)
 - [Close short 0.01 ETH part 2](https://arbiscan.io/tx/0x8ade23d7ad7ee6fb589a0d04724ee8c64f20e92e32688739e0c049b510c690f0)
 
-- [Short ETH 10 USDC 100x part 1](https://arbiscan.io/tx/0x0a7b404d5f3c8c5f2cedd2c452d81840bef1b89f583e4e1a80f4cc2930ddad42)
-- [Short ETH 10 USDC 100x part 2](https://arbiscan.io/tx/0x7fa1c583e2363ed1013035a33305f79571c760f713bed8065fe24b24e5b739d2)
-- [Close short ETH 10 USDC 100x part 1](https://arbiscan.io/tx/0xc3357725621993a02203d945a52120fdf7172075c372687d917d2b1593a3e3d4)
-- [Close short ETH 10 USDC 100x part 2](https://arbiscan.io/tx/0x8af4c27645b313be8a71cd38a10957e12d7fcd7653dd0de32353b67a0a0fef32)
-
 - [Short ETH 0.01 ~ TP $2200 SL $2260 part 1](https://arbiscan.io/tx/0xfb4a9ddd2b80a4e7f739c0281a3869d89ee3cb96fe796446511098eb917016a4)]
 - [Short ETH 0.01 ~ TP $2200 SL $2260 part 2](https://arbiscan.io/tx/0x9a32d9750bc14d77756ab9ebae1141c2b4845f44cdf2091fc74b7df174b32887)
 - [Take profit short ETH 0.01 ~ TP $2200 SL $2260](https://arbiscan.io/tx/0x612165df3da2fd87dc0b6c86e76b7d69a5900208da025a80ad275c1319a012c2)
 
 - [Claim funding fees](https://arbiscan.io/tx/0x4415830b1a12882409df17e80be26da8c20e4cc929f1764046ca3aae3ca8339e)
-
-- [Long ETH 0.005 ETH 10x SL + TP (part 1)](https://arbiscan.io/tx/0xffa7b6142f69d42565acaf36a8dd101cc8fc5b9d1c251d93eea5501b9d4b88d3)
-- [Long ETH 0.005 ETH 10x SL + TP (part 2)](https://arbiscan.io/tx/0xbc053961d45b116f305fed005bd1ec7d4ebb6215946ba7d4db27e2eb75b10828)
-- [Long ETH 0.005 ETH 10x SL + TP (part 3)](https://arbiscan.io/tx/0xa8c6f918e2478e3b1e0e9ff43b088f4f371505b39fce7b38fe49cb30ab0e565a)
-- [Long ETH 0.005 ETH 10x SL + TP (part 4)](https://arbiscan.io/tx/0xa8c6f918e2478e3b1e0e9ff43b088f4f371505b39fce7b38fe49cb30ab0e565a)
-
-- [Long ETH 0.01 2x ~ $54.57 TP $2760 50% SL $2680 50%](?)
-- [Close short WETH 0.009 (part 1)](https://arbiscan.io/tx/0x53c1b3734b7886f457909f2d785cb62b291be6ba56c79b1bd397371d4d2b44a9)
-- [Close short WETH 0.009 (part 2)](https://arbiscan.io/tx/0x4c2c254c93caaffd6d4cdeba0018aeb98f4fcbfe3862102560c426e5a2b62b05)
-
-- [Limit long 100x 0.0000534 WBTC part 1](https://arbiscan.io/tx/0xb6edf782be9db8b493b296c5231d7041961c080fc941dcb6f3ca59f207794023)
-- [Limit long 100x 0.0000534 WBTC part 2](https://arbiscan.io/tx/0xf732ca126ef2582550bf7fcd0ef2a24f3d076d1456c4050b30974c7fc4d54cc3)
 
 Liquidation
 
@@ -449,24 +430,23 @@ Stake
 - [Claim rewards](https://arbiscan.io/tx/0x23f1f338dc2456cf476692f34ea00838a1e621f8fd2aff330927edf256de8b1d)
 - [Delegate](https://arbiscan.io/tx/0x245404338a81a8faccddf6ad8e944928bac6b687db8d7e217e47fdde94abd84f)
 
-### Links
+Bridge from ETH mainnet to Arbitrum
 
-##### GMX
+- [Deposit ETH to Arbitrum One](https://etherscan.io/tx/0x1752e3449694e4c3d516093294f39a2a3576198db7d3af3975704b0a339bf4b1)
+- [Deposit DAI to Arbitrum One](https://etherscan.io/tx/0xb15ea04494164f2d1dd6a12222010c65f496190e69f6acd909d0b6c80fbf37cb)
+
+### GMX
 
 - [GMX](https://gmx.io/)
 - [GMX app](https://app.gmx.io/)
-- [GMX doc](https://docs.gmx.io/docs/intro/)
+- [GMX doc](https://docs.gmx.io/docs)
 - [GMX GitHub gmx-synthetics](https://github.com/gmx-io/gmx-synthetics)
 - [GMX GitHub gmx-contracts](https://github.com/gmx-io/gmx-contracts)
-- [GMX GitHub interface](https://github.com/gmx-io/gmx-interface/)
 - [GMX delegatees](https://www.tally.xyz/gov/gmx/delegates)
 - [Tenderly](https://tenderly.co)
 - [Chainlink providers](https://docs.chain.link/data-feeds/price-feeds/addresses?network=arbitrum&page=1)
-- [ABI ninja](https://abi.ninja)
 
-##### Arbitrum
+### Arbitrum
 
 - [Arbitrum](https://arbitrum.io/)
 - [Arbitrum bridge](https://bridge.arbitrum.io/)
-- [Bridge DAI from ETH to Arbitrum One tx](https://etherscan.io/tx/0xb15ea04494164f2d1dd6a12222010c65f496190e69f6acd909d0b6c80fbf37cb)
-- [Deposit ETH into Arbitrum One tx](https://etherscan.io/tx/0x1752e3449694e4c3d516093294f39a2a3576198db7d3af3975704b0a339bf4b1)
