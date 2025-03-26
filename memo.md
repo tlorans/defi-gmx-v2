@@ -15,3 +15,4 @@ Application ideas
 - README
 - remove / clean notes
 - application
+- solutions

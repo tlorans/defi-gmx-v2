@@ -8,7 +8,7 @@
 
 See [here](./foundry/README.md)
 
-## Course
+## Topics
 
 ### Introduction
 
@@ -31,332 +31,133 @@ See [here](./foundry/README.md)
 
 ### Foundation
 
-- [x] What is GMX?
-  - Decentralized spot and perpetual exchange
-  - Key features
-    - 2 step transactions -> why?
-    - No AMM -> 0 price impact?
-    - Dynamic funding rate
-    - Isolated pools
-- [x] [How the protocol works](./notes/gmx_v2.png)
-  - Users (traders, LP (GM / GLV holders) and GMX holders, keepers)
-  - Funding fees
-  - Borrowing fees
-  - Price impact
-  - Where does profit / loss come from?
-    - Default profit paid in long pos -> long token, short pos -> short token
-  - Fee distribution
-- [x] Terminologies and examples
-  - [Perpetual swap](./notes/terms/perp.png)
-    - Long
-    - Short
-  - [Leverage](./notes/terms/lev.png)
-  - [Markets](./notes/terms/market.png)
-    - Index
-    - Long
-    - Short
-    - Synthetic asset
-    - Both tokens are needed
-  - [Liquidity provider](./notes/terms/lp.png)
-  - [Position size](./notes/terms/pos.png)
-  - [Liquidation](./notes/terms/liquidation.png)
-    - Collateral
-  - [Open interest](./notes/terms/open_interest.png)
-  - [Funding fee](./notes/terms/funding_fee.png)
-- [x] UI trade
-  - 2 steps transaciton process
-  - Markets (ETH / USD, WBTC / USD, etc...)
-    - Index, long and short tokens
-    - Fully backed
-    - Synthetic
-  - Long / Short / Swap
-    - Swap
-      - 2 step tx
-      - Market
-        - Market pools
-          - Swap only pools
-        - swap fee on amount in
-        - execution fee
-      - Limit
-    - Market
-      - Long
-        - Open
-          - 2 step tx
-          - Pay, collateral
-          - Pool
-            - funding fee
-            - open interest
-          - Leverage
-            - Liquidation price
-          - price impact
-          - fees
-          - network fee
-        - Close
-          - profit in long asset
-          - swap pnl
-          - Profit and collateral can be swapped
-          - Pool fees
-            - open interest
-          - Liquidation price
-          - Price impact fee
-          - Fees
-          - Deposit / withdraw collateral
-      - Short
-        - Open
-          - 2 step tx
-          - profit in stablecoin?
-          - Leverage
-          - Pool fees
-            - open interest
-          - Liquidation price
-          - Price impact fee
-          - Fees
-        - Close
-          - Profit and collateral can be swapped
-- [x] UI liquidity
-  - Difference between GLV and GM
-  - GM (GMX market) pools
-  - GLV (GMX liquidity vault) pools
-  - GM
-    - Markets
-      - index, long, short
-      - swap only
-    - Buy
-      - Single and pair liquidity
-      - Fees
-      - Network fee
-    - Sell
-      - Pair liquidity
-      - Fees
-      - Network fee
-    - Shift
-  - GLV
-    - BTC-USDC and WETH-USDC
-    - Composition
-    - Buy
-    - Sell
-- [x] [Contract architecture](./notes/gmx_v2_contracts.png)
-  - data store
-  - bank / vault
-  - router
-    - ExchangeRouter
-    - GlvRouter
-  - handlers
-  - utils (library)
-  - market tokens
-  - reader
-  - oracle
-  - keeper
-  - wnt = wrapped native token
-  - 2 step transcations
-    - user -> create order
-      - send execution fee
-      - send tokens
-      - create order
-    - keeper -> execute order
-      - execute order
-      - send tokens
-      - refund execution fee
-  - multicall
-  - execution fee
+- [What is GMX?](https://gmx.io)
+- [How GMX works](./notes/gmx_v2.png)
+- [Perpetual swap](./notes/terms/perp.png)
+- [Long and short](./notes/terms/perp.png)
+- [Leverage](./notes/terms/leverage.png)
+- [Purpose of leverage](./notes/terms/leverage.png)
+- [Markets](./notes/terms/market.png)
+- [2 types of market](./notes/terms/market.png)
+- [Liquidity provider](./notes/terms/lp.png)
+- [Position size](./notes/terms/position_size.png)
+- [Examples of position profit and loss](./notes/terms/position_size.png)
+- [Liquidation](./notes/terms/liquidation.png)
+- [Open interest](./notes/terms/open_interest.png)
+- [Funding fee](./notes/terms/funding_fee.png)
+- [4 types of open interest](./notes/terms/open_interest.png)
+- [Contract architecture](./notes/gmx_v2_contracts.png)
 
 ### Trading
 
-- [x] 1 - [Graph - example strategies](https://www.desmos.com/calculator/ieq40vs9ve)
-  - Long ETH, ETH collateral
-  - Long ETH, USDC collateral
-  - Short ETH, ETH collateral
-  - Short ETH, USDC collateral
+- [Graph - payoffs for positions](https://www.desmos.com/calculator/ieq40vs9ve)
 - Fees
-  - 2 - Common fees
-    - UI
-      - Execution fee
-      - UI
-      - Price impact
-  - Price impact
-    - 3 - [Purpose of price impact](./notes/price_impact.md)
-    - 4 - [Price impacts for swap, positions and liquidity](./notes/price_impact.md)
-      - swap
-      - open position
-      - close position
-      - deposit liquidity
-    - [x] 5 [Price impact formula](./notes/price_impact.md)
-      - same side
-      - cross over
-    - [x] 6 [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
-      - same side (long >= short)
-      - positive / negative price impact
-      - price impact negative -> rapid increase in fees
-      - area of same side pos price impact >= area of cross over pos price impact
-    - [x] 7 [Code - virtual inventory](./notes/virtual_inventory.md)
-  - Swap
-    - 8 UI
-      - [Swap fee on amount in](./notes/swap/swap_fees.md)
-      - Price impact
+  - [Purpose of price impact](./notes/price_impact.md)
+  - [Price impacts for swap, positions and liquidity](./notes/price_impact.md)
+  - [Price impact formula](./notes/price_impact.md)
+  - [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
+  - [Code - virtual inventory](./notes/virtual_inventory.md)
+  - [Swap fee on amount in](./notes/swap/swap_fees.md)
   - [Position](./notes/position/position_fees.md)
-    - 9 - UI
-      - Price impact
-      - deposit / withdrawal fee
-      - ui fee
-      - execution fee
-      - borrowing fee
-      - funding fee
-    - Borrowing fees
-      - 10 - [Math](./notes/position/borrowing_fee.png)
-        - Purpose
-      - 11 - How borrowing fee is calculated in code
-      - 12 - [How to update borrowing fee](./notes/position/borrowing_fee.md)
-      - 13 - get next cumulative borrowing factor
-      - 14 - Borrowing factor per second
-        - getReservedUsd
-      - 15 - [Graph kink borrowing factor](https://www.desmos.com/calculator/9khv07nrfb)
-    - Funding fees
-      - 16 - Purpose
-      - 17 - UI claim (funding fees)
-      - 18 - [Math](./notes/positions/funding_fee.png)
-      - 19 - [How is funding fee updated](./notes/position/funding_fee.md)
-      - 20 - [How is funding factor per second calculated](./notes/position/funding_fee.md)
-- 21 - UI take profit and stop loss
-  - auto cancel
+  - [Borrowing fee math](./notes/position/borrowing_fee.png)
+  - [How to update borrowing fee](./notes/position/borrowing_fee.md)
+  - [Graph - kink borrowing factor](https://www.desmos.com/calculator/9khv07nrfb)
+  - [Funding fee math](./notes/positions/funding_fee.png)
+  - [How is funding fee updated](./notes/position/funding_fee.md)
+  - [How is funding factor per second calculated](./notes/position/funding_fee.md)
 - [Order types](./notes/order_types.md)
-  - 22 - UI
-    - swap
-      - market
-      - limit
-    - Long and short
-      - market
-      - limit
-        - long -> limit price =< mark price
-        - short -> limit price >= mark price
-      - tp / sl
-        - long -> trigger price > mark -> take profit -> trigger price < mark -> stop loss
-        - short -> trigger price > mark -> stop loss -> trigger price < mark -> take profit
-      - stop market
-        - long -> stop price > mark (create order above current price)
-        - short -> stop price < mark
-- [ ] Contract calls (2 step tx - create order + execute order)
-  - Swap
-    - [Market swap](./notes/swap/swap.md)
-      - 23 - [Token flow](./notes/execute_swap.png)
-      - 24 - [tx - Swap DAI to ETH part 1](https://arbiscan.io/tx/0x747665f80ccd64918af4f4cd2d3c7e7c077d061d61bc47fc99f644d1eb4d18f4)
-        - `multicall`
-        - order input
-        - bytes32 key output
-      - 25 - [tx - Swap DAI to ETH part 2](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
-        - setPrices and clearAllPrices
-    - Limit swap
-      - [tx - Limit order swap 2.63 USDC to ETH at $2780 part 1](https://arbiscan.io/tx/0x5a55b926aadaa832a42c55a4a60b0008193c773767e7289cdeb7eca0e1433595)
-      - [tx - Limit order swap 2.63 USDC to ETH at $2780 part 2](https://arbiscan.io/tx/0x2306c6c8300a10a4e59c6dcc04513c84c0d2469172beb5c8f9cf1820eba308d0)
-  - Long (open / close / deposit / withdraw)
-    - [Open](./notes/position/market_increase.md)
-      - 26 - [tx - Long ETH 0.001 70x ~ $190 part 1](https://arbiscan.io/tx/0xcac1ce9014aafcd3d8ae89c27cfd4866de36ff010ded5344a65bd4034d358413)
-        - `market`
-        - `initialCollateralToken`
-        - `swapPath`
-        - `sizeDeltaUsd`
-        - `executionFee`
-        - `orderType`
-      - 27 - [tx - Long ETH 0.001 70x ~ $190 part 2](https://arbiscan.io/tx/0x29d95557ef789fd6d9031c739a29dd5adc112f3ff8aab0524cd6aa9ddfc4e278)
-        - `leverage = position size USD / collateral amount USD`
-        - `initialCollateralDeltaAmount`
-        - `swapPath`
-    - [Close](./notes/position/market_decrease.md)
-      - 28 - [tx - Close long ETH 0.001 70x ~ $190 part 1](https://arbiscan.io/tx/0x13cdef0acc7d4017f82df308f0f628996b707396182fc2a2042e78b0ebc4657d)
-        - `sizeDeltaUsd`
-        - `initialCollateralDeltaAmount`
-        - `decreasePositionSwapType`
-        - Default profit paid in long pos -> long token, short pos -> short token
-      - 29 - [tx - Close long ETH 0.001 70x ~ $190 part 2](https://arbiscan.io/tx/0xf5f5d293ef7bdc6893941cda6a6fd57d67a20876a175aa1e424af9442868bb47)
-  - Short (open / close / deposit / withdraw)
-    - [tx - Short 0.01 ETH part 1](https://arbiscan.io/tx/0x15f4bb54997d8efbf0816313e64120fe5bf89ab31fe78f4a647f47b61b629eea)
-    - [tx - Short 0.01 ETH part 2](https://arbiscan.io/tx/0x7039c81c3f14f54fbfb45c337fb13e4513b8e795a2d9237b66b2b191e717121e)
-    - [tx - Close short 0.01 ETH part 1](https://arbiscan.io/tx/0x3825aab5d7bbfac2b68f75c77c1ff55e684496844a8dd605dc43a1348efceb22)
-    - [tx - Close short 0.01 ETH part 2](https://arbiscan.io/tx/0x8ade23d7ad7ee6fb589a0d04724ee8c64f20e92e32688739e0c049b510c690f0)
-  - TP and SL
-    - [tx - Short ETH 0.01 ~ TP $2200 SL $2260 part 1](https://arbiscan.io/tx/0xfb4a9ddd2b80a4e7f739c0281a3869d89ee3cb96fe796446511098eb917016a4)]
-      - `StopLossDecrease`
-      - `LimitDecrease`
-    - 30 - [tx - Short ETH 0.01 ~ TP $2200 SL $2260 part 2](https://arbiscan.io/tx/0x9a32d9750bc14d77756ab9ebae1141c2b4845f44cdf2091fc74b7df174b32887)
-    - [tx - Take profit short ETH 0.01 ~ TP $2200 SL $2260](https://arbiscan.io/tx/0x612165df3da2fd87dc0b6c86e76b7d69a5900208da025a80ad275c1319a012c2)
-  - 31 - multicall
-  - 32 - [Claim funding fees](./notes/position/claim_funding_fees.md)
-    - [tx - Claim funding fees](https://arbiscan.io/tx/0x4415830b1a12882409df17e80be26da8c20e4cc929f1764046ca3aae3ca8339e)
-- [ ] Foundry exercises
-  - Market swap
-  - Limit swap
-  - Long - open, close, deposit, withdraw
-  - Short - open, close, deposit, withdraw
-  - TP
-  - SL
-  - Claim funding fees
+- [Market swap](./notes/swap/swap.md)
+  - [Token flow](./notes/execute_swap.png)
+  - [tx - Swap DAI to ETH part 1](https://arbiscan.io/tx/0x747665f80ccd64918af4f4cd2d3c7e7c077d061d61bc47fc99f644d1eb4d18f4)
+  - [tx - Swap DAI to ETH part 2](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
+- Limit swap
+  - [tx - Limit order swap 2.63 USDC to ETH at $2780 part 1](https://arbiscan.io/tx/0x5a55b926aadaa832a42c55a4a60b0008193c773767e7289cdeb7eca0e1433595)
+  - [tx - Limit order swap 2.63 USDC to ETH at $2780 part 2](https://arbiscan.io/tx/0x2306c6c8300a10a4e59c6dcc04513c84c0d2469172beb5c8f9cf1820eba308d0)
+- Long
+  - [Open](./notes/position/market_increase.md)
+    - [tx - Open long ETH 0.001 70x ~ $190 part 1](https://arbiscan.io/tx/0xcac1ce9014aafcd3d8ae89c27cfd4866de36ff010ded5344a65bd4034d358413)
+    - [tx - Open long ETH 0.001 70x ~ $190 part 2](https://arbiscan.io/tx/0x29d95557ef789fd6d9031c739a29dd5adc112f3ff8aab0524cd6aa9ddfc4e278)
+  - [Close](./notes/position/market_decrease.md)
+    - [tx - Close long ETH 0.001 70x ~ $190 part 1](https://arbiscan.io/tx/0x13cdef0acc7d4017f82df308f0f628996b707396182fc2a2042e78b0ebc4657d) `sizeDeltaUsd`
+    - [tx - Close long ETH 0.001 70x ~ $190 part 2](https://arbiscan.io/tx/0xf5f5d293ef7bdc6893941cda6a6fd57d67a20876a175aa1e424af9442868bb47)
+- Short
+  - [tx - Open short 0.01 ETH part 1](https://arbiscan.io/tx/0x15f4bb54997d8efbf0816313e64120fe5bf89ab31fe78f4a647f47b61b629eea)
+  - [tx - Open short 0.01 ETH part 2](https://arbiscan.io/tx/0x7039c81c3f14f54fbfb45c337fb13e4513b8e795a2d9237b66b2b191e717121e)
+  - [tx - Close short 0.01 ETH part 1](https://arbiscan.io/tx/0x3825aab5d7bbfac2b68f75c77c1ff55e684496844a8dd605dc43a1348efceb22)
+  - [tx - Close short 0.01 ETH part 2](https://arbiscan.io/tx/0x8ade23d7ad7ee6fb589a0d04724ee8c64f20e92e32688739e0c049b510c690f0)
+- TP and SL
+  - [tx - Short ETH 0.01 ~ TP $2200 SL $2260 part 1](https://arbiscan.io/tx/0xfb4a9ddd2b80a4e7f739c0281a3869d89ee3cb96fe796446511098eb917016a4)]
+  - [tx - Short ETH 0.01 ~ TP $2200 SL $2260 part 2](https://arbiscan.io/tx/0x9a32d9750bc14d77756ab9ebae1141c2b4845f44cdf2091fc74b7df174b32887)
+  - [tx - Take profit short ETH 0.01 ~ TP $2200 SL $2260](https://arbiscan.io/tx/0x612165df3da2fd87dc0b6c86e76b7d69a5900208da025a80ad275c1319a012c2)
+- [Claim funding fees](./notes/position/claim_funding_fees.md)
+  - [tx - Claim funding fees](https://arbiscan.io/tx/0x4415830b1a12882409df17e80be26da8c20e4cc929f1764046ca3aae3ca8339e)
+- Foundry exercises
+  - [Market swap](./foundry/exercises/market_swap.md)
+    - [Starter code](./foundry/src/exercises/MarketSwap.sol)
+    - [Solution](./foundry/src/solutions/MarketSwap.sol)
+  - [Limit swap](./foundry/exercises/limit_swap.md)
+    - [Starter code](./foundry/src/exercises/LimitSwap.sol)
+    - [Solution](./foundry/src/solutions/LimitSwap.sol)
+  - [Long position](./foundry/exercises/long.md)
+    - [Starter code](./foundry/src/exercises/Long.sol)
+    - [Solution](./foundry/src/solutions/Long.sol)
+  - [Short position](./foundry/exercises/short.md)
+    - [Starter code](./foundry/src/exercises/Short.sol)
+    - [Solution](./foundry/src/solutions/Short.sol)
+  - [Claim funding fees](./foundry/exercises/claim_funding_fees.md)
+    - [Starter code](./foundry/src/exercises/ClaimFundingFees.sol)
+    - [Solution](./foundry/src/solutions/ClaimFundingFees.sol)
+  - [Take profit and stop loss](./foundry/exercises/take_profit_stop_loss.md)
+    - [Starter code](./foundry/src/exercises/TakeProfitAndStopLoss.sol)
+    - [Solution](./foundry/src/solutions/TakeProfitAndStopLoss.sol)
 
 ### Liquidation
 
-- [x] 1 [When executed?](./notes/liquidation/liquidation.md)
-  - UI leverage + liquidation price
-  - Fees
-- [x] 2 [Math - liquidation price](./notes/liquidation/liq_price_approx.png)
-- [x] 3 ADL
-- [x] Foundry exercises? -> Not public function -> no exercise
+- [When executed?](./notes/liquidation/liquidation.md)
+- [Approximate liquidation price](./notes/liquidation/liq_price_approx.png)
 
 ### Liquidity
 
-- [ ] GM
-  - 1 [Token price](./notes/liquidity/market_token_price.md)
-  - 2 [Fees](./notes/market_liquidity_fees.md)
-  - 3 [Mint](./notes/liquidity/market_deposit.md)
+- GM pool
+  - [Token price](./notes/liquidity/market_token_price.md)
+  - [Fees](./notes/market_liquidity_fees.md)
+  - [Mint](./notes/liquidity/market_deposit.md)
     - [tx - Buy GM ETH/USD part 1](https://arbiscan.io/tx/0x6021800ad3d31003082fa6dc7fb5b6b8ff83208cadfcca98ffaa0774d6f652b8)
-      - deposit vault
-      - market
     - [tx - Buy GM ETH/USD part 2](https://arbiscan.io/tx/0x719b63dbef8d38006918c0e787b98a8373606b6147b77ae84a91fe2338132f4a)
-  - 4 [Burn](./notes/liquidity/market_withdraw.md)
+  - [Burn](./notes/liquidity/market_withdraw.md)
     - [tx - Sell GM ETH/USD part 1](https://arbiscan.io/tx/0xda4bc1d39be6ea85f8323875cbc4920aa33d0af38d7af2eb3f3dd03d174ae98e)
     - [tx - Sell GM ETH/USD part 2](https://arbiscan.io/tx/0xbdc46442f47149089f4976190a97c81bf476eb43b0478689e0ac918a9a502641)
   - [Shift](./notes/liquidity/market_shift.md)
     - [tx - Shift ETH/USDC to LDO/USD part 1](https://arbiscan.io/tx/0xaa88b76cd39de8931bdfb3cce46984f634ecfe6ca88b40965191f9b05b50605d)
     - [tx - Shift ETH/USDC to LDO/USD part 2](https://arbiscan.io/tx/0x6b6db0a76a506b76c8cf517f59ca8a506b0f7e8e8f36f578a92ce7da0ddd38dc)
-- [ ] GLV
-  - 5 [Token pricing](./notes/liquidity/glv_token_price.md)
-  - 6 [Fees](./notes/glv_liquidity_fees.md)
-  - 7 [Mint](./notes/liquidity/glv_deposit.md)
+- GLV vault
+  - [Token pricing](./notes/liquidity/glv_token_price.md)
+  - [Fees](./notes/glv_liquidity_fees.md)
+  - [Mint](./notes/liquidity/glv_deposit.md)
     - [tx - Buy GLV part 1](https://arbiscan.io/tx/0x8d7d6e6b99fbeb095aeee4e495c528e4187bbabd0a3f728ef874f6b31bf73405)
     - [tx - Buy GLV part 2](https://arbiscan.io/tx/0x3cfcd9e1bdcc57a727dd66d6ed38afe78bbf3430015072078876240d183129f3)
-  - 8 [Burn](./notes/liquidity/glv_withdraw.md)
+  - [Burn](./notes/liquidity/glv_withdraw.md)
     - [tx - Sell GLV part 1](https://arbiscan.io/tx/0xb60ed4fa2252dae32f8252f5702c3caf0cd2f074a9e9b41eaaaae2cea3f760c6)
     - [tx - Sell GLV part 2](https://arbiscan.io/tx/0x5120cf011c75d9b67bdffa99c4e3c6fffb5e8bb428f0080fc7ccded361bf98e6)
 - [ ] Foundry exercises
-  - GM - Buy, sell, shift
-  - GLV - Buy, sell
+  - [GM pool liquidity](./foundry/exercises/gm_liquidity.md)
+    - [Starter code](./foundry/src/exercises/GmLiquidity.sol)
+    - [Solution](./foundry/src/solutions/GmLiquidity.sol)
+  - [GLV vault liquidity](./foundry/exercises/glv_liquidity.md)
+    - [Starter code](./foundry/src/exercises/GlvLiquidity.sol)
+    - [Solution](./foundry/src/solutions/GlvLiquidity.sol)
 
 ### GMX token
 
-Explain utilities, acquistion methods, differences and staking processes.
-
-- [x] UI - [GMX](./notes/gmx_token.md)
-
-  - Utility and governance
-  - Buy
-  - Staked GMX earns rewards in GMX tokens
-    - trading fees -> buy back GMX
-  - Tally
-    - Delegate
-    - Vote
-  - [x] GMX total supply
-  - [x] esGMX
-    - current not actively distributed
-    - limited inflation of GMX token supply
-    - `RewardRouter.stakeEsGmx`
-    - Vest
-  - transactions
-    - [ ] [Stake GMX](https://arbiscan.io/tx/0x0ed2a66323713c2e78dd53750612f3e9bcc97f2f8c02633a433a413889142067)
-    - [ ] [Unstake GMX](https://arbiscan.io/tx/0x2bbfefc59c295349405a86b08f9bd68b020e49836e9775de74e442908732678f)
-    - [ ] [Claim rewards](https://arbiscan.io/tx/0x23f1f338dc2456cf476692f34ea00838a1e621f8fd2aff330927edf256de8b1d)
-    - [ ] [Delegate](https://arbiscan.io/tx/0x245404338a81a8faccddf6ad8e944928bac6b687db8d7e217e47fdde94abd84f)
-  - [x] Foundry exercises
-    - Buy -> DEX, no exercise
-    - stake, delegate, unstake, claim rewards
-
-- [x] GLP (V1)
+- [GMX](./notes/gmx_token.md)
+  - [tx - Stake GMX](https://arbiscan.io/tx/0x0ed2a66323713c2e78dd53750612f3e9bcc97f2f8c02633a433a413889142067)
+  - [tx - Unstake GMX](https://arbiscan.io/tx/0x2bbfefc59c295349405a86b08f9bd68b020e49836e9775de74e442908732678f)
+  - [tx - Claim rewards](https://arbiscan.io/tx/0x23f1f338dc2456cf476692f34ea00838a1e621f8fd2aff330927edf256de8b1d)
+  - [tx - Delegate](https://arbiscan.io/tx/0x245404338a81a8faccddf6ad8e944928bac6b687db8d7e217e47fdde94abd84f)
+  - Foundry exercises
+    - [GMX](./foundry/exercises/stake.md)
+      - [Starter code](./foundry/src/exercises/Stake.sol)
+      - [Solution](./foundry/src/solutions/Stake.sol)
 
 ### Application
 
