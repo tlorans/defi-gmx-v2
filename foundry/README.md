@@ -1,4 +1,5 @@
 ```shell
+# Fill out environment variables inside .env
 cp .env.sample .env
 
 # Build exercises

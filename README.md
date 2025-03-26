@@ -1,13 +1,12 @@
 # GMX V2
 
-This course provides a comprehensive guide for developers to understand, interact with, and build applications using the GMX protocol.
+## Course intro
 
-### Setup Foundry
+## Project Setup
 
-```shell
-cd foundry
-forge build
-```
+## Setup Foundry
+
+See [here](./foundry/README.md)
 
 ## Course
 
@@ -346,8 +345,8 @@ Explain utilities, acquistion methods, differences and staking processes.
   - Tally
     - Delegate
     - Vote
-  - [ ] TODO: GMX total supply
-  - [ ] TODO: esGMX
+  - [x] GMX total supply
+  - [x] esGMX
     - current not actively distributed
     - limited inflation of GMX token supply
     - `RewardRouter.stakeEsGmx`
@@ -369,7 +368,7 @@ Explain utilities, acquistion methods, differences and staking processes.
 
 ### Footnote
 
-- TODO: 63 / 64 gas
+- TODO?: 63 / 64 gas
 
 ### Transactions
 
@@ -471,21 +470,3 @@ Stake
 - [Arbitrum bridge](https://bridge.arbitrum.io/)
 - [Bridge DAI from ETH to Arbitrum One tx](https://etherscan.io/tx/0xb15ea04494164f2d1dd6a12222010c65f496190e69f6acd909d0b6c80fbf37cb)
 - [Deposit ETH into Arbitrum One tx](https://etherscan.io/tx/0x1752e3449694e4c3d516093294f39a2a3576198db7d3af3975704b0a339bf4b1)
-
-##### TODO
-
-- README
-- remove / clean notes
-- application
-
-Application ideas
-
-```
-1. Any integration that can help grow trading volume.
-
-2. A delta-neutral funding fee vault, allowing a user to earn GMX funding fees automatically with a delta-neutral position (e.g. holding ETH and shorting ETH when funding is paying shorts).
-
-3. Or, alternatively, an unhedged version of the above instrument. Where a user just takes a position on the side that pays funding fees, counter-trading the existing traders on GMX.
-
-4. A price impact vault, which capitalises on this opportunity on GMX by automatically capturing the value from positive price impact when it becomes available.
-```
