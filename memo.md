@@ -1,3 +1,23 @@
+### Introduction
+
+- [ ] TODO: Course intro
+  - What you will learn
+  - Why should you take this course
+    - Expected outcome
+  - Prerequisites
+    - DAI, WETH, USDC, WBTC, decimals, AMM, Arbitrum, etc..
+    - Advanced Foundry
+      - multicall
+      - library (delegatecall)
+  - Goals and expected outcomes
+- [ ] TODO: Project setup
+  - transaction links
+  - exercises
+    - types and library functions copied from gmx code
+    - solutions
+    - markdown instructions
+  - notes
+
 Application ideas
 
 ```

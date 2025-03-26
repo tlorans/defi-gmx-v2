@@ -4,30 +4,16 @@
 
 ## Project Setup
 
-## Setup Foundry
-
-See [here](./foundry/README.md)
+[Foundry exercises](./foundry/README.md)
 
 ## Topics
 
 ### Introduction
 
-- [ ] TODO: Course intro
-  - Prerequisites
-    - DAI, WETH, USDC, WBTC, decimals, AMM, Arbitrum, etc..
-    - Advanced Foundry
-      - multicall
-      - library (delegatecall)
-  - Goals and expected outcomes
-- [ ] TODO: Project setup
-  - transaction links
-  - exercises
-    - types and library functions copied from gmx code
-    - solutions
-    - markdown instructions
-  - notes
-- [x] Quick guide on how to bridge ETH?
-  - [ ] Transactions
+- Quick guide on how to bridge ETH to Arbitrum
+  - [Arbitrum bridge](https://bridge.arbitrum.io/)
+  - [tx - Deposit ETH to Arbitrum One](https://etherscan.io/tx/0x1752e3449694e4c3d516093294f39a2a3576198db7d3af3975704b0a339bf4b1)
+  - [tx - Deposit DAI to Arbitrum One](https://etherscan.io/tx/0xb15ea04494164f2d1dd6a12222010c65f496190e69f6acd909d0b6c80fbf37cb)
 
 ### Foundation
 
