@@ -42,18 +42,18 @@
   - [Price impacts for swap, positions and liquidity](./notes/price_impact.md)
   - [Price impact formula](./notes/price_impact.md)
   - [Graph - price impact](https://www.desmos.com/calculator/sykma4sbbb)
-  - [Code - virtual inventory](./notes/virtual_inventory.md)
+  - [Virtual inventory](./notes/virtual_inventory.md)
   - [Swap fee on amount in](./notes/swap/swap_fees.md)
   - [Position](./notes/position/position_fees.md)
   - [Borrowing fee math](./notes/position/borrowing_fee.png)
   - [How to update borrowing fee](./notes/position/borrowing_fee.md)
   - [Graph - kink borrowing factor](https://www.desmos.com/calculator/9khv07nrfb)
-  - [Funding fee math](./notes/positions/funding_fee.png)
+  - [Funding fee math](./notes/position/funding_fee.png)
   - [How is funding fee updated](./notes/position/funding_fee.md)
   - [How is funding factor per second calculated](./notes/position/funding_fee.md)
 - [Order types](./notes/order_types.md)
 - [Market swap](./notes/swap/swap.md)
-  - [Token flow](./notes/execute_swap.png)
+  - [Token flow](./notes/swap/execute_swap.png)
   - [tx - Swap DAI to ETH part 1](https://arbiscan.io/tx/0x747665f80ccd64918af4f4cd2d3c7e7c077d061d61bc47fc99f644d1eb4d18f4)
   - [tx - Swap DAI to ETH part 2](https://arbiscan.io/tx/0x98658391314497c36fe70a3104ae230fd592b7d67941858e08bd6d207142e9e9)
 - Limit swap
@@ -64,7 +64,7 @@
     - [tx - Open long ETH 0.001 70x ~ $190 part 1](https://arbiscan.io/tx/0xcac1ce9014aafcd3d8ae89c27cfd4866de36ff010ded5344a65bd4034d358413)
     - [tx - Open long ETH 0.001 70x ~ $190 part 2](https://arbiscan.io/tx/0x29d95557ef789fd6d9031c739a29dd5adc112f3ff8aab0524cd6aa9ddfc4e278)
   - [Close](./notes/position/market_decrease.md)
-    - [tx - Close long ETH 0.001 70x ~ $190 part 1](https://arbiscan.io/tx/0x13cdef0acc7d4017f82df308f0f628996b707396182fc2a2042e78b0ebc4657d) `sizeDeltaUsd`
+    - [tx - Close long ETH 0.001 70x ~ $190 part 1](https://arbiscan.io/tx/0x13cdef0acc7d4017f82df308f0f628996b707396182fc2a2042e78b0ebc4657d)
     - [tx - Close long ETH 0.001 70x ~ $190 part 2](https://arbiscan.io/tx/0xf5f5d293ef7bdc6893941cda6a6fd57d67a20876a175aa1e424af9442868bb47)
 - Short
   - [tx - Open short 0.01 ETH part 1](https://arbiscan.io/tx/0x15f4bb54997d8efbf0816313e64120fe5bf89ab31fe78f4a647f47b61b629eea)
@@ -72,7 +72,7 @@
   - [tx - Close short 0.01 ETH part 1](https://arbiscan.io/tx/0x3825aab5d7bbfac2b68f75c77c1ff55e684496844a8dd605dc43a1348efceb22)
   - [tx - Close short 0.01 ETH part 2](https://arbiscan.io/tx/0x8ade23d7ad7ee6fb589a0d04724ee8c64f20e92e32688739e0c049b510c690f0)
 - TP and SL
-  - [tx - Short ETH 0.01 ~ TP $2200 SL $2260 part 1](https://arbiscan.io/tx/0xfb4a9ddd2b80a4e7f739c0281a3869d89ee3cb96fe796446511098eb917016a4)]
+  - [tx - Short ETH 0.01 ~ TP $2200 SL $2260 part 1](https://arbiscan.io/tx/0xfb4a9ddd2b80a4e7f739c0281a3869d89ee3cb96fe796446511098eb917016a4)
   - [tx - Short ETH 0.01 ~ TP $2200 SL $2260 part 2](https://arbiscan.io/tx/0x9a32d9750bc14d77756ab9ebae1141c2b4845f44cdf2091fc74b7df174b32887)
   - [tx - Take profit short ETH 0.01 ~ TP $2200 SL $2260](https://arbiscan.io/tx/0x612165df3da2fd87dc0b6c86e76b7d69a5900208da025a80ad275c1319a012c2)
 - [Claim funding fees](./notes/position/claim_funding_fees.md)
@@ -106,7 +106,7 @@
 
 - GM pool
   - [Token price](./notes/liquidity/market_token_price.md)
-  - [Fees](./notes/market_liquidity_fees.md)
+  - [Fees](./notes/liquidity/market_liquidity_fees.md)
   - [Mint](./notes/liquidity/market_deposit.md)
     - [tx - Buy GM ETH/USD part 1](https://arbiscan.io/tx/0x6021800ad3d31003082fa6dc7fb5b6b8ff83208cadfcca98ffaa0774d6f652b8)
     - [tx - Buy GM ETH/USD part 2](https://arbiscan.io/tx/0x719b63dbef8d38006918c0e787b98a8373606b6147b77ae84a91fe2338132f4a)
@@ -118,7 +118,7 @@
     - [tx - Shift ETH/USDC to LDO/USD part 2](https://arbiscan.io/tx/0x6b6db0a76a506b76c8cf517f59ca8a506b0f7e8e8f36f578a92ce7da0ddd38dc)
 - GLV vault
   - [Token pricing](./notes/liquidity/glv_token_price.md)
-  - [Fees](./notes/glv_liquidity_fees.md)
+  - [Fees](./notes/liquidity/glv_liquidity_fees.md)
   - [Mint](./notes/liquidity/glv_deposit.md)
     - [tx - Buy GLV part 1](https://arbiscan.io/tx/0x8d7d6e6b99fbeb095aeee4e495c528e4187bbabd0a3f728ef874f6b31bf73405)
     - [tx - Buy GLV part 2](https://arbiscan.io/tx/0x3cfcd9e1bdcc57a727dd66d6ed38afe78bbf3430015072078876240d183129f3)
@@ -149,10 +149,6 @@
 
 - Short ETH 0.01 1x $20.40 0.0099940 WETH collateral part 1
 
-### Footnote
-
-- TODO?: 63 / 64 gas
-
 ## Resources
 
 ### Transactions
@@ -181,7 +177,7 @@ Trades
 - [Close short 0.01 ETH part 1](https://arbiscan.io/tx/0x3825aab5d7bbfac2b68f75c77c1ff55e684496844a8dd605dc43a1348efceb22)
 - [Close short 0.01 ETH part 2](https://arbiscan.io/tx/0x8ade23d7ad7ee6fb589a0d04724ee8c64f20e92e32688739e0c049b510c690f0)
 
-- [Short ETH 0.01 ~ TP $2200 SL $2260 part 1](https://arbiscan.io/tx/0xfb4a9ddd2b80a4e7f739c0281a3869d89ee3cb96fe796446511098eb917016a4)]
+- [Short ETH 0.01 ~ TP $2200 SL $2260 part 1](https://arbiscan.io/tx/0xfb4a9ddd2b80a4e7f739c0281a3869d89ee3cb96fe796446511098eb917016a4)
 - [Short ETH 0.01 ~ TP $2200 SL $2260 part 2](https://arbiscan.io/tx/0x9a32d9750bc14d77756ab9ebae1141c2b4845f44cdf2091fc74b7df174b32887)
 - [Take profit short ETH 0.01 ~ TP $2200 SL $2260](https://arbiscan.io/tx/0x612165df3da2fd87dc0b6c86e76b7d69a5900208da025a80ad275c1319a012c2)
 
