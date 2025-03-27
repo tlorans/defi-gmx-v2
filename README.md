@@ -1,6 +1,5 @@
 # GMX V2
 
-<!--
 [contributors-shield]: https://img.shields.io/github/contributors/cyfrin/defi-gmx-v2.svg?style=for-the-badge
 [contributors-url]: https://github.com/cyfrin/defi-gmx-v2/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/cyfrin/defi-gmx-v2.svg?style=for-the-badge
@@ -26,7 +25,6 @@
     <br />
 </p>
 </div>
--->
 
 This repository houses course resources and [discussions](https://github.com/Cyfrin/defi-gmx-v2/discussions) for the course.
 
