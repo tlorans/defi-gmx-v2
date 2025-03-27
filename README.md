@@ -25,11 +25,13 @@
     - Test on fork
     - Console log to debug
 
-## Project Setup
+## Getting Started
 
 - [Foundry setup](./foundry/README.md)
 
-- Use transcation debugger such as [tenderly.co](https://tenderly.co/) to debug [transactions](#transcations)
+- Use transcation debugger such as [tenderly.co](https://tenderly.co/) to debug [transactions](#transactions)
+
+- All course notes can be found [here](./notes)
 
 ## Introduction
 

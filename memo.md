@@ -11,11 +11,12 @@
       - library (delegatecall)
   - Goals and expected outcomes
 - [ ] TODO: Project setup
-  - transaction links
-  - exercises
-    - types and library functions copied from gmx code
-    - solutions
+  - Foundry exercises
     - markdown instructions
+    - starter code
+    - solutions
+    - types and library functions copied from gmx code
+  - transaction links
   - notes
 
 Application ideas
