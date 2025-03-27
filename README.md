@@ -12,6 +12,8 @@
 [license-url]: https://github.com/cyfrin/defi-gmx-v2/blob/main/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 
+<div align="center">
+
 [![Stargazers][stars-shield]][stars-url] [![Forks][forks-shield]][forks-url] [![Contributors][contributors-shield]][contributors-url] [![Issues][issues-shield]][issues-url] [![GPLv3 License][license-shield]][license-url]
 
 <p align="center">
@@ -22,6 +24,7 @@
         <img src=".github/images/coursebadge.png" width="242.3" alt=""/></a>
     <br />
 </p>
+</div>
 
 This repository houses course resources and [discussions](https://github.com/Cyfrin/defi-gmx-v2/discussions) for the course.
 
