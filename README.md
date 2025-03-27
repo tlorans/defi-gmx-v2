@@ -31,7 +31,7 @@
 
 - Use transcation debugger such as [tenderly.co](https://tenderly.co/) to debug [transactions](#transactions)
 
-- All course notes can be found [here](./notes)
+- All course notes can be found under [notes](./notes)
 
 ## Introduction
 
