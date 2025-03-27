@@ -2,20 +2,43 @@
 
 ## Course Intro
 
+- What you will learn
+  - What is GMX V2 and how it works
+  - DeFi terminologies
+    - Perpetual swap
+    - Leverage
+    - Long and short
+    - Funding fee
+  - Write smart contracts that interact with GMX V2
+- Why should you take this course?
+  - Expand DeFi knowledge
+  - Audit contests and bug bounties
+  - Build application that integrates with GMX V2
+  - Build your own perpetual exchange
+- Prerequisites
+  - DeFi basic terminologies
+    - DAI, USDC, WETH, WBTC, ERC20 decimals, AMM, price oracle, Arbitrum, etc..
+  - Intermediate to advanced Solidity
+    - Solidity `library` (State changing calls through a `library` uses `delegatecall`)
+    - [`multicall`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/utils/PayableMulticall.sol#L18-L33)
+  - Advanced Foundry
+    - Test on fork
+    - Console log to debug
+
 ## Project Setup
 
-[Foundry exercises](./foundry/README.md)
+- [Foundry setup](./foundry/README.md)
 
-## Topics
+- Use transcation debugger such as [tenderly.co](https://tenderly.co/) to debug [transactions](#transcations)
 
-### Introduction
+## Introduction
 
 - Quick guide on how to bridge ETH to Arbitrum
   - [Arbitrum bridge](https://bridge.arbitrum.io/)
   - [tx - Deposit ETH to Arbitrum One](https://etherscan.io/tx/0x1752e3449694e4c3d516093294f39a2a3576198db7d3af3975704b0a339bf4b1)
   - [tx - Deposit DAI to Arbitrum One](https://etherscan.io/tx/0xb15ea04494164f2d1dd6a12222010c65f496190e69f6acd909d0b6c80fbf37cb)
 
-### Foundation
+## Foundation
 
 - [What is GMX?](https://gmx.io)
 - [How GMX works](./notes/gmx_v2.png)
@@ -34,7 +57,7 @@
 - [4 types of open interest](./notes/terms/open_interest.png)
 - [Contract architecture](./notes/gmx_v2_contracts.png)
 
-### Trading
+## Trading
 
 - [Graph - payoffs for positions](https://www.desmos.com/calculator/ieq40vs9ve)
 - Fees
@@ -97,12 +120,12 @@
     - [Starter code](./foundry/src/exercises/TakeProfitAndStopLoss.sol)
     - [Solution](./foundry/src/solutions/TakeProfitAndStopLoss.sol)
 
-### Liquidation
+## Liquidation
 
 - [When executed?](./notes/liquidation/liquidation.md)
 - [Approximate liquidation price](./notes/liquidation/liq_price_approx.png)
 
-### Liquidity
+## Liquidity
 
 - GM pool
   - [Token price](./notes/liquidity/market_token_price.md)
@@ -133,7 +156,7 @@
     - [Starter code](./foundry/src/exercises/GlvLiquidity.sol)
     - [Solution](./foundry/src/solutions/GlvLiquidity.sol)
 
-### GMX token
+## GMX token
 
 - [GMX](./notes/gmx_token.md)
   - [tx - Stake GMX](https://arbiscan.io/tx/0x0ed2a66323713c2e78dd53750612f3e9bcc97f2f8c02633a433a413889142067)
@@ -145,7 +168,7 @@
       - [Starter code](./foundry/src/exercises/Stake.sol)
       - [Solution](./foundry/src/solutions/Stake.sol)
 
-### Application
+## Application
 
 - Short ETH 0.01 1x $20.40 0.0099940 WETH collateral part 1
 
