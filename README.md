@@ -12,9 +12,6 @@
 [license-url]: https://github.com/cyfrin/defi-gmx-v2/blob/main/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 
-<p align="center"><strong>Learn smart contract development, and level up your career
-</strong></p>
-
 [![Stargazers][stars-shield]][stars-url] [![Forks][forks-shield]][forks-url] [![Contributors][contributors-shield]][contributors-url] [![Issues][issues-shield]][issues-url] [![GPLv3 License][license-shield]][license-url]
 
 <p align="center">
