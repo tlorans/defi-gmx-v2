@@ -1,6 +1,6 @@
 # Long Position Exercises
 
-In this exercise, you'll implement a smart contract that interacts with GMX V2 to create and manage leveraged long positions for ETH using WETH as collateral. This advanced exercise will cover opening positions, querying position details, calculating profit and loss, and closing positions.
+In this exercise, you'll implement a smart contract that interacts with GMX V2 to create and manage leveraged long positions for ETH using WETH as collateral. These exercises will cover opening positions, querying position details, calculating profit and loss, and closing positions.
 
 You need to complete the implementation of the `Long.sol` contract.
 
@@ -54,6 +54,7 @@ Approve the `ROUTER` contract and send WETH to the order vault.
 Create a market increase order with the following requirements:
 
 - Set `market` to `GM_TOKEN_ETH_WETH_USDC`
+- Set `isLong` to `true`
 - Calculate the position size based on the leverage and WETH amount
   > Hints:
   >
@@ -77,7 +78,10 @@ function getPositionKey() public view returns (bytes32 key) {}
 
 Implement the `getPositionKey` function to calculate the unique key for the position.
 
-> Hint - Look for the function `Position.getPositionKey` inside [gmx-synthetics](https://github.com/gmx-io/gmx-synthetics)
+> Hints
+>
+> - Look for the function `Position.getPositionKey` inside [gmx-synthetics](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/position/Position.sol#L191-L194)
+> - The `Position` library is already imported for this exercise.
 
 ## Task 4: Get position details
 
@@ -105,7 +109,7 @@ function getPositionPnlUsd(bytes32 key, uint256 ethPrice)
 {}
 ```
 
-Implement the `getPositionPnlUsd` function to calculate the profit or loss of the position in USD
+Implement the `getPositionPnlUsd` function to calculate the profit and loss of the position in USD. USD value that is returns has 30 decimals (1e30 = 1 USD).
 
 - `key` is the position key
 - `ethPrice` is the price of ETH used to calculate the profit and loss. `ethPrice` has 8 decimals (1e8 = 1 USD).
@@ -113,13 +117,14 @@ Implement the `getPositionPnlUsd` function to calculate the profit or loss of th
 > Hints:
 >
 > - Call `reader.getPositionPnlUsd`
-> - Get the position identified by `key` and then retrieve `sizeInUsd`
+> - Get the position identified by `key`
 > - For each prices in `MarketUtils.MarketPrices`, set the min price to -1% and max price to +1% of the current price of the token
-> - `indexTokenPrice` for `MarketUtils.MarketPrices` is the price of `ETH`
-> - `longTokenPrice` for `MarketUtils.MarketPrices` is the price of `ETH`
-> - `shortTokenPrice` for `MarketUtils.MarketPrices` is the price of `USDC`
+> - `indexTokenPrice` for `MarketUtils.MarketPrices` is the price of `WETH`. Use `ethPrice`.
+> - `longTokenPrice` for `MarketUtils.MarketPrices` is the price of `WETH`. Use `ethPrice`.
+> - `shortTokenPrice` for `MarketUtils.MarketPrices` is the price of `USDC`, assume 1 USDC = 1 USD
 > - The prices above must have decimals so that when multiplied by the token decimals, it will have 30 decimals.
-> - Assume 1 USDC = 1 USD
+> - Set `marketToken` to `GM_TOKEN_ETH_WETH_USDC`
+> - Set `sizeDeltaUsd` to `position.numbers.sizeInUsd`
 
 ## Task 6: Close the long position
 
@@ -153,11 +158,11 @@ Send the execution fee to the order vault for the closing order.
 Create a market decrease order to close the position with:
 
 - The full size of the position
-- Withdrawal all collateral
+- Withdrawal of all collateral
 - `acceptablePrice` at 1% below current price of ETH
   > Hints:
   >
-  > - Get the current price of ETH from `oracle.getPrice(CHAINLINK_ETH_USD)`
+  > - Get the current price of ETH from `oracle.getPrice(CHAINLINK_ETH_USD)`. Price is returned with 8 decimals (1e8 = 1 USD).
   > - When opening a long: set `acceptablePrice` higher than execution price
   > - When closing a long: set `acceptablePrice` lower than execution price
   > - `acceptablePrice` has 12 decimals (1e12 = 1 USD)

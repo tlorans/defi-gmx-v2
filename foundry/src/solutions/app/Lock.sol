@@ -17,7 +17,9 @@ contract Lock is Auth {
 
     function free() public view returns (uint256) {
         uint256 deltaTime = block.timestamp - lastLockedTimestamp;
-        return deltaTime >= MAX_LOCK_DURATION ? locked : locked * deltaTime / MAX_LOCK_DURATION;
+        return deltaTime >= MAX_LOCK_DURATION
+            ? locked
+            : locked * deltaTime / MAX_LOCK_DURATION;
     }
 
     function lock(uint256 amount) external {

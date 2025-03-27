@@ -9,6 +9,5 @@ import {Math} from "./Math.sol";
 contract GasLessOrders {
     receive() external payable {}
 
-    function createOrder() external payable {
-    }
+    function createOrder() external payable {}
 }

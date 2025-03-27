@@ -14,7 +14,7 @@ contract Vault is Auth {
         weth = IERC20(_weth);
     }
 
-    function set(address _strategy) auth external {
+    function set(address _strategy) external auth {
         strategy = _strategy;
     }
 
@@ -33,12 +33,12 @@ contract Vault is Auth {
         // create withdraw order
     }
 
-    function push(address dst, uint256 amount) auth external {
+    function push(address dst, uint256 amount) external auth {
         amount = Math.min(weth.balanceOf(address(this)), amount);
         weth.transfer(dst, amount);
     }
 
-    function pull(address src, uint256 amount) auth external {
+    function pull(address src, uint256 amount) external auth {
         amount = Math.min(weth.balanceOf(src), amount);
         weth.transferFrom(src, address(this), amount);
     }

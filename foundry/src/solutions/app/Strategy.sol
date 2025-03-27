@@ -7,9 +7,9 @@ import {Auth} from "./Auth.sol";
 import {Math} from "./Math.sol";
 
 contract GmxHelper {
-    // function increase() internal {}
-    // function decrease() internal {}
-    // function cancel() internal {}
+// function increase() internal {}
+// function decrease() internal {}
+// function cancel() internal {}
 }
 
 contract Strategy is Auth, GmxHelper {
@@ -25,18 +25,18 @@ contract Strategy is Auth, GmxHelper {
         //
     }
 
-    function increase() auth external payable {
+    function increase() external payable auth {
         // pull from vault
         // check funding rate is posittive (long pays short)
         // increase position
     }
 
-    function decrease() auth external payable {
+    function decrease() external payable auth {
         // decrease position
         // TODO: split profit ?
     }
 
-    function cancel(bytes32 key) auth external payable {
+    function cancel(bytes32 key) external payable auth {
         // cancel order
     }
 
@@ -47,23 +47,24 @@ contract Strategy is Auth, GmxHelper {
 
     // TODO: callback for withdrawal
 
-    function push(address dst, uint256 amount) auth external {
+    function push(address dst, uint256 amount) external auth {
         amount = Math.min(weth.balanceOf(address(this)), amount);
         weth.transfer(dst, amount);
     }
 
-    function pull(address src, uint256 amount) auth external {
+    function pull(address src, uint256 amount) external auth {
         amount = Math.min(weth.balanceOf(src), amount);
         weth.transferFrom(src, address(this), amount);
     }
 
     function withdraw(address token) external auth {
         if (token == address(0)) {
-            (bool ok, ) = msg.sender.call{value: address(this).balance}("");
+            (bool ok,) = msg.sender.call{value: address(this).balance}("");
             require(ok, "Send ETH failed");
         } else {
-            IERC20(token).transfer(msg.sender, IERC20(token).balanceOf(address(this)));
+            IERC20(token).transfer(
+                msg.sender, IERC20(token).balanceOf(address(this))
+            );
         }
     }
 }
-
