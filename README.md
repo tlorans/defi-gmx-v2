@@ -36,38 +36,40 @@ Please refer to this for an in-depth explanation of the content:
 - [Discord](https://discord.gg/cyfrin) - Join a community of 3000+ developers and auditors
 - [Codehawks](https://codehawks.com) - Smart contracts auditing competitions to help secure web3
 
-## Course Intro
+## What will you learn?
 
-- What you will learn
-  - What is GMX V2 and how it works
-  - DeFi terminologies
-    - Perpetual swap
-    - Leverage
-    - Long and short
-    - Funding fee
-  - Write smart contracts that interact with GMX V2
-- Why should you take this course?
-  - Expand DeFi knowledge
-  - Audit contests and bug bounties
-  - Build application that integrates with GMX V2
-  - Build your own perpetual exchange
-- Prerequisites
-  - DeFi basic terminologies
-    - DAI, USDC, WETH, WBTC, ERC20 decimals, AMM, price oracle, Arbitrum, etc..
-  - Intermediate to advanced Solidity
-    - Solidity `library` (State changing calls through a `library` uses `delegatecall`)
-    - [`multicall`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/utils/PayableMulticall.sol#L18-L33)
-  - Advanced Foundry
-    - Test on fork
-    - Console log to debug
+- What is GMX V2 and how it works
+- DeFi terminologies
+  - Perpetual swap
+  - Leverage
+  - Long and short
+  - Funding fee
+- Write smart contracts that interact with GMX V2
+
+## Why should you take this course?
+
+- Expand DeFi knowledge
+- Audit contests and bug bounties
+- Build application that integrates with GMX V2
+- Build your own perpetual exchange
+
+## Prerequisites
+
+- DeFi basic terminologies
+  - DAI, USDC, WETH, WBTC, ERC20 decimals, AMM, price oracle, Arbitrum, etc..
+- Intermediate to advanced Solidity
+  - Solidity `library` (State changing calls through a `library` uses `delegatecall`)
+  - [`multicall`](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/utils/PayableMulticall.sol#L18-L33)
+- Advanced Foundry
+  - Test on fork
+  - Console log to debug
 
 ## Getting Started
 
 - [Foundry setup](./foundry/README.md)
-
 - Use transcation debugger such as [tenderly.co](https://tenderly.co/) to debug [transactions](#transactions)
-
 - All course notes can be found under [notes](./notes)
+- Ask questions on [discussions](https://github.com/Cyfrin/defi-gmx-v2/discussions)
 
 ## Introduction
 
