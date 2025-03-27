@@ -52,12 +52,12 @@ contract Short {
         returns (Position.Props memory)
     {}
 
-    // Task 3 - Create an order to close the short position created by this contract
+    // Task 5 - Create an order to close the short position created by this contract
     function createCloseOrder() external payable returns (bytes32 key) {
         uint256 executionFee = 0.1 * 1e18;
 
-        // Task 3.1 - Send execution fee to the order vault
+        // Task 5.1 - Send execution fee to the order vault
 
-        // Task 3.2 - Create an order to close the short position
+        // Task 5.2 - Create an order to close the short position
     }
 }

@@ -59,8 +59,8 @@ contract Short {
         // - long: executionPrice should be smaller than acceptablePrice
         // - short: executionPrice should be larger than acceptablePrice
         // 1 USD = 1e8
-        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD) * 1e4;
-        uint256 acceptablePrice = ethPrice * 99 / 100;
+        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
+        uint256 acceptablePrice = ethPrice * 1e4 * 90 / 100;
 
         return exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({
@@ -112,25 +112,25 @@ contract Short {
         return reader.getPosition(address(dataStore), key);
     }
 
-    // Task 3 - Create an order to close the short position created by this contract
+    // Task 5 - Create an order to close the short position created by this contract
     function createCloseOrder() external payable returns (bytes32 key) {
         uint256 executionFee = 0.1 * 1e18;
 
-        // Task 3.1 - Send execution fee to the order vault
+        // Task 5.1 - Send execution fee to the order vault
         exchangeRouter.sendWnt{value: executionFee}({
             receiver: ORDER_VAULT,
             amount: executionFee
         });
 
-        // Task 3.2 - Create an order to close the short position
+        // Task 5.2 - Create an order to close the short position
         Position.Props memory position = getPosition(getPositionKey());
         require(position.numbers.sizeInUsd > 0, "position size = 0");
 
         // decrease order:
         // - long: executionPrice should be larger than acceptablePrice
         // - short: executionPrice should be smaller than acceptablePrice
-        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD) * 1e4;
-        uint256 acceptablePrice = ethPrice * 110 / 100;
+        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
+        uint256 acceptablePrice = ethPrice * 1e4 * 110 / 100;
 
         return exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({

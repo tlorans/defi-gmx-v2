@@ -174,8 +174,8 @@ contract Long {
         // decrease order:
         // - long: executionPrice should be larger than acceptablePrice
         // - short: executionPrice should be smaller than acceptablePrice
-        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD) * 1e4;
-        uint256 acceptablePrice = ethPrice * 99 / 100;
+        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
+        uint256 acceptablePrice = ethPrice * 1e4 * 99 / 100;
 
         return exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({

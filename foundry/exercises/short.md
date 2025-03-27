@@ -41,21 +41,21 @@ You need to send the execution fee to the order vault using the `exchangeRouter.
 
 ### Task 2.2: Send USDC collateral
 
-Approve the `ROUTER` contract and send USDC to the order vault.
+Approve the `ROUTER` contract and send USDC to the `ORDER_VAULT` by calling `exchangeRouter.sendTokens`.
 
 ### Task 2.3: Create the short order
 
-Call the `exchangeRouter.createOrder` function with the appropriate parameters to create a short position. Pay attention to:
+Call the `exchangeRouter.createOrder` function with the appropriate parameters to create a short position.
 
-- Setting `market` to `GM_TOKEN_ETH_WETH_USDC`
-- Set `isLong` to `false`
-- Setting the correct `sizeDeltaUsd` based on leverage
+- Set `market` to `GM_TOKEN_ETH_WETH_USDC`
+- Set the correct `sizeDeltaUsd` based on leverage
   > Hints:
   >
   > - Get the current price of USDC from `oracle.getPrice(CHAINLINK_USDC_USD)`
   > - USDC price returned from this oracle has 8 decimals (1e8 = 1 USD)
+  > - USDC has 6 decimals
   > - `sizeDeltaUsd` must have 30 decimals (1e30 = 1 USD)
-- Calculating an appropriate `acceptablePrice` (for a short position, this is usually slightly lower than the current price)
+- Calculate an appropriate `acceptablePrice` (for a short position, this is slightly lower than the current price)
   > Hints:
   >
   > - Get the current price of ETH from `oracle.getPrice(CHAINLINK_ETH_USD)`
@@ -63,7 +63,8 @@ Call the `exchangeRouter.createOrder` function with the appropriate parameters t
   > - When opening a short: set `acceptablePrice` lower than execution price
   > - When closing a short: set `acceptablePrice` higher than execution price
   > - `acceptablePrice` has 12 decimals (1e12 = 1 USD)
-- Setting the correct order type (`MarketIncrease` for opening positions)
+- Set the correct order type (`MarketIncrease` for opening positions)
+- Set `isLong` to `false`
 
 ## Task 3: Get position key
 
@@ -74,7 +75,10 @@ function getPositionKey() public view returns (bytes32 key) {}
 
 Implement the `getPositionKey` function that returns the unique key for the position created by this contract.
 
-> Hint - Look for the function `Position.getPositionKey` inside [gmx-synthetics](https://github.com/gmx-io/gmx-synthetics)
+> Hints
+>
+> - Look for the function `Position.getPositionKey` inside [gmx-synthetics](https://github.com/gmx-io/gmx-synthetics/blob/caf3dd8b51ad9ad27b0a399f668e3016fd2c14df/contracts/position/Position.sol#L191-L194)
+> - The `Position` library is already imported for this exercise.
 
 ## Task 4: Get position information
 
@@ -94,13 +98,13 @@ Implement the `getPosition` function that retrieves detailed information about a
 ## Task 5: Create an order to close the position
 
 ```solidity
-// Task 3 - Create an order to close the short position created by this contract
+// Task 5 - Create an order to close the short position created by this contract
 function createCloseOrder() external payable returns (bytes32 key) {
     uint256 executionFee = 0.1 * 1e18;
 
-    // Task 3.1 - Send execution fee to the order vault
+    // Task 5.1 - Send execution fee to the order vault
 
-    // Task 3.2 - Create an order to close the short position
+    // Task 5.2 - Create an order to close the short position
 }
 ```
 
@@ -117,7 +121,7 @@ Call the `exchangeRouter.createOrder` function with the appropriate parameters t
 - Get the current position details
 - Set the `sizeDeltaUsd` to the full position size to close it completely
 - Set the `initialCollateralDeltaAmount` to the full collateral amount of this position to close it completely
-- Calculate an appropriate `acceptablePrice` (for closing a short, this is usually higher than the current price)
+- Calculate an appropriate `acceptablePrice` (for closing a short, this is higher than the current price)
   > Hints:
   >
   > - Get the current price of ETH from `oracle.getPrice(CHAINLINK_ETH_USD)`
