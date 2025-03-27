@@ -114,5 +114,5 @@ Create a take profit order that will execute if the ETH price rises above 110% o
 ## Test
 
 ```shell
-forge test --fork-url $FORK_URL --match-path test/TakeProfitAndStopLoss.test.sol -vvv
+forge test --fork-url $FORK_URL --fork-block-number $FORK_BLOCK_NUM --match-path test/TakeProfitAndStopLoss.test.sol -vvv
 ```

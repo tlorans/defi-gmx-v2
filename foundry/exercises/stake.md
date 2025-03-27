@@ -88,5 +88,5 @@ Call `gmxDao.delegate`.
 ## Test
 
 ```shell
-forge test --fork-url $FORK_URL --match-path test/Stake.test.sol -vvv
+forge test --fork-url $FORK_URL --fork-block-number $FORK_BLOCK_NUM --match-path test/Stake.test.sol -vvv
 ```

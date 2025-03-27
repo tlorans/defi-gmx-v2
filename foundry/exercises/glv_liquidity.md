@@ -82,5 +82,5 @@ Create an order to withdraw liquidity from `GM_TOKEN_ETH_WETH_USDC`.
 ## Test
 
 ```shell
-forge test --fork-url $FORK_URL --match-path test/GlvLiquidity.test.sol -vvv
+forge test --fork-url $FORK_URL --fork-block-number $FORK_BLOCK_NUM --match-path test/GlvLiquidity.test.sol -vvv
 ```

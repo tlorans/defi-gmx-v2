@@ -138,5 +138,5 @@ Market tokens have 18 decimals.
 ## Test
 
 ```shell
-forge test --fork-url $FORK_URL --match-path test/GmLiquidity.test.sol -vvv
+forge test --fork-url $FORK_URL --fork-block-number $FORK_BLOCK_NUM --match-path test/GmLiquidity.test.sol -vvv
 ```

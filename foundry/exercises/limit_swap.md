@@ -67,5 +67,5 @@ Use the GMX exchange router to create a limit swap order that:
 ## Test
 
 ```shell
-forge test --fork-url $FORK_URL --match-path test/LimitSwap.test.sol -vvv
+forge test --fork-url $FORK_URL --fork-block-number $FORK_BLOCK_NUM --match-path test/LimitSwap.test.sol -vvv
 ```

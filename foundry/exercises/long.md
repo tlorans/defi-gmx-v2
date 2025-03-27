@@ -180,5 +180,5 @@ When working with prices and calculations, be aware of the following:
 ## Test
 
 ```shell
-forge test --fork-url $FORK_URL --match-path test/Long.test.sol -vvv
+forge test --fork-url $FORK_URL --fork-block-number $FORK_BLOCK_NUM --match-path test/Long.test.sol -vvv
 ```
