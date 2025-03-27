@@ -70,6 +70,8 @@ Please refer to this for an in-depth explanation of the content:
 
 - [Foundry setup](./foundry/README.md)
 - Use transcation debugger such as [tenderly.co](https://tenderly.co/) to debug [transactions](#transactions)
+- `git clone` [gmx-synthetics](https://github.com/gmx-io/gmx-synthetics)
+- `git clone` [gmx-contracts](https://github.com/gmx-io/gmx-contracts)
 - All course notes can be found under [notes](./notes)
 - Ask questions on [discussions](https://github.com/Cyfrin/defi-gmx-v2/discussions)
 
