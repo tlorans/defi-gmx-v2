@@ -69,7 +69,7 @@ Please refer to this for an in-depth explanation of the content:
 ## Getting Started
 
 - [Foundry setup](./foundry/README.md)
-- Use transcation debugger such as [tenderly.co](https://tenderly.co/) to debug [transactions](#transactions)
+- Use transcation debugger such as [tenderly.co](https://dashboard.tenderly.co/explorer) to debug [transactions](#transactions)
 - `git clone` [gmx-synthetics](https://github.com/gmx-io/gmx-synthetics)
 - `git clone` [gmx-contracts](https://github.com/gmx-io/gmx-contracts)
 - All course notes can be found under [notes](./notes)
