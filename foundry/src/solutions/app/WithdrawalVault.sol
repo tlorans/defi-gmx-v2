@@ -6,8 +6,4 @@ import "../../Constants.sol";
 import {Auth} from "./Auth.sol";
 import {Math} from "./Math.sol";
 
-contract GasLessOrders {
-    receive() external payable {}
-
-    function createOrder() external payable {}
-}
+contract WithdrawalVault is Auth {}

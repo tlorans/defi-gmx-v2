@@ -1,23 +1,6 @@
 ### Introduction
 
-- [ ] TODO: Course intro
-  - What you will learn
-  - Why should you take this course
-    - Expected outcome
-  - Prerequisites
-    - DAI, WETH, USDC, WBTC, decimals, AMM, Arbitrum, etc..
-    - Advanced Foundry
-      - multicall
-      - library (delegatecall)
-  - Goals and expected outcomes
-- [ ] TODO: Project setup
-  - Foundry exercises
-    - markdown instructions
-    - starter code
-    - solutions
-    - types and library functions copied from gmx code
-  - transaction links
-  - notes
+TODO: enable readme header links
 
 Application ideas
 
@@ -33,7 +16,19 @@ Application ideas
 
 ##### TODO
 
-- README
-- remove / clean notes
 - application
-- solutions
+  - short ETH + ETH collateral payoff
+    - UI demo
+  - strategy
+    - open short when funding fee > 0
+    - close short when funding fee < 0
+    - close short when short profit
+    - admin is a decent trader
+  - contract architecture
+    - token + execution fee flow
+      - deposit, withdraw, cancel
+    - token and ETH is split for simple accounting
+  - technical detail
+    - vault inflation attack?
+  - exercises
+  - solution

@@ -6,7 +6,7 @@ import "../../Constants.sol";
 import {Auth} from "./Auth.sol";
 import {Math} from "./Math.sol";
 
-contract Vault is Auth {
+contract DepositVault is Auth {
     IERC20 public immutable weth;
     address public strategy;
 
@@ -20,6 +20,8 @@ contract Vault is Auth {
 
     function totalValueInToken() public view returns (uint256) {}
     function totalValueInUsd() external view returns (uint256) {}
+
+    // TODO: vault inflation
 
     function deposit() external {
         // claim funding fees

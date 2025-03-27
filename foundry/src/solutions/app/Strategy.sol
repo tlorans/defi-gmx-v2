@@ -33,7 +33,6 @@ contract Strategy is Auth, GmxHelper {
 
     function decrease() external payable auth {
         // decrease position
-        // TODO: split profit ?
     }
 
     function cancel(bytes32 key) external payable auth {
@@ -42,8 +41,9 @@ contract Strategy is Auth, GmxHelper {
 
     function claim() external {
         // claim funding fees
-        // split profit
     }
+
+    // TODO: function to withdraw to withdrawal vault
 
     // TODO: callback for withdrawal
 
