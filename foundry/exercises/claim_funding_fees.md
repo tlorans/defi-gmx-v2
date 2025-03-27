@@ -7,6 +7,10 @@ In this exercise, you'll learn how to interact with GMX's funding fee system. Th
 
 The exercise starter code is provided in `ClaimFundingFees.sol`.
 
+You won't be able to claim funding fee unless you had a position opened that received funding fees.
+
+However for this exercise, funding fees are manually allocated using Foundry's cheat code.
+
 ## Task 1: Get claimable funding fee amount
 
 ```solidity
