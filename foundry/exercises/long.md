@@ -69,6 +69,8 @@ Create a market increase order with the following requirements:
   > - `acceptablePrice` has 12 decimals (1e12 = 1 USD)
 - Set the correct order type (`MarketIncrease` for opening positions)
 
+Return the order key.
+
 ## Task 3: Get position key
 
 ```solidity
@@ -167,6 +169,8 @@ Create a market decrease order to close the position with:
   > - When closing a long: set `acceptablePrice` lower than execution price
   > - `acceptablePrice` has 12 decimals (1e12 = 1 USD)
 - Set the correct order type (`MarketDecrease` for closing positions)
+
+Return the order key.
 
 ## Price calculations and decimals
 

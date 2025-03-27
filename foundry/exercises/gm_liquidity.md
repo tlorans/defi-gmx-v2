@@ -30,13 +30,16 @@ Market token price has 30 decimals (1e30 = 1 USD).
 - Call `reader.getMarketTokenPrices` to get market token price information
   > Hints:
   >
+  > - Market is `GMX_TOKEN_BTC_WBTC_USDC`
   > - Index token is `GMX_BTC_WBTC_USDC_INDEX`
   > - Long token is `WBTC`
   > - Short token is `USDC`
   > - Set `indexTokenPrice` and `longTokenPrice` to +/- 1% of `btcPrice`
   > - Set `shortTokenPrice` to +/- 1% of USDC price. Assume 1 USDC = 1 USD
   > - The prices above must have decimals so that when multiplied by the token decimals, it will have 30 decimals.
+  > - `WBTC` has 8 decimals
   > - Set `pnlFactorType` to `Keys.MAX_PNL_FACTOR_FOR_DEPOSITS`
+  > - Set `maximized` to `true`
 - Return the price in the correct format (`uint256`)
 
 ## Task 3: Create deposit function
@@ -72,15 +75,15 @@ Complete the `createDeposit` function to:
 
 ### Task 3.1 Send execution fee to the deposit vault
 
-Send the execution fee to the deposit vault.
+Send the execution fee to `DEPOSIT_VAULT`.
 
 ### Task 3.2: Send USDC to the deposit vault
 
-Approve the `ROUTER` contract and send USDC to the deposit vault.
+Approve the `ROUTER` contract and send USDC to `DEPOSIT_VAULT`.
 
 ### Task 3.3: Create a deposit order
 
-Create an order to deposit liquidity into `GM_TOKEN_BTC_WBTC_USDC`.
+Create an order to deposit liquidity into `GM_TOKEN_BTC_WBTC_USDC`. Return the order key.
 
 Optionally calculate `minMarketToken` by calcuting it based on the price of the market token (`getMarketTokenPriceUsd`).
 
@@ -112,26 +115,28 @@ Complete the `createWithdrawal` function to:
 
 ### Task 4.1 Send execution fee to the withdrawal vault
 
-Send the execution fee to the withdrawal vault.
+Send the execution fee to `WITHDRAWAL_VAULT`.
 
 ### Task 4.2: Send market token to the withdrawal vault
 
-Approve the `ROUTER` contract and send `GM_TOKEN_BTC_WBTC_USDC` to the withdrawal vault.
+Approve the `ROUTER` contract and send all of `GM_TOKEN_BTC_WBTC_USDC` owned by this contract to `WITHDRAWAL_VAULT`.
 
 ### Task 4.3: Create a withdrawal order
 
-Create an order to withdraw liquidity from `GM_TOKEN_BTC_WBTC_USDC`.
+Create an order to withdraw liquidity from `GM_TOKEN_BTC_WBTC_USDC`. Return the order key.
 
 Optionally calculate `minLongTokenAmount` and `minShortTokenAmount`.
 
 > Hints:
 >
 > - Get market token price by calling `getMarketTokenPriceUsd`
-> - Market token has 30 decimals
+> - Market token price has 30 decimals
 > - Half of the USD value of the market token owned by this contract will be paid out as BTC. The other half in USDC.
 > - Set `minLongTokenAmount` and `minShortTokenAmount` to less than 50% of the USD value of market tokens owned by this contract.
 > - Get BTC price by calling `oracle.getPrice(CHAINLINK_BTC_USD)`
 > - Assume 1 USDC = 1 USD
+> - WBTC has 8 decimals
+> - USDC has 6 decimals
 
 Market tokens have 18 decimals.
 

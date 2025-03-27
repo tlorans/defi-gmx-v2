@@ -66,6 +66,8 @@ Call the `exchangeRouter.createOrder` function with the appropriate parameters t
 - Set the correct order type (`MarketIncrease` for opening positions)
 - Set `isLong` to `false`
 
+Return the order key.
+
 ## Task 3: Get position key
 
 ```solidity
@@ -130,6 +132,8 @@ Call the `exchangeRouter.createOrder` function with the appropriate parameters t
   > - When closing a short: set `acceptablePrice` higher than execution price
   > - `acceptablePrice` has 12 decimals (1e12 = 1 USD)
 - Set the correct order type (`MarketDecrease` for closing positions)
+
+Return the order key.
 
 ## Test
 

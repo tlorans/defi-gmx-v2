@@ -46,6 +46,12 @@ Approve the `ROUTER` contract and send USDC to the GLV vault.
 
 Create an order to deposit liquidity into `GM_TOKEN_ETH_WETH_USDC`.
 
+Return the order key.
+
+> Hint:
+>
+> - Set `glv` to `GLV_TOKEN_WETH_USDC`
+
 ## Task 3: Implement withdrawal functionality
 
 ```solidity
@@ -78,6 +84,12 @@ Approve the `ROUTER` contract and send GLV token to the GLV vault.
 ### Task 3.3: Create an order to withdraw liquidity and receive WETH and USDC
 
 Create an order to withdraw liquidity from `GM_TOKEN_ETH_WETH_USDC`.
+
+Return the order key.
+
+> Hint:
+>
+> - Set `glv` to `GLV_TOKEN_WETH_USDC`
 
 ## Test
 
