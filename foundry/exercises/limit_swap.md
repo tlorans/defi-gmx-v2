@@ -40,15 +40,20 @@ You need to implement the following subtasks:
 
 GMX requires an execution fee to be sent to the order vault. This fee is used to pay keepers who execute orders in the GMX system.
 
+Send execution fee to `ORDER_VAULT` by calling `exchangeRouter.sendWnt`.
+
 ### Task 2.2: Send USDC to the order vault
 
-The USDC tokens need to be approved for transfer and then sent to the order vault.
+Approve USDC transfer for `ROUTER` and then sent to the order vault by calling `exchangeRouter.sendTokens`.
 
 ### Task 2.3: Create a limit order to swap USDC to WETH
 
 Use the GMX exchange router to create a limit swap order that:
 
 - Uses the USDC in the order vault to buy WETH
+  > Hint
+  >
+  > - Set `initialCollateralToken` to `USDC`
 - Swap path can be any GM token that has WETH and USDC
 - Calculates the appropriate `minOutputAmount` based on the price limit `maxEthPrice`
   > Hints

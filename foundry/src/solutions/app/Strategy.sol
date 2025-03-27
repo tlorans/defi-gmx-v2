@@ -7,8 +7,8 @@ import {Auth} from "./Auth.sol";
 import {Math} from "./Math.sol";
 
 contract GmxHelper {
-    function increase() internal {}
-    function decrease() internal {}
+    // function increase() internal {}
+    // function decrease() internal {}
     // function cancel() internal {}
 }
 

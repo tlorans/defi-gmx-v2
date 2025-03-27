@@ -55,6 +55,8 @@ The function is partially implemented. You need to complete tasks 2.1, 2.2, and 
 2. Call `exchangeRouter.createOrder` with the appropriate parameters
 3. Return the key (order ID) that is generated
 
+> Hint: Set `initialCollateralToken` to `WETH`
+
 ## Task 3: Implement the `getOrder` function
 
 ```solidity
