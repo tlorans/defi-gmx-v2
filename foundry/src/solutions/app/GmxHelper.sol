@@ -27,6 +27,7 @@ abstract contract GmxHelper {
     IReader constant reader = IReader(READER);
     // Note: both long and short token price must return 8 decimals (1e8 = 1 USD)
     uint256 public constant CHAINLINK_MULTIPLIER = 1e8;
+    uint256 public constant CHAINLINK_DECIMALS = 8;
 
     IERC20 public immutable marketToken;
     IERC20 public immutable longToken;
@@ -95,22 +96,22 @@ abstract contract GmxHelper {
             // +/- 1% of current prices
             MarketUtils.MarketPrices memory prices = MarketUtils.MarketPrices({
                 indexTokenPrice: Price.Props({
-                    min: longTokenPrice * 1e30
-                        / (CHAINLINK_MULTIPLIER * longTokenMultiplier) * 99 / 100,
-                    max: longTokenPrice * 1e30
-                        / (CHAINLINK_MULTIPLIER * longTokenMultiplier) * 101 / 100
+                    min: longTokenPrice
+                        * 10 ** (30 - CHAINLINK_DECIMALS - longTokenDecimals) * 99 / 100,
+                    max: longTokenPrice
+                        * 10 ** (30 - CHAINLINK_DECIMALS - longTokenDecimals) * 101 / 100
                 }),
                 longTokenPrice: Price.Props({
-                    min: longTokenPrice * 1e30
-                        / (CHAINLINK_MULTIPLIER * longTokenMultiplier) * 99 / 100,
-                    max: longTokenPrice * 1e30
-                        / (CHAINLINK_MULTIPLIER * longTokenMultiplier) * 101 / 100
+                    min: longTokenPrice
+                        * 10 ** (30 - CHAINLINK_DECIMALS - longTokenDecimals) * 99 / 100,
+                    max: longTokenPrice
+                        * 10 ** (30 - CHAINLINK_DECIMALS - longTokenDecimals) * 101 / 100
                 }),
                 shortTokenPrice: Price.Props({
-                    min: shortTokenPrice * 1e30
-                        / (CHAINLINK_MULTIPLIER * shortTokenMultiplier) * 99 / 100,
-                    max: shortTokenPrice * 1e30
-                        / (CHAINLINK_MULTIPLIER * shortTokenMultiplier) * 101 / 100
+                    min: shortTokenPrice
+                        * 10 ** (30 - CHAINLINK_DECIMALS - shortTokenDecimals) * 99 / 100,
+                    max: shortTokenPrice
+                        * 10 ** (30 - CHAINLINK_DECIMALS - shortTokenDecimals) * 101 / 100
                 })
             });
 
@@ -144,7 +145,7 @@ abstract contract GmxHelper {
             // sizeDeltaUsd = new position size - position.sizeInUsd
             uint256 newCollateralAmount = collateralAmount + longTokenAmount;
             uint256 newPositionSizeInUsd = newCollateralAmount * longTokenPrice
-                * 1e30 / (longTokenMultiplier * CHAINLINK_MULTIPLIER);
+                * 10 ** (30 - longTokenDecimals - CHAINLINK_DECIMALS);
             sizeDeltaUsd = newPositionSizeInUsd - sizeInUsd;
         } else {
             // new position size = long token price * new collateral amount
@@ -152,7 +153,7 @@ abstract contract GmxHelper {
             // sizeDeltaUsd = new position size - position.sizeInUsd
             uint256 newCollateralAmount = collateralAmount - longTokenAmount;
             uint256 newPositionSizeInUsd = newCollateralAmount * longTokenPrice
-                * 1e30 / (longTokenMultiplier * CHAINLINK_MULTIPLIER);
+                * 10 ** (30 - longTokenDecimals - CHAINLINK_DECIMALS);
             sizeDeltaUsd = sizeInUsd - newPositionSizeInUsd;
         }
     }
