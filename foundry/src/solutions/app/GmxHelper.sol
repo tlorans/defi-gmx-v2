@@ -26,8 +26,8 @@ abstract contract GmxHelper {
     IExchangeRouter constant exchangeRouter = IExchangeRouter(EXCHANGE_ROUTER);
     IReader constant reader = IReader(READER);
     // Note: both long and short token price must return 8 decimals (1e8 = 1 USD)
-    uint256 public constant CHAINLINK_MULTIPLIER = 1e8;
-    uint256 public constant CHAINLINK_DECIMALS = 8;
+    uint256 private constant CHAINLINK_MULTIPLIER = 1e8;
+    uint256 private constant CHAINLINK_DECIMALS = 8;
 
     IERC20 public immutable marketToken;
     IERC20 public immutable longToken;
@@ -94,24 +94,25 @@ abstract contract GmxHelper {
             uint256 shortTokenPrice = oracle.getPrice(chainlinkShortToken);
 
             // +/- 1% of current prices
+            uint256 minLongTokenPrice = longTokenPrice
+                * 10 ** (30 - CHAINLINK_DECIMALS - longTokenDecimals) * 999 / 1000;
+            uint256 maxLongTokenPrice = longTokenPrice
+                * 10 ** (30 - CHAINLINK_DECIMALS - longTokenDecimals) * 1001 / 1000;
+
             MarketUtils.MarketPrices memory prices = MarketUtils.MarketPrices({
                 indexTokenPrice: Price.Props({
-                    min: longTokenPrice
-                        * 10 ** (30 - CHAINLINK_DECIMALS - longTokenDecimals) * 99 / 100,
-                    max: longTokenPrice
-                        * 10 ** (30 - CHAINLINK_DECIMALS - longTokenDecimals) * 101 / 100
+                    min: minLongTokenPrice,
+                    max: maxLongTokenPrice
                 }),
                 longTokenPrice: Price.Props({
-                    min: longTokenPrice
-                        * 10 ** (30 - CHAINLINK_DECIMALS - longTokenDecimals) * 99 / 100,
-                    max: longTokenPrice
-                        * 10 ** (30 - CHAINLINK_DECIMALS - longTokenDecimals) * 101 / 100
+                    min: minLongTokenPrice,
+                    max: maxLongTokenPrice
                 }),
                 shortTokenPrice: Price.Props({
                     min: shortTokenPrice
-                        * 10 ** (30 - CHAINLINK_DECIMALS - shortTokenDecimals) * 99 / 100,
+                        * 10 ** (30 - CHAINLINK_DECIMALS - shortTokenDecimals) * 999 / 1000,
                     max: shortTokenPrice
-                        * 10 ** (30 - CHAINLINK_DECIMALS - shortTokenDecimals) * 101 / 100
+                        * 10 ** (30 - CHAINLINK_DECIMALS - shortTokenDecimals) * 1001 / 1000
                 })
             });
 
@@ -126,12 +127,63 @@ abstract contract GmxHelper {
                 usePositionSizeAsSizeDeltaUsd: true
             });
 
+            // TODO: remove
             // pnl after price impact / execution price? - fees
-            console.log("pnl %e", info.pnlAfterPriceImpactUsd);
-            console.log("price impact %e", info.executionPriceResult.priceImpactUsd);
-            console.log("execution price %e", info.executionPriceResult.executionPrice);
+            console.log("------- PNL -------------");
+            console.log("pnl USD %e", info.pnlAfterPriceImpactUsd);
+            uint256 pnl = 0;
+            if (info.pnlAfterPriceImpactUsd < 0) {
+                pnl = uint256(-info.pnlAfterPriceImpactUsd)
+                    / (longTokenPrice * 101 / 100) / 1e4;
+                console.log(
+                    "pnl ETH %e",
+                    uint256(-info.pnlAfterPriceImpactUsd)
+                        / (longTokenPrice * 101 / 100) / 1e4
+                );
+            }
+            console.log(
+                "price impact %e", info.executionPriceResult.priceImpactUsd
+            );
+            console.log(
+                "execution price %e", info.executionPriceResult.executionPrice
+            );
+            console.log("long token price %e", longTokenPrice * 1e4);
             console.log("total cost %e", info.fees.totalCostAmount);
+            console.log("col %e", position.numbers.collateralAmount);
+            console.log(
+                "rem %e",
+                position.numbers.collateralAmount - info.fees.totalCostAmount
+            );
+
+            console.log("----- calc ---");
+            int256 collateralUsd = Math.toInt256(
+                position.numbers.collateralAmount * minLongTokenPrice
+            );
+            int256 collateralCostUsd =
+                Math.toInt256(info.fees.totalCostAmount * minLongTokenPrice);
+
+            int256 remainingCollateralUsd =
+                collateralUsd + info.pnlAfterPriceImpactUsd - collateralCostUsd;
+
+            uint256 remainingCollateral = 0;
+            if (remainingCollateralUsd >= 0) {
+                remainingCollateral =
+                    uint256(remainingCollateralUsd) / minLongTokenPrice;
+                val += remainingCollateral;
+            } else {
+                remainingCollateral =
+                    uint256(-remainingCollateralUsd) / minLongTokenPrice;
+                val -= Math.min(val, remainingCollateral);
+            }
+
+            console.log("collateral usd %e", collateralUsd);
+            console.log("collateral cost usd %e", collateralCostUsd);
+            console.log("rem col usd %e", remainingCollateralUsd);
+            console.log("rem col %e", remainingCollateral);
+            console.log("--------------");
         }
+
+        console.log("val %e", val);
 
         return val;
     }
