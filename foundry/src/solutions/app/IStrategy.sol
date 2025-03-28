@@ -15,4 +15,6 @@ interface IStrategy {
         returns (bytes32 orderKey);
 
     function claim() external;
+
+    function transfer(address src, uint256 amount) external;
 }

@@ -86,13 +86,11 @@ contract Strategy is Auth, GmxHelper {
 
     // TODO: callback for withdrawal
 
-    function push(address dst, uint256 amount) external auth {
-        amount = Math.min(weth.balanceOf(address(this)), amount);
+    function transfer(address dst, uint256 amount) external auth {
         weth.transfer(dst, amount);
     }
 
-    function pull(address src, uint256 amount) external auth {
-        amount = Math.min(weth.balanceOf(src), amount);
+    function transferFrom(address src, uint256 amount) external auth {
         weth.transferFrom(src, address(this), amount);
     }
 
