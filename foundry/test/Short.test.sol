@@ -63,6 +63,7 @@ contract ShortTest is Test {
     }
 
     function testShort() public {
+        uint256 usdcPrice = oracle.getPrice(CHAINLINK_USDC_USD);
         uint256 executionFee = 1e18;
         uint256 usdcAmount = 100 * 1e6;
         uint256 leverage = 10;
@@ -140,15 +141,16 @@ contract ShortTest is Test {
             "pos.collateralAmount %e", position.numbers.collateralAmount
         );
 
-        assertGt(
+        assertApproxEqRel(
             position.numbers.sizeInUsd,
-            usdcAmount * 1e24,
-            "position size <= collateral amount"
+            leverage * usdcPrice * usdcAmount * 1e16,
+            1e18 * 2 / 100,
+            "position size"
         );
         assertGt(
             position.numbers.collateralAmount,
-            0,
-            "position collateral amount = 0"
+            usdcAmount * 99 / 100,
+            "position collateral amount"
         );
         assertEq(
             position.addresses.account,

@@ -32,7 +32,7 @@ contract Strategy is Auth, GmxHelper {
 
     function totalValue() external view returns (uint256) {
         // WETH balance + WETH managed by strategy + strategy profit and loss
-        totalValueInToken();
+        totalValueInTokens();
     }
 
     function increase(uint256 wethAmount)

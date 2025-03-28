@@ -49,7 +49,7 @@ abstract contract GmxHelper {
         address _oracle
     ) {
         marketToken = IERC20(_marketToken);
-        longToken = IERC20(_marketToken);
+        longToken = IERC20(_longToken);
         shortToken = IERC20(_shortToken);
 
         longTokenDecimals = _longTokenDecimals;
@@ -80,7 +80,7 @@ abstract contract GmxHelper {
         return reader.getPosition(address(dataStore), positionKey);
     }
 
-    function totalValueInToken() internal view returns (uint256) {
+    function totalValueInTokens() internal view returns (uint256) {
         // WETH + pnl + funding fee
         uint256 val = longToken.balanceOf(address(this));
 
@@ -204,7 +204,7 @@ abstract contract GmxHelper {
                 }),
                 numbers: IBaseOrderUtils.CreateOrderParamsNumbers({
                     sizeDeltaUsd: sizeDeltaUsd,
-                    // TODO: used for increase?
+                    // Set by amount of collateral sent to ORDER_VAULT
                     initialCollateralDeltaAmount: 0,
                     triggerPrice: 0,
                     acceptablePrice: acceptablePrice,

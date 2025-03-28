@@ -63,6 +63,7 @@ contract LongTest is Test {
     }
 
     function testLong() public {
+        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
         uint256 executionFee = 1e18;
         uint256 wethAmount = 1e18;
         uint256 leverage = 10;
@@ -135,15 +136,16 @@ contract LongTest is Test {
             "pos.collateralAmount %e", position.numbers.collateralAmount
         );
 
-        assertGt(
+        assertApproxEqRel(
             position.numbers.sizeInUsd,
-            wethAmount * 1e12,
-            "position size <= collateral amount"
+            leverage * ethPrice * wethAmount * 1e4,
+            1e18 * 2 / 100,
+            "position size"
         );
-        assertGt(
+        assertGe(
             position.numbers.collateralAmount,
-            0,
-            "position collateral amount = 0"
+            wethAmount * 99 / 100,
+            "position collateral amount"
         );
         assertEq(
             position.addresses.account,
@@ -152,7 +154,6 @@ contract LongTest is Test {
         );
 
         // Test position profit and loss
-        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
         int256 pnl = long.getPositionPnlUsd(positionKey, ethPrice * 110 / 100);
         console.log("pnl %e", pnl);
         assertGt(pnl, 0, "profit <= 0");

@@ -19,6 +19,7 @@ contract StrategyTest is Test {
     IERC20 constant weth = IERC20(WETH);
     IERC20 constant usdc = IERC20(USDC);
     IReader constant reader = IReader(READER);
+    IOrderHandler constant orderHandler = IOrderHandler(ORDER_HANDLER);
 
     TestHelper testHelper;
     Oracle oracle;
@@ -63,28 +64,42 @@ contract StrategyTest is Test {
         });
     }
 
-    function testLong() public {
-        /*
+    function testOpenShort() public {
         uint256 executionFee = 1e18;
         uint256 wethAmount = 1e18;
-        uint256 leverage = 10;
-        weth.approve(address(strategy), wethAmount);
+        weth.transfer(address(strategy), wethAmount);
 
-        bytes32 longOrderKey =
-            strategy.createLongOrder{value: executionFee}(leverage, wethAmount);
+        uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
 
-        Order.Props memory longOrder = reader.getOrder(DATA_STORE, longOrderKey);
-        assertEq(longOrder.addresses.receiver, address(strategy), "order receiver");
+        bytes32 orderKey = strategy.increase{value: executionFee}(wethAmount);
+
+        Order.Props memory order = reader.getOrder(DATA_STORE, orderKey);
+        assertEq(order.addresses.receiver, address(strategy), "order receiver");
+        assertEq(order.addresses.market, GM_TOKEN_ETH_WETH_USDC, "market");
         assertEq(
-            uint256(longOrder.numbers.orderType),
+            order.addresses.initialCollateralToken,
+            WETH,
+            "initial collateral token"
+        );
+        assertEq(
+            uint256(order.numbers.orderType),
             uint256(Order.OrderType.MarketIncrease),
             "order type"
         );
-        assertEq(longOrder.flags.isLong, true, "not strategy");
-        */
+        assertEq(
+            order.numbers.initialCollateralDeltaAmount,
+            wethAmount,
+            "initial collateral delta amount"
+        );
+        assertApproxEqRel(
+            order.numbers.sizeDeltaUsd,
+            ethPrice * wethAmount * 1e30 / 1e26,
+            1e18 / 100,
+            "size delta USD"
+        );
+        assertEq(order.flags.isLong, false, "not short");
 
-        /*
-        // Execute strategy order
+        // Execute order
         skip(1);
 
         testHelper.mockOraclePrices({
@@ -94,12 +109,9 @@ contract StrategyTest is Test {
             oracles: oracles
         });
 
-        testHelper.set("ETH keeper before", keeper.balance);
-        testHelper.set("ETH strategy before", address(strategy).balance);
-
         vm.prank(keeper);
         orderHandler.executeOrder(
-            longOrderKey,
+            orderKey,
             OracleUtils.SetPricesParams({
                 tokens: tokens,
                 providers: providers,
@@ -107,28 +119,12 @@ contract StrategyTest is Test {
             })
         );
 
-        testHelper.set("ETH keeper after", keeper.balance);
-        testHelper.set("ETH strategy after", address(strategy).balance);
-
-        assertGe(
-            testHelper.get("ETH keeper after"),
-            testHelper.get("ETH keeper before"),
-            "Keeper execution fee"
-        );
-        assertGe(
-            testHelper.get("ETH strategy after"),
-            testHelper.get("ETH strategy before"),
-            "strategy execution fee refund"
-        );
-
         bytes32 positionKey = Position.getPositionKey({
             account: address(strategy),
             market: GM_TOKEN_ETH_WETH_USDC,
             collateralToken: WETH,
-            isLong: true
+            isLong: false
         });
-
-        assertEq(strategy.getPositionKey(), positionKey, "position key");
 
         Position.Props memory position;
 
@@ -150,11 +146,10 @@ contract StrategyTest is Test {
             "position collateral amount = 0"
         );
         assertEq(
-            position.addresses.account,
-            strategy.getPosition(positionKey).addresses.account,
-            "position"
+            position.addresses.account, address(strategy), "position account"
         );
 
+        /*
         // Test position profit and loss
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
         int256 pnl = strategy.getPositionPnlUsd(positionKey, ethPrice * 110 / 100);

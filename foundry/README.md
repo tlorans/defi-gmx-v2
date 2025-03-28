@@ -9,8 +9,7 @@ forge build
 FOUNDRY_PROFILE=solution forge build
 
 # Get block number
-cast block-number --rpc-url $FORK_URL
-FORK_BLOCK_NUM=
+FORK_BLOCK_NUM=$(cast block-number --rpc-url $FORK_URL)
 
 # Test exercise
 forge test --fork-url $FORK_URL --fork-block-number $FORK_BLOCK_NUM --match-path test/MarketSwap.test.sol -vvv
