@@ -1,46 +1,69 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
+import {console} from "forge-std/Test.sol";
 import {IERC20} from "../../interfaces/IERC20.sol";
 import "../../Constants.sol";
 import {Auth} from "./Auth.sol";
 import {Math} from "./Math.sol";
-
-contract GmxHelper {
-// function increase() internal {}
-// function decrease() internal {}
-// function cancel() internal {}
-}
+import {GmxHelper} from "./GmxHelper.sol";
 
 contract Strategy is Auth, GmxHelper {
-    IERC20 public immutable weth;
+    event CreateIncreaseOrder(bytes32 orderKey);
+    event CreateDecreaseOrder(bytes32 orderKey);
+    event CreateCancelOrder(bytes32 orderKey);
 
-    constructor(address _weth) {
-        weth = IERC20(_weth);
-    }
+    IERC20 public constant weth = IERC20(WETH);
+
+    constructor(address oracle)
+        GmxHelper(
+            GM_TOKEN_ETH_WETH_USDC,
+            WETH,
+            USDC,
+            18,
+            6,
+            CHAINLINK_ETH_USD,
+            CHAINLINK_USDC_USD,
+            oracle
+        )
+    {}
 
     receive() external payable {}
 
-    function totalValueInToken() external view returns (uint256) {
-        //
+    function totalValue() external view returns (uint256) {
+        // WETH balance + WETH managed by strategy + strategy profit and loss
+        totalValueInToken();
     }
 
-    function increase() external payable auth {
-        // pull from vault
-        // check funding rate is posittive (long pays short)
-        // increase position
+    function increase(uint256 wethAmount)
+        external
+        payable
+        auth
+        returns (bytes32 orderKey)
+    {
+        // TODO: check funding fee is positive
+
+        orderKey = createIncreaseShortPositionOrder({
+            executionFee: msg.value,
+            longTokenAmount: wethAmount
+        });
+
+        emit CreateIncreaseOrder(orderKey);
     }
 
-    function decrease() external payable auth {
+    function decrease() external payable auth returns (bytes32 orderKey) {
         // decrease position
+        emit CreateDecreaseOrder(orderKey);
     }
 
-    function cancel(bytes32 key) external payable auth {
+    function cancel(bytes32 orderKey) external payable auth {
         // cancel order
+        cancelOrder(orderKey);
+        emit CreateCancelOrder(orderKey);
     }
 
     function claim() external {
-        // claim funding fees
+        claimFundingFees();
     }
 
     // TODO: function to withdraw to withdrawal vault
