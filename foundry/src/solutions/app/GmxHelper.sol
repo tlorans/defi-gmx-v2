@@ -7,6 +7,7 @@ import {IERC20} from "../../interfaces/IERC20.sol";
 import {IExchangeRouter} from "../../interfaces/IExchangeRouter.sol";
 import {IDataStore} from "../../interfaces/IDataStore.sol";
 import {IReader} from "../../interfaces/IReader.sol";
+import {Math} from "../../lib/Math.sol";
 import {Keys} from "../../lib/Keys.sol";
 import {Order} from "../../types/Order.sol";
 import {Position} from "../../types/Position.sol";
@@ -132,28 +133,26 @@ abstract contract GmxHelper {
 
     function getSizeDeltaUsd(
         uint256 longTokenPrice,
-        uint256 sizeInTokens,
         uint256 sizeInUsd,
+        uint256 collateralAmount,
         uint256 longTokenAmount,
         bool isIncrease
     ) internal view returns (uint256 sizeDeltaUsd) {
         if (isIncrease) {
             // new position size = long token price * new collateral amount
-            // new collateral amount = position.sizeInTokens + longTokenAmount
+            // new collateral amount = position.collateralAmount + longTokenAmount
             // sizeDeltaUsd = new position size - position.sizeInUsd
-            uint256 newPositionSizeInTokens = sizeInTokens + longTokenAmount;
-            uint256 newPositionSizeInUsd = newPositionSizeInTokens
-                * longTokenPrice * 1e30
-                / (longTokenMultiplier * CHAINLINK_MULTIPLIER);
+            uint256 newCollateralAmount = collateralAmount + longTokenAmount;
+            uint256 newPositionSizeInUsd = newCollateralAmount * longTokenPrice
+                * 1e30 / (longTokenMultiplier * CHAINLINK_MULTIPLIER);
             sizeDeltaUsd = newPositionSizeInUsd - sizeInUsd;
         } else {
             // new position size = long token price * new collateral amount
-            // new collateral amount = position.sizeInTokens - longTokenAmount
+            // new collateral amount = position.collateralAmount - longTokenAmount
             // sizeDeltaUsd = new position size - position.sizeInUsd
-            uint256 newPositionSizeInTokens = sizeInTokens - longTokenAmount;
-            uint256 newPositionSizeInUsd = newPositionSizeInTokens
-                * longTokenPrice * 1e30
-                / (longTokenMultiplier * CHAINLINK_MULTIPLIER);
+            uint256 newCollateralAmount = collateralAmount - longTokenAmount;
+            uint256 newPositionSizeInUsd = newCollateralAmount * longTokenPrice
+                * 1e30 / (longTokenMultiplier * CHAINLINK_MULTIPLIER);
             sizeDeltaUsd = sizeInUsd - newPositionSizeInUsd;
         }
     }
@@ -169,8 +168,8 @@ abstract contract GmxHelper {
 
         uint256 sizeDeltaUsd = getSizeDeltaUsd({
             longTokenPrice: longTokenPrice,
-            sizeInTokens: position.numbers.sizeInTokens,
             sizeInUsd: position.numbers.sizeInUsd,
+            collateralAmount: position.numbers.collateralAmount,
             longTokenAmount: longTokenAmount,
             isIncrease: true
         });
@@ -232,12 +231,16 @@ abstract contract GmxHelper {
         Position.Props memory position = getPosition(positionKey);
 
         require(position.numbers.sizeInUsd > 0, "position size = 0");
-        // TODO: require longTokenAmount <= position.sizeInTokens?
+        // TODO: require longTokenAmount <= position.sizeInTokens or position.collateralAmount?
+
+        longTokenAmount =
+            Math.min(longTokenAmount, position.numbers.collateralAmount);
+        require(longTokenAmount > 0, "long token amount = 0");
 
         uint256 sizeDeltaUsd = getSizeDeltaUsd({
             longTokenPrice: longTokenPrice,
-            sizeInTokens: position.numbers.sizeInTokens,
             sizeInUsd: position.numbers.sizeInUsd,
+            collateralAmount: position.numbers.collateralAmount,
             longTokenAmount: longTokenAmount,
             isIncrease: false
         });
@@ -273,7 +276,9 @@ abstract contract GmxHelper {
                     validFromTime: 0
                 }),
                 orderType: Order.OrderType.MarketDecrease,
-                decreasePositionSwapType: Order.DecreasePositionSwapType.NoSwap,
+                decreasePositionSwapType: Order
+                    .DecreasePositionSwapType
+                    .SwapPnlTokenToCollateralToken,
                 isLong: false,
                 shouldUnwrapNativeToken: false,
                 autoCancel: false,

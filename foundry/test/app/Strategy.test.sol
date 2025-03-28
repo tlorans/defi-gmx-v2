@@ -10,6 +10,7 @@ import {OracleUtils} from "../../src/types/OracleUtils.sol";
 import {Order} from "../../src/types/Order.sol";
 import {Position} from "../../src/types/Position.sol";
 import "../../src/Constants.sol";
+import {Math} from "../../src/lib/Math.sol";
 import {Role} from "../../src/lib/Role.sol";
 import {Oracle} from "../../src/lib/Oracle.sol";
 // TODO: path to exercise
@@ -20,6 +21,7 @@ contract StrategyTest is Test {
     IERC20 constant usdc = IERC20(USDC);
     IReader constant reader = IReader(READER);
     IOrderHandler constant orderHandler = IOrderHandler(ORDER_HANDLER);
+    uint256 constant EXECUTION_FEE = 0.01 * 1e18;
 
     TestHelper testHelper;
     Oracle oracle;
@@ -31,6 +33,7 @@ contract StrategyTest is Test {
     address[] providers;
     bytes[] data;
     TestHelper.OracleParams[] oracles;
+    bytes32 positionKey;
 
     function setUp() public {
         testHelper = new TestHelper();
@@ -62,42 +65,48 @@ contract StrategyTest is Test {
             multiplier: 1,
             deltaPrice: 0
         });
+
+        positionKey = Position.getPositionKey({
+            account: address(strategy),
+            market: GM_TOKEN_ETH_WETH_USDC,
+            collateralToken: WETH,
+            isLong: false
+        });
     }
 
-    function testOpenShort() public {
-        uint256 executionFee = 1e18;
-        uint256 wethAmount = 1e18;
-        weth.transfer(address(strategy), wethAmount);
-
+    function open(uint256 wethAmount) public {
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
 
-        bytes32 orderKey = strategy.increase{value: executionFee}(wethAmount);
+        bytes32 orderKey = strategy.increase{value: EXECUTION_FEE}(wethAmount);
 
         Order.Props memory order = reader.getOrder(DATA_STORE, orderKey);
-        assertEq(order.addresses.receiver, address(strategy), "order receiver");
-        assertEq(order.addresses.market, GM_TOKEN_ETH_WETH_USDC, "market");
+
+        assertEq(
+            order.addresses.receiver, address(strategy), "open: order receiver"
+        );
+        assertEq(order.addresses.market, GM_TOKEN_ETH_WETH_USDC, "open: market");
         assertEq(
             order.addresses.initialCollateralToken,
             WETH,
-            "initial collateral token"
+            "open: initial collateral token"
         );
         assertEq(
             uint256(order.numbers.orderType),
             uint256(Order.OrderType.MarketIncrease),
-            "order type"
+            "open: order type"
         );
         assertEq(
             order.numbers.initialCollateralDeltaAmount,
             wethAmount,
-            "initial collateral delta amount"
+            "open: initial collateral delta amount"
         );
         assertApproxEqRel(
             order.numbers.sizeDeltaUsd,
             ethPrice * wethAmount * 1e30 / 1e26,
             1e18 / 100,
-            "size delta USD"
+            "open: size delta USD"
         );
-        assertEq(order.flags.isLong, false, "not short");
+        assertEq(order.flags.isLong, false, "open: not short");
 
         // Execute order
         skip(1);
@@ -119,62 +128,72 @@ contract StrategyTest is Test {
             })
         );
 
-        bytes32 positionKey = Position.getPositionKey({
-            account: address(strategy),
-            market: GM_TOKEN_ETH_WETH_USDC,
-            collateralToken: WETH,
-            isLong: false
-        });
-
-        Position.Props memory position;
-
-        position = reader.getPosition(DATA_STORE, positionKey);
+        Position.Props memory position =
+            reader.getPosition(DATA_STORE, positionKey);
         console.log("pos.sizeInUsd %e", position.numbers.sizeInUsd);
         console.log("pos.sizeInTokens %e", position.numbers.sizeInTokens);
         console.log(
             "pos.collateralAmount %e", position.numbers.collateralAmount
         );
 
-        assertGt(
+        assertApproxEqRel(
             position.numbers.sizeInUsd,
-            wethAmount * 1e12,
-            "position size <= collateral amount"
+            ethPrice * wethAmount * 1e4,
+            1e18 * 2 / 100,
+            "open: position size"
         );
-        assertGt(
+        assertGe(
             position.numbers.collateralAmount,
-            0,
-            "position collateral amount = 0"
+            wethAmount * 99 / 100,
+            "open: position collateral amount"
         );
         assertEq(
-            position.addresses.account, address(strategy), "position account"
+            position.addresses.account,
+            address(strategy),
+            "open: position account"
         );
+    }
 
-        /*
-        // Test position profit and loss
+    function close(uint256 wethAmount) public {
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
-        int256 pnl = strategy.getPositionPnlUsd(positionKey, ethPrice * 110 / 100);
-        console.log("pnl %e", pnl);
-        assertGt(pnl, 0, "profit <= 0");
 
-        // Create close order
-        skip(1);
-        bytes32 closeOrderKey = strategy.createCloseOrder();
+        bytes32 orderKey = strategy.decrease{value: EXECUTION_FEE}(wethAmount);
 
-        Order.Props memory closeOrder =
-            reader.getOrder(DATA_STORE, closeOrderKey);
-        assertEq(closeOrder.addresses.receiver, address(strategy), "order receiver");
+        Position.Props memory position =
+            reader.getPosition(DATA_STORE, positionKey);
+        Order.Props memory order = reader.getOrder(DATA_STORE, orderKey);
+
         assertEq(
-            uint256(closeOrder.numbers.orderType),
-            uint256(Order.OrderType.MarketDecrease),
-            "order type"
+            order.addresses.receiver, address(strategy), "close: order receiver"
         );
+        assertEq(
+            order.addresses.market, GM_TOKEN_ETH_WETH_USDC, "close: market"
+        );
+        assertEq(
+            order.addresses.initialCollateralToken,
+            WETH,
+            "close: initial collateral token"
+        );
+        assertEq(
+            uint256(order.numbers.orderType),
+            uint256(Order.OrderType.MarketDecrease),
+            "close: order type"
+        );
+        assertEq(
+            order.numbers.initialCollateralDeltaAmount,
+            Math.min(wethAmount, position.numbers.collateralAmount),
+            "close: initial collateral delta amount"
+        );
+        assertApproxEqRel(
+            order.numbers.sizeDeltaUsd,
+            ethPrice * wethAmount * 1e30 / 1e26,
+            1e18 / 100,
+            "close: size delta USD"
+        );
+        assertEq(order.flags.isLong, false, "close: not short");
 
         // Execute close order
         skip(1);
-
-        // NOTE: acceptablePrice in strategy must be < oracle price + delta price
-        oracles[0].deltaPrice = 0;
-        oracles[1].deltaPrice = 5;
 
         testHelper.mockOraclePrices({
             tokens: tokens,
@@ -183,12 +202,9 @@ contract StrategyTest is Test {
             oracles: oracles
         });
 
-        testHelper.set("ETH keeper before", keeper.balance);
-        testHelper.set("ETH strategy before", address(strategy).balance);
-
         vm.prank(keeper);
         orderHandler.executeOrder(
-            closeOrderKey,
+            orderKey,
             OracleUtils.SetPricesParams({
                 tokens: tokens,
                 providers: providers,
@@ -196,8 +212,6 @@ contract StrategyTest is Test {
             })
         );
 
-        testHelper.set("ETH keeper after", keeper.balance);
-        testHelper.set("ETH strategy after", address(strategy).balance);
         testHelper.set("WETH strategy", weth.balanceOf(address(strategy)));
         testHelper.set("USDC strategy", usdc.balanceOf(address(strategy)));
 
@@ -207,18 +221,8 @@ contract StrategyTest is Test {
         console.log("WETH %e", wethBal);
         console.log("USDC %e", usdcBal);
 
-        assertGe(wethBal, wethAmount, "WETH balance < initial collateral");
-        assertEq(usdcBal, 0, "USDC balance != 0");
-        assertGe(
-            testHelper.get("ETH keeper after"),
-            testHelper.get("ETH keeper before"),
-            "Keeper execution fee"
-        );
-        assertGe(
-            testHelper.get("ETH strategy after"),
-            testHelper.get("ETH strategy before"),
-            "Close execution fee refund"
-        );
+        // assertGe(wethBal, wethAmount, "WETH balance < initial collateral");
+        // assertEq(usdcBal, 0, "USDC balance != 0");
 
         position = reader.getPosition(DATA_STORE, positionKey);
         console.log("pos.sizeInUsd %e", position.numbers.sizeInUsd);
@@ -227,12 +231,20 @@ contract StrategyTest is Test {
             "pos.collateralAmount %e", position.numbers.collateralAmount
         );
 
-        assertEq(position.numbers.sizeInUsd, 0, "position size != 0");
+        assertEq(position.numbers.sizeInUsd, 0, "close: position size != 0");
         assertEq(
             position.numbers.collateralAmount,
             0,
-            "position collateral amount != 0"
+            "close: position collateral amount != 0"
         );
-        */
+    }
+
+    function testOpenShort() public {
+        uint256 wethAmount = 1e18;
+        weth.transfer(address(strategy), wethAmount);
+
+        open(wethAmount);
+        skip(1);
+        close(wethAmount);
     }
 }

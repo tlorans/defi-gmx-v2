@@ -3,9 +3,9 @@ pragma solidity 0.8.26;
 
 import {console} from "forge-std/Test.sol";
 import {IERC20} from "../../interfaces/IERC20.sol";
+import {Math} from "../../lib/Math.sol";
 import "../../Constants.sol";
 import {Auth} from "./Auth.sol";
-import {Math} from "./Math.sol";
 import {GmxHelper} from "./GmxHelper.sol";
 
 contract Strategy is Auth, GmxHelper {
@@ -51,8 +51,16 @@ contract Strategy is Auth, GmxHelper {
         emit CreateIncreaseOrder(orderKey);
     }
 
-    function decrease() external payable auth returns (bytes32 orderKey) {
-        // decrease position
+    function decrease(uint256 wethAmount)
+        external
+        payable
+        auth
+        returns (bytes32 orderKey)
+    {
+        orderKey = createDecreaseShortPositionOrder({
+            executionFee: msg.value,
+            longTokenAmount: wethAmount
+        });
         emit CreateDecreaseOrder(orderKey);
     }
 

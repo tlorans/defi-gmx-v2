@@ -3,9 +3,9 @@ pragma solidity 0.8.26;
 
 import {console} from "forge-std/Test.sol";
 import {IERC20} from "../../interfaces/IERC20.sol";
+import {Math} from "../../lib/Math.sol";
 import "../../Constants.sol";
 import {Auth} from "./Auth.sol";
-import {Math} from "./Math.sol";
 
 contract DepositVault is Auth {
     IERC20 public immutable weth;
