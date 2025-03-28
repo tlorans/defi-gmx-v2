@@ -221,8 +221,8 @@ contract StrategyTest is Test {
         console.log("WETH %e", wethBal);
         console.log("USDC %e", usdcBal);
 
-        // assertGe(wethBal, wethAmount, "WETH balance < initial collateral");
-        // assertEq(usdcBal, 0, "USDC balance != 0");
+        assertGe(wethBal, wethAmount * 99 / 100, "WETH balance < initial collateral");
+        assertEq(usdcBal, 0, "USDC balance != 0");
 
         position = reader.getPosition(DATA_STORE, positionKey);
         console.log("pos.sizeInUsd %e", position.numbers.sizeInUsd);
@@ -245,7 +245,9 @@ contract StrategyTest is Test {
 
         open(wethAmount);
 
-        strategy.totalValue();
+        uint256 total = strategy.totalValueInToken();
+        console.log("total value: %e", total);
+        assertGe(total, wethAmount * 99 / 100, "total value");
 
         skip(1);
         close(wethAmount);

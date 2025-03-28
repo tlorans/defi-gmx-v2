@@ -82,110 +82,97 @@ abstract contract GmxHelper {
         return reader.getPosition(address(dataStore), positionKey);
     }
 
-    function totalValueInTokens() internal view returns (uint256) {
-        // WETH + pnl + funding fee
-        uint256 val = longToken.balanceOf(address(this));
-
-        // Reader.getPositionInfo
+    function getPositionPnlInToken() internal view returns (int256) {
         bytes32 positionKey = getPositionKey();
         Position.Props memory position = getPosition(positionKey);
-        if (position.numbers.sizeInUsd > 0) {
-            uint256 longTokenPrice = oracle.getPrice(chainlinkLongToken);
-            uint256 shortTokenPrice = oracle.getPrice(chainlinkShortToken);
-
-            // +/- 1% of current prices
-            uint256 minLongTokenPrice = longTokenPrice
-                * 10 ** (30 - CHAINLINK_DECIMALS - longTokenDecimals) * 999 / 1000;
-            uint256 maxLongTokenPrice = longTokenPrice
-                * 10 ** (30 - CHAINLINK_DECIMALS - longTokenDecimals) * 1001 / 1000;
-
-            MarketUtils.MarketPrices memory prices = MarketUtils.MarketPrices({
-                indexTokenPrice: Price.Props({
-                    min: minLongTokenPrice,
-                    max: maxLongTokenPrice
-                }),
-                longTokenPrice: Price.Props({
-                    min: minLongTokenPrice,
-                    max: maxLongTokenPrice
-                }),
-                shortTokenPrice: Price.Props({
-                    min: shortTokenPrice
-                        * 10 ** (30 - CHAINLINK_DECIMALS - shortTokenDecimals) * 999 / 1000,
-                    max: shortTokenPrice
-                        * 10 ** (30 - CHAINLINK_DECIMALS - shortTokenDecimals) * 1001 / 1000
-                })
-            });
-
-            ReaderPositionUtils.PositionInfo memory info = reader
-                .getPositionInfo({
-                dataStore: address(dataStore),
-                referralStorage: REFERRAL_STORAGE,
-                positionKey: positionKey,
-                prices: prices,
-                sizeDeltaUsd: 0,
-                uiFeeReceiver: address(0),
-                usePositionSizeAsSizeDeltaUsd: true
-            });
-
-            // TODO: remove
-            // pnl after price impact / execution price? - fees
-            console.log("------- PNL -------------");
-            console.log("pnl USD %e", info.pnlAfterPriceImpactUsd);
-            uint256 pnl = 0;
-            if (info.pnlAfterPriceImpactUsd < 0) {
-                pnl = uint256(-info.pnlAfterPriceImpactUsd)
-                    / (longTokenPrice * 101 / 100) / 1e4;
-                console.log(
-                    "pnl ETH %e",
-                    uint256(-info.pnlAfterPriceImpactUsd)
-                        / (longTokenPrice * 101 / 100) / 1e4
-                );
-            }
-            console.log(
-                "price impact %e", info.executionPriceResult.priceImpactUsd
-            );
-            console.log(
-                "execution price %e", info.executionPriceResult.executionPrice
-            );
-            console.log("long token price %e", longTokenPrice * 1e4);
-            console.log("total cost %e", info.fees.totalCostAmount);
-            console.log("col %e", position.numbers.collateralAmount);
-            console.log(
-                "rem %e",
-                position.numbers.collateralAmount - info.fees.totalCostAmount
-            );
-
-            console.log("----- calc ---");
-            int256 collateralUsd = Math.toInt256(
-                position.numbers.collateralAmount * minLongTokenPrice
-            );
-            int256 collateralCostUsd =
-                Math.toInt256(info.fees.totalCostAmount * minLongTokenPrice);
-
-            int256 remainingCollateralUsd =
-                collateralUsd + info.pnlAfterPriceImpactUsd - collateralCostUsd;
-
-            uint256 remainingCollateral = 0;
-            if (remainingCollateralUsd >= 0) {
-                remainingCollateral =
-                    uint256(remainingCollateralUsd) / minLongTokenPrice;
-                val += remainingCollateral;
-            } else {
-                remainingCollateral =
-                    uint256(-remainingCollateralUsd) / minLongTokenPrice;
-                val -= Math.min(val, remainingCollateral);
-            }
-
-            console.log("collateral usd %e", collateralUsd);
-            console.log("collateral cost usd %e", collateralCostUsd);
-            console.log("rem col usd %e", remainingCollateralUsd);
-            console.log("rem col %e", remainingCollateral);
-            console.log("--------------");
+        if (position.numbers.sizeInUsd == 0) {
+            return 0;
         }
 
-        console.log("val %e", val);
+        uint256 longTokenPrice = oracle.getPrice(chainlinkLongToken);
+        uint256 shortTokenPrice = oracle.getPrice(chainlinkShortToken);
 
-        return val;
+        // +/- 1% of current prices
+        uint256 minLongTokenPrice = longTokenPrice
+            * 10 ** (30 - CHAINLINK_DECIMALS - longTokenDecimals) * 999 / 1000;
+        uint256 maxLongTokenPrice = longTokenPrice
+            * 10 ** (30 - CHAINLINK_DECIMALS - longTokenDecimals) * 1001 / 1000;
+
+        MarketUtils.MarketPrices memory prices = MarketUtils.MarketPrices({
+            indexTokenPrice: Price.Props({
+                min: minLongTokenPrice,
+                max: maxLongTokenPrice
+            }),
+            longTokenPrice: Price.Props({
+                min: minLongTokenPrice,
+                max: maxLongTokenPrice
+            }),
+            shortTokenPrice: Price.Props({
+                min: shortTokenPrice
+                    * 10 ** (30 - CHAINLINK_DECIMALS - shortTokenDecimals) * 999 / 1000,
+                max: shortTokenPrice
+                    * 10 ** (30 - CHAINLINK_DECIMALS - shortTokenDecimals) * 1001 / 1000
+            })
+        });
+
+        ReaderPositionUtils.PositionInfo memory info = reader
+            .getPositionInfo({
+            dataStore: address(dataStore),
+            referralStorage: REFERRAL_STORAGE,
+            positionKey: positionKey,
+            prices: prices,
+            sizeDeltaUsd: 0,
+            uiFeeReceiver: address(0),
+            usePositionSizeAsSizeDeltaUsd: true
+        });
+
+        // TODO: remove
+        // pnl after price impact / execution price? - fees
+        console.log("------- PNL -------------");
+        console.log("pnl USD %e", info.pnlAfterPriceImpactUsd);
+        uint256 pnl = 0;
+        if (info.pnlAfterPriceImpactUsd < 0) {
+            pnl = uint256(-info.pnlAfterPriceImpactUsd)
+                / (longTokenPrice * 101 / 100) / 1e4;
+            console.log(
+                "pnl ETH %e",
+                uint256(-info.pnlAfterPriceImpactUsd)
+                    / (longTokenPrice * 101 / 100) / 1e4
+            );
+        }
+        console.log(
+            "price impact %e", info.executionPriceResult.priceImpactUsd
+        );
+        console.log(
+            "execution price %e", info.executionPriceResult.executionPrice
+        );
+        console.log("long token price %e", longTokenPrice * 1e4);
+        console.log("total cost %e", info.fees.totalCostAmount);
+        console.log("col %e", position.numbers.collateralAmount);
+        console.log(
+            "rem %e",
+            position.numbers.collateralAmount - info.fees.totalCostAmount
+        );
+
+        console.log("----- calc ---");
+        int256 collateralUsd = Math.toInt256(
+            position.numbers.collateralAmount * minLongTokenPrice
+        );
+        int256 collateralCostUsd =
+            Math.toInt256(info.fees.totalCostAmount * minLongTokenPrice);
+
+        int256 remainingCollateralUsd =
+            collateralUsd + info.pnlAfterPriceImpactUsd - collateralCostUsd;
+
+        int256 remainingCollateral = remainingCollateralUsd / Math.toInt256(minLongTokenPrice);
+
+        console.log("collateral usd %e", collateralUsd);
+        console.log("collateral cost usd %e", collateralCostUsd);
+        console.log("rem col usd %e", remainingCollateralUsd);
+        console.log("rem col %e", remainingCollateral);
+        console.log("--------------");
+
+        return remainingCollateral;
     }
 
     function getSizeDeltaUsd(

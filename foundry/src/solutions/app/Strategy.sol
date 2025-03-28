@@ -30,8 +30,17 @@ contract Strategy is Auth, GmxHelper {
 
     receive() external payable {}
 
-    function totalValue() external view returns (uint256) {
-        return totalValueInTokens();
+    function totalValueInToken() external view returns (uint256) {
+        uint256 val = weth.balanceOf(address(this));
+        int256 remainingCollateral = getPositionPnlInToken();
+
+        if (remainingCollateral >= 0) {
+            val += uint256(remainingCollateral);
+        } else {
+            val -= Math.min(val, uint256(-remainingCollateral));
+        }
+
+        return val;
     }
 
     function increase(uint256 wethAmount)
@@ -40,7 +49,7 @@ contract Strategy is Auth, GmxHelper {
         auth
         returns (bytes32 orderKey)
     {
-        // TODO: check funding fee is positive
+        // TODO: check funding fee is positive?
 
         orderKey = createIncreaseShortPositionOrder({
             executionFee: msg.value,

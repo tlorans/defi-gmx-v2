@@ -5,26 +5,27 @@ import {console} from "forge-std/Test.sol";
 import {IERC20} from "../../interfaces/IERC20.sol";
 import {Math} from "../../lib/Math.sol";
 import "../../Constants.sol";
+import {IStrategy} from "./IStrategy.sol";
 import {Auth} from "./Auth.sol";
 
-contract DepositVault is Auth {
+contract Vault is Auth {
     IERC20 public immutable weth;
-    address public strategy;
+    IStrategy public strategy;
 
     constructor(address _weth) {
         weth = IERC20(_weth);
     }
 
     function set(address _strategy) external auth {
-        strategy = _strategy;
+        strategy = IStrategy(_strategy);
     }
 
     function totalValueInToken() public view returns (uint256) {}
     function totalValueInUsd() external view returns (uint256) {}
 
-    // TODO: vault inflation
-
     function deposit() external {
+        // TODO: vault inflation
+
         // claim funding fees
         // get pnl
         // mint shares
