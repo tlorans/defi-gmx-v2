@@ -243,7 +243,11 @@ contract StrategyTest is Test {
         uint256 wethAmount = 1e18;
         weth.transfer(address(strategy), wethAmount);
 
+
         open(wethAmount);
+
+        strategy.totalValue();
+
         skip(1);
         close(wethAmount);
     }

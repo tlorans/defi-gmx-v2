@@ -118,7 +118,7 @@ abstract contract GmxHelper {
             ReaderPositionUtils.PositionInfo memory info = reader
                 .getPositionInfo({
                 dataStore: address(dataStore),
-                referralStorage: address(0),
+                referralStorage: REFERRAL_STORAGE,
                 positionKey: positionKey,
                 prices: prices,
                 sizeDeltaUsd: 0,
@@ -127,6 +127,10 @@ abstract contract GmxHelper {
             });
 
             // pnl after price impact / execution price? - fees
+            console.log("pnl %e", info.pnlAfterPriceImpactUsd);
+            console.log("price impact %e", info.executionPriceResult.priceImpactUsd);
+            console.log("execution price %e", info.executionPriceResult.executionPrice);
+            console.log("total cost %e", info.fees.totalCostAmount);
         }
 
         return val;
