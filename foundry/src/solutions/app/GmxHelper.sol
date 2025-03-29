@@ -79,7 +79,13 @@ abstract contract GmxHelper {
         return reader.getPosition(address(dataStore), positionKey);
     }
 
-    function getPositionPnlInToken() internal view returns (int256) {
+    function getPositionCollateralAmount() internal view returns (uint256) {
+        bytes32 positionKey = getPositionKey();
+        Position.Props memory position = getPosition(positionKey);
+        return position.numbers.collateralAmount;
+    }
+
+    function getPositionWithPnlInToken() internal view returns (int256) {
         bytes32 positionKey = getPositionKey();
         Position.Props memory position = getPosition(positionKey);
 
@@ -170,7 +176,7 @@ abstract contract GmxHelper {
         }
     }
 
-    function getMaxCallbackGasLimit() public view returns (uint256) {
+    function getMaxCallbackGasLimit() internal view returns (uint256) {
         return dataStore.getUint(Keys.MAX_CALLBACK_GAS_LIMIT);
     }
 
@@ -272,6 +278,7 @@ abstract contract GmxHelper {
             amount: executionFee
         });
 
+        // NOTE: dust causes liquidation error
         return exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({
                 addresses: IBaseOrderUtils.CreateOrderParamsAddresses({

@@ -38,7 +38,11 @@ contract Vault is Auth {
         return weth.balanceOf(address(this)) + strategy.totalValueInToken();
     }
 
-    function deposit(uint256 wethAmount) external guard returns (uint256 shares) {
+    function deposit(uint256 wethAmount)
+        external
+        guard
+        returns (uint256 shares)
+    {
         if (address(strategy) != address(0)) {
             strategy.claim();
         }
@@ -127,10 +131,16 @@ contract Vault is Auth {
         }
     }
 
+    function getWithdrawOrder(bytes32 key)
+        external
+        view
+        returns (IVault.WithdrawOrder memory)
+    {
+        return withdrawOrders[key];
+    }
+
     function cancelWithdrawOrder(bytes32 key) external guard {
-        require(
-            msg.sender == withdrawOrders[key].account, "not owner of order"
-        );
+        require(msg.sender == withdrawOrders[key].account, "not owner of order");
         require(
             withdrawCallback != address(0), "withdraw callback is 0 address"
         );
@@ -140,10 +150,9 @@ contract Vault is Auth {
     function removeWithdrawOrder(bytes32 key, bool ok) external auth {
         IVault.WithdrawOrder memory withdrawOrder = withdrawOrders[key];
 
+        _unlock(withdrawOrder.account, withdrawOrder.shares);
         if (ok) {
             _burn(withdrawOrder.account, withdrawOrder.shares);
-        } else {
-            _unlock(withdrawOrder.account, withdrawOrder.shares);
         }
 
         delete withdrawOrders[key];

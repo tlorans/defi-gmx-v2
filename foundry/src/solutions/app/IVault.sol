@@ -8,7 +8,7 @@ interface IVault {
         uint256 weth;
     }
 
-    function withdrawOrders(bytes32 key)
+    function getWithdrawOrder(bytes32 key)
         external
         view
         returns (WithdrawOrder memory);

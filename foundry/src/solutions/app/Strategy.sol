@@ -30,7 +30,7 @@ contract Strategy is Auth, GmxHelper {
 
     function totalValueInToken() external view returns (uint256) {
         uint256 val = weth.balanceOf(address(this));
-        int256 remainingCollateral = getPositionPnlInToken();
+        int256 remainingCollateral = getPositionWithPnlInToken();
 
         if (remainingCollateral >= 0) {
             val += uint256(remainingCollateral);
@@ -79,9 +79,23 @@ contract Strategy is Auth, GmxHelper {
                 "callback gas limit < execution fee"
             );
 
+            int256 total = getPositionWithPnlInToken();
+            require(total > 0, "position with pnl <= 0");
+
+            console.log("---------------");
+            console.log("col %e", getPositionCollateralAmount());
+            console.log("weth %e", wethAmount);
+            console.log(
+                "long %e",
+                getPositionCollateralAmount() * wethAmount / uint256(total)
+            );
+
             orderKey = createDecreaseShortPositionOrder({
                 executionFee: msg.value,
-                longTokenAmount: wethAmount,
+                // Calculate collateral to withdraw
+                // TODO: fix?
+                longTokenAmount: getPositionCollateralAmount() * wethAmount
+                    / uint256(total),
                 receiver: callbackContract,
                 callbackContract: callbackContract,
                 callbackGasLimit: maxCallbackGasLimit
