@@ -14,9 +14,17 @@ contract Vault is Auth {
     IStrategy public strategy;
     address public withdrawCallback;
 
+    bool private locked;
     uint256 public totalSupply;
     mapping(address => uint256) public balanceOf;
     mapping(bytes32 => IVault.WithdrawOrder) public withdrawOrders;
+
+    modifier lock() {
+        require(!locked, "locked");
+        locked = true;
+        _;
+        locked = false;
+    }
 
     constructor(address _weth) {
         weth = IERC20(_weth);
@@ -27,11 +35,6 @@ contract Vault is Auth {
     }
 
     function setWithdrawCallback(address _withdrawCallback) external auth {
-        if (_withdrawCallback != address(0)) {
-            require(
-                _withdrawCallback.code.length > 0, "callback is not a contract"
-            );
-        }
         withdrawCallback = _withdrawCallback;
     }
 
@@ -39,11 +42,12 @@ contract Vault is Auth {
         return weth.balanceOf(address(this)) + strategy.totalValueInToken();
     }
 
-    function deposit(uint256 wethAmount) external returns (uint256 shares) {
-        strategy.claim();
+    function deposit(uint256 wethAmount) external lock returns (uint256 shares) {
+        if (address(strategy) != address(0)) {
+            strategy.claim();
+        }
 
         // TODO: vault inflation
-        // mint shares
         uint256 totalVal = totalValueInToken();
         shares = _convertToShares(totalSupply, totalVal, wethAmount);
 
@@ -52,45 +56,52 @@ contract Vault is Auth {
         _mint(msg.sender, shares);
     }
 
-    function withdraw(uint256 shares) external payable {
-        strategy.claim();
+    // NOTE: withdrawal delay or gradual profit distribution should be implemented
+    // to prevent users from depositing before profit is claimed by the strategy and then
+    // immediately withdrawing after.
+    function withdraw(uint256 shares)
+        external
+        payable
+        lock
+        returns (uint256 wethSent, bytes32 withdrawOrderKey)
+    {
+        if (address(strategy) != address(0)) {
+            strategy.claim();
+        }
 
         // TODO: vault inflation
-        // TODO: withdrawal delay?
         uint256 totalVal = totalValueInToken();
         uint256 wethAmount = _convertToWeth(totalSupply, totalVal, shares);
         require(wethAmount > 0, "weth amount = 0");
 
         uint256 wethRemaining = wethAmount;
 
-        // TODO: burn shares
-
         uint256 wethInVault = weth.balanceOf(address(this));
-        if (wethInVault >= wethRemaining) {
-            wethRemaining = 0;
-        } else {
-            wethRemaining -= wethInVault;
-        }
+        wethRemaining -= Math.min(wethInVault, wethRemaining);
 
         if (wethRemaining > 0 && address(strategy) != address(0)) {
             uint256 wethInStrategy = weth.balanceOf(address(strategy));
-            if (wethInStrategy >= wethRemaining) {
-                wethRemaining = 0;
-                strategy.transfer(address(this), wethRemaining);
-            } else {
-                wethRemaining -= wethInStrategy;
-                strategy.transfer(address(this), wethInStrategy);
+            if (wethInStrategy > 0) {
+                uint256 wethToTransfer = Math.min(wethInStrategy, wethRemaining);
+                wethRemaining -= wethToTransfer;
+                strategy.transfer(address(this), wethToTransfer);
             }
         }
 
         if (wethRemaining == 0) {
             _burn(msg.sender, shares);
-            weth.transfer(msg.sender, wethAmount);
-            return;
+            wethSent = wethAmount;
+            weth.transfer(msg.sender, wethSent);
+
+            if (msg.value > 0) {
+                (bool ok,) = msg.sender.call{value: msg.value}("");
+                require(ok, "Send ETH failed");
+            }
         } else {
             uint256 sharesRemaining = shares * wethRemaining / wethAmount;
             _burn(msg.sender, shares - sharesRemaining);
-            weth.transfer(msg.sender, wethAmount - wethRemaining);
+            wethSent = wethAmount - wethRemaining;
+            weth.transfer(msg.sender, wethSent);
 
             if (sharesRemaining > 0) {
                 require(
@@ -98,19 +109,19 @@ contract Vault is Auth {
                     "withdraw callback is 0 address"
                 );
 
-                // TODO: handle order fails?
-                // TOOD: deduct executionFee from wethRemaining ?
                 require(msg.value > 0, "execution fee = 0");
-                bytes32 orderKey = strategy.decrease{value: msg.value}(
+                withdrawOrderKey = strategy.decrease{value: msg.value}(
                     wethRemaining, withdrawCallback
                 );
 
-                require(orderKey != bytes32(uint256(0)), "invalid order key");
                 require(
-                    withdrawOrders[orderKey].account == address(0),
+                    withdrawOrderKey != bytes32(uint256(0)), "invalid order key"
+                );
+                require(
+                    withdrawOrders[withdrawOrderKey].account == address(0),
                     "order is not empty"
                 );
-                withdrawOrders[orderKey] = IVault.WithdrawOrder({
+                withdrawOrders[withdrawOrderKey] = IVault.WithdrawOrder({
                     account: msg.sender,
                     shares: sharesRemaining,
                     weth: wethRemaining
@@ -119,7 +130,7 @@ contract Vault is Auth {
         }
     }
 
-    function cancelWithdrawOrder(bytes32 orderKey) external {
+    function cancelWithdrawOrder(bytes32 orderKey) external lock {
         require(
             msg.sender == withdrawOrders[orderKey].account, "not owner of order"
         );
