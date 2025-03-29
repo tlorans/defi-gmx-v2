@@ -174,10 +174,16 @@ contract StrategyTestHelper is Test {
         if (debug) {
             console.log("--------------");
             console.log("inc: position size %e", p1.numbers.sizeInUsd);
-            console.log("inc: position size in tokens %e", p1.numbers.sizeInTokens);
-            console.log("inc: position collateral %e", p1.numbers.collateralAmount);
+            console.log(
+                "inc: position size in tokens %e", p1.numbers.sizeInTokens
+            );
+            console.log(
+                "inc: position collateral %e", p1.numbers.collateralAmount
+            );
             console.log("inc: total value: %e", strategy.totalValueInToken());
-            console.log("inc: WETH balance %e", weth.balanceOf(address(strategy)));
+            console.log(
+                "inc: WETH balance %e", weth.balanceOf(address(strategy))
+            );
         }
     }
 
@@ -289,10 +295,16 @@ contract StrategyTestHelper is Test {
         if (debug) {
             console.log("--------------");
             console.log("dec: position size %e", p1.numbers.sizeInUsd);
-            console.log("inc: position size in tokens %e", p1.numbers.sizeInTokens);
-            console.log("dec: position collateral %e", p1.numbers.collateralAmount);
+            console.log(
+                "dec: position size in tokens %e", p1.numbers.sizeInTokens
+            );
+            console.log(
+                "dec: position collateral %e", p1.numbers.collateralAmount
+            );
             console.log("dec: total value: %e", strategy.totalValueInToken());
-            console.log("dec: WETH balance %e", weth.balanceOf(address(strategy)));
+            console.log(
+                "dec: WETH balance %e", weth.balanceOf(address(strategy))
+            );
         }
     }
 }

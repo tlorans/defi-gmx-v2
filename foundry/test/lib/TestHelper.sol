@@ -71,6 +71,7 @@ contract TestHelper is Test {
         uint256 n = tokens.length;
 
         prices = new uint256[](n);
+        uint256[] memory answers = new uint256[](n);
         for (uint256 i = 0; i < n; i++) {
             if (oracles[i].chainlink == address(0)) {
                 prices[i] = 1e12;
@@ -89,11 +90,27 @@ contract TestHelper is Test {
 
             prices[i] = uint256(answer) * multiplier / oracles[i].multiplier
                 * Math.add(100, oracles[i].deltaPrice) / 100;
+            answers[i] = uint256(answer);
 
             require(prices[i] > 0, "price = 0");
         }
 
         for (uint256 i = 0; i < n; i++) {
+            vm.mockCall(
+                oracles[i].chainlink,
+                abi.encodeCall(IPriceFeed.latestRoundData, ()),
+                abi.encode(
+                    // roundId
+                    0,
+                    answers[i],
+                    // startedAt
+                    0,
+                    // updatedAt
+                    block.timestamp,
+                    // answeredInRound
+                    0
+                )
+            );
             vm.mockCall(
                 address(provider),
                 abi.encodeCall(
