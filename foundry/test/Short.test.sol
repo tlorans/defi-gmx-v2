@@ -178,7 +178,7 @@ contract ShortTest is Test {
         // Execute close order
         skip(1);
 
-        // NOTE: acceptablePrice in Short must be > oracle price + delta price
+        // NOTE: acceptablePrice for short must be > oracle price + delta price
         oracles[0].deltaPrice = 0;
         oracles[1].deltaPrice = -5;
 

@@ -7,8 +7,7 @@ import "./StrategyTestHelper.sol";
 contract VaultAndStrategyTest is StrategyTestHelper {
     // TODO: test cancel
     // TODO: test partial withdraw and create withdraw order
-    // TODO: test profit
-    // TODO: test loss
+    // TODO: test profit and loss
 
     /*
     function testWithdrawFromStrategy() public {

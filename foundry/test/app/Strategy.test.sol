@@ -12,7 +12,6 @@ contract StrategyTest is StrategyTestHelper {
         cb = new DecreaseCallback();
     }
 
-    /*
     function testOpenCloseShort() public {
         uint256 totalValue = strategy.totalValueInToken();
         assertEq(totalValue, 0, "total value != 0");
@@ -49,11 +48,9 @@ contract StrategyTest is StrategyTestHelper {
         skip(1);
         dec(wethAmount, address(0));
     }
-    */
 
-    // TODO: check partial withdraw doesn't claim all the profit?
     function testOpenAndCloseWithProfit() public {
-        uint256 wethAmount = 1e18;
+        uint256 wethAmount = 2 * 1e18;
         weth.transfer(address(strategy), wethAmount);
 
         // Open short position
@@ -63,10 +60,55 @@ contract StrategyTest is StrategyTestHelper {
         console.log("total value %e", total);
 
         // Decrease short position
-        dec(wethAmount, address(0));
+        skip(3600);
+
+        oracles[0].deltaPrice = 0;
+        oracles[1].deltaPrice = -5;
+
+        dec(wethAmount / 2, address(0));
+        dec(wethAmount / 2, address(0));
     }
 
-    /*
+    function testOpenAndCloseWithLoss() public {
+        uint256 wethAmount = 2 * 1e18;
+        weth.transfer(address(strategy), wethAmount);
+
+        // Open short position
+        inc(wethAmount);
+
+        uint256 total = strategy.totalValueInToken();
+        console.log("total value %e", total);
+
+        // Decrease short position
+        skip(3600);
+
+        oracles[0].deltaPrice = 0;
+        oracles[1].deltaPrice = 5;
+
+        dec(wethAmount / 2, address(0));
+        dec(wethAmount / 2, address(0));
+    }
+
+    function testOpenAndCloseWithLossCallback() public {
+        uint256 wethAmount = 2 * 1e18;
+        weth.transfer(address(strategy), wethAmount);
+
+        // Open short position
+        inc(wethAmount);
+
+        uint256 total = strategy.totalValueInToken();
+        console.log("total value %e", total);
+
+        // Decrease short position
+        skip(3600);
+
+        oracles[0].deltaPrice = 0;
+        oracles[1].deltaPrice = 5;
+
+        dec(total / 2, address(cb));
+        dec(total / 2, address(cb));
+    }
+
     function testCancel() public {
         uint256 wethAmount = 1e18;
         weth.transfer(address(strategy), wethAmount);
@@ -132,5 +174,4 @@ contract StrategyTest is StrategyTestHelper {
         );
         assertGt(cb.refundAmount(), 0, "callback: refund amount");
     }
-    */
 }

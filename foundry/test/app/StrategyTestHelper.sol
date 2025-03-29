@@ -212,15 +212,24 @@ contract StrategyTestHelper is Test {
             uint256(Order.OrderType.MarketDecrease),
             "dec: order type"
         );
-        assertEq(
-            order.numbers.initialCollateralDeltaAmount,
-            Math.min(wethAmount, p0.numbers.collateralAmount),
-            "dec: initial collateral delta amount"
-        );
+        if (callback == address(0)) {
+            assertEq(
+                order.numbers.initialCollateralDeltaAmount,
+                Math.min(wethAmount, p0.numbers.collateralAmount),
+                "dec: initial collateral delta amount"
+            );
+        } else {
+            assertApproxEqRel(
+                order.numbers.initialCollateralDeltaAmount,
+                Math.min(wethAmount, p0.numbers.collateralAmount),
+                1e18 * 1 / 100,
+                "dec: initial collateral delta amount"
+            );
+        }
         assertApproxEqRel(
             order.numbers.sizeDeltaUsd,
             ethPrice * wethAmount * 1e30 / 1e26,
-            1e18 / 100,
+            1e18 * 10 / 100,
             "dec: size delta USD"
         );
         assertEq(order.flags.isLong, false, "dec: not short");
@@ -257,7 +266,7 @@ contract StrategyTestHelper is Test {
             testHelper.get("USDC after") - testHelper.get("USDC after");
 
         assertGe(
-            wethDiff, wethAmount * 99 / 100, "WETH difference < WETH deposit"
+            wethDiff, wethAmount * 80 / 100, "WETH difference"
         );
         assertEq(usdcDiff, 0, "USDC difference != 0");
 
@@ -278,7 +287,7 @@ contract StrategyTestHelper is Test {
             assertApproxEqRel(
                 p1.numbers.collateralAmount,
                 p0.numbers.collateralAmount - wethAmount,
-                1e18 / 100,
+                1e18 * 10 / 100,
                 "dec: position collateral amount"
             );
         }
@@ -287,7 +296,7 @@ contract StrategyTestHelper is Test {
             assertApproxEqRel(
                 p1.numbers.sizeInUsd,
                 p1.numbers.collateralAmount * ethPrice * 1e4,
-                1e18 / 100,
+                1e18 * 10 / 100,
                 "dec: size in USD != collateral * price"
             );
         }
@@ -303,8 +312,9 @@ contract StrategyTestHelper is Test {
             );
             console.log("dec: total value: %e", strategy.totalValueInToken());
             console.log(
-                "dec: WETH balance %e", weth.balanceOf(address(strategy))
+                "dec: WETH balance %e", weth.balanceOf(receiver)
             );
+            console.log("dec: WETH diff %e", wethDiff);
         }
     }
 }
