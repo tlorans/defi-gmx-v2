@@ -2,9 +2,9 @@
 pragma solidity 0.8.26;
 
 import {IVault} from "../../src/solutions/app/IVault.sol";
-import "./StrategyBase.sol";
+import "./StrategyTestHelper.sol";
 
-contract VaultAndStrategyTest is StrategyBase {
+contract VaultAndStrategyTest is StrategyTestHelper {
     // TODO: test cancel
     // TODO: test partial withdraw and create withdraw order
     // TODO: test profit

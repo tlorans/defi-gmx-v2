@@ -18,7 +18,7 @@ import {Vault} from "@exercises/app/Vault.sol";
 import {WithdrawCallback} from "@exercises/app/WithdrawCallback.sol";
 import {Strategy} from "@exercises/app/Strategy.sol";
 
-contract StrategyBase is Test {
+contract StrategyTestHelper is Test {
     IERC20 internal constant weth = IERC20(WETH);
     IERC20 internal constant usdc = IERC20(USDC);
     IReader internal constant reader = IReader(READER);
@@ -38,6 +38,8 @@ contract StrategyBase is Test {
     bytes[] internal data;
     TestHelper.OracleParams[] internal oracles;
     bytes32 internal positionKey;
+
+    bool internal debug = true;
 
     receive() external payable {}
 
@@ -168,11 +170,15 @@ contract StrategyBase is Test {
             1e18 / 100,
             "inc: size in USD != collateral * price"
         );
-        console.log("--------------");
-        console.log("inc: size in USD %e", p1.numbers.sizeInUsd);
-        console.log("inc: collateral amount %e", p1.numbers.collateralAmount);
-        console.log("inc: total value: %e", strategy.totalValueInToken());
-        console.log("inc: WETH balance %e", weth.balanceOf(address(strategy)));
+
+        if (debug) {
+            console.log("--------------");
+            console.log("inc: position size %e", p1.numbers.sizeInUsd);
+            console.log("inc: position size in tokens %e", p1.numbers.sizeInTokens);
+            console.log("inc: position collateral %e", p1.numbers.collateralAmount);
+            console.log("inc: total value: %e", strategy.totalValueInToken());
+            console.log("inc: WETH balance %e", weth.balanceOf(address(strategy)));
+        }
     }
 
     function dec(uint256 wethAmount, address callback)
@@ -279,10 +285,14 @@ contract StrategyBase is Test {
                 "dec: size in USD != collateral * price"
             );
         }
-        console.log("--------------");
-        console.log("dec: size in USD %e", p1.numbers.sizeInUsd);
-        console.log("dec: collateral amount %e", p1.numbers.collateralAmount);
-        console.log("dec: total value: %e", strategy.totalValueInToken());
-        console.log("dec: WETH balance %e", weth.balanceOf(address(strategy)));
+
+        if (debug) {
+            console.log("--------------");
+            console.log("dec: position size %e", p1.numbers.sizeInUsd);
+            console.log("inc: position size in tokens %e", p1.numbers.sizeInTokens);
+            console.log("dec: position collateral %e", p1.numbers.collateralAmount);
+            console.log("dec: total value: %e", strategy.totalValueInToken());
+            console.log("dec: WETH balance %e", weth.balanceOf(address(strategy)));
+        }
     }
 }

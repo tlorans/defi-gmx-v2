@@ -9,10 +9,6 @@ import {Auth} from "./Auth.sol";
 import {GmxHelper} from "./GmxHelper.sol";
 
 contract Strategy is Auth, GmxHelper {
-    event CreateIncreaseOrder(bytes32 orderKey);
-    event CreateDecreaseOrder(bytes32 orderKey);
-    event CreateCancelOrder(bytes32 orderKey);
-
     IERC20 public constant weth = IERC20(WETH);
 
     constructor(address oracle)
@@ -51,8 +47,6 @@ contract Strategy is Auth, GmxHelper {
             executionFee: msg.value,
             longTokenAmount: wethAmount
         });
-
-        emit CreateIncreaseOrder(orderKey);
     }
 
     function decrease(uint256 wethAmount, address callbackContract)
@@ -82,18 +76,9 @@ contract Strategy is Auth, GmxHelper {
             int256 total = getPositionWithPnlInToken();
             require(total > 0, "position with pnl <= 0");
 
-            console.log("---------------");
-            console.log("col %e", getPositionCollateralAmount());
-            console.log("weth %e", wethAmount);
-            console.log(
-                "long %e",
-                getPositionCollateralAmount() * wethAmount / uint256(total)
-            );
-
             orderKey = createDecreaseShortPositionOrder({
                 executionFee: msg.value,
                 // Calculate collateral to withdraw
-                // TODO: fix?
                 longTokenAmount: getPositionCollateralAmount() * wethAmount
                     / uint256(total),
                 receiver: callbackContract,
@@ -101,12 +86,10 @@ contract Strategy is Auth, GmxHelper {
                 callbackGasLimit: maxCallbackGasLimit
             });
         }
-        emit CreateDecreaseOrder(orderKey);
     }
 
     function cancel(bytes32 orderKey) external payable auth {
         cancelOrder(orderKey);
-        emit CreateCancelOrder(orderKey);
     }
 
     function claim() external {

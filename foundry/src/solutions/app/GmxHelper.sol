@@ -130,7 +130,7 @@ abstract contract GmxHelper {
             referralStorage: REFERRAL_STORAGE,
             positionKey: positionKey,
             prices: prices,
-            // use current position size for size delta
+            // Use current position size for size delta
             sizeDeltaUsd: 0,
             uiFeeReceiver: address(0),
             usePositionSizeAsSizeDeltaUsd: true
@@ -164,7 +164,9 @@ abstract contract GmxHelper {
             uint256 newCollateralAmount = collateralAmount + longTokenAmount;
             uint256 newPositionSizeInUsd = newCollateralAmount * longTokenPrice
                 * 10 ** (30 - longTokenDecimals - CHAINLINK_DECIMALS);
-            sizeDeltaUsd = newPositionSizeInUsd - sizeInUsd;
+            if (newPositionSizeInUsd > sizeInUsd) {
+                sizeDeltaUsd = newPositionSizeInUsd - sizeInUsd;
+            }
         } else {
             // new position size = long token price * new collateral amount
             // new collateral amount = position.collateralAmount - longTokenAmount
@@ -172,7 +174,9 @@ abstract contract GmxHelper {
             uint256 newCollateralAmount = collateralAmount - longTokenAmount;
             uint256 newPositionSizeInUsd = newCollateralAmount * longTokenPrice
                 * 10 ** (30 - longTokenDecimals - CHAINLINK_DECIMALS);
-            sizeDeltaUsd = sizeInUsd - newPositionSizeInUsd;
+            if (sizeInUsd > newPositionSizeInUsd) {
+                sizeDeltaUsd = sizeInUsd - newPositionSizeInUsd;
+            }
         }
     }
 
@@ -269,6 +273,9 @@ abstract contract GmxHelper {
             isIncrease: false
         });
 
+        // Withdrawing collateral should also decrease position size
+        require(sizeDeltaUsd > 0, "size delta = 0");
+
         // 110% of current price
         uint256 acceptablePrice =
             longTokenPrice * 1e12 / CHAINLINK_MULTIPLIER * 110 / 100;
@@ -278,7 +285,7 @@ abstract contract GmxHelper {
             amount: executionFee
         });
 
-        // NOTE: dust causes liquidation error
+        // Decreasing position that results in small position size causes liquidation error
         return exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({
                 addresses: IBaseOrderUtils.CreateOrderParamsAddresses({

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "./StrategyBase.sol";
+import "./StrategyTestHelper.sol";
 import {DecreaseCallback} from "./DecreaseCallback.sol";
 
-contract StrategyTest is StrategyBase {
+contract StrategyTest is StrategyTestHelper {
     DecreaseCallback cb;
 
     function setUp() public override {
@@ -13,9 +13,7 @@ contract StrategyTest is StrategyBase {
     }
 
     function testOpenCloseShort() public {
-        uint256 totalValue = 0;
-
-        totalValue = strategy.totalValueInToken();
+        uint256 totalValue = strategy.totalValueInToken();
         assertEq(totalValue, 0, "total value != 0");
 
         uint256 wethAmount = 1e18;
@@ -49,6 +47,10 @@ contract StrategyTest is StrategyBase {
         // Close short position
         skip(1);
         dec(wethAmount, address(0));
+    }
+
+    function testOpenAndCloseWithProfit() public {
+
     }
 
     function testCancel() public {
