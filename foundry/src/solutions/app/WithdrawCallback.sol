@@ -9,17 +9,8 @@ import {Order} from "../../types/Order.sol";
 import {EventUtils} from "../../types/EventUtils.sol";
 import "../../Constants.sol";
 import {IStrategy} from "./IStrategy.sol";
+import {IVault} from "./IVault.sol";
 import {Auth} from "./Auth.sol";
-
-interface IVault {
-    struct WithdrawOrder {
-        address account;
-        uint256 wethRemaining;
-    }
-
-    function withdrawOrders(bytes32 key) external view returns (WithdrawOrder memory);
-    function removeWithdrawOrder(bytes32 key) external;
-}
 
 contract WithdrawCallback {
     IWeth public immutable weth;
@@ -30,14 +21,21 @@ contract WithdrawCallback {
         vault = IVault(_vault);
     }
 
+    modifier auth() {
+        require(msg.sender == ORDER_HANDLER, "not authorized");
+        _;
+    }
+
     receive() external payable {}
 
-    // TODO: auth?
     function afterOrderExecution(
         bytes32 key,
         Order.Props memory order,
         EventUtils.EventLogData memory eventData
-    ) external {
+    ) external auth {
+        IVault.WithdrawOrder memory withdrawOrder = vault.withdrawOrders(key);
+        require(withdrawOrder.account != address(0), "invalid order key");
+
         console.log("ETH %e", address(this).balance);
 
         if (address(this).balance > 0) {
@@ -49,10 +47,34 @@ contract WithdrawCallback {
         // TODO: send WETH to user
         console.log("BAL %e", bal);
 
-        IVault.WithdrawOrder memory withdrawOrder = vault.withdrawOrders(key);
-        require(withdrawOrder.account != address(0), "invalid order key");
-        vault.removeWithdrawOrder(key);
+        vault.removeWithdrawOrder(key, true);
 
         weth.transfer(withdrawOrder.account, bal);
+    }
+
+    function afterOrderCancellation(
+        bytes32 key,
+        Order.Props memory order,
+        EventUtils.EventLogData memory eventData
+    ) external auth {
+        IVault.WithdrawOrder memory withdrawOrder = vault.withdrawOrders(key);
+        require(withdrawOrder.account != address(0), "invalid order key");
+
+        // TODO:
+        console.log("CANCEL");
+        vault.removeWithdrawOrder(key, false);
+    }
+
+    function afterOrderFrozen(
+        bytes32 key,
+        Order.Props memory order,
+        EventUtils.EventLogData memory eventData
+    ) external auth {
+        IVault.WithdrawOrder memory withdrawOrder = vault.withdrawOrders(key);
+        require(withdrawOrder.account != address(0), "invalid order key");
+
+        // TODO: frozen
+        console.log("CANCEL");
+        vault.removeWithdrawOrder(key, false);
     }
 }

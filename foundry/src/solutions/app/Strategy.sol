@@ -74,7 +74,9 @@ contract Strategy is Auth, GmxHelper {
                 callbackGasLimit: 0
             });
         } else {
-            require(callbackContract.code.length > 0, "callback is not a contract");
+            require(
+                callbackContract.code.length > 0, "callback is not a contract"
+            );
             orderKey = createDecreaseShortPositionOrder({
                 executionFee: msg.value,
                 longTokenAmount: wethAmount,

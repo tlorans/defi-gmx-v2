@@ -6,6 +6,7 @@ import {IERC20} from "../../interfaces/IERC20.sol";
 import {Math} from "../../lib/Math.sol";
 import "../../Constants.sol";
 import {IStrategy} from "./IStrategy.sol";
+import {IVault} from "./IVault.sol";
 import {Auth} from "./Auth.sol";
 
 contract Vault is Auth {
@@ -15,6 +16,7 @@ contract Vault is Auth {
 
     uint256 public totalSupply;
     mapping(address => uint256) public balanceOf;
+    mapping(bytes32 => IVault.WithdrawOrder) public withdrawOrders;
 
     constructor(address _weth) {
         weth = IERC20(_weth);
@@ -84,33 +86,36 @@ contract Vault is Auth {
             weth.transfer(msg.sender, wethAmount);
             return;
         } else {
-            _burn(msg.sender, shares);
+            uint256 sharesRemaining = shares * wethRemaining / wethAmount;
+            _burn(msg.sender, shares - sharesRemaining);
             weth.transfer(msg.sender, wethAmount - wethRemaining);
 
-            require(withdrawCallback != address(0), "withdraw callback is 0 address");
+            if (sharesRemaining > 0) {
+                require(withdrawCallback != address(0), "withdraw callback is 0 address");
 
-            // TODO: handle order fails?
-            // TOOD: deduct executionFee from wethRemaining ?
-            bytes32 orderKey =
-                strategy.decrease{value: msg.value}(wethRemaining, withdrawCallback);
+                // TODO: handle order fails?
+                // TOOD: deduct executionFee from wethRemaining ?
+                bytes32 orderKey =
+                    strategy.decrease{value: msg.value}(wethRemaining, withdrawCallback);
 
-            require(orderKey != bytes32(uint256(0)), "invalid order key");
-            require(withdrawOrders[orderKey].account == address(0), "order is not empty");
-            withdrawOrders[orderKey] = WithdrawOrder({
-                account: msg.sender,
-                wethRemaining: wethRemaining
-            });
+                require(orderKey != bytes32(uint256(0)), "invalid order key");
+                require(withdrawOrders[orderKey].account == address(0), "order is not empty");
+                withdrawOrders[orderKey] = IVault.WithdrawOrder({
+                    account: msg.sender,
+                    shares: sharesRemaining,
+                    weth: wethRemaining
+                });
+            }
         }
     }
 
-    struct WithdrawOrder {
-        address account;
-        uint256 wethRemaining;
-    }
+    function removeWithdrawOrder(bytes32 key, bool ok) external auth {
+        IVault.WithdrawOrder memory withdrawOrder = withdrawOrders[key];
 
-    mapping(bytes32 => WithdrawOrder) public withdrawOrders;
+        if (ok) {
+            _burn(withdrawOrder.account, withdrawOrder.shares);
+        }
 
-    function removeWithdrawOrder(bytes32 key) external auth {
         delete withdrawOrders[key];
     }
 
