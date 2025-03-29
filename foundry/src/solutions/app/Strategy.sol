@@ -89,7 +89,6 @@ contract Strategy is Auth, GmxHelper {
     }
 
     function cancel(bytes32 orderKey) external payable auth {
-        // cancel order
         cancelOrder(orderKey);
         emit CreateCancelOrder(orderKey);
     }

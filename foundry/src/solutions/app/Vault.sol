@@ -28,7 +28,9 @@ contract Vault is Auth {
 
     function setWithdrawCallback(address _withdrawCallback) external auth {
         if (_withdrawCallback != address(0)) {
-            require(_withdrawCallback.code.length > 0, "callback is not a contract");
+            require(
+                _withdrawCallback.code.length > 0, "callback is not a contract"
+            );
         }
         withdrawCallback = _withdrawCallback;
     }
@@ -91,15 +93,22 @@ contract Vault is Auth {
             weth.transfer(msg.sender, wethAmount - wethRemaining);
 
             if (sharesRemaining > 0) {
-                require(withdrawCallback != address(0), "withdraw callback is 0 address");
+                require(
+                    withdrawCallback != address(0),
+                    "withdraw callback is 0 address"
+                );
 
                 // TODO: handle order fails?
                 // TOOD: deduct executionFee from wethRemaining ?
-                bytes32 orderKey =
-                    strategy.decrease{value: msg.value}(wethRemaining, withdrawCallback);
+                bytes32 orderKey = strategy.decrease{value: msg.value}(
+                    wethRemaining, withdrawCallback
+                );
 
                 require(orderKey != bytes32(uint256(0)), "invalid order key");
-                require(withdrawOrders[orderKey].account == address(0), "order is not empty");
+                require(
+                    withdrawOrders[orderKey].account == address(0),
+                    "order is not empty"
+                );
                 withdrawOrders[orderKey] = IVault.WithdrawOrder({
                     account: msg.sender,
                     shares: sharesRemaining,
@@ -107,6 +116,16 @@ contract Vault is Auth {
                 });
             }
         }
+    }
+
+    function cancelWithdrawOrder(bytes32 orderKey) external {
+        require(
+            msg.sender == withdrawOrders[orderKey].account, "not owner of order"
+        );
+        require(
+            withdrawCallback != address(0), "withdraw callback is 0 address"
+        );
+        strategy.cancel(orderKey);
     }
 
     function removeWithdrawOrder(bytes32 key, bool ok) external auth {
