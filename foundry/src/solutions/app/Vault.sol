@@ -100,6 +100,7 @@ contract Vault is Auth {
 
                 // TODO: handle order fails?
                 // TOOD: deduct executionFee from wethRemaining ?
+                require(msg.value > 0, "execution fee = 0");
                 bytes32 orderKey = strategy.decrease{value: msg.value}(
                     wethRemaining, withdrawCallback
                 );
@@ -169,9 +170,5 @@ contract Vault is Auth {
 
     function transfer(address dst, uint256 amount) external auth {
         weth.transfer(dst, amount);
-    }
-
-    function transferFrom(address src, uint256 amount) external auth {
-        weth.transferFrom(src, address(this), amount);
     }
 }

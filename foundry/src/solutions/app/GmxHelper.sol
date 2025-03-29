@@ -1,17 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-// TODO: remove unused
 import {console} from "forge-std/Test.sol";
 import {IERC20} from "../../interfaces/IERC20.sol";
 import {IExchangeRouter} from "../../interfaces/IExchangeRouter.sol";
 import {IDataStore} from "../../interfaces/IDataStore.sol";
 import {IReader} from "../../interfaces/IReader.sol";
 import {Math} from "../../lib/Math.sol";
-import {Keys} from "../../lib/Keys.sol";
 import {Order} from "../../types/Order.sol";
 import {Position} from "../../types/Position.sol";
-import {Market} from "../../types/Market.sol";
 import {MarketUtils} from "../../types/MarketUtils.sol";
 import {Price} from "../../types/Price.sol";
 import {ReaderPositionUtils} from "../../types/ReaderPositionUtils.sol";
@@ -32,8 +29,6 @@ abstract contract GmxHelper {
     IERC20 public immutable shortToken;
     uint256 public immutable longTokenDecimals;
     uint256 public immutable shortTokenDecimals;
-    uint256 public immutable longTokenMultiplier;
-    uint256 public immutable shortTokenMultiplier;
     address public immutable chainlinkLongToken;
     address public immutable chainlinkShortToken;
     Oracle immutable oracle;
@@ -42,8 +37,6 @@ abstract contract GmxHelper {
         address _marketToken,
         address _longToken,
         address _shortToken,
-        uint256 _longTokenDecimals,
-        uint256 _shortTokenDecimals,
         address _chainlinkLongToken,
         address _chainlinkShortToken,
         address _oracle
@@ -52,11 +45,10 @@ abstract contract GmxHelper {
         longToken = IERC20(_longToken);
         shortToken = IERC20(_shortToken);
 
-        longTokenDecimals = _longTokenDecimals;
-        shortTokenDecimals = _shortTokenDecimals;
-
-        longTokenMultiplier = 10 ** longTokenDecimals;
-        shortTokenMultiplier = 10 ** longTokenDecimals;
+        longTokenDecimals = uint256(longToken.decimals());
+        shortTokenDecimals = uint256(shortToken.decimals());
+        require(longTokenDecimals + CHAINLINK_DECIMALS <= 30, "long + chainlink decimals > 30");
+        require(shortTokenDecimals + CHAINLINK_DECIMALS <= 30, "short + chainlink decimals > 30");
 
         chainlinkLongToken = _chainlinkLongToken;
         chainlinkShortToken = _chainlinkShortToken;
@@ -83,18 +75,22 @@ abstract contract GmxHelper {
     function getPositionPnlInToken() internal view returns (int256) {
         bytes32 positionKey = getPositionKey();
         Position.Props memory position = getPosition(positionKey);
-        if (position.numbers.sizeInUsd == 0) {
+
+        if (position.numbers.sizeInUsd == 0 || position.numbers.collateralAmount == 0) {
             return 0;
         }
 
         uint256 longTokenPrice = oracle.getPrice(chainlinkLongToken);
         uint256 shortTokenPrice = oracle.getPrice(chainlinkShortToken);
 
-        // +/- 1% of current prices
+        // +/- 0.1% of current prices of the long token
         uint256 minLongTokenPrice = longTokenPrice
             * 10 ** (30 - CHAINLINK_DECIMALS - longTokenDecimals) * 999 / 1000;
         uint256 maxLongTokenPrice = longTokenPrice
             * 10 ** (30 - CHAINLINK_DECIMALS - longTokenDecimals) * 1001 / 1000;
+
+        require(minLongTokenPrice > 0, "min long token price = 0");
+        require(maxLongTokenPrice > 0, "max long token price = 0");
 
         MarketUtils.MarketPrices memory prices = MarketUtils.MarketPrices({
             indexTokenPrice: Price.Props({
@@ -118,38 +114,12 @@ abstract contract GmxHelper {
             referralStorage: REFERRAL_STORAGE,
             positionKey: positionKey,
             prices: prices,
+            // use current position size for size delta
             sizeDeltaUsd: 0,
             uiFeeReceiver: address(0),
             usePositionSizeAsSizeDeltaUsd: true
         });
 
-        // TODO: remove
-        // pnl after price impact / execution price? - fees
-        console.log("------- PNL -------------");
-        console.log("pnl USD %e", info.pnlAfterPriceImpactUsd);
-        uint256 pnl = 0;
-        if (info.pnlAfterPriceImpactUsd < 0) {
-            pnl = uint256(-info.pnlAfterPriceImpactUsd)
-                / (longTokenPrice * 101 / 100) / 1e4;
-            console.log(
-                "pnl ETH %e",
-                uint256(-info.pnlAfterPriceImpactUsd)
-                    / (longTokenPrice * 101 / 100) / 1e4
-            );
-        }
-        console.log("price impact %e", info.executionPriceResult.priceImpactUsd);
-        console.log(
-            "execution price %e", info.executionPriceResult.executionPrice
-        );
-        console.log("long token price %e", longTokenPrice * 1e4);
-        console.log("total cost %e", info.fees.totalCostAmount);
-        console.log("col %e", position.numbers.collateralAmount);
-        console.log(
-            "rem %e",
-            position.numbers.collateralAmount - info.fees.totalCostAmount
-        );
-
-        console.log("----- calc ---");
         int256 collateralUsd =
             Math.toInt256(position.numbers.collateralAmount * minLongTokenPrice);
         int256 collateralCostUsd =
@@ -160,12 +130,6 @@ abstract contract GmxHelper {
 
         int256 remainingCollateral =
             remainingCollateralUsd / Math.toInt256(minLongTokenPrice);
-
-        console.log("collateral usd %e", collateralUsd);
-        console.log("collateral cost usd %e", collateralCostUsd);
-        console.log("rem col usd %e", remainingCollateralUsd);
-        console.log("rem col %e", remainingCollateral);
-        console.log("--------------");
 
         return remainingCollateral;
     }
@@ -196,7 +160,6 @@ abstract contract GmxHelper {
         }
     }
 
-    // TODO: handle order is executed and resulted in error
     function createIncreaseShortPositionOrder(
         uint256 executionFee,
         uint256 longTokenAmount
@@ -213,7 +176,7 @@ abstract contract GmxHelper {
             isIncrease: true
         });
 
-        // 90% of current price
+        // 90% of current long price
         uint256 acceptablePrice =
             longTokenPrice * 1e12 / CHAINLINK_MULTIPLIER * 90 / 100;
 
@@ -273,7 +236,6 @@ abstract contract GmxHelper {
         Position.Props memory position = getPosition(positionKey);
 
         require(position.numbers.sizeInUsd > 0, "position size = 0");
-        // TODO: require longTokenAmount <= position.sizeInTokens or position.collateralAmount?
 
         longTokenAmount =
             Math.min(longTokenAmount, position.numbers.collateralAmount);
@@ -330,7 +292,6 @@ abstract contract GmxHelper {
     }
 
     function cancelOrder(bytes32 orderKey) internal {
-        // TODO: validate order?
         exchangeRouter.cancelOrder(orderKey);
     }
 

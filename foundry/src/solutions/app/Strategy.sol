@@ -20,8 +20,6 @@ contract Strategy is Auth, GmxHelper {
             GM_TOKEN_ETH_WETH_USDC,
             WETH,
             USDC,
-            18,
-            6,
             CHAINLINK_ETH_USD,
             CHAINLINK_USDC_USD,
             oracle
@@ -49,8 +47,6 @@ contract Strategy is Auth, GmxHelper {
         auth
         returns (bytes32 orderKey)
     {
-        // TODO: check funding fee is positive?
-
         orderKey = createIncreaseShortPositionOrder({
             executionFee: msg.value,
             longTokenAmount: wethAmount
@@ -99,10 +95,6 @@ contract Strategy is Auth, GmxHelper {
 
     function transfer(address dst, uint256 amount) external auth {
         weth.transfer(dst, amount);
-    }
-
-    function transferFrom(address src, uint256 amount) external auth {
-        weth.transferFrom(src, address(this), amount);
     }
 
     function withdraw(address token) external auth {

@@ -2,15 +2,12 @@
 pragma solidity 0.8.26;
 
 import {console} from "forge-std/Test.sol";
-import {IERC20} from "../../interfaces/IERC20.sol";
 import {IWeth} from "../../interfaces/IWeth.sol";
-import {Math} from "../../lib/Math.sol";
 import {Order} from "../../types/Order.sol";
 import {EventUtils} from "../../types/EventUtils.sol";
 import "../../Constants.sol";
 import {IStrategy} from "./IStrategy.sol";
 import {IVault} from "./IVault.sol";
-import {Auth} from "./Auth.sol";
 
 contract WithdrawCallback {
     IWeth public immutable weth;
@@ -42,9 +39,6 @@ contract WithdrawCallback {
             weth.deposit{value: address(this).balance}();
         }
         uint256 bal = weth.balanceOf(address(this));
-        // TODO: get account from key
-        // TODO: burn shares
-        // TODO: send WETH to user
         console.log("BAL %e", bal);
 
         vault.removeWithdrawOrder(key, true);
