@@ -3,6 +3,7 @@ pragma solidity 0.8.26;
 
 import {Test, console} from "forge-std/Test.sol";
 import "../lib/TestHelper.sol";
+import {DecreaseCallback} from "./DecreaseCallback.sol";
 import {IERC20} from "../../src/interfaces/IERC20.sol";
 import {IReader} from "../../src/interfaces/IReader.sol";
 import {IOrderHandler} from "../../src/interfaces/IOrderHandler.sol";
@@ -25,6 +26,7 @@ contract StrategyTest is Test {
     TestHelper testHelper;
     Oracle oracle;
     Strategy strategy;
+    DecreaseCallback cb;
     address keeper;
 
     // Oracle params
@@ -39,6 +41,7 @@ contract StrategyTest is Test {
         keeper = testHelper.getRoleMember(Role.ORDER_KEEPER);
         oracle = new Oracle();
         strategy = new Strategy(address(oracle));
+        cb = new DecreaseCallback();
 
         deal(WETH, address(this), 1000 * 1e18);
 
@@ -73,10 +76,10 @@ contract StrategyTest is Test {
         });
     }
 
-    function inc(uint256 wethAmount) public {
+    function inc(uint256 wethAmount) public returns (bytes32 orderKey) {
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
 
-        bytes32 orderKey = strategy.increase{value: EXECUTION_FEE}(wethAmount);
+        orderKey = strategy.increase{value: EXECUTION_FEE}(wethAmount);
 
         Order.Props memory order = reader.getOrder(DATA_STORE, orderKey);
 
@@ -129,11 +132,6 @@ contract StrategyTest is Test {
 
         Position.Props memory position =
             reader.getPosition(DATA_STORE, positionKey);
-        console.log("pos.sizeInUsd %e", position.numbers.sizeInUsd);
-        console.log("pos.sizeInTokens %e", position.numbers.sizeInTokens);
-        console.log(
-            "pos.collateralAmount %e", position.numbers.collateralAmount
-        );
 
         assertApproxEqRel(
             position.numbers.sizeInUsd,
@@ -153,19 +151,20 @@ contract StrategyTest is Test {
         );
     }
 
-    function dec(uint256 wethAmount) public {
+    function dec(uint256 wethAmount, address callback) public returns (bytes32 orderKey) {
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
 
-        bytes32 orderKey =
-            strategy.decrease{value: EXECUTION_FEE}(wethAmount, address(0));
+        orderKey = strategy.decrease{value: EXECUTION_FEE}(wethAmount, callback);
 
         Position.Props memory position =
             reader.getPosition(DATA_STORE, positionKey);
         Order.Props memory order = reader.getOrder(DATA_STORE, orderKey);
 
+        address receiver = callback == address(0) ? address(strategy) : callback;
         assertEq(
-            order.addresses.receiver, address(strategy), "dec: order receiver"
+            order.addresses.receiver, receiver, "dec: order receiver"
         );
+
         assertEq(
             order.addresses.market, GM_TOKEN_ETH_WETH_USDC, "dec: market"
         );
@@ -212,14 +211,8 @@ contract StrategyTest is Test {
             })
         );
 
-        testHelper.set("WETH strategy", weth.balanceOf(address(strategy)));
-        testHelper.set("USDC strategy", usdc.balanceOf(address(strategy)));
-
-        uint256 wethBal = testHelper.get("WETH strategy");
-        uint256 usdcBal = testHelper.get("USDC strategy");
-
-        console.log("WETH %e", wethBal);
-        console.log("USDC %e", usdcBal);
+        uint256 wethBal = weth.balanceOf(receiver);
+        uint256 usdcBal = usdc.balanceOf(receiver);
 
         assertGe(
             wethBal, wethAmount * 99 / 100, "WETH balance < initial collateral"
@@ -227,11 +220,6 @@ contract StrategyTest is Test {
         assertEq(usdcBal, 0, "USDC balance != 0");
 
         position = reader.getPosition(DATA_STORE, positionKey);
-        console.log("pos.sizeInUsd %e", position.numbers.sizeInUsd);
-        console.log("pos.sizeInTokens %e", position.numbers.sizeInTokens);
-        console.log(
-            "pos.collateralAmount %e", position.numbers.collateralAmount
-        );
 
         assertEq(position.numbers.sizeInUsd, 0, "dec: position size != 0");
         assertEq(
@@ -240,6 +228,8 @@ contract StrategyTest is Test {
             "dec: position collateral amount != 0"
         );
     }
+
+    // TODO: multiple incs and partial decs
 
     function testOpenCloseShort() public {
         uint256 totalValue = 0;
@@ -257,7 +247,6 @@ contract StrategyTest is Test {
         inc(wethAmount);
 
         uint256 total = strategy.totalValueInToken();
-        console.log("total value: %e", total);
         assertGe(total, wethAmount * 995 / 1000, "total value");
 
         // Claim funding fees
@@ -269,6 +258,59 @@ contract StrategyTest is Test {
 
         // Close short position
         skip(1);
-        dec(wethAmount);
+        dec(wethAmount, address(0));
+    }
+
+    function testCancel() public {
+        uint256 wethAmount = 1e18;
+        weth.transfer(address(strategy), wethAmount);
+
+        bytes32 orderKey = strategy.increase{value: EXECUTION_FEE}(wethAmount);
+
+        Order.Props memory order;
+
+        order = reader.getOrder(DATA_STORE, orderKey);
+        assertEq(
+            order.addresses.receiver, address(strategy), "cancel: order receiver"
+        );
+
+        skip(24 * 3600);
+        strategy.cancel(orderKey);
+
+        order = reader.getOrder(DATA_STORE, orderKey);
+        assertEq(
+            order.addresses.receiver, address(0), "cancel: order receiver != address(0)"
+        );
+    }
+
+    function testDecreaseCallback() public {
+        uint256 wethAmount = 1e18;
+        weth.transfer(address(strategy), wethAmount);
+
+        inc(wethAmount);
+
+        skip(1);
+        bytes32 decOrderKey = dec(wethAmount, address(cb));
+
+        assertGt(address(cb).balance, 0, "ETH = 0");
+        assertEq(cb.orderKey(), decOrderKey, "callback: order key");
+        assertTrue(cb.status() == DecreaseCallback.Status.Executed, "callback: status");
+    }
+
+    function testCancelDecreaseCallback() public {
+        uint256 wethAmount = 1e18;
+        weth.transfer(address(strategy), wethAmount);
+
+        inc(wethAmount);
+
+        skip(1);
+        bytes32 decOrderKey = strategy.decrease{value: EXECUTION_FEE}(wethAmount, address(cb));
+
+        skip(24 * 3600);
+        strategy.cancel(decOrderKey);
+
+        assertGt(address(cb).balance, 0, "ETH = 0");
+        assertEq(cb.orderKey(), decOrderKey, "callback: order key");
+        assertTrue(cb.status() == DecreaseCallback.Status.Canceled, "callback: status");
     }
 }

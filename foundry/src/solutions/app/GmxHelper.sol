@@ -6,6 +6,7 @@ import {IERC20} from "../../interfaces/IERC20.sol";
 import {IExchangeRouter} from "../../interfaces/IExchangeRouter.sol";
 import {IDataStore} from "../../interfaces/IDataStore.sol";
 import {IReader} from "../../interfaces/IReader.sol";
+import {Keys} from "../../lib/Keys.sol";
 import {Math} from "../../lib/Math.sol";
 import {Order} from "../../types/Order.sol";
 import {Position} from "../../types/Position.sol";
@@ -228,8 +229,7 @@ abstract contract GmxHelper {
         uint256 executionFee,
         uint256 longTokenAmount,
         address receiver,
-        address callbackContract,
-        uint256 callbackGasLimit
+        address callbackContract
     ) internal returns (bytes32 orderKey) {
         uint256 longTokenPrice = oracle.getPrice(chainlinkLongToken);
         bytes32 positionKey = getPositionKey();
@@ -257,6 +257,13 @@ abstract contract GmxHelper {
             receiver: ORDER_VAULT,
             amount: executionFee
         });
+
+        uint256 callbackGasLimit = 0;
+        if (callbackContract != address(0)) {
+            uint256 maxCallbackGasLimit = dataStore.getUint(Keys.MAX_CALLBACK_GAS_LIMIT);
+            require(executionFee >= maxCallbackGasLimit, "execution fee < callback gas limit");
+            callbackGasLimit = maxCallbackGasLimit;
+        }
 
         return exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({

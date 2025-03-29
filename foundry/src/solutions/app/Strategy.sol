@@ -66,8 +66,7 @@ contract Strategy is Auth, GmxHelper {
                 executionFee: msg.value,
                 longTokenAmount: wethAmount,
                 receiver: address(this),
-                callbackContract: address(0),
-                callbackGasLimit: 0
+                callbackContract: address(0)
             });
         } else {
             require(
@@ -77,8 +76,7 @@ contract Strategy is Auth, GmxHelper {
                 executionFee: msg.value,
                 longTokenAmount: wethAmount,
                 receiver: callbackContract,
-                callbackContract: callbackContract,
-                callbackGasLimit: msg.value / 2
+                callbackContract: callbackContract
             });
         }
         emit CreateDecreaseOrder(orderKey);
