@@ -6,6 +6,7 @@ import {IWeth} from "../../interfaces/IWeth.sol";
 import {Order} from "../../types/Order.sol";
 import {EventUtils} from "../../types/EventUtils.sol";
 import "../../Constants.sol";
+import {Math} from "../../lib/Math.sol";
 import {IStrategy} from "./IStrategy.sol";
 import {IVault} from "./IVault.sol";
 
@@ -32,18 +33,22 @@ contract WithdrawCallback {
     ) external auth {
         IVault.WithdrawOrder memory withdrawOrder = vault.withdrawOrders(key);
         require(withdrawOrder.account != address(0), "invalid order key");
+        require(order.numbers.orderType == Order.OrderType.MarketDecrease, "invalid order type");
 
-        console.log("ETH %e", address(this).balance);
+        uint256 wethToSend = Math.min(withdrawOrder.weth, weth.balanceOf(address(this)));
 
         if (address(this).balance > 0) {
+            wethToSend += address(this).balance;
             weth.deposit{value: address(this).balance}();
         }
-        uint256 bal = weth.balanceOf(address(this));
-        console.log("BAL %e", bal);
 
         vault.removeWithdrawOrder(key, true);
+        weth.transfer(withdrawOrder.account, wethToSend);
 
-        weth.transfer(withdrawOrder.account, bal);
+        uint256 bal = weth.balanceOf(address(this));
+        if (bal > 0) {
+            weth.transfer(address(vault), bal);
+        }
     }
 
     function afterOrderCancellation(
@@ -53,9 +58,9 @@ contract WithdrawCallback {
     ) external auth {
         IVault.WithdrawOrder memory withdrawOrder = vault.withdrawOrders(key);
         require(withdrawOrder.account != address(0), "invalid order key");
+        require(order.numbers.orderType == Order.OrderType.MarketDecrease, "invalid order type");
 
         // TODO:
-        console.log("CANCEL");
         vault.removeWithdrawOrder(key, false);
     }
 
@@ -66,9 +71,9 @@ contract WithdrawCallback {
     ) external auth {
         IVault.WithdrawOrder memory withdrawOrder = vault.withdrawOrders(key);
         require(withdrawOrder.account != address(0), "invalid order key");
+        require(order.numbers.orderType == Order.OrderType.MarketDecrease, "invalid order type");
 
         // TODO: frozen
-        console.log("CANCEL");
         vault.removeWithdrawOrder(key, false);
     }
 }

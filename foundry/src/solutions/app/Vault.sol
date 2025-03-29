@@ -10,7 +10,7 @@ import {IVault} from "./IVault.sol";
 import {Auth} from "./Auth.sol";
 
 contract Vault is Auth {
-    IERC20 public immutable weth;
+    IERC20 public constant weth = IERC20(WETH);
     IStrategy public strategy;
     address public withdrawCallback;
 
@@ -19,15 +19,11 @@ contract Vault is Auth {
     mapping(address => uint256) public balanceOf;
     mapping(bytes32 => IVault.WithdrawOrder) public withdrawOrders;
 
-    modifier lock() {
+    modifier guard() {
         require(!locked, "locked");
         locked = true;
         _;
         locked = false;
-    }
-
-    constructor(address _weth) {
-        weth = IERC20(_weth);
     }
 
     function setStrategy(address _strategy) external auth {
@@ -42,7 +38,7 @@ contract Vault is Auth {
         return weth.balanceOf(address(this)) + strategy.totalValueInToken();
     }
 
-    function deposit(uint256 wethAmount) external lock returns (uint256 shares) {
+    function deposit(uint256 wethAmount) external guard returns (uint256 shares) {
         if (address(strategy) != address(0)) {
             strategy.claim();
         }
@@ -62,7 +58,7 @@ contract Vault is Auth {
     function withdraw(uint256 shares)
         external
         payable
-        lock
+        guard
         returns (uint256 wethSent, bytes32 withdrawOrderKey)
     {
         if (address(strategy) != address(0)) {
@@ -100,6 +96,7 @@ contract Vault is Auth {
         } else {
             uint256 sharesRemaining = shares * wethRemaining / wethAmount;
             _burn(msg.sender, shares - sharesRemaining);
+            _lock(msg.sender, sharesRemaining);
             wethSent = wethAmount - wethRemaining;
             weth.transfer(msg.sender, wethSent);
 
@@ -130,14 +127,14 @@ contract Vault is Auth {
         }
     }
 
-    function cancelWithdrawOrder(bytes32 orderKey) external lock {
+    function cancelWithdrawOrder(bytes32 key) external guard {
         require(
-            msg.sender == withdrawOrders[orderKey].account, "not owner of order"
+            msg.sender == withdrawOrders[key].account, "not owner of order"
         );
         require(
             withdrawCallback != address(0), "withdraw callback is 0 address"
         );
-        strategy.cancel(orderKey);
+        strategy.cancel(key);
     }
 
     function removeWithdrawOrder(bytes32 key, bool ok) external auth {
@@ -145,6 +142,8 @@ contract Vault is Auth {
 
         if (ok) {
             _burn(withdrawOrder.account, withdrawOrder.shares);
+        } else {
+            _unlock(withdrawOrder.account, withdrawOrder.shares);
         }
 
         delete withdrawOrders[key];
@@ -177,6 +176,16 @@ contract Vault is Auth {
     function _burn(address src, uint256 shares) internal {
         totalSupply -= shares;
         balanceOf[src] -= shares;
+    }
+
+    function _lock(address src, uint256 shares) internal {
+        balanceOf[src] -= shares;
+        balanceOf[address(this)] += shares;
+    }
+
+    function _unlock(address dst, uint256 shares) internal {
+        balanceOf[dst] += shares;
+        balanceOf[address(this)] -= shares;
     }
 
     function transfer(address dst, uint256 amount) external auth {
