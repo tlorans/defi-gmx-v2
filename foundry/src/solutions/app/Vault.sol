@@ -11,6 +11,7 @@ import {Auth} from "./Auth.sol";
 contract Vault is Auth {
     IERC20 public immutable weth;
     IStrategy public strategy;
+    address public withdrawCallback;
 
     uint256 public totalSupply;
     mapping(address => uint256) public balanceOf;
@@ -19,8 +20,15 @@ contract Vault is Auth {
         weth = IERC20(_weth);
     }
 
-    function set(address _strategy) external auth {
+    function setStrategy(address _strategy) external auth {
         strategy = IStrategy(_strategy);
+    }
+
+    function setWithdrawCallback(address _withdrawCallback) external auth {
+        if (_withdrawCallback != address(0)) {
+            require(_withdrawCallback.code.length > 0, "callback is not a contract");
+        }
+        withdrawCallback = _withdrawCallback;
     }
 
     function totalValueInToken() public view returns (uint256) {
@@ -32,12 +40,8 @@ contract Vault is Auth {
 
         // TODO: vault inflation
         // mint shares
-        if (totalSupply == 0) {
-            shares = wethAmount;
-        } else {
-            uint256 totalVal = totalValueInToken();
-            shares = totalSupply * wethAmount / totalVal;
-        }
+        uint256 totalVal = totalValueInToken();
+        shares = _convertToShares(totalSupply, totalVal, wethAmount);
 
         weth.transferFrom(msg.sender, address(this), wethAmount);
 
@@ -47,11 +51,12 @@ contract Vault is Auth {
     function withdraw(uint256 shares) external payable {
         strategy.claim();
 
-        uint256 totalVal = totalValueInToken();
-
         // TODO: vault inflation
         // TODO: withdrawal delay?
-        uint256 wethAmount = totalVal * shares / totalSupply;
+        uint256 totalVal = totalValueInToken();
+        uint256 wethAmount = _convertToWeth(totalSupply, totalVal, shares);
+        require(wethAmount > 0, "weth amount = 0");
+
         uint256 wethRemaining = wethAmount;
 
         // TODO: burn shares
@@ -79,35 +84,53 @@ contract Vault is Auth {
             weth.transfer(msg.sender, wethAmount);
             return;
         } else {
-            uint256 sharesRemaining = shares *  wethRemaining / wethAmount;
-            _burn(msg.sender, shares - sharesRemaining);
+            _burn(msg.sender, shares);
             weth.transfer(msg.sender, wethAmount - wethRemaining);
+
+            require(withdrawCallback != address(0), "withdraw callback is 0 address");
 
             // TODO: handle order fails?
             // TOOD: deduct executionFee from wethRemaining ?
-            bytes32 orderKey = strategy.decrease{value: msg.value}(wethRemaining);
-            // store
-            // - shares
-            // - wethRemaining
-            // - msg.sender
-            // - msg.value
+            bytes32 orderKey =
+                strategy.decrease{value: msg.value}(wethRemaining, withdrawCallback);
+
+            require(orderKey != bytes32(uint256(0)), "invalid order key");
+            require(withdrawOrders[orderKey].account == address(0), "order is not empty");
+            withdrawOrders[orderKey] = WithdrawOrder({
+                account: msg.sender,
+                wethRemaining: wethRemaining
+            });
         }
     }
 
     struct WithdrawOrder {
         address account;
-        uint256 shares;
         uint256 wethRemaining;
-        uint256 executionFee;
     }
 
     mapping(bytes32 => WithdrawOrder) public withdrawOrders;
 
-    function callback() external {
-        // burn remaining shares
-        // convert executionFee refund to WETH
-        // send WETH
-        // delete order
+    function removeWithdrawOrder(bytes32 key) external auth {
+        delete withdrawOrders[key];
+    }
+
+    function _convertToShares(
+        uint256 totalShares,
+        uint256 totalWethInPool,
+        uint256 wethAmount
+    ) internal pure returns (uint256) {
+        if (totalShares == 0 || totalWethInPool == 0) {
+            return wethAmount;
+        }
+        return totalShares * wethAmount / totalWethInPool;
+    }
+
+    function _convertToWeth(
+        uint256 totalShares,
+        uint256 totalWethInPool,
+        uint256 shares
+    ) internal pure returns (uint256) {
+        return totalWethInPool * shares / totalShares;
     }
 
     function _mint(address dst, uint256 shares) internal {

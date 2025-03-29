@@ -157,7 +157,7 @@ contract StrategyTest is Test {
     function close(uint256 wethAmount) public {
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
 
-        bytes32 orderKey = strategy.decrease{value: EXECUTION_FEE}(wethAmount);
+        bytes32 orderKey = strategy.decrease{value: EXECUTION_FEE}(wethAmount, address(0));
 
         Position.Props memory position =
             reader.getPosition(DATA_STORE, positionKey);
@@ -221,7 +221,9 @@ contract StrategyTest is Test {
         console.log("WETH %e", wethBal);
         console.log("USDC %e", usdcBal);
 
-        assertGe(wethBal, wethAmount * 99 / 100, "WETH balance < initial collateral");
+        assertGe(
+            wethBal, wethAmount * 99 / 100, "WETH balance < initial collateral"
+        );
         assertEq(usdcBal, 0, "USDC balance != 0");
 
         position = reader.getPosition(DATA_STORE, positionKey);

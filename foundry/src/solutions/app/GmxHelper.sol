@@ -19,8 +19,6 @@ import {IBaseOrderUtils} from "../../types/IBaseOrderUtils.sol";
 import {Oracle} from "../../lib/Oracle.sol";
 import "../../Constants.sol";
 
-// TODO: callback here?
-
 abstract contract GmxHelper {
     IDataStore constant dataStore = IDataStore(DATA_STORE);
     IExchangeRouter constant exchangeRouter = IExchangeRouter(EXCHANGE_ROUTER);
@@ -115,8 +113,7 @@ abstract contract GmxHelper {
             })
         });
 
-        ReaderPositionUtils.PositionInfo memory info = reader
-            .getPositionInfo({
+        ReaderPositionUtils.PositionInfo memory info = reader.getPositionInfo({
             dataStore: address(dataStore),
             referralStorage: REFERRAL_STORAGE,
             positionKey: positionKey,
@@ -140,9 +137,7 @@ abstract contract GmxHelper {
                     / (longTokenPrice * 101 / 100) / 1e4
             );
         }
-        console.log(
-            "price impact %e", info.executionPriceResult.priceImpactUsd
-        );
+        console.log("price impact %e", info.executionPriceResult.priceImpactUsd);
         console.log(
             "execution price %e", info.executionPriceResult.executionPrice
         );
@@ -155,16 +150,16 @@ abstract contract GmxHelper {
         );
 
         console.log("----- calc ---");
-        int256 collateralUsd = Math.toInt256(
-            position.numbers.collateralAmount * minLongTokenPrice
-        );
+        int256 collateralUsd =
+            Math.toInt256(position.numbers.collateralAmount * minLongTokenPrice);
         int256 collateralCostUsd =
             Math.toInt256(info.fees.totalCostAmount * minLongTokenPrice);
 
         int256 remainingCollateralUsd =
             collateralUsd + info.pnlAfterPriceImpactUsd - collateralCostUsd;
 
-        int256 remainingCollateral = remainingCollateralUsd / Math.toInt256(minLongTokenPrice);
+        int256 remainingCollateral =
+            remainingCollateralUsd / Math.toInt256(minLongTokenPrice);
 
         console.log("collateral usd %e", collateralUsd);
         console.log("collateral cost usd %e", collateralCostUsd);
@@ -268,7 +263,10 @@ abstract contract GmxHelper {
 
     function createDecreaseShortPositionOrder(
         uint256 executionFee,
-        uint256 longTokenAmount
+        uint256 longTokenAmount,
+        address receiver,
+        address callbackContract,
+        uint256 callbackGasLimit
     ) internal returns (bytes32 orderKey) {
         uint256 longTokenPrice = oracle.getPrice(chainlinkLongToken);
         bytes32 positionKey = getPositionKey();
@@ -301,9 +299,9 @@ abstract contract GmxHelper {
         return exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({
                 addresses: IBaseOrderUtils.CreateOrderParamsAddresses({
-                    receiver: address(this),
+                    receiver: receiver,
                     cancellationReceiver: address(0),
-                    callbackContract: address(0),
+                    callbackContract: callbackContract,
                     uiFeeReceiver: address(0),
                     market: address(marketToken),
                     initialCollateralToken: address(longToken),
@@ -315,7 +313,7 @@ abstract contract GmxHelper {
                     triggerPrice: 0,
                     acceptablePrice: acceptablePrice,
                     executionFee: executionFee,
-                    callbackGasLimit: 0,
+                    callbackGasLimit: callbackGasLimit,
                     minOutputAmount: 0,
                     validFromTime: 0
                 }),

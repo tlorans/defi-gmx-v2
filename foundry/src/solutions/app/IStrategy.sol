@@ -9,7 +9,7 @@ interface IStrategy {
         payable
         returns (bytes32 orderKey);
 
-    function decrease(uint256 wethAmount)
+    function decrease(uint256 wethAmount, address withdrawCallback)
         external
         payable
         returns (bytes32 orderKey);

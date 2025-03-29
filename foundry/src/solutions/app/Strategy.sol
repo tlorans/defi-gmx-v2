@@ -59,16 +59,30 @@ contract Strategy is Auth, GmxHelper {
         emit CreateIncreaseOrder(orderKey);
     }
 
-    function decrease(uint256 wethAmount)
+    function decrease(uint256 wethAmount, address callbackContract)
         external
         payable
         auth
         returns (bytes32 orderKey)
     {
-        orderKey = createDecreaseShortPositionOrder({
-            executionFee: msg.value,
-            longTokenAmount: wethAmount
-        });
+        if (callbackContract == address(0)) {
+            orderKey = createDecreaseShortPositionOrder({
+                executionFee: msg.value,
+                longTokenAmount: wethAmount,
+                receiver: address(this),
+                callbackContract: address(0),
+                callbackGasLimit: 0
+            });
+        } else {
+            require(callbackContract.code.length > 0, "callback is not a contract");
+            orderKey = createDecreaseShortPositionOrder({
+                executionFee: msg.value,
+                longTokenAmount: wethAmount,
+                receiver: callbackContract,
+                callbackContract: callbackContract,
+                callbackGasLimit: msg.value / 2
+            });
+        }
         emit CreateDecreaseOrder(orderKey);
     }
 
@@ -81,10 +95,6 @@ contract Strategy is Auth, GmxHelper {
     function claim() external {
         claimFundingFees();
     }
-
-    // TODO: function to withdraw to withdrawal vault
-
-    // TODO: callback for withdrawal
 
     function transfer(address dst, uint256 amount) external auth {
         weth.transfer(dst, amount);
