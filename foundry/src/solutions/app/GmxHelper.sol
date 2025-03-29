@@ -48,8 +48,14 @@ abstract contract GmxHelper {
 
         longTokenDecimals = uint256(longToken.decimals());
         shortTokenDecimals = uint256(shortToken.decimals());
-        require(longTokenDecimals + CHAINLINK_DECIMALS <= 30, "long + chainlink decimals > 30");
-        require(shortTokenDecimals + CHAINLINK_DECIMALS <= 30, "short + chainlink decimals > 30");
+        require(
+            longTokenDecimals + CHAINLINK_DECIMALS <= 30,
+            "long + chainlink decimals > 30"
+        );
+        require(
+            shortTokenDecimals + CHAINLINK_DECIMALS <= 30,
+            "short + chainlink decimals > 30"
+        );
 
         chainlinkLongToken = _chainlinkLongToken;
         chainlinkShortToken = _chainlinkShortToken;
@@ -77,7 +83,10 @@ abstract contract GmxHelper {
         bytes32 positionKey = getPositionKey();
         Position.Props memory position = getPosition(positionKey);
 
-        if (position.numbers.sizeInUsd == 0 || position.numbers.collateralAmount == 0) {
+        if (
+            position.numbers.sizeInUsd == 0
+                || position.numbers.collateralAmount == 0
+        ) {
             return 0;
         }
 
@@ -161,6 +170,10 @@ abstract contract GmxHelper {
         }
     }
 
+    function getMaxCallbackGasLimit() public view returns (uint256) {
+        return dataStore.getUint(Keys.MAX_CALLBACK_GAS_LIMIT);
+    }
+
     function createIncreaseShortPositionOrder(
         uint256 executionFee,
         uint256 longTokenAmount
@@ -229,7 +242,8 @@ abstract contract GmxHelper {
         uint256 executionFee,
         uint256 longTokenAmount,
         address receiver,
-        address callbackContract
+        address callbackContract,
+        uint256 callbackGasLimit
     ) internal returns (bytes32 orderKey) {
         uint256 longTokenPrice = oracle.getPrice(chainlinkLongToken);
         bytes32 positionKey = getPositionKey();
@@ -257,13 +271,6 @@ abstract contract GmxHelper {
             receiver: ORDER_VAULT,
             amount: executionFee
         });
-
-        uint256 callbackGasLimit = 0;
-        if (callbackContract != address(0)) {
-            uint256 maxCallbackGasLimit = dataStore.getUint(Keys.MAX_CALLBACK_GAS_LIMIT);
-            require(executionFee >= maxCallbackGasLimit, "execution fee < callback gas limit");
-            callbackGasLimit = maxCallbackGasLimit;
-        }
 
         return exchangeRouter.createOrder(
             IBaseOrderUtils.CreateOrderParams({

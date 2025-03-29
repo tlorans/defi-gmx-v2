@@ -66,17 +66,25 @@ contract Strategy is Auth, GmxHelper {
                 executionFee: msg.value,
                 longTokenAmount: wethAmount,
                 receiver: address(this),
-                callbackContract: address(0)
+                callbackContract: address(0),
+                callbackGasLimit: 0
             });
         } else {
             require(
                 callbackContract.code.length > 0, "callback is not a contract"
             );
+            uint256 maxCallbackGasLimit = getMaxCallbackGasLimit();
+            require(
+                msg.value > maxCallbackGasLimit,
+                "callback gas limit < execution fee"
+            );
+
             orderKey = createDecreaseShortPositionOrder({
                 executionFee: msg.value,
                 longTokenAmount: wethAmount,
                 receiver: callbackContract,
-                callbackContract: callbackContract
+                callbackContract: callbackContract,
+                callbackGasLimit: maxCallbackGasLimit
             });
         }
         emit CreateDecreaseOrder(orderKey);

@@ -151,7 +151,10 @@ contract StrategyTest is Test {
         );
     }
 
-    function dec(uint256 wethAmount, address callback) public returns (bytes32 orderKey) {
+    function dec(uint256 wethAmount, address callback)
+        public
+        returns (bytes32 orderKey)
+    {
         uint256 ethPrice = oracle.getPrice(CHAINLINK_ETH_USD);
 
         orderKey = strategy.decrease{value: EXECUTION_FEE}(wethAmount, callback);
@@ -161,13 +164,9 @@ contract StrategyTest is Test {
         Order.Props memory order = reader.getOrder(DATA_STORE, orderKey);
 
         address receiver = callback == address(0) ? address(strategy) : callback;
-        assertEq(
-            order.addresses.receiver, receiver, "dec: order receiver"
-        );
+        assertEq(order.addresses.receiver, receiver, "dec: order receiver");
 
-        assertEq(
-            order.addresses.market, GM_TOKEN_ETH_WETH_USDC, "dec: market"
-        );
+        assertEq(order.addresses.market, GM_TOKEN_ETH_WETH_USDC, "dec: market");
         assertEq(
             order.addresses.initialCollateralToken,
             WETH,
@@ -271,7 +270,9 @@ contract StrategyTest is Test {
 
         order = reader.getOrder(DATA_STORE, orderKey);
         assertEq(
-            order.addresses.receiver, address(strategy), "cancel: order receiver"
+            order.addresses.receiver,
+            address(strategy),
+            "cancel: order receiver"
         );
 
         skip(24 * 3600);
@@ -279,7 +280,9 @@ contract StrategyTest is Test {
 
         order = reader.getOrder(DATA_STORE, orderKey);
         assertEq(
-            order.addresses.receiver, address(0), "cancel: order receiver != address(0)"
+            order.addresses.receiver,
+            address(0),
+            "cancel: order receiver != address(0)"
         );
     }
 
@@ -294,7 +297,9 @@ contract StrategyTest is Test {
 
         assertGt(address(cb).balance, 0, "ETH = 0");
         assertEq(cb.orderKey(), decOrderKey, "callback: order key");
-        assertTrue(cb.status() == DecreaseCallback.Status.Executed, "callback: status");
+        assertTrue(
+            cb.status() == DecreaseCallback.Status.Executed, "callback: status"
+        );
     }
 
     function testCancelDecreaseCallback() public {
@@ -304,13 +309,16 @@ contract StrategyTest is Test {
         inc(wethAmount);
 
         skip(1);
-        bytes32 decOrderKey = strategy.decrease{value: EXECUTION_FEE}(wethAmount, address(cb));
+        bytes32 decOrderKey =
+            strategy.decrease{value: EXECUTION_FEE}(wethAmount, address(cb));
 
         skip(24 * 3600);
         strategy.cancel(decOrderKey);
 
         assertGt(address(cb).balance, 0, "ETH = 0");
         assertEq(cb.orderKey(), decOrderKey, "callback: order key");
-        assertTrue(cb.status() == DecreaseCallback.Status.Canceled, "callback: status");
+        assertTrue(
+            cb.status() == DecreaseCallback.Status.Canceled, "callback: status"
+        );
     }
 }
