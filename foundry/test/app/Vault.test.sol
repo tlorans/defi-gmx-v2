@@ -5,7 +5,7 @@ import {Test, console} from "forge-std/Test.sol";
 import "../lib/TestHelper.sol";
 import {EventUtils} from "../../src/types/EventUtils.sol";
 import {Order} from "../../src/types/Order.sol";
-import {IVault} from "@exercises/app/IVault.sol";
+import {IVault} from "../../src/lib/app/IVault.sol";
 import {Vault} from "@exercises/app/Vault.sol";
 
 contract MockStrategy {

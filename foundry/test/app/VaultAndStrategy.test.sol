@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import {IVault} from "../../src/solutions/app/IVault.sol";
+import {IVault} from "../../src/lib/app/IVault.sol";
 import "./StrategyTestHelper.sol";
 
 contract VaultAndStrategyTest is StrategyTestHelper {
