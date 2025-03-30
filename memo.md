@@ -1,7 +1,5 @@
 ### Introduction
 
-TODO: enable readme header links
-
 Application ideas
 
 ```
