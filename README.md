@@ -212,7 +212,9 @@ Please refer to this for an in-depth explanation of the content:
 
 ## Application
 
-- Short ETH 0.01 1x $20.40 0.0099940 WETH collateral part 1
+- payoff
+- application architecture
+- callback
 
 ## Resources
 

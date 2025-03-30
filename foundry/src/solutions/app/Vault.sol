@@ -10,6 +10,8 @@ import {IVault} from "./IVault.sol";
 import {Auth} from "./Auth.sol";
 
 contract Vault is Auth {
+    uint256 private constant DECIMAL_OFFSET = 6;
+
     IERC20 public constant weth = IERC20(WETH);
     IStrategy public strategy;
     address public withdrawCallback;
@@ -47,7 +49,6 @@ contract Vault is Auth {
             strategy.claim();
         }
 
-        // TODO: vault inflation
         uint256 totalVal = totalValueInToken();
         shares = _convertToShares(totalSupply, totalVal, wethAmount);
 
@@ -56,7 +57,7 @@ contract Vault is Auth {
         _mint(msg.sender, shares);
     }
 
-    // NOTE: withdrawal delay or gradual profit distribution should be implemented
+    // NOTE: Withdrawal delay or gradual profit distribution should be implemented
     // to prevent users from depositing before profit is claimed by the strategy and then
     // immediately withdrawing after.
     function withdraw(uint256 shares)
@@ -69,7 +70,6 @@ contract Vault is Auth {
             strategy.claim();
         }
 
-        // TODO: vault inflation
         uint256 totalVal = totalValueInToken();
         uint256 wethAmount = _convertToWeth(totalSupply, totalVal, shares);
         require(wethAmount > 0, "weth amount = 0");
@@ -159,6 +159,8 @@ contract Vault is Auth {
         delete withdrawOrders[key];
     }
 
+    // OpenZeppelin vault inflation protection
+    // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/1873ecb38e0833fa3552f58e639eeeb134b82135/contracts/token/ERC20/extensions/ERC4626.sol#L225-L234
     function _convertToShares(
         uint256 totalShares,
         uint256 totalWethInPool,
@@ -167,7 +169,9 @@ contract Vault is Auth {
         if (totalShares == 0 || totalWethInPool == 0) {
             return wethAmount;
         }
-        return totalShares * wethAmount / totalWethInPool;
+
+        return
+            (totalShares + 10 ** DECIMAL_OFFSET) * wethAmount / totalWethInPool;
     }
 
     function _convertToWeth(
@@ -175,7 +179,7 @@ contract Vault is Auth {
         uint256 totalWethInPool,
         uint256 shares
     ) internal pure returns (uint256) {
-        return totalWethInPool * shares / totalShares;
+        return totalWethInPool * shares / (totalShares + 10 ** DECIMAL_OFFSET);
     }
 
     function _mint(address dst, uint256 shares) internal {

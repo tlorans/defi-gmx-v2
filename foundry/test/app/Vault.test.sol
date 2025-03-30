@@ -81,8 +81,8 @@ contract VaultTest is Test {
         users.push(address(new User()));
         users.push(address(new User()));
 
-        deal(WETH, users[0], 100);
-        deal(WETH, users[1], 100);
+        deal(WETH, users[0], 1e18);
+        deal(WETH, users[1], 1e18);
 
         deal(users[0], 1e18);
         deal(users[1], 1e18);
@@ -107,21 +107,21 @@ contract VaultTest is Test {
     }
 
     function testDeposit() public {
-        address user = address(1);
-        uint256 wethAmount = 100;
-        deal(WETH, user, wethAmount);
+        uint256 wethAmount = 0.001 * 1e18;
+        deal(WETH, users[0], wethAmount);
 
-        uint256 shares = deposit(user, wethAmount);
+        uint256 shares = deposit(users[0], wethAmount);
 
-        assertEq(shares, vault.balanceOf(user), "shares");
+        assertEq(shares, vault.balanceOf(users[0]), "shares");
         assertGt(shares, 0, "shares = 0");
         assertGt(vault.totalSupply(), 0, "total supply = 0");
         assertEq(weth.balanceOf(address(vault)), wethAmount);
     }
 
     function testWithdrawFromVault() public {
-        deposit(users[0], 100);
-        deposit(users[1], 100);
+        uint256 wethAmount = 0.001 * 1e18;
+        deposit(users[0], wethAmount);
+        deposit(users[1], wethAmount);
 
         testHelper.set("ETH before", users[0].balance);
         testHelper.set("WETH before", weth.balanceOf(users[0]));
@@ -139,7 +139,7 @@ contract VaultTest is Test {
         uint256 wethDiff =
             testHelper.get("WETH after") - testHelper.get("WETH before");
 
-        assertEq(wethDiff, 100, "WETH diff");
+        assertApproxEqRel(wethDiff, wethAmount, 1e18 * 999 / 1000, "WETH diff");
         assertEq(ethDiff, 0, "ETH diff");
         assertEq(wethSent, wethDiff, "WETH sent");
         assertEq(withdrawOrderKey, bytes32(uint256(0)), "withdraw order key");
@@ -148,11 +148,12 @@ contract VaultTest is Test {
     }
 
     function testWithdrawFromStrategy() public {
-        deposit(users[0], 100);
-        deposit(users[1], 100);
+        uint256 wethAmount = 0.001 * 1e18;
+        deposit(users[0], wethAmount);
+        deposit(users[1], wethAmount);
 
-        vault.transfer(address(strategy), 150);
-        strategy.setTotal(150);
+        vault.transfer(address(strategy), wethAmount * 15 / 10);
+        strategy.setTotal(wethAmount * 15 / 10);
 
         testHelper.set("ETH before", users[0].balance);
         testHelper.set("WETH before", weth.balanceOf(users[0]));
@@ -170,10 +171,15 @@ contract VaultTest is Test {
         uint256 wethDiff =
             testHelper.get("WETH after") - testHelper.get("WETH before");
 
-        assertEq(wethDiff, 100, "WETH diff");
+        assertApproxEqRel(wethDiff, wethAmount, 1e18 * 999 / 1000, "WETH diff");
         assertEq(ethDiff, 0, "ETH diff");
         assertEq(weth.balanceOf(address(vault)), 0, "WETH vault");
-        assertEq(weth.balanceOf(address(strategy)), 100, "WETH strategy");
+        assertApproxEqRel(
+            weth.balanceOf(address(strategy)),
+            wethAmount,
+            1e18 * 999 / 1000,
+            "WETH strategy"
+        );
         assertEq(wethSent, wethDiff, "WETH sent");
         assertEq(withdrawOrderKey, bytes32(uint256(0)), "withdraw order key");
 
@@ -181,30 +187,51 @@ contract VaultTest is Test {
     }
 
     function testWithdrawOrder() public {
-        deposit(users[0], 100);
-        deposit(users[1], 100);
+        uint256 wethAmount = 0.001 * 1e18;
+        deposit(users[0], wethAmount);
+        deposit(users[1], wethAmount);
 
-        vault.transfer(address(strategy), 200);
-        strategy.setTotal(500);
+        vault.transfer(address(strategy), 2 * wethAmount);
+        strategy.setTotal(5 * wethAmount);
 
         uint256 shares = vault.balanceOf(users[0]);
         vm.prank(users[0]);
         (uint256 wethSent, bytes32 withdrawOrderKey) =
             vault.withdraw{value: 0.1 * 1e18}(shares);
 
-        assertEq(wethSent, 200, "WETH sent");
+        assertEq(wethSent, 2 * wethAmount, "WETH sent");
         assertEq(vault.balanceOf(users[0]), 0, "user shares");
-        assertEq(
-            vault.balanceOf(address(vault)), 100 * 50 / 250, "locked shares"
+        assertApproxEqRel(
+            vault.balanceOf(address(vault)),
+            wethAmount * 50 / 250,
+            1e18 * 999 / 1000,
+            "locked shares"
         );
+
+        console.log("SHARES %e", shares);
 
         IVault.WithdrawOrder memory w = vault.getWithdrawOrder(withdrawOrderKey);
         assertEq(w.account, users[0], "withdraw order account");
-        assertEq(w.shares, 20, "withdraw order shares");
-        assertEq(w.weth, 50, "withdraw order weth");
+        assertApproxEqRel(
+            w.shares,
+            shares * 20 / 100,
+            1e18 * 999 / 1000,
+            "withdraw order shares"
+        );
+        assertApproxEqRel(
+            w.weth,
+            wethAmount * 5 / 10,
+            1e18 * 999 / 1000,
+            "withdraw order weth"
+        );
 
         assertEq(strategy.ethAmount(), 0.1 * 1e18, "strategy ETH");
-        assertEq(strategy.wethAmount(), 50, "strategy WETH");
+        assertApproxEqRel(
+            strategy.wethAmount(),
+            wethAmount * 5 / 10,
+            1e18 * 999 / 1000,
+            "strategy WETH"
+        );
         assertEq(strategy.cb(), address(cb), "strategy callback");
 
         // Test cancel //
