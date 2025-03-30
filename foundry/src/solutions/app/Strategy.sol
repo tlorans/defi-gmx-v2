@@ -24,6 +24,7 @@ contract Strategy is Auth, GmxHelper {
 
     receive() external payable {}
 
+    // Task 1: Calculate total vaule managed by this contract in terms of WETH
     function totalValueInToken() external view returns (uint256) {
         uint256 val = weth.balanceOf(address(this));
         int256 remainingCollateral = getPositionWithPnlInToken();
@@ -37,6 +38,7 @@ contract Strategy is Auth, GmxHelper {
         return val;
     }
 
+    // Task 2: Create market increase order
     function increase(uint256 wethAmount)
         external
         payable
@@ -49,6 +51,8 @@ contract Strategy is Auth, GmxHelper {
         });
     }
 
+    // Task 3: Create market decrease order
+    // Function call is from the vault when the callback contract is not address(0).
     function decrease(uint256 wethAmount, address callbackContract)
         external
         payable
@@ -89,10 +93,12 @@ contract Strategy is Auth, GmxHelper {
         }
     }
 
+    // Task 4: Cancel an order
     function cancel(bytes32 orderKey) external payable auth {
         cancelOrder(orderKey);
     }
 
+    // Task 5: Claim funding fees
     function claim() external {
         claimFundingFees();
     }

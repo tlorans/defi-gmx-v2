@@ -79,12 +79,21 @@ abstract contract GmxHelper {
         return reader.getPosition(address(dataStore), positionKey);
     }
 
+    // Returns collateral amount locked in the current position
     function getPositionCollateralAmount() internal view returns (uint256) {
         bytes32 positionKey = getPositionKey();
         Position.Props memory position = getPosition(positionKey);
         return position.numbers.collateralAmount;
     }
 
+    // Returns the max callback gas limit used for calling a callback contract
+    // once a order is executed.
+    function getMaxCallbackGasLimit() internal view returns (uint256) {
+        return dataStore.getUint(Keys.MAX_CALLBACK_GAS_LIMIT);
+    }
+
+
+    // Returns position collateral amount + profit and loss of the position in terms of the collateral token
     function getPositionWithPnlInToken() internal view returns (int256) {
         bytes32 positionKey = getPositionKey();
         Position.Props memory position = getPosition(positionKey);
@@ -150,12 +159,17 @@ abstract contract GmxHelper {
         return remainingCollateral;
     }
 
-    // Task 1: Calculate size delta
+    // Task 1: Calculate position size delta
     function getSizeDeltaUsd(
+        // Long token price from Chainlink (1e8 = 1 USD)
         uint256 longTokenPrice,
+        // Current position size
         uint256 sizeInUsd,
+        // Current collateral amount locked in the position
         uint256 collateralAmount,
+        // Long token amount to add or remove
         uint256 longTokenAmount,
+        // True for market increase
         bool isIncrease
     ) internal view returns (uint256 sizeDeltaUsd) {
         // Calculate sizeDeltaUsd so that new position's leverage to close to 1
@@ -182,19 +196,18 @@ abstract contract GmxHelper {
         }
     }
 
-    function getMaxCallbackGasLimit() internal view returns (uint256) {
-        return dataStore.getUint(Keys.MAX_CALLBACK_GAS_LIMIT);
-    }
-
     // Task 2: Create market increase order
     function createIncreaseShortPositionOrder(
+        // Execution fee to send to the order vault
         uint256 executionFee,
+        // Long token amount to add to the current position
         uint256 longTokenAmount
     ) internal returns (bytes32 orderKey) {
         uint256 longTokenPrice = oracle.getPrice(chainlinkLongToken);
         bytes32 positionKey = getPositionKey();
         Position.Props memory position = getPosition(positionKey);
 
+        // Task 2.1 - Calculate position size delta
         uint256 sizeDeltaUsd = getSizeDeltaUsd({
             longTokenPrice: longTokenPrice,
             sizeInUsd: position.numbers.sizeInUsd,
@@ -202,6 +215,8 @@ abstract contract GmxHelper {
             longTokenAmount: longTokenAmount,
             isIncrease: true
         });
+
+        // Task 2.2 - Create market increase order
 
         // 90% of current long price
         uint256 acceptablePrice =
@@ -253,10 +268,15 @@ abstract contract GmxHelper {
 
     // Task 3: Create market decrease order
     function createDecreaseShortPositionOrder(
+        // Execution fee to send to the order vault
         uint256 executionFee,
+        // Long token amount to remove from the current position
         uint256 longTokenAmount,
+        // Receiver of long token
         address receiver,
+        // Callback contract used to handle withdrawal from the vault
         address callbackContract,
+        // Max gas to send to the callback contract
         uint256 callbackGasLimit
     ) internal returns (bytes32 orderKey) {
         uint256 longTokenPrice = oracle.getPrice(chainlinkLongToken);
@@ -269,6 +289,7 @@ abstract contract GmxHelper {
             Math.min(longTokenAmount, position.numbers.collateralAmount);
         require(longTokenAmount > 0, "long token amount = 0");
 
+        // Task 3.1 - Calculate position size delta
         uint256 sizeDeltaUsd = getSizeDeltaUsd({
             longTokenPrice: longTokenPrice,
             sizeInUsd: position.numbers.sizeInUsd,
@@ -279,6 +300,8 @@ abstract contract GmxHelper {
 
         // Withdrawing collateral should also decrease position size
         require(sizeDeltaUsd > 0, "size delta = 0");
+
+        // Task 3.2 - Send market decrease order
 
         // 110% of current price
         uint256 acceptablePrice =

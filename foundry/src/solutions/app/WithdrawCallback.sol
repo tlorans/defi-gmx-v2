@@ -31,7 +31,9 @@ contract WithdrawCallback is Auth {
         refunds[key] = account;
     }
 
+    // Task 1: Refund execution fee callback
     function refundExecutionFee(
+        // Order key
         bytes32 key,
         EventUtils.EventLogData memory eventData
     ) external payable onlyGmx {
@@ -47,7 +49,9 @@ contract WithdrawCallback is Auth {
         }
     }
 
+    // Task 2: Order execution callback
     function afterOrderExecution(
+        // Order key
         bytes32 key,
         Order.Props memory order,
         EventUtils.EventLogData memory eventData
@@ -71,7 +75,9 @@ contract WithdrawCallback is Auth {
         }
     }
 
+    // Task 3: Order cancellation callback
     function afterOrderCancellation(
+        // Order key
         bytes32 key,
         Order.Props memory order,
         EventUtils.EventLogData memory eventData
@@ -87,7 +93,9 @@ contract WithdrawCallback is Auth {
         vault.removeWithdrawOrder(key, false);
     }
 
+    // Task 4: Order frozen callback
     function afterOrderFrozen(
+        // Order key
         bytes32 key,
         Order.Props memory order,
         EventUtils.EventLogData memory eventData
