@@ -170,7 +170,7 @@ contract StrategyTest is StrategyTestHelper {
         assertEq(cb.orderKey(), decOrderKey, "callback: order key");
         assertEq(cb.refundOrderKey(), decOrderKey, "callback: refund order key");
         assertTrue(
-            cb.status() == DecreaseCallback.Status.Canceled, "callback: status"
+            cb.status() == DecreaseCallback.Status.Cancelled, "callback: status"
         );
         assertGt(cb.refundAmount(), 0, "callback: refund amount");
     }

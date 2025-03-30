@@ -9,7 +9,7 @@ contract DecreaseCallback {
     enum Status {
         None,
         Executed,
-        Canceled,
+        Cancelled,
         Frozen
     }
 
@@ -50,7 +50,7 @@ contract DecreaseCallback {
         EventUtils.EventLogData memory eventData
     ) external {
         orderKey = key;
-        status = Status.Canceled;
+        status = Status.Cancelled;
     }
 
     function afterOrderFrozen(

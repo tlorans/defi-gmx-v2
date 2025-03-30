@@ -106,8 +106,8 @@ contract Vault is Auth {
 
             if (sharesRemaining > 0) {
                 require(
-                    withdrawCallback != address(0),
-                    "withdraw callback is 0 address"
+                    withdrawCallback.code.length > 0,
+                    "withdraw callback is not a contract"
                 );
 
                 require(msg.value > 0, "execution fee = 0");
@@ -142,7 +142,8 @@ contract Vault is Auth {
     function cancelWithdrawOrder(bytes32 key) external guard {
         require(msg.sender == withdrawOrders[key].account, "not owner of order");
         require(
-            withdrawCallback != address(0), "withdraw callback is 0 address"
+            withdrawCallback.code.length > 0,
+            "withdraw callback is not a contract"
         );
         strategy.cancel(key);
     }

@@ -8,6 +8,7 @@ contract VaultAndStrategyTest is StrategyTestHelper {
     // TODO: test cancel
     // TODO: test partial withdraw and create withdraw order
     // TODO: test profit and loss
+    // TODO: test cancel twice
 
     /*
     function testWithdrawFromStrategy() public {
