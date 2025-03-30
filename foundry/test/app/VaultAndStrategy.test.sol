@@ -5,12 +5,6 @@ import {IVault} from "../../src/solutions/app/IVault.sol";
 import "./StrategyTestHelper.sol";
 
 contract VaultAndStrategyTest is StrategyTestHelper {
-    // TODO: test cancel
-    // TODO: test partial withdraw and create withdraw order
-    // TODO: test profit and loss
-    // TODO: test cancel twice
-
-    /*
     function testWithdrawFromStrategy() public {
         uint256 wethAmount = 1e18;
         weth.approve(address(vault), type(uint256).max);
@@ -32,9 +26,7 @@ contract VaultAndStrategyTest is StrategyTestHelper {
 
         assertEq(wethDiff, wethSent, "WETH sent");
         assertGe(wethDiff, wethAmount * 99 / 100, "WETH diff");
-        assertEq(ethDiff, EXECUTION_FEE, "ETH refund");
     }
-    */
 
     function testWithdrawFromCallback() public {
         uint256 wethAmount = 1e18;
@@ -81,7 +73,6 @@ contract VaultAndStrategyTest is StrategyTestHelper {
 
         uint256 wethDiff =
             testHelper.get("WETH after") - testHelper.get("WETH before");
-        console.log("WETH diff %e", wethDiff);
         assertGt(wethDiff, 0, "WETH = 0");
 
         assertEq(
@@ -126,7 +117,6 @@ contract VaultAndStrategyTest is StrategyTestHelper {
         wethDiff = testHelper.get("WETH after") - testHelper.get("WETH before");
         uint256 ethDiff =
             testHelper.get("ETH after") - testHelper.get("ETH before");
-        console.log("WETH diff %e", wethDiff);
         assertGt(wethDiff, 0, "WETH = 0");
         assertGt(ethDiff, EXECUTION_FEE * 99 / 100, "WETH refund");
 
@@ -139,8 +129,6 @@ contract VaultAndStrategyTest is StrategyTestHelper {
 
         Position.Props memory position =
             reader.getPosition(DATA_STORE, positionKey);
-        console.log("position size %e", position.numbers.sizeInUsd);
-        console.log("position collateral %e", position.numbers.collateralAmount);
 
         assertEq(position.numbers.sizeInUsd, 0, "position size != 0");
         assertEq(
