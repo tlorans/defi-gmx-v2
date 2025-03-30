@@ -212,16 +212,14 @@ Please refer to this for an in-depth explanation of the content:
 
 ## Application
 
-- [Application architecture](./notes/app.png)
-
 - payoff
-- application architecture
+- [Application architecture](./notes/app.png)
   - deposit
   - withdraw
     - vault, strategy
     - execution fee
     - callback
-- callback
+- [Callback](./notes/callback.md)
 - exercises
   - GMXHelper
   - Strategy
