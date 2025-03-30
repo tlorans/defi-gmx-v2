@@ -265,9 +265,7 @@ contract StrategyTestHelper is Test {
         uint256 usdcDiff =
             testHelper.get("USDC after") - testHelper.get("USDC after");
 
-        assertGe(
-            wethDiff, wethAmount * 80 / 100, "WETH difference"
-        );
+        assertGe(wethDiff, wethAmount * 80 / 100, "WETH difference");
         assertEq(usdcDiff, 0, "USDC difference != 0");
 
         Position.Props memory p1 = reader.getPosition(DATA_STORE, positionKey);
@@ -311,9 +309,7 @@ contract StrategyTestHelper is Test {
                 "dec: position collateral %e", p1.numbers.collateralAmount
             );
             console.log("dec: total value: %e", strategy.totalValueInToken());
-            console.log(
-                "dec: WETH balance %e", weth.balanceOf(receiver)
-            );
+            console.log("dec: WETH balance %e", weth.balanceOf(receiver));
             console.log("dec: WETH diff %e", wethDiff);
         }
     }

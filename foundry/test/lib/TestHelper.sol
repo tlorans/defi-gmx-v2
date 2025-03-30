@@ -90,7 +90,8 @@ contract TestHelper is Test {
 
             prices[i] = uint256(answer) * multiplier / oracles[i].multiplier
                 * Math.add(100, oracles[i].deltaPrice) / 100;
-            answers[i] = uint256(answer) * Math.add(100, oracles[i].deltaPrice) / 100;
+            answers[i] =
+                uint256(answer) * Math.add(100, oracles[i].deltaPrice) / 100;
 
             require(prices[i] > 0, "price = 0");
         }

@@ -77,14 +77,6 @@ contract Strategy is Auth, GmxHelper {
             int256 total = getPositionWithPnlInToken();
             require(total > 0, "position with pnl <= 0");
 
-            console.log("-----");
-            console.log("total %e", total);
-            console.log("weth %e", wethAmount);
-            console.log("col %e", getPositionCollateralAmount());
-                console.log("long %e", getPositionCollateralAmount() * wethAmount
-                    / uint256(total));
-            console.log("-----");
-
             orderKey = createDecreaseShortPositionOrder({
                 executionFee: msg.value,
                 // Calculate collateral to withdraw

@@ -11,7 +11,6 @@ import {IStrategy} from "./IStrategy.sol";
 import {IVault} from "./IVault.sol";
 import {Auth} from "./Auth.sol";
 
-// TODO: remove logs
 contract WithdrawCallback is Auth {
     IWeth public constant weth = IWeth(WETH);
     IVault public immutable vault;
@@ -39,8 +38,6 @@ contract WithdrawCallback is Auth {
         address account = refunds[key];
         require(account != address(0), "refund address = 0");
 
-        console.log("REFUND %e", address(this).balance);
-
         delete refunds[key];
 
         uint256 bal = address(this).balance;
@@ -63,6 +60,7 @@ contract WithdrawCallback is Auth {
         );
 
         setRefundAccount(key, withdrawOrder.account);
+        vault.removeWithdrawOrder(key, true);
 
         uint256 bal = weth.balanceOf(address(this));
         if (withdrawOrder.weth >= bal) {
@@ -71,8 +69,6 @@ contract WithdrawCallback is Auth {
             weth.transfer(withdrawOrder.account, withdrawOrder.weth);
             weth.transfer(address(vault), bal - withdrawOrder.weth);
         }
-
-        vault.removeWithdrawOrder(key, true);
     }
 
     function afterOrderCancellation(
@@ -80,7 +76,6 @@ contract WithdrawCallback is Auth {
         Order.Props memory order,
         EventUtils.EventLogData memory eventData
     ) external onlyGmx {
-        console.log("CANCEL");
         IVault.WithdrawOrder memory withdrawOrder = vault.getWithdrawOrder(key);
         require(withdrawOrder.account != address(0), "invalid order key");
         require(
@@ -89,7 +84,6 @@ contract WithdrawCallback is Auth {
         );
 
         setRefundAccount(key, withdrawOrder.account);
-
         vault.removeWithdrawOrder(key, false);
     }
 
@@ -106,7 +100,6 @@ contract WithdrawCallback is Auth {
         );
 
         setRefundAccount(key, withdrawOrder.account);
-
         vault.removeWithdrawOrder(key, false);
     }
 
