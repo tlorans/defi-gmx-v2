@@ -1,5 +1,9 @@
 # `GmxHelper` Exercises
 
+`GmxHelper` is a contract that interacts with GMX to manage position size and fees.
+
+You need to complete the implementation of the `GmxHelper.sol` contract.
+
 ## Task 1: Implement `getSizeDeltaUsd`
 
 ```solidity
