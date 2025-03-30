@@ -17,12 +17,14 @@ contract VaultAndStrategyTest is StrategyTestHelper {
 
         testHelper.set("ETH before", address(this).balance);
         testHelper.set("WETH before", weth.balanceOf(address(this)));
-        (uint256 wethSent, ) = vault.withdraw{value: EXECUTION_FEE}(shares);
+        (uint256 wethSent,) = vault.withdraw{value: EXECUTION_FEE}(shares);
         testHelper.set("WETH after", weth.balanceOf(address(this)));
         testHelper.set("ETH after", address(this).balance);
 
-        uint256 wethDiff = testHelper.get("WETH after") - testHelper.get("WETH before");
-        uint256 ethDiff = testHelper.get("ETH after") - testHelper.get("ETH before");
+        uint256 wethDiff =
+            testHelper.get("WETH after") - testHelper.get("WETH before");
+        uint256 ethDiff =
+            testHelper.get("ETH after") - testHelper.get("ETH before");
 
         assertEq(wethDiff, wethSent, "WETH sent");
         assertGe(wethDiff, wethAmount * 99 / 100, "WETH diff");
