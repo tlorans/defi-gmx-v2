@@ -171,7 +171,7 @@ abstract contract GmxHelper {
         // True for market increase
         bool isIncrease
     ) internal view returns (uint256 sizeDeltaUsd) {
-        // Calculate sizeDeltaUsd so that new position's leverage to close to 1
+        // Calculate sizeDeltaUsd so that new position's leverage is close to 1
         if (isIncrease) {
             // new position size = long token price * new collateral amount
             // new collateral amount = position.collateralAmount + longTokenAmount
