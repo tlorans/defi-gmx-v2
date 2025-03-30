@@ -92,7 +92,6 @@ abstract contract GmxHelper {
         return dataStore.getUint(Keys.MAX_CALLBACK_GAS_LIMIT);
     }
 
-
     // Returns position collateral amount + profit and loss of the position in terms of the collateral token
     function getPositionWithPnlInToken() internal view returns (int256) {
         bytes32 positionKey = getPositionKey();

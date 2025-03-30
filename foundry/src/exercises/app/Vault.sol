@@ -53,18 +53,7 @@ contract Vault is Auth {
         external
         guard
         returns (uint256 shares)
-    {
-        if (address(strategy) != address(0)) {
-            strategy.claim();
-        }
-
-        uint256 totalVal = totalValueInToken();
-        shares = _convertToShares(totalSupply, totalVal, wethAmount);
-
-        weth.transferFrom(msg.sender, address(this), wethAmount);
-
-        _mint(msg.sender, shares);
-    }
+    {}
 
     // NOTE: Withdrawal delay or gradual profit distribution should be implemented
     // to prevent users from depositing before profit is claimed by the strategy and then
@@ -76,93 +65,13 @@ contract Vault is Auth {
         payable
         guard
         returns (uint256 wethSent, bytes32 withdrawOrderKey)
-    {
-        if (address(strategy) != address(0)) {
-            strategy.claim();
-        }
-
-        uint256 totalVal = totalValueInToken();
-        uint256 wethAmount = _convertToWeth(totalSupply, totalVal, shares);
-        require(wethAmount > 0, "weth amount = 0");
-
-        uint256 wethRemaining = wethAmount;
-
-        uint256 wethInVault = weth.balanceOf(address(this));
-        wethRemaining -= Math.min(wethInVault, wethRemaining);
-
-        if (wethRemaining > 0 && address(strategy) != address(0)) {
-            uint256 wethInStrategy = weth.balanceOf(address(strategy));
-            if (wethInStrategy > 0) {
-                uint256 wethToTransfer = Math.min(wethInStrategy, wethRemaining);
-                wethRemaining -= wethToTransfer;
-                strategy.transfer(address(this), wethToTransfer);
-            }
-        }
-
-        if (wethRemaining == 0) {
-            _burn(msg.sender, shares);
-            wethSent = wethAmount;
-            weth.transfer(msg.sender, wethSent);
-
-            if (msg.value > 0) {
-                (bool ok,) = msg.sender.call{value: msg.value}("");
-                require(ok, "Send ETH failed");
-            }
-        } else {
-            uint256 sharesRemaining = shares * wethRemaining / wethAmount;
-            _burn(msg.sender, shares - sharesRemaining);
-            _lock(msg.sender, sharesRemaining);
-            wethSent = wethAmount - wethRemaining;
-            weth.transfer(msg.sender, wethSent);
-
-            if (sharesRemaining > 0) {
-                require(
-                    withdrawCallback.code.length > 0,
-                    "withdraw callback is not a contract"
-                );
-
-                require(msg.value > 0, "execution fee = 0");
-                withdrawOrderKey = strategy.decrease{value: msg.value}(
-                    wethRemaining, withdrawCallback
-                );
-
-                require(
-                    withdrawOrderKey != bytes32(uint256(0)), "invalid order key"
-                );
-                require(
-                    withdrawOrders[withdrawOrderKey].account == address(0),
-                    "order is not empty"
-                );
-                withdrawOrders[withdrawOrderKey] = IVault.WithdrawOrder({
-                    account: msg.sender,
-                    shares: sharesRemaining,
-                    weth: wethRemaining
-                });
-            }
-        }
-    }
+    {}
 
     // Task 3: Cancel withdraw order
-    function cancelWithdrawOrder(bytes32 key) external guard {
-        require(msg.sender == withdrawOrders[key].account, "not owner of order");
-        require(
-            withdrawCallback.code.length > 0,
-            "withdraw callback is not a contract"
-        );
-        strategy.cancel(key);
-    }
+    function cancelWithdrawOrder(bytes32 key) external guard {}
 
     // Task 4: Delete withdraw order. This function is called from WithdrawCallback
-    function removeWithdrawOrder(bytes32 key, bool ok) external auth {
-        IVault.WithdrawOrder memory withdrawOrder = withdrawOrders[key];
-
-        _unlock(withdrawOrder.account, withdrawOrder.shares);
-        if (ok) {
-            _burn(withdrawOrder.account, withdrawOrder.shares);
-        }
-
-        delete withdrawOrders[key];
-    }
+    function removeWithdrawOrder(bytes32 key, bool ok) external auth {}
 
     // OpenZeppelin vault inflation protection
     // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/1873ecb38e0833fa3552f58e639eeeb134b82135/contracts/token/ERC20/extensions/ERC4626.sol#L225-L234

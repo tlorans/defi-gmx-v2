@@ -220,6 +220,11 @@ Please refer to this for an in-depth explanation of the content:
     - execution fee
     - callback
 - callback
+- exercises
+  - GMXHelper
+  - Strategy
+  - WithdrawCallback
+  - Vault
 
 ## Resources
 
