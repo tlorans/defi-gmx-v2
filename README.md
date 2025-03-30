@@ -212,6 +212,8 @@ Please refer to this for an in-depth explanation of the content:
 
 ## Application
 
+- [Application architecture](./notes/app.png)
+
 - payoff
 - application architecture
   - deposit
