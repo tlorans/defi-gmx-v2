@@ -150,6 +150,7 @@ abstract contract GmxHelper {
         return remainingCollateral;
     }
 
+    // Task 1: Calculate size delta
     function getSizeDeltaUsd(
         uint256 longTokenPrice,
         uint256 sizeInUsd,
@@ -185,6 +186,7 @@ abstract contract GmxHelper {
         return dataStore.getUint(Keys.MAX_CALLBACK_GAS_LIMIT);
     }
 
+    // Task 2: Create market increase order
     function createIncreaseShortPositionOrder(
         uint256 executionFee,
         uint256 longTokenAmount
@@ -249,6 +251,7 @@ abstract contract GmxHelper {
         );
     }
 
+    // Task 3: Create market decrease order
     function createDecreaseShortPositionOrder(
         uint256 executionFee,
         uint256 longTokenAmount,
@@ -320,10 +323,12 @@ abstract contract GmxHelper {
         );
     }
 
+    // Task 4: Cancel order
     function cancelOrder(bytes32 orderKey) internal {
         exchangeRouter.cancelOrder(orderKey);
     }
 
+    // Task 5: Claim funding fees
     function claimFundingFees() internal {
         address[] memory markets = new address[](1);
         markets[0] = address(marketToken);
