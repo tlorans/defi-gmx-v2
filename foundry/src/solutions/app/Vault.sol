@@ -36,7 +36,7 @@ contract Vault is Auth {
         withdrawCallback = _withdrawCallback;
     }
 
-    // Task 1: Calculate the total vault managed by this contract
+    // Task 1: Calculate the total value managed by this contract
     function totalValueInToken() public view returns (uint256) {
         uint256 val = weth.balanceOf(address(this));
         if (address(strategy) != address(0)) {
