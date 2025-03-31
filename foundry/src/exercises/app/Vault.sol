@@ -36,8 +36,9 @@ contract Vault is Auth {
         withdrawCallback = _withdrawCallback;
     }
 
+    // Task 1: Calculate the total vault managed by this contract
     function totalValueInToken() public view returns (uint256) {
-        return weth.balanceOf(address(this)) + strategy.totalValueInToken();
+        return 0;
     }
 
     function getWithdrawOrder(bytes32 key)
@@ -48,7 +49,7 @@ contract Vault is Auth {
         return withdrawOrders[key];
     }
 
-    // Task 1: Deposit WETH and mint shares
+    // Task 2: Deposit WETH and mint shares
     function deposit(uint256 wethAmount)
         external
         guard
@@ -59,7 +60,7 @@ contract Vault is Auth {
     // to prevent users from depositing before profit is claimed by the strategy and then
     // immediately withdrawing after.
 
-    // Task 2: Burn shares and withdraw WETH
+    // Task 3: Burn shares and withdraw WETH
     function withdraw(uint256 shares)
         external
         payable
@@ -67,10 +68,10 @@ contract Vault is Auth {
         returns (uint256 wethSent, bytes32 withdrawOrderKey)
     {}
 
-    // Task 3: Cancel withdraw order
+    // Task 4: Cancel withdraw order
     function cancelWithdrawOrder(bytes32 key) external guard {}
 
-    // Task 4: Delete withdraw order. This function is called from WithdrawCallback
+    // Task 5: Delete withdraw order. This function is called from WithdrawCallback
     function removeWithdrawOrder(bytes32 key, bool ok) external auth {}
 
     // OpenZeppelin vault inflation protection

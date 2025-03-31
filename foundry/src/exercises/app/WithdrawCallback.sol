@@ -36,8 +36,7 @@ contract WithdrawCallback is Auth {
         // Order key
         bytes32 key,
         EventUtils.EventLogData memory eventData
-    ) external payable onlyGmx {
-    }
+    ) external payable onlyGmx {}
 
     // Task 2: Order execution callback
     function afterOrderExecution(
@@ -45,8 +44,7 @@ contract WithdrawCallback is Auth {
         bytes32 key,
         Order.Props memory order,
         EventUtils.EventLogData memory eventData
-    ) external onlyGmx {
-    }
+    ) external onlyGmx {}
 
     // Task 3: Order cancellation callback
     function afterOrderCancellation(
@@ -54,8 +52,7 @@ contract WithdrawCallback is Auth {
         bytes32 key,
         Order.Props memory order,
         EventUtils.EventLogData memory eventData
-    ) external onlyGmx {
-    }
+    ) external onlyGmx {}
 
     // Task 4: Order frozen callback
     function afterOrderFrozen(
@@ -63,8 +60,7 @@ contract WithdrawCallback is Auth {
         bytes32 key,
         Order.Props memory order,
         EventUtils.EventLogData memory eventData
-    ) external onlyGmx {
-    }
+    ) external onlyGmx {}
 
     function transfer(address dst, uint256 amount) external auth {
         weth.transfer(dst, amount);
