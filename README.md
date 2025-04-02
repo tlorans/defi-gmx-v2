@@ -212,19 +212,21 @@ Please refer to this for an in-depth explanation of the content:
 
 ## Application
 
-- payoff
 - [Application architecture](./notes/app.png)
-  - deposit
-  - withdraw
-    - vault, strategy
-    - execution fee
-    - callback
 - [Callback](./notes/callback.md)
-- exercises
-  - GMXHelper
-  - Strategy
-  - WithdrawCallback
-  - Vault
+- Foundry exercises
+  - [`GMXHelper`](./foundry/exercises/app/gmx_helper.md)
+    - [Starter code](./foundry/src/exercises/app/GmxHelper.sol)
+    - [Solution](./foundry/src/solutions/app/GmxHelper.sol)
+  - [`Strategy`](./foundry/exercises/app/strategy.md)
+    - [Starter code](./foundry/src/exercises/app/Strategy.sol)
+    - [Solution](./foundry/src/solutions/app/Strategy.sol)
+  - [`WithdrawCallback`](./foundry/exercises/app/withdraw_callback.md)
+    - [Starter code](./foundry/src/exercises/app/WithdrawCallback.sol)
+    - [Solution](./foundry/src/solutions/app/WithdrawCallback.sol)
+  - [`Vault`](./foundry/exercises/app/vault.md)
+    - [Starter code](./foundry/src/exercises/app/Vault.sol)
+    - [Solution](./foundry/src/solutions/app/Vault.sol)
 
 ## Resources
 
