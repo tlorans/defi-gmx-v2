@@ -85,7 +85,7 @@ Approve the `ROUTER` contract and send USDC to `DEPOSIT_VAULT`.
 
 Create an order to deposit liquidity into `GM_TOKEN_BTC_WBTC_USDC`. Return the order key.
 
-Optionally calculate `minMarketToken` by calcuting it based on the price of the market token (`getMarketTokenPriceUsd`).
+Optionally calculate `minMarketToken` based on the price of the market token (`getMarketTokenPriceUsd`).
 
 Market tokens have 18 decimals.
 
