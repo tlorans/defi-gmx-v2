@@ -21,7 +21,7 @@ function getSizeDeltaUsd(
 ) internal view returns (uint256 sizeDeltaUsd) {}
 ```
 
-This calculates the change in position size needed so that the new position size is the current collateral price times the new collateral amount.
+This function calculates the change in position size needed so that the new position size is the current collateral price times the new collateral amount.
 
 Return `0` if `sizeDeltaUsd` is less than `0`.
 

@@ -4,7 +4,7 @@
 
 The callback functions are all executed after GMX executes the order.
 
-One the 3 functions below will be called first by GMX.
+One of the 3 functions below will be called first by GMX.
 
 - `afterOrderExecution`
 - `afterOrderCancellation`

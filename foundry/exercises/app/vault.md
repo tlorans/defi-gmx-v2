@@ -1,8 +1,8 @@
 # `Vault` Exercises
 
-`Vault` is a contract that users deposits and withdraw WETH from.
+`Vault` is a contract that users deposit and withdraw WETH from.
 
-Authorized accounts will be able to transfer the WETH in this contract into the strategy by calling `transfer`.
+Authorized accounts will be able to transfer WETH in this contract into the strategy by calling `transfer`.
 
 You need to complete the implementation of the `Vault.sol` contract.
 
@@ -63,8 +63,6 @@ This function will withdraw WETH to `msg.sender`. If not enough WETH can be with
   - Make sure that `withdrawCallback` is a contract.
   - Call `strategy.decrease` to create a withdraw order. Send `msg.value` as execution fee.
   - Store `WithdrawOrder`
-
-> Hints:
 
 ## Task 4: Implement `cancelWithdrawOrder`
 
