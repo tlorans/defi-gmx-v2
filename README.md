@@ -20,7 +20,7 @@
     <br />
     <a href="https://cyfrin.io/">
         <img src=".github/images/poweredbycyfrinbluehigher.png" width="145" alt=""/></a>
-            <a href="https://updraft.cyfrin.io/courses/moccasin">
+            <a href="https://updraft.cyfrin.io/courses/gmx-v2">
         <img src=".github/images/coursebadge.png" width="242.3" alt=""/></a>
     <br />
 </p>
