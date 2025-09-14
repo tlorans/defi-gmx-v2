@@ -17,3 +17,10 @@ forge test --fork-url $FORK_URL --fork-block-number $FORK_BLOCK_NUM --match-path
 # Test solution
 FOUNDRY_PROFILE=solution forge test --fork-url $FORK_URL --fork-block-number $FORK_BLOCK_NUM --match-path test/MarketSwap.test.sol -vvv
 ```
+
+### Simple test (for me)
+
+```
+source .env
+forge create src/Ping.sol:Ping   --rpc-url $TENDERLY_RPC_URL   --private-key $PRIVATE_KEY --broadcast
+```

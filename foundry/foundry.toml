@@ -12,3 +12,6 @@ line_length = 80
 
 [profile.solution]
 remappings = ["@exercises/=src/solutions/"]
+
+[rpc_endpoints]
+tenderly = "${TENDERLY_RPC_URL}"
